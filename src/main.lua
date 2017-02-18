@@ -1,3 +1,6 @@
+-- Thanks @bartbes!
+io.stdout:setvbuf("no")
+
 libs = {
   hump = {
     gamestate = require "libs.gamestate",
