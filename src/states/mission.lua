@@ -20,6 +20,7 @@ function mission:init()
   }
 
   self.ships_chevron = love.graphics.newImage("chevron.png")
+  self.target = love.graphics.newImage("target.png")
 
   self.icon_bg = love.graphics.newImage("icon_bg.png")
   self.camera = libs.hump.camera(1280/2,720/2)
@@ -65,7 +66,7 @@ function mission:enter()
         y = math.random(720),
       },
       size = 32,
-      speed = 100,--math.random(75,100),
+      speed = 100,
       health = {
         current = math.random(1,15),
         max = 14,
@@ -100,6 +101,7 @@ function mission:mousepressed(x,y,b)
           object.selected = false
         end
         closest_object.selected = true
+        closest_object.anim = 0.25
       else
         self.select_start = {x=x,y=y}
       end
@@ -110,6 +112,7 @@ function mission:mousepressed(x,y,b)
         for _,object in pairs(self.objects) do
           if object.selected then
             object.target_object = closest_object
+            object.target_object.anim = 0.25
           end
         end
 
@@ -138,8 +141,14 @@ function mission:mousepressed(x,y,b)
                 grid[gx][gy] = object
                 local ox,oy = self:getcameraoffset()
                 object.target = {x=gx*grid_size+ox,y=gy*grid_size+oy}
+                object.anim = 0.25
                 object.target_object = nil
                 found = true
+                self.target_show = {
+                  x=self.camera.x+x-1280/2,
+                  y=self.camera.y+y-720/2,
+                  anim=0.25
+                }
               end
               range = range + 0.1
             end
@@ -172,6 +181,7 @@ function mission:keypressed(key)
           for _,tobject in pairs(self.controlgroups[key_number]) do
             if object == tobject then
               object.selected = true
+              object.anim = 0.25
             end
           end
         end
@@ -197,6 +207,7 @@ function mission:mousereleased(x,y,b)
         if object.position.x >= xmin and object.position.x <= xmax and
           object.position.y >= ymin and object.position.y <= ymax and object.owner == 0 then
             object.selected = true
+            object.anim = 0.25
         end
         --print("selecting area:",xmin,ymin,xmax,ymax)
       end
@@ -239,6 +250,11 @@ function mission:draw()
       love.graphics.setColor(self.colors.ui.primary)
       love.graphics.circle("line",object.position.x,object.position.y,object.size)
     end
+    if object.anim then
+      love.graphics.setColor(255,255,255)
+      love.graphics.circle("line",object.position.x,object.position.y,
+        object.size+object.anim/object.anim_max*4)
+    end
     local percent = object.health.current/object.health.max
     if (object.selected and percent < 1) or love.keyboard.isDown("lalt") then
       local bx,by,bw,bh = object.position.x-32,object.position.y+32,64,4
@@ -260,6 +276,16 @@ function mission:draw()
       object.angle or 0,1,1,ship:getWidth()/2,ship:getHeight()/2)
 
   end
+
+  if self.target_show then
+    local percent = self.target_show.anim/self.target_show.anim_max
+    love.graphics.setColor(0,255,0)
+    love.graphics.draw(self.target,
+      self.target_show.x,self.target_show.y,
+      percent*math.pi/2,
+      math.sqrt(percent),math.sqrt(percent),self.target:getWidth()/2,self.target:getHeight()/2)
+  end
+
   self.camera:detach()
   love.graphics.setColor(self.colors.ui.primary)
   if self.select_start then
@@ -303,7 +329,7 @@ end
 function mission:mouseInMiniMap()
   local x,y,w,h = self:miniMapArea()
   local mx,my = love.mouse.getPosition()
-  return mx >= x and mx <= x+w and my >= y and my <= my+h
+  return mx >= x and mx <= x+w and my >= y and my <= y+h
 end
 
 function mission:ownerColor(owner)
@@ -328,6 +354,17 @@ end
 
 function mission:update(dt)
 
+    if self.target_show then
+      if not self.target_show.anim_max then
+        self.target_show.anim_max = self.target_show.anim
+      end
+      self.target_show.anim = self.target_show.anim - dt
+      if self.target_show.anim <= 0 then
+        self.target_show = nil
+      end
+    end
+
+
   for _,object in pairs(self.objects) do
 
     if object.health then
@@ -335,6 +372,17 @@ function mission:update(dt)
         object.health.current = object.health.max
       end
     end
+
+    if object.anim then
+      if not object.anim_max then
+        object.anim_max = object.anim
+      end
+      object.anim = object.anim - dt
+      if object.anim <= 0 then
+        object.anim = nil
+      end
+    end
+
 
     if object.target_object then
       object.target = {
