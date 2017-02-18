@@ -7,13 +7,16 @@ function mission:init()
     }
   }
   self.ships = {
-    idk = love.graphics.newImage("ships/Ship1_1_R.png"),
-  }
-  self.bullet = {
-    laser = love.graphics.newImage("bullets/laser.png"),
+    enemy = love.graphics.newImage("ships/enemy.png"),
+    drydock = love.graphics.newImage("ships/drydock.png"),
   }
   self.ships_icon = {
-    idk = love.graphics.newImage("ships/Ship1_1_R_icon.png"),
+    enemy = love.graphics.newImage("ships/enemy_icon.png"),
+    drydock = love.graphics.newImage("ships/drydock_icon.png"),
+  }
+
+  self.bullet = {
+    laser = love.graphics.newImage("bullets/laser.png"),
   }
 
   self.ships_chevron = love.graphics.newImage("chevron.png")
@@ -62,50 +65,89 @@ function mission:enter()
         y = math.random(720),
       },
       size = 32,
-      speed = math.random(75,100),
+      speed = 100,--math.random(75,100),
       health = {
-        current = math.random(0,14),
+        current = math.random(1,15),
         max = 14,
       }
     })
   end
 end
 
+function mission:findClosestObject(x,y)
+  local distance = math.huge
+  local distance_object = nil
+  for _,object in pairs(self.objects) do
+    local this_distance = self:distance({x=x,y=y},object.position)
+    if this_distance < distance then
+      distance = this_distance
+      distance_object = object
+    end
+  end
+  return distance_object,distance
+end
+
 function mission:mousepressed(x,y,b)
   if self:mouseInMiniMap() then
   else
+
+    local ox,oy = self:getcameraoffset()
+    local closest_object, closest_object_distance = mission:findClosestObject(x+ox,y+oy)
+
     if b == 1 then
-      self.select_start = {x=x,y=y}
-    elseif b == 2 then
-      local grid = {}
-      local grid_size = 48
-      for _,object in pairs(self.objects) do
-        if not object.selected then
-          local sx = object.target and object.target.x or object.position.x
-          local sy = object.target and object.target.y or object.position.y
-          local gx,gy = math.floor(sx/grid_size),math.floor(sy/grid_size)
-          grid[gx] = grid[gx] or {}
-          grid[gx][gy] = object
+      if closest_object and closest_object.owner == 0 and closest_object_distance < 32 then
+        for _,object in pairs(self.objects) do
+          object.selected = false
         end
+        closest_object.selected = true
+      else
+        self.select_start = {x=x,y=y}
       end
-      for _,object in pairs(self.objects) do
-        if object.selected then
-          local range = 0
-          local found = false
-          while found == false do
-            local rx,ry = x + math.random(-range,range),y + math.random(-range,range)
-            local gx,gy = math.floor(rx/grid_size),math.floor(ry/grid_size)
-            if not grid[gx] or not grid[gx][gy] then
-              grid[gx] = grid[gx] or {}
-              grid[gx][gy] = object
-              local ox,oy = self:getcameraoffset()
-              object.target = {x=gx*grid_size+ox,y=gy*grid_size+oy}
-              found = true
-            end
-            range = range + 0.1
+    elseif b == 2 then
+
+      if closest_object and closest_object_distance < 32 then
+
+        for _,object in pairs(self.objects) do
+          if object.selected then
+            object.target_object = closest_object
           end
         end
+
+      else
+
+        local grid = {}
+        local grid_size = 48
+        for _,object in pairs(self.objects) do
+          if not object.selected then
+            local sx = object.target and object.target.x or object.position.x
+            local sy = object.target and object.target.y or object.position.y
+            local gx,gy = math.floor(sx/grid_size),math.floor(sy/grid_size)
+            grid[gx] = grid[gx] or {}
+            grid[gx][gy] = object
+          end
+        end
+        for _,object in pairs(self.objects) do
+          if object.selected then
+            local range = 0
+            local found = false
+            while found == false do
+              local rx,ry = x + math.random(-range,range),y + math.random(-range,range)
+              local gx,gy = math.floor(rx/grid_size),math.floor(ry/grid_size)
+              if not grid[gx] or not grid[gx][gy] then
+                grid[gx] = grid[gx] or {}
+                grid[gx][gy] = object
+                local ox,oy = self:getcameraoffset()
+                object.target = {x=gx*grid_size+ox,y=gy*grid_size+oy}
+                object.target_object = nil
+                found = true
+              end
+              range = range + 0.1
+            end
+          end
+        end
+
       end
+
     end
   end
 end
@@ -197,9 +239,9 @@ function mission:draw()
       love.graphics.setColor(self.colors.ui.primary)
       love.graphics.circle("line",object.position.x,object.position.y,object.size)
     end
-    if object.selected or love.keyboard.isDown("lalt") then
-      local percent = object.health.current/object.health.max
-      local bx,by,bw,bh = object.position.x-32,object.position.y+32,64,8
+    local percent = object.health.current/object.health.max
+    if (object.selected and percent < 1) or love.keyboard.isDown("lalt") then
+      local bx,by,bw,bh = object.position.x-32,object.position.y+32,64,4
       love.graphics.setColor(0,0,0,127)
       love.graphics.rectangle("fill",bx,by,bw,bh)
       love.graphics.setColor(libs.healthcolor(percent))
@@ -238,7 +280,7 @@ function mission:drawSelected()
   local index = 0
   for _,object in pairs(self.objects) do
     if object.selected then
-      local x,y = index*32+32,720-32-32
+      local x,y = index*(32+4)+32,720-32-32
       love.graphics.draw(self.icon_bg,x,y)
       index = index + 1
       local ship_icon = self.ships_icon[object.type]
@@ -287,23 +329,40 @@ end
 function mission:update(dt)
 
   for _,object in pairs(self.objects) do
+
     if object.health then
       if not object.health.current then
         object.health.current = object.health.max
       end
     end
+
+    if object.target_object then
+      object.target = {
+        x=object.target_object.position.x,
+        y=object.target_object.position.y,
+      }
+    end
+
     if object.target then
       local distance = self:distance(object.position,object.target)
-      if distance > 4 then
+      local range = 4
+      if object.target_object then
+        distance = self:distance(object.position,object.target_object.position)
+        range = 48
+      end
+      if distance > range then
         local dx,dy = object.position.x-object.target.x,object.position.y-object.target.y
         object.angle = math.atan2(dy,dx)+math.pi
         object.position.x = object.position.x + math.cos(object.angle)*dt*object.speed
         object.position.y = object.position.y + math.sin(object.angle)*dt*object.speed
       else
-        object.position = object.target
-        object.target = nil
+        if not object.target_object then
+          object.position = object.target
+          object.target = nil
+        end
       end
     end
+
   end
 
   if not self.select_start then
