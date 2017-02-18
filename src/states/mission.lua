@@ -9,9 +9,15 @@ function mission:init()
   self.ships = {
     idk = love.graphics.newImage("ships/Ship1_1_R.png"),
   }
+  self.bullet = {
+    laser = love.graphics.newImage("bullets/laser.png"),
+  }
   self.ships_icon = {
     idk = love.graphics.newImage("ships/Ship1_1_R_icon.png"),
   }
+
+  self.ships_chevron = love.graphics.newImage("chevron.png")
+
   self.icon_bg = love.graphics.newImage("icon_bg.png")
   self.camera = libs.hump.camera(1280/2,720/2)
   self.camera_speed = 300
@@ -49,6 +55,7 @@ function mission:enter()
   self.objects = {}
   for i = 1,100 do
     table.insert(self.objects,{
+      owner = math.random(0,1),
       type = self:randomShipType(),
       position = {
         x = math.random(1280),
@@ -110,7 +117,7 @@ function mission:keypressed(key)
 
       self.controlgroups[key_number] = {}
       for _,object in pairs(self.objects) do
-        if object.selected then
+        if object.selected and object.owner == 0 then
           table.insert(self.controlgroups[key_number],object)
         end
       end
@@ -146,7 +153,7 @@ function mission:mousereleased(x,y,b)
         object.selected = false
         end
         if object.position.x >= xmin and object.position.x <= xmax and
-          object.position.y >= ymin and object.position.y <= ymax then
+          object.position.y >= ymin and object.position.y <= ymax and object.owner == 0 then
             object.selected = true
         end
         --print("selecting area:",xmin,ymin,xmax,ymax)
@@ -198,11 +205,18 @@ function mission:draw()
       love.graphics.setColor(libs.healthcolor(percent))
       love.graphics.rectangle("fill",bx+1,by+1,(bw-2)*percent,bh-2)
     end
-    love.graphics.setColor(255,255,255)
+
+    love.graphics.setColor(self:ownerColor(object.owner))
+    love.graphics.draw(self.ships_chevron,
+      object.position.x,object.position.y,0,1,1,
+      self.ships_chevron:getWidth()/2,self.ships_chevron:getHeight()/2)
+
     local ship = self.ships[object.type]
+    love.graphics.setColor(255,255,255)
     love.graphics.draw(ship,
       object.position.x,object.position.y,
       object.angle or 0,1,1,ship:getWidth()/2,ship:getHeight()/2)
+
   end
   self.camera:detach()
   love.graphics.setColor(self.colors.ui.primary)
@@ -220,6 +234,7 @@ function mission:draw()
 end
 
 function mission:drawSelected()
+  -- TODO: add in rows when more selected
   local index = 0
   for _,object in pairs(self.objects) do
     if object.selected then
@@ -249,6 +264,10 @@ function mission:mouseInMiniMap()
   return mx >= x and mx <= x+w and my >= y and my <= my+h
 end
 
+function mission:ownerColor(owner)
+  return owner == 0 and {0,255,0} or {255,0,0}
+end
+
 function mission:drawMinimap()
   local x,y,w,h = self:miniMapArea()
   love.graphics.setColor(0,0,0)
@@ -259,6 +278,7 @@ function mission:drawMinimap()
   local cx,cy,cw,ch = (self.camera.x-1280/2)/scale,(self.camera.y-720/2)/scale,1280/scale,720/scale
   love.graphics.rectangle("line",x+cx,y+cy,cw,ch)
   for _,object in pairs(self.objects) do
+    love.graphics.setColor(self:ownerColor(object.owner))
     love.graphics.points(x+object.position.x/scale,y+object.position.y/scale)
   end
   love.graphics.setColor(255,255,255)
