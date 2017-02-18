@@ -1,31 +1,46 @@
 local mission = {}
 
 function mission:init()
-  self.ships = {
-    pirate = love.graphics.newImage("ships/Pirate.png"),
-    dove = love.graphics.newImage("ships/Dove.png"),
-    ligher = love.graphics.newImage("ships/Ligher.png"),
-    lightning = love.graphics.newImage("ships/Lightning.png"),
-    ninja = love.graphics.newImage("ships/Ninja.png"),
-    paranoid = love.graphics.newImage("ships/Paranoid.png"),
-    saboteur = love.graphics.newImage("ships/Saboteur.png"),
-    turtle = love.graphics.newImage("ships/Turtle.png"),
-    ufo = love.graphics.newImage("ships/UFO.png"),
+  self.colors = {
+    ui = {
+      primary = {0,255,127},
+    }
   }
+  self.ships = {
+    idk = love.graphics.newImage("ships/Ship1_1_R.png"),
+  }
+  self.ships_icon = {
+    idk = love.graphics.newImage("ships/Ship1_1_R_icon.png"),
+  }
+  self.icon_bg = love.graphics.newImage("icon_bg.png")
   self.camera = libs.hump.camera(1280/2,720/2)
   self.camera_speed = 300
   self.camera.vertical_mouse_move = 1/20
   self.camera.horizontal_mouse_move = 1/11.25
-  self.stars = love.graphics.newImage("stars.png")
-  self.stars:setWrap("repeat","repeat")
-  self.stars_quad = love.graphics.newQuad(0, 0, 1280+self.stars:getWidth(), 720+self.stars:getHeight(),
-    self.stars:getWidth(), self.stars:getHeight())
+
+  self.space = love.graphics.newImage("space.png")
+
+  self.stars0 = love.graphics.newImage("stars0.png")
+  self.stars0:setWrap("repeat","repeat")
+  self.stars0_quad = love.graphics.newQuad(0, 0,
+    1280+self.stars0:getWidth(), 720+self.stars0:getHeight(),
+    self.stars0:getWidth(), self.stars0:getHeight())
+
+  self.stars1 = love.graphics.newImage("stars1.png")
+  self.stars1:setWrap("repeat","repeat")
+  self.stars1_quad = love.graphics.newQuad(0, 0,
+    1280+self.stars1:getWidth(), 720+self.stars1:getHeight(),
+    self.stars1:getWidth(), self.stars1:getHeight())
+
+  self.controlgroups = {}
+
 end
 
 function mission:randomShipType()
   local ships = {}
   for i,v in pairs(self.ships) do
     table.insert(ships,i)
+    -- Thanks Chris Nixon (ashlon23)!!! much love!
   end
   return ships[math.random(#ships)]
 end
@@ -39,8 +54,12 @@ function mission:enter()
         x = math.random(1280),
         y = math.random(720),
       },
-      size = 15,
+      size = 32,
       speed = math.random(75,100),
+      health = {
+        current = math.random(0,14),
+        max = 14,
+      }
     })
   end
 end
@@ -52,7 +71,7 @@ function mission:mousepressed(x,y,b)
       self.select_start = {x=x,y=y}
     elseif b == 2 then
       local grid = {}
-      local grid_size = 32
+      local grid_size = 48
       for _,object in pairs(self.objects) do
         if not object.selected then
           local sx = object.target and object.target.x or object.position.x
@@ -84,6 +103,35 @@ function mission:mousepressed(x,y,b)
   end
 end
 
+function mission:keypressed(key)
+  local key_number = tonumber(key)
+  if key_number ~= nil and key_number >= 0 and key_number <= 9 then
+    if love.keyboard.isDown("lctrl") then
+
+      self.controlgroups[key_number] = {}
+      for _,object in pairs(self.objects) do
+        if object.selected then
+          table.insert(self.controlgroups[key_number],object)
+        end
+      end
+
+    else
+
+      if self.controlgroups[key_number] then
+        for _,object in pairs(self.objects) do
+          object.selected = false
+          for _,tobject in pairs(self.controlgroups[key_number]) do
+            if object == tobject then
+              object.selected = true
+            end
+          end
+        end
+      end
+
+    end
+  end
+end
+
 function mission:getcameraoffset()
   return self.camera.x-1280/2,self.camera.y-720/2
 end
@@ -94,7 +142,9 @@ function mission:mousereleased(x,y,b)
       for _,object in pairs(self.objects) do
         local ox,oy = self:getcameraoffset()
         local xmin,ymin,xmax,ymax = self:selectminmax(self.select_start.x+ox,self.select_start.y+oy,x+ox,y+oy)
+        if not love.keyboard.isDown("lshift") then
         object.selected = false
+        end
         if object.position.x >= xmin and object.position.x <= xmax and
           object.position.y >= ymin and object.position.y <= ymax then
             object.selected = true
@@ -119,24 +169,43 @@ function mission:distance(a,b)
 end
 
 function mission:draw()
-  love.graphics.draw(self.stars, self.stars_quad,
-    -self.stars:getWidth()+(self.camera.x%self.stars:getWidth()),
-    -self.stars:getHeight()+(self.camera.y%self.stars:getHeight()) )
+
+  love.graphics.draw(self.space)
+
+  love.graphics.setBlendMode("add")
+
+  love.graphics.draw(self.stars0, self.stars0_quad,
+    -self.stars0:getWidth()+(self.camera.x%self.stars0:getWidth()),
+    -self.stars0:getHeight()+(self.camera.y%self.stars0:getHeight()) )
+
+  love.graphics.draw(self.stars1, self.stars1_quad,
+    -self.stars1:getWidth()+((self.camera.x/2)%self.stars1:getWidth()),
+    -self.stars1:getHeight()+((self.camera.y/2)%self.stars1:getHeight()) )
+
+  love.graphics.setBlendMode("alpha")
+
   self.camera:attach()
   for _,object in pairs(self.objects) do
-    love.graphics.setColor(object.selected and 0 or 255,255,object.selected and 0 or 255,63)
-    love.graphics.circle("line",object.position.x,object.position.y,object.size)
+    if object.selected then
+      love.graphics.setColor(self.colors.ui.primary)
+      love.graphics.circle("line",object.position.x,object.position.y,object.size)
+    end
+    if object.selected or love.keyboard.isDown("lalt") then
+      local percent = object.health.current/object.health.max
+      local bx,by,bw,bh = object.position.x-32,object.position.y+32,64,8
+      love.graphics.setColor(0,0,0,127)
+      love.graphics.rectangle("fill",bx,by,bw,bh)
+      love.graphics.setColor(libs.healthcolor(percent))
+      love.graphics.rectangle("fill",bx+1,by+1,(bw-2)*percent,bh-2)
+    end
     love.graphics.setColor(255,255,255)
     local ship = self.ships[object.type]
     love.graphics.draw(ship,
       object.position.x,object.position.y,
       object.angle or 0,1,1,ship:getWidth()/2,ship:getHeight()/2)
-    if object.target and object.selected then
-      love.graphics.line(object.position.x,object.position.y,object.target.x,object.target.y)
-    end
   end
   self.camera:detach()
-  love.graphics.setColor(0,255,0)
+  love.graphics.setColor(self.colors.ui.primary)
   if self.select_start then
     local mx,my = love.mouse.getPosition()
     local xmin,ymin,xmax,ymax = self:selectminmax(self.select_start.x,self.select_start.y,mx,my)
@@ -146,7 +215,24 @@ function mission:draw()
   love.graphics.setColor(255,255,255)
 
   self:drawMinimap()
+  self:drawSelected()
 
+end
+
+function mission:drawSelected()
+  local index = 0
+  for _,object in pairs(self.objects) do
+    if object.selected then
+      local x,y = index*32+32,720-32-32
+      love.graphics.draw(self.icon_bg,x,y)
+      index = index + 1
+      local ship_icon = self.ships_icon[object.type]
+      local percent = object.health.current/object.health.max
+      love.graphics.setColor(libs.healthcolor(percent))
+      love.graphics.draw(ship_icon,x,y)
+      love.graphics.setColor(255,255,255)
+    end
+  end
 end
 
 function mission:miniMapArea()
@@ -168,7 +254,7 @@ function mission:drawMinimap()
   love.graphics.setColor(0,0,0)
   love.graphics.rectangle("fill",x,y,w,h)
   local scale = self:miniMapScale()
-  love.graphics.setColor(0,255,0)
+  love.graphics.setColor(self.colors.ui.primary)
   love.graphics.rectangle("line",x,y,w,h)
   local cx,cy,cw,ch = (self.camera.x-1280/2)/scale,(self.camera.y-720/2)/scale,1280/scale,720/scale
   love.graphics.rectangle("line",x+cx,y+cy,cw,ch)
@@ -181,6 +267,11 @@ end
 function mission:update(dt)
 
   for _,object in pairs(self.objects) do
+    if object.health then
+      if not object.health.current then
+        object.health.current = object.health.max
+      end
+    end
     if object.target then
       local distance = self:distance(object.position,object.target)
       if distance > 4 then

@@ -5,7 +5,8 @@ libs = {
   hump = {
     gamestate = require "libs.gamestate",
     camera = require "libs.camera",
-  }
+  },
+  healthcolor = require"libs.healthcolor",
 }
 
 states = {
