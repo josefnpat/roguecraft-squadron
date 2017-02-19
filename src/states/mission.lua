@@ -278,6 +278,7 @@ function mission:draw()
       object.position.x,object.position.y,0,1,1,
       self.ships_chevron:getWidth()/2,self.ships_chevron:getHeight()/2)
 
+    love.graphics.setColor(255,255,255)
     if object.incoming_bullets then
       for _,bullet in pairs(object.incoming_bullets) do
         love.graphics.draw(self.bullets.laser,bullet.x,bullet.y,bullet.angle,
@@ -286,7 +287,6 @@ function mission:draw()
     end
 
     local ship = self.ships[object.type]
-    love.graphics.setColor(255,255,255)
     love.graphics.draw(ship,
       object.position.x,object.position.y,
       object.angle or 0,1,1,ship:getWidth()/2,ship:getHeight()/2)
@@ -447,12 +447,14 @@ function mission:update(dt)
       end
 
     else
-      local cobject = object
-      local nearest,nearest_distance = self:findClosestObject(object.position.x,object.position.y,function(object)
-        return object.owner ~= cobject.owner
-      end)
-      if not object.target and nearest and  nearest_distance < object.shoot.aggression then
-        object.target_object = nearest
+      if object.shoot then
+        local cobject = object
+        local nearest,nearest_distance = self:findClosestObject(object.position.x,object.position.y,function(object)
+          return object.owner ~= cobject.owner
+        end)
+        if not object.target and nearest and  nearest_distance < object.shoot.aggression then
+          object.target_object = nearest
+        end
       end
     end
 
@@ -460,8 +462,7 @@ function mission:update(dt)
       local distance = self:distance(object.position,object.target)
       local range = 4
       if object.target_object then
-        distance = self:distance(object.position,object.target_object.position)
-        if object.target_object.owner ~= object.owner then
+        if object.shoot and object.target_object.owner ~= object.owner then
           range = object.shoot.range
         else
           range = 48
