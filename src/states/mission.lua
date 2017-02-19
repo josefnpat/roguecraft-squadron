@@ -11,12 +11,14 @@ function mission:init()
     drydock = love.graphics.newImage("ships/drydock.png"),
     mining = love.graphics.newImage("ships/mining.png"),
     asteroid = love.graphics.newImage("ships/asteroid.png"),
+    combat = love.graphics.newImage("ships/combat.png"),
   }
   self.ships_icon = {
     enemy = love.graphics.newImage("ships/enemy_icon.png"),
     drydock = love.graphics.newImage("ships/drydock_icon.png"),
     mining = love.graphics.newImage("ships/mining_icon.png"),
     asteroid = love.graphics.newImage("ships/asteroid_icon.png"),
+    combat = love.graphics.newImage("ships/combat_icon.png"),
   }
 
   self.bullets = {
@@ -56,7 +58,8 @@ function mission:randomShipType()
     table.insert(ships,i)
     -- Thanks Chris Nixon (ashlon23)!!! much love!
   end
-  return ships[math.random(#ships)]
+  local val = ships[math.random(#ships)]
+  return val == "asteroid" and "combat" or val
 end
 
 function mission:enter()
@@ -64,20 +67,22 @@ function mission:enter()
   self.resources = {
     material = 0,
     material_cargo = 0,
+    material_delta = 0,
     ore = 0,
     ore_cargo = 0,
+    ore_delta = 0,
     food = 0,
     food_cargo = 0,
-    water = 0,
-    water_cargo = 0,
+    food_delta = 0,
     crew = 0,
     crew_cargo = 0,
+    crew_delta = 0,
   }
 
   self.objects = {}
-  for i = 1,10 do
+  for i = 1,50 do
     table.insert(self.objects,{
-      owner = 0,--math.random(0,1),
+      owner = math.random(0,4) == 0 and 1 or 0,
       type = self:randomShipType(),
       position = {
         x = math.random(1280),
@@ -86,10 +91,9 @@ function mission:enter()
       size = 32,
       speed = 100,
       health = {
-        current = math.random(1,15),
-        max = 14,
+        current = math.random(1,10),
+        max = 10,
       },
-      --[[
       shoot = {
         reload = 0.25,
         damage = 2,
@@ -97,21 +101,29 @@ function mission:enter()
         range = 200,
         aggression = 400,
       },
-      --]]
-      ore = 100,
-      ore_gather = 10,
+      ore = 10,
+      ore_gather = 25,
+      material = 10,
+      material_gather = 1,
+      food = 100,
+      food_gather = 10,
+      crew = 100,
+      cost = 10,
+      repair = true,
     })
   end
 
-  table.insert(self.objects,{
-    type = "asteroid",
-    position = {
-      x = 640,
-      y = 480,
-    },
-    size = 32,
-    ore = 150,
-  })
+  for i = 1,10 do
+    table.insert(self.objects,{
+      type = "asteroid",
+      position = {
+        x = math.random(0,1280),
+        y = math.random(0,720),
+      },
+      size = 32,
+      ore_supply = 100,
+    })
+  end
 
 end
 
@@ -306,7 +318,7 @@ function mission:draw()
       love.graphics.circle("line",object.position.x,object.position.y,object.size)
     end
     if object.anim then
-      love.graphics.setColor(255,255,255,255*object.anim/object.anim_max or object.anim)
+      love.graphics.setColor(255,255,255,255*object.anim/(object.anim_max or object.anim))
       love.graphics.circle("line",object.position.x,object.position.y,
         object.size+object.anim/object.anim_max*4)
     end
@@ -314,7 +326,7 @@ function mission:draw()
     if object.health then
       local percent = object.health.current/object.health.max
       if (object.selected and percent < 1) or love.keyboard.isDown("lalt") then
-        local bx,by,bw,bh = object.position.x-32,object.position.y+32,64,4
+        local bx,by,bw,bh = object.position.x-32,object.position.y+32,64,6
         love.graphics.setColor(0,0,0,127)
         love.graphics.rectangle("fill",bx,by,bw,bh)
         love.graphics.setColor(libs.healthcolor(percent))
@@ -365,11 +377,10 @@ function mission:draw()
   self:drawSelected()
 
   dropshadow(
-    "Ore: "..self.resources.material.."/"..self.resources.material_cargo.."\n"..
-    "Materials: "..self.resources.material.."/"..self.resources.material_cargo.."\n"..
-    "Food: "..self.resources.material.."/"..self.resources.material_cargo.."\n"..
-    "Water: "..self.resources.material.."/"..self.resources.material_cargo.."\n"..
-    "Crew: "..self.resources.material.."/"..self.resources.material_cargo,
+    "Ore: "..math.floor(self.resources.ore).."/"..self.resources.ore_cargo.."[Δ"..math.floor(self.resources.ore_delta+0.5).."]\n"..
+    "Materials: "..math.floor(self.resources.material).."/"..self.resources.material_cargo.."[Δ"..math.floor(self.resources.material_delta+0.5).."]\n"..
+    "Food: "..math.floor(self.resources.food).."/"..self.resources.food_cargo.."[Δ"..math.floor(self.resources.food_delta+0.5).."]\n"..
+    "Crew: "..math.floor(self.resources.crew).."/"..self.resources.crew_cargo.."[Δ"..math.floor(self.resources.crew_delta+0.5).."]",
     32,128+64)
 
 end
@@ -464,23 +475,13 @@ function mission:update(dt)
     end
   end
 
-  local resources_types = {"material","food","water","crew"}
-
+  local resources_types = {"ore","material","food","crew"}
   for _,resource in pairs(resources_types) do
     self.resources[resource.."_cargo"] = 0
+    self.resources[resource.."_delta"] = 0
   end
 
   for _,object in pairs(self.objects) do
-
-    --[[
-    if object.owner and object.owner == 0 then
-      for _,resource in pairs(resources_types) do
-        if object[resource] then
-          self.resources[resource.."_cargo"] = self.resources[resource.."_cargo"] + object[resource]
-        end
-      end
-    end
-    --]]
 
     if object.incoming_bullets then
       for bullet_index,bullet in pairs(object.incoming_bullets) do
@@ -535,7 +536,47 @@ function mission:update(dt)
       end
     end
 
+    if object.material_gather then
+      local amount = object.material_gather*dt
+      if amount > self.resources.ore then
+        amount = self.resources.ore
+      end
+      self.resources.material = self.resources.material + amount
+      self.resources.material_delta = self.resources.material_delta + amount/dt
+      self.resources.ore = self.resources.ore - amount
+      self.resources.ore_delta = self.resources.ore_delta - amount/dt
+    end
+
+    if object.repair then
+      local amount_to_repair = math.min( (object.health.max - object.health.current) , object.health.max/10  )*dt
+      if amount_to_repair < self.resources.material then
+        object.health.current = object.health.current + amount_to_repair
+        self.resources.material = self.resources.material - amount_to_repair
+        self.resources.material_delta = self.resources.material_delta - amount_to_repair/dt
+      end
+    end
+
+    if object.food_gather then
+      local amount = object.food_gather*dt
+      self.resources.food = self.resources.food + amount
+      self.resources.food_delta = self.resources.food_delta + amount/dt
+    end
+
     if object.target_object then
+      if object.ore_gather and object.target_object.ore_supply and
+        self:distance(object.position,object.target_object.position) < 48 then
+
+        local amount = object.ore_gather*dt
+        self.resources.ore_delta = self.resources.ore_delta + amount/dt
+        if object.target_object.ore_supply > amount then
+          object.target_object.ore_supply = object.target_object.ore_supply - amount
+          self.resources.ore = self.resources.ore + amount
+        else
+          self.resources.ore = self.resources.ore + object.target_object.ore_supply
+          object.target_object.ore_supply = 0
+        end
+
+      end
       if object.target_object.health and object.target_object.health.current <= 0 then
         object.target_object = nil
         object.target = nil
@@ -550,10 +591,18 @@ function mission:update(dt)
       if object.shoot and object.health then
         local cobject = object
         local nearest,nearest_distance = self:findClosestObject(object.position.x,object.position.y,function(object)
-          return object.owner ~= cobject.owner
+          return object.owner ~= cobject.owner and object.owner ~= nil
         end)
         if not object.target and nearest and nearest.health and nearest_distance < object.shoot.aggression then
           object.target_object = nearest
+        end
+      end
+    end
+
+    if object.owner and object.owner == 0 then
+      for _,resource in pairs(resources_types) do
+        if object[resource] then
+          self.resources[resource.."_cargo"] = self.resources[resource.."_cargo"] + object[resource]
         end
       end
     end
@@ -581,13 +630,41 @@ function mission:update(dt)
       end
     end
 
-    for object_index,object in pairs(self.objects) do
-      if object.health and object.health.current <= 0 then
-        table.remove(self.objects,object_index)
-        -- TODO: add explosion
-      end
+  end
+
+  -- cleanup
+  for object_index,object in pairs(self.objects) do
+    if (object.health and object.health.current <= 0) or
+      (object.ore_supply and object.ore_supply <= 0) then
+
+      table.remove(self.objects,object_index)
+      -- TODO: add explosion
     end
 
+    if object.target_object and (
+      (object.target_object.health and object.target_object.health.current <= 0) or
+      (object.target_object.ore_supply and object.target_object.ore_supply <= 0 )) then
+
+      object.target_object = nil
+    end
+
+  end
+
+  for _,resource in pairs(resources_types) do
+    self.resources[resource] = math.min(self.resources[resource],self.resources[resource.."_cargo"])
+  end
+
+  local crew_amount = self.resources.crew_cargo/100*dt
+  self.resources.crew_delta = self.resources.crew_delta + crew_amount/dt
+  self.resources.crew = self.resources.crew + crew_amount
+  local food_amount = self.resources.crew*dt
+  self.resources.food = self.resources.food - food_amount
+  self.resources.food_delta = self.resources.food_delta - food_amount/dt
+  if self.resources.food < 0 then
+    self.resources.crew = math.max(0,self.resources.crew + self.resources.food)
+    self.resources.crew_delta = 0--self.resources.crew_delta - self.resources.food
+    self.resources.food_delta = 0--
+    self.resources.food = 0
   end
 
   if not self.select_start then
