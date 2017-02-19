@@ -380,9 +380,16 @@ function mission:init()
   table.insert(self.objects,self.build.drydock(start))
   table.insert(self.objects,self.build.combat(start))
 
+  self.level = 0
+
 end -- END OF INIT
 
 function mission:enter()
+
+  self.level = self.level + 1
+
+  local level_data = require("levels/"..self.level)
+  self.vn = level_data:intro()
 
   for i = 1,10 do
     table.insert(self.objects,{
@@ -490,6 +497,10 @@ function mission:findClosestObject(x,y,include)
 end
 
 function mission:mousepressed(x,y,b)
+  if self.vn:getRun() then
+    self.vn:next()
+    return
+  end
   if self:mouseInMiniMap() then
   elseif self:mouseInSelected() then
     local pos = math.floor((love.mouse.getX()-32)/(32+self:iconPadding()))+1
@@ -585,6 +596,7 @@ function mission:mousepressed(x,y,b)
 end
 
 function mission:keypressed(key)
+  if self.vn:getRun() then return end
   local key_number = tonumber(key)
   if key_number ~= nil and key_number >= 0 and key_number <= 9 then
     if love.keyboard.isDown("lctrl") then
@@ -619,6 +631,7 @@ function mission:getcameraoffset()
 end
 
 function mission:mousereleased(x,y,b)
+  if self.vn:getRun() then return end
   if b == 1 then
     if self.select_start then
       for _,object in pairs(self.objects) do
@@ -679,7 +692,7 @@ function mission:draw()
         object.size+object.anim/object.anim_max*4)
     end
 
-    if object.health then
+    if object.health and object.health.current then
       local percent = object.health.current/object.health.max
       if (object.selected and percent < 1) or love.keyboard.isDown("lalt") then
         local bx,by,bw,bh = object.position.x-32,object.position.y+32,64,6
@@ -746,6 +759,10 @@ function mission:draw()
       32,128+64+18*rindex)
   end
   love.graphics.setColor(255,255,255)
+
+  if self.vn:getRun() then
+    self.vn:draw()
+  end
 
 end
 
@@ -887,12 +904,22 @@ function mission:drawMinimap()
   love.graphics.rectangle("line",x+cx,y+cy,cw,ch)
   for _,object in pairs(self.objects) do
     love.graphics.setColor(self:ownerColor(object.owner))
-    love.graphics.points(x+object.position.x/scale,y+object.position.y/scale)
+    --love.graphics.points(x+object.position.x/scale,y+object.position.y/scale)
+    love.graphics.rectangle("fill",
+      x+object.position.x/scale,y+object.position.y/scale,2,2)
   end
   love.graphics.setColor(255,255,255)
 end
 
 function mission:update(dt)
+
+  if not self.vn:getRun() then
+    self:updateMission(dt)
+  end
+
+end
+
+function mission:updateMission(dt)
 
   if self.target_show then
     if not self.target_show.anim_max then

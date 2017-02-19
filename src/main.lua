@@ -1,10 +1,18 @@
--- Thanks @bartbes!
+-- Thanks @bartbes! fixes cygwin buffer
 io.stdout:setvbuf("no")
+
+vn = {
+  adj = {
+    default = love.graphics.newImage("vn/adj/default.png"),
+  }
+}
 
 fonts = {
   default = love.graphics.newFont("fonts/Yantramanav-Black.ttf",16),
   title = love.graphics.newFont("fonts/Yantramanav-Black.ttf",64),
   menu = love.graphics.newFont("fonts/Yantramanav-Black.ttf",32),
+  vn_name = love.graphics.newFont("fonts/Yantramanav-Black.ttf",48),
+  vn_text = love.graphics.newFont("fonts/Yantramanav-Black.ttf",24),
   fallback = love.graphics.newFont("fonts/NovaMono.ttf",16),
 }
 
@@ -17,6 +25,7 @@ libs = {
     camera = require "libs.camera",
   },
   healthcolor = require"libs.healthcolor",
+  vn = require"libs.vn",
 }
 
 states = {
