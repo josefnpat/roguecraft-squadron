@@ -60,10 +60,24 @@ function mission:randomShipType()
 end
 
 function mission:enter()
+
+  self.resources = {
+    material = 0,
+    material_cargo = 0,
+    ore = 0,
+    ore_cargo = 0,
+    food = 0,
+    food_cargo = 0,
+    water = 0,
+    water_cargo = 0,
+    crew = 0,
+    crew_cargo = 0,
+  }
+
   self.objects = {}
-  for i = 1,100 do
+  for i = 1,10 do
     table.insert(self.objects,{
-      owner = math.random(0,1),
+      owner = 0,--math.random(0,1),
       type = self:randomShipType(),
       position = {
         x = math.random(1280),
@@ -75,6 +89,7 @@ function mission:enter()
         current = math.random(1,15),
         max = 14,
       },
+      --[[
       shoot = {
         reload = 0.25,
         damage = 2,
@@ -82,6 +97,9 @@ function mission:enter()
         range = 200,
         aggression = 400,
       },
+      --]]
+      ore = 100,
+      ore_gather = 10,
     })
   end
 
@@ -92,6 +110,7 @@ function mission:enter()
       y = 480,
     },
     size = 32,
+    ore = 150,
   })
 
 end
@@ -345,6 +364,14 @@ function mission:draw()
   self:drawMinimap()
   self:drawSelected()
 
+  dropshadow(
+    "Ore: "..self.resources.material.."/"..self.resources.material_cargo.."\n"..
+    "Materials: "..self.resources.material.."/"..self.resources.material_cargo.."\n"..
+    "Food: "..self.resources.material.."/"..self.resources.material_cargo.."\n"..
+    "Water: "..self.resources.material.."/"..self.resources.material_cargo.."\n"..
+    "Crew: "..self.resources.material.."/"..self.resources.material_cargo,
+    32,128+64)
+
 end
 
 function mission:selectedPadding()
@@ -437,7 +464,23 @@ function mission:update(dt)
     end
   end
 
+  local resources_types = {"material","food","water","crew"}
+
+  for _,resource in pairs(resources_types) do
+    self.resources[resource.."_cargo"] = 0
+  end
+
   for _,object in pairs(self.objects) do
+
+    --[[
+    if object.owner and object.owner == 0 then
+      for _,resource in pairs(resources_types) do
+        if object[resource] then
+          self.resources[resource.."_cargo"] = self.resources[resource.."_cargo"] + object[resource]
+        end
+      end
+    end
+    --]]
 
     if object.incoming_bullets then
       for bullet_index,bullet in pairs(object.incoming_bullets) do
