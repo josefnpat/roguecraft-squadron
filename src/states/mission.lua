@@ -419,7 +419,8 @@ function mission:update(dt)
       end
       object.shoot.reload = object.shoot.reload - dt
       if object.shoot.reload <= 0 and
-        object.target_object and object.target_object.owner ~= object.owner then
+        object.target_object and object.target_object.owner ~= object.owner and
+        self:distance(object.position,object.target_object.position) < object.shoot.range then
 
         object.shoot.reload = object.shoot.reload_t
         object.target_object.incoming_bullets = object.target_object.incoming_bullets or {}
@@ -437,6 +438,7 @@ function mission:update(dt)
     if object.target_object then
       if object.target_object.health.current <= 0 then
         object.target_object = nil
+        object.target = nil
       else
         object.target = {
           x=object.target_object.position.x,
@@ -446,10 +448,12 @@ function mission:update(dt)
 
     else
       local cobject = object
-      local nearest = self:findClosestObject(object.position.x,object.position.y,function(object)
+      local nearest,nearest_distance = self:findClosestObject(object.position.x,object.position.y,function(object)
         return object.owner ~= cobject.owner
       end)
-      object.target_object = nearest
+      if not object.target and nearest and  nearest_distance < object.shoot.aggression then
+        object.target_object = nearest
+      end
     end
 
     if object.target then
@@ -457,7 +461,11 @@ function mission:update(dt)
       local range = 4
       if object.target_object then
         distance = self:distance(object.position,object.target_object.position)
-        range = 48
+        if object.target_object.owner ~= object.owner then
+          range = object.shoot.range
+        else
+          range = 48
+        end
       end
       if distance > range then
         local dx,dy = object.position.x-object.target.x,object.position.y-object.target.y
