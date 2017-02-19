@@ -56,6 +56,7 @@ function mission:init()
   }
 
   self.action_icons = {
+	menu = love.graphics.newImage("actions/repair.png"),
     repair = love.graphics.newImage("actions/repair.png"),
     salvage = love.graphics.newImage("actions/salvage.png"),
     refine = love.graphics.newImage("actions/refine.png"),
@@ -113,7 +114,7 @@ function mission:init()
   }
 
   self.actions = {}
-
+  
   self.actions.repair = {
     icon = "repair",
     tooltip = function(object) return "Auto Repair "..(object.repair and "Enabled" or "Disabled") end,
@@ -400,11 +401,17 @@ function mission:init()
   table.insert(self.objects,self.build.combat(start))
 
   self.level = 0
-
+  states.game:nextLevel()
 end -- END OF INIT
 
 function mission:enter()
 
+  
+
+
+end -- END OF ENTER
+
+function mission:nextLevel()
   self.level = self.level + 1
 
   local level_data = require("levels/"..self.level)
@@ -456,9 +463,7 @@ function mission:enter()
 
     })
   end
-
-
-end -- END OF ENTER
+end
 
 function mission:randomShipType()
   local ships = {}
@@ -621,6 +626,9 @@ end
 function mission:keypressed(key)
   if self.vn:getRun() then return end
   local key_number = tonumber(key)
+  if key == "escape" then
+		libs.hump.gamestate.switch(states.pause)
+  end
   if key_number ~= nil and key_number >= 0 and key_number <= 9 then
     if love.keyboard.isDown("lctrl") then
 

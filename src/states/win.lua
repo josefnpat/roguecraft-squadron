@@ -1,6 +1,6 @@
-credits = {}
+local state = {}
 
-function credits:enter()
+function state:enter()
 	self.text = "Winner is you!"
 	
 	self.space = love.graphics.newImage("space.png")
@@ -24,23 +24,23 @@ function credits:enter()
 	self.escape_delay_max = 0.5
 end
 
-function credits:update(dt)
+function state:update(dt)
 	self.escape_delay_timer = self.escape_delay_timer + dt
 end
 
-function credits:keypressed(key)
+function state:keypressed(key)
 	if self.escape_delay_timer > self.escape_delay_max then
 		libs.hump.gamestate.switch(states.credits)
 	end
 end
 
-function credits:mousereleased(x,y,b)
+function state:mousereleased(x,y,b)
 	if self.escape_delay_timer > self.escape_delay_max then
 		libs.hump.gamestate.switch(states.credits)
 	end
 end
 
-function credits:draw()
+function state:draw()
 	
 	love.graphics.draw(self.space,0,0)
 
@@ -60,4 +60,4 @@ function credits:draw()
 	love.graphics.setFont(fonts.default)
 end
 
-return credits
+return state

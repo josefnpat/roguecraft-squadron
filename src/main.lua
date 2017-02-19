@@ -32,6 +32,8 @@ libs = {
 states = {
   splash = require "states.splash",
   menu = require "states.menu",
+  pause = require "states.pause",
+  options = require "states.options",
   lose = require "states.lose",
   win = require "states.win",
   game = require "states.mission",
@@ -61,10 +63,14 @@ end
 
 function playBGM(source)
 	love.audio.stop()
-	love.audio.play(source)
+	if not settings.muted then
+		love.audio.play(source)
+	end
 end
 
 function playSFX(source)
 	source:stop()
-	love.audio.play(source)
+	if not settings.muted then
+		love.audio.play(source)
+	end
 end

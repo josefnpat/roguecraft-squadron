@@ -1,8 +1,8 @@
 local mainmenu = {}
 
-function mainmenu:init()
+function mainmenu:enter()
 	self.options = {}
-	self.options[1] = {text = "New Game", act = function() libs.hump.gamestate.switch(states.game) end}
+	self.options[1] = {text = "New Game", act = function() libs.hump.gamestate.switch(states.game); states.game:init() end}
 	self.options[2] = {text = "Credits", act = function() libs.hump.gamestate.switch(states.credits) end}
 	self.options[3] = {text = "Exit", act = function() love.event.quit() end}
 	
@@ -26,16 +26,22 @@ function mainmenu:init()
 	self.select_sound = love.audio.newSource("assets/sfx/select.wav")
 	
 	self.buttons_y = 1
+	
+	self.input_delay_timer = 0
+	self.input_delay_max = 0.1
 end
 
 function mainmenu:update(dt)
+	self.input_delay_timer = self.input_delay_timer + dt
 	self.buttons_y = love.graphics:getHeight() / 4
 	self.hovered_button = math.floor((love.mouse.getY() - self.buttons_y) / (fonts.menu:getHeight()))
 	if love.mouse.isDown(1) then
 		self.buttonpressed = self.hovered_button
 		if self.options[self.buttonpressed] then
-			self.options[self.buttonpressed].act()
-			playSFX(self.select_sound)
+			if self.input_delay_timer > self.input_delay_max then
+				self.options[self.buttonpressed].act()
+				playSFX(self.select_sound)
+			end
 		end		
 	end
 	
