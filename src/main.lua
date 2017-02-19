@@ -32,6 +32,8 @@ libs = {
 states = {
   splash = require "states.splash",
   menu = require "states.menu",
+  lose = require "states.lose",
+  win = require "states.win",
   game = require "states.mission",
   credits = require "states.credits",
 }
@@ -55,4 +57,14 @@ function dropshadowf(text,x,y,w,a)
   love.graphics.printf(text,x+2,y+2,w,a)
   love.graphics.setColor(color)
   love.graphics.printf(text,x,y,w,a)
+end
+
+function playBGM(source)
+	love.audio.stop()
+	love.audio.play(source)
+end
+
+function playSFX(source)
+	source:stop()
+	love.audio.play(source)
 end

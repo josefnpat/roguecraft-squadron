@@ -4,7 +4,7 @@ function mission:init()
 
   self.resources_types = {"ore","material","food","crew"}
   self.resources_types_formatted = {"Ore","Material","Food","Crew"}
-
+  
   self.colors = {
     ui = {
       primary = {0,255,127},
@@ -31,6 +31,17 @@ function mission:init()
     refinery = love.graphics.newImage("ships/refinery_icon.png"),
     habitat = love.graphics.newImage("ships/habitat_icon.png"),
     cargo = love.graphics.newImage("ships/cargo_icon.png"),
+  }
+  
+  self.ships_death_sfx = {
+    enemy = love.audio.newSource("assets/sfx/explosion.wav"),
+    drydock = love.audio.newSource("assets/sfx/explosion.wav"),
+    mining = love.audio.newSource("assets/sfx/explosion.wav"),
+    asteroid = love.audio.newSource("assets/sfx/asteroid_death.wav"),
+    combat = love.audio.newSource("assets/sfx/explosion.wav"),
+    refinery = love.audio.newSource("assets/sfx/explosion.wav"),
+    habitat = love.audio.newSource("assets/sfx/explosion.wav"),
+    cargo = love.audio.newSource("assets/sfx/explosion.wav"),
   }
 
   self.ships_info = {
@@ -155,6 +166,7 @@ function mission:init()
       health = {
         max = 25,
       },
+	  death_sfx = self.ships_death_sfx.drydock,
       crew = self.costs.drydock.crew,
       ore = 400,
       material = 400,
@@ -187,6 +199,7 @@ function mission:init()
       },
       ore = 25,
       ore_gather = 25,
+	  death_sfx = self.ships_death_sfx.mining,
       crew = self.costs.mining.crew,
       repair = false,
       actions = {
@@ -213,7 +226,10 @@ function mission:init()
         speed = 200,
         range = 200,
         aggression = 400,
+		sfx = love.audio.newSource("assets/sfx/laser_shoot.wav"),
+		collision_sfx = love.audio.newSource("assets/sfx/collision.wav"),
       },
+	  death_sfx = self.ships_death_sfx.combat,
       crew = self.costs.combat.crew,
       repair = false,
       actions = {
@@ -233,6 +249,7 @@ function mission:init()
       health = {
         max = 10,
       },
+	  death_sfx = self.ships_death_sfx.refinery,
       crew = self.costs.refinery.crew,
       material = 50,
       material_gather = 5,
@@ -256,6 +273,7 @@ function mission:init()
       health = {
         max = 5,
       },
+	  death_sfx = self.ships_death_sfx.habitat,
       crew = self.costs.habitat.crew,
       food = 50,
       food_gather = 40,
@@ -277,6 +295,7 @@ function mission:init()
       health = {
         max = 40,
       },
+	  death_sfx = self.ships_death_sfx.cargo,
       crew = self.costs.cargo.crew,
       ore = 200,
       material = 200,
@@ -401,6 +420,7 @@ function mission:enter()
       angle = math.random()*math.pi*2,
       size = 32,
       ore_supply = 100,
+	  death_sfx = self.ships_death_sfx.asteroid,
     })
   end
 
@@ -423,7 +443,10 @@ function mission:enter()
         speed = 200,
         range = 200,
         aggression = 400,
+		sfx = love.audio.newSource("assets/sfx/laser_shoot.wav"),
+		collision_sfx = love.audio.newSource("assets/sfx/collision.wav"),
       },
+	  death_sfx = self.ships_death_sfx.enemy,
       crew = self.costs.combat.crew,
       repair = false,
       actions = {
@@ -893,6 +916,16 @@ function mission:ownerColor(owner)
   end
 end
 
+function mission:getObjectsByOwner(val)
+	local OwnedObjects = {}
+	for _,object in pairs(self.objects) do
+		if object.owner == val then
+			table.insert(OwnedObjects,object)
+		end
+	end
+	return OwnedObjects
+end
+
 function mission:drawMinimap()
   local x,y,w,h = self:miniMapArea()
   love.graphics.setColor(0,0,0)
@@ -949,6 +982,7 @@ function mission:updateMission(dt)
         else
           object.health.current = math.max(0,object.health.current-bullet.damage)
           table.remove(object.incoming_bullets,bullet_index)
+		  playSFX(bullet.collision_sfx)
         end
       end
     end
@@ -980,9 +1014,11 @@ function mission:updateMission(dt)
 
         object.shoot.reload = object.shoot.reload_t
         object.target_object.incoming_bullets = object.target_object.incoming_bullets or {}
-        table.insert(object.target_object.incoming_bullets,{
+        playSFX(object.shoot.sfx)
+		table.insert(object.target_object.incoming_bullets,{
           speed = object.shoot.speed,
           damage = object.shoot.damage,
+		  collision_sfx = object.shoot.collision_sfx,
           x = object.position.x,
           y = object.position.y,
           angle = object.angle,
@@ -1088,12 +1124,19 @@ function mission:updateMission(dt)
   end
 
   -- cleanup
+  
+  -- lose if you have no ships
+  if #mission:getObjectsByOwner(0) < 1 then libs.hump.gamestate.switch(states.lose) end
+  -- win if all enemies are dead
+  if #mission:getObjectsByOwner(1) < 1 then libs.hump.gamestate.switch(states.win) end
+  
   for object_index,object in pairs(self.objects) do
     if (object.health and object.health.current <= 0) or
       (object.ore_supply and object.ore_supply <= 0) then
 
       table.remove(self.objects,object_index)
       -- TODO: add explosion
+	  playSFX(object.death_sfx)
     end
 
     if object.target_object and (
