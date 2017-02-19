@@ -1,25 +1,61 @@
 local mission = {}
 
 function mission:init()
+
+  self.resources_types = {"ore","material","food","crew"}
+  self.resources_types_formatted = {"Ore","Material","Food","Crew"}
+
   self.colors = {
     ui = {
       primary = {0,255,127},
     }
   }
+
   self.ships = {
     enemy = love.graphics.newImage("ships/enemy.png"),
     drydock = love.graphics.newImage("ships/drydock.png"),
     mining = love.graphics.newImage("ships/mining.png"),
     asteroid = love.graphics.newImage("ships/asteroid.png"),
     combat = love.graphics.newImage("ships/combat.png"),
+    refinery = love.graphics.newImage("ships/refinery.png"),
+    habitat = love.graphics.newImage("ships/habitat.png"),
+    cargo = love.graphics.newImage("ships/cargo.png"),
   }
+
   self.ships_icon = {
     enemy = love.graphics.newImage("ships/enemy_icon.png"),
     drydock = love.graphics.newImage("ships/drydock_icon.png"),
     mining = love.graphics.newImage("ships/mining_icon.png"),
     asteroid = love.graphics.newImage("ships/asteroid_icon.png"),
     combat = love.graphics.newImage("ships/combat_icon.png"),
+    refinery = love.graphics.newImage("ships/refinery_icon.png"),
+    habitat = love.graphics.newImage("ships/habitat_icon.png"),
+    cargo = love.graphics.newImage("ships/cargo_icon.png"),
   }
+
+  self.ships_info = {
+    enemy = "How did you get this, go away!",
+    drydock = "A construction ship with some ore and material storage and bio-production.",
+    mining = "An ore mining ship with some ore storage.",
+    asteroid = "Stop! You can't be an asteroid!",
+    combat = "A combat ship,",
+    refinery = "A material refining ship with some material storage.",
+    habitat = "A bio-dome that produces food.",
+    cargo = "A cargo ship that stores ore, material and food.",
+  }
+
+  self.action_icons = {
+    repair = love.graphics.newImage("actions/repair.png"),
+    salvage = love.graphics.newImage("actions/salvage.png"),
+    refine = love.graphics.newImage("actions/refine.png"),
+    build_drydock = self.ships_icon.drydock,
+    build_mining = self.ships_icon.mining,
+    build_combat = self.ships_icon.combat,
+    build_refinery = self.ships_icon.refinery,
+    build_habitat = self.ships_icon.habitat,
+    build_cargo = self.ships_icon.cargo,
+  }
+  --TODO: add passive icons, such as attack/mine
 
   self.bullets = {
     laser = love.graphics.newImage("bullets/laser.png"),
@@ -31,8 +67,8 @@ function mission:init()
   self.icon_bg = love.graphics.newImage("icon_bg.png")
   self.camera = libs.hump.camera(1280/2,720/2)
   self.camera_speed = 300
-  self.camera.vertical_mouse_move = 1/20
-  self.camera.horizontal_mouse_move = 1/11.25
+  self.camera.vertical_mouse_move = 1/16.875
+  self.camera.horizontal_mouse_move = 1/30
 
   self.space = love.graphics.newImage("space.png")
 
@@ -65,34 +101,125 @@ end
 function mission:enter()
 
   self.resources = {
-    material = 0,
+    material = math.huge,
     material_cargo = 0,
     material_delta = 0,
     ore = 0,
     ore_cargo = 0,
     ore_delta = 0,
-    food = 0,
+    food = math.huge,
     food_cargo = 0,
     food_delta = 0,
-    crew = 0,
+    crew = math.huge,
     crew_cargo = 0,
     crew_delta = 0,
   }
 
-  self.objects = {}
-  for i = 1,50 do
-    table.insert(self.objects,{
-      owner = math.random(0,4) == 0 and 1 or 0,
-      type = self:randomShipType(),
-      position = {
-        x = math.random(1280),
-        y = math.random(720),
+  self.actions = {}
+
+  self.actions.repair = {
+    icon = "repair",
+    tooltip = function(object) return "Auto Repair "..(object.repair and "Enabled" or "Disabled") end,
+    exe = function(object)
+      object.repair = not object.repair
+    end,
+  }
+
+  self.actions.refine = {
+    icon = "refine",
+    tooltip = function(object) return "Auto Refine "..(object.refine and "Enabled" or "Disabled") end,
+    exe = function(object)
+      object.refine = not object.refine
+    end,
+  }
+
+  self.actions.salvage = {
+    icon = "salvage",
+    tooltip = function(object) return "Salvage ship for 90% value" end,
+    exe = function(object)
+      local percent = object.health.current/object.health.max * 0.9
+      for resource_type,cost in pairs( self.costs[object.type] ) do
+        self.resources[resource_type] = self.resources[resource_type] + cost*percent
+      end
+      object.health.current = 0
+      object.repair = false
+    end,
+  }
+
+  self.costs = {
+    enemy = {},
+    drydock = {material=975,crew=100},
+    mining = {material=85,crew=10},
+    asteroid = {},
+    combat = {material=250,crew=50},
+    refinery = {material=110,crew=10},
+    habitat = {material=105,crew=5},
+    cargo = {material=690,crew=10},
+  }
+
+  self.build = {}
+
+  self.build.drydock = function(parent)
+    return {
+      owner = parent.owner,
+      type = "drydock",
+      position = self:nearbyPosition(parent.position),
+      size = 32,
+      speed = 50,
+      health = {
+        max = 25,
       },
+      crew = self.costs.drydock.crew,
+      ore = 400,
+      material = 400,
+      food = 100,
+      food_gather = 10,
+      repair = false,
+      actions = {
+        self.actions.salvage,
+        self.actions.repair,
+        self.actions.build_drydock,
+        self.actions.build_mining,
+        self.actions.build_refinery,
+        self.actions.build_habitat,
+        self.actions.build_combat,
+        self.actions.build_cargo,
+      }
+
+    }
+  end
+
+  self.build.mining = function(parent)
+    return {
+      owner = parent.owner,
+      type = "mining",
+      position = self:nearbyPosition(parent.position),
+      size = 32,
+      speed = 50,
+      health = {
+        max = 10,
+      },
+      ore = 25,
+      ore_gather = 25,
+      crew = self.costs.mining.crew,
+      repair = false,
+      actions = {
+        self.actions.salvage,
+        self.actions.repair,
+      }
+    }
+
+  end
+
+  self.build.combat = function(parent)
+    return {
+      owner = parent.owner,
+      type = "combat",
+      position = self:nearbyPosition(parent.position),
       size = 32,
       speed = 100,
       health = {
-        current = math.random(1,10),
-        max = 10,
+        max = 50,
       },
       shoot = {
         reload = 0.25,
@@ -101,17 +228,164 @@ function mission:enter()
         range = 200,
         aggression = 400,
       },
-      ore = 10,
-      ore_gather = 25,
-      material = 10,
-      material_gather = 1,
-      food = 100,
-      food_gather = 10,
-      crew = 100,
-      cost = 10,
-      repair = true,
-    })
+      crew = self.costs.combat.crew,
+      repair = false,
+      actions = {
+        self.actions.salvage,
+        self.actions.repair,
+      }
+    }
   end
+
+  self.build.refinery = function(parent)
+    return {
+      owner = parent.owner,
+      type = "refinery",
+      position = self:nearbyPosition(parent.position),
+      size = 32,
+      speed = 50,
+      health = {
+        max = 10,
+      },
+      crew = self.costs.refinery.crew,
+      material = 50,
+      material_gather = 5,
+      repair = false,
+      refine = true,
+      actions = {
+        self.actions.salvage,
+        self.actions.repair,
+        self.actions.refine,
+      }
+    }
+  end
+
+  self.build.habitat = function(parent)
+    return {
+      owner = parent.owner,
+      type = "habitat",
+      position = self:nearbyPosition(parent.position),
+      size = 32,
+      speed = 50,
+      health = {
+        max = 5,
+      },
+      crew = self.costs.habitat.crew,
+      food = 50,
+      food_gather = 40,
+      repair = false,
+      actions = {
+        self.actions.salvage,
+        self.actions.repair,
+      }
+    }
+  end
+
+  self.build.cargo = function(parent)
+    return {
+      owner = parent.owner,
+      type = "cargo",
+      position = self:nearbyPosition(parent.position),
+      size = 32,
+      speed = 50,
+      health = {
+        max = 40,
+      },
+      crew = self.costs.cargo.crew,
+      ore = 200,
+      material = 200,
+      food = 200,
+      repair = false,
+      actions = {
+        self.actions.salvage,
+        self.actions.repair,
+      }
+    }
+  end
+
+  self.actions.build_drydock = {
+    icon = "build_drydock",
+    tooltip = function(object)
+      return "Build Dry Dock ["..self:makeCostString(self.costs.drydock).."]"
+    end,
+    exe = function(object)
+      if self:buyBuildObject(self.costs.drydock) then
+        local ship = self.build.drydock(object)
+        table.insert(self.objects,ship)
+      end
+    end,
+  }
+
+  self.actions.build_mining = {
+    icon = "build_mining",
+    tooltip = function(object)
+      return "Build Mining Rig ["..self:makeCostString(self.costs.mining).."]"
+    end,
+    exe = function(object)
+      if self:buyBuildObject(self.costs.mining) then
+        local ship = self.build.mining(object)
+        table.insert(self.objects,ship)
+      end
+    end,
+  }
+
+  self.actions.build_combat = {
+    icon = "build_combat",
+    tooltip = function(object)
+      return "Build Battlestar ["..self:makeCostString(self.costs.combat).."]" end,
+    exe = function(object)
+      if self:buyBuildObject(self.costs.combat) then
+        local ship = self.build.combat(object)
+        table.insert(self.objects,ship)
+      end
+    end,
+  }
+
+  self.actions.build_refinery = {
+    icon = "build_refinery",
+    tooltip = function(object)
+      return "Build Material Tug ["..self:makeCostString(self.costs.refinery).."]"
+    end,
+    exe = function(object)
+      if self:buyBuildObject(self.costs.refinery) then
+        local ship = self.build.refinery(object)
+        table.insert(self.objects,ship)
+      end
+    end,
+  }
+
+  self.actions.build_habitat = {
+    icon = "build_habitat",
+    tooltip = function(object)
+      return "Build Habitat ["..self:makeCostString(self.costs.habitat).."]"
+    end,
+    exe = function(object)
+      if self:buyBuildObject(self.costs.habitat) then
+        local ship = self.build.habitat(object)
+        table.insert(self.objects,ship)
+      end
+    end,
+  }
+
+  self.actions.build_cargo = {
+    icon = "build_cargo",
+    tooltip = function(object)
+      return "Build Freighter ["..self:makeCostString(self.costs.cargo).."]"
+    end,
+    exe = function(object)
+      if self:buyBuildObject(self.costs.cargo) then
+        local ship = self.build.cargo(object)
+        table.insert(self.objects,ship)
+      end
+    end,
+  }
+
+  self.objects = {}
+  local start = {
+    owner = 0,
+    position = {x=1280/2,y=720/2}
+  }
+  table.insert(self.objects,self.build.drydock(start))
 
   for i = 1,10 do
     table.insert(self.objects,{
@@ -120,6 +394,7 @@ function mission:enter()
         x = math.random(0,1280),
         y = math.random(0,720),
       },
+      angle = math.random()*math.pi*2,
       size = 32,
       ore_supply = 100,
     })
@@ -127,6 +402,38 @@ function mission:enter()
 
 end
 
+function mission:nearbyPosition(position)
+  return {
+    x = position.x + math.random(-32,32),
+    y = position.y + math.random(-32,32),
+  }
+end
+
+function mission:buyBuildObject(costs)
+  local good = true
+  for resource_type,cost in pairs(costs) do
+    if self.resources[resource_type] < cost then
+      good = false
+      break
+    end
+  end
+  if good then
+    for resource_type,cost in pairs(costs) do
+      self.resources[resource_type] = self.resources[resource_type] - cost
+    end
+    return true
+  else
+    return false
+  end
+end
+
+function mission:makeCostString(costs)
+  local s = {}
+  for resource_type,cost in pairs(costs) do
+    table.insert(s,resource_type..": "..cost)
+  end
+  return table.concat(s," + ")
+end
 
 function mission:findClosestObject(x,y,include)
   local distance = math.huge
@@ -146,7 +453,7 @@ end
 function mission:mousepressed(x,y,b)
   if self:mouseInMiniMap() then
   elseif self:mouseInSelected() then
-    local pos = math.floor((love.mouse.getX()-32)/(32+self:selectedPadding()))+1
+    local pos = math.floor((love.mouse.getX()-32)/(32+self:iconPadding()))+1
     local count = 0
     for _,object in pairs(self.objects) do
       if object.selected then
@@ -154,6 +461,16 @@ function mission:mousepressed(x,y,b)
         count = count + 1
         if count == pos then
           object.selected = true
+        end
+      end
+    end
+  elseif self:mouseInActions() then
+    local cobject = self:singleSelected()
+    if cobject and cobject.actions then
+      local pos = math.floor((love.mouse.getY()-32)/(32+self:iconPadding()))+1
+      for ai,a in pairs(cobject.actions) do
+        if ai == pos then
+          a.exe(cobject)
         end
       end
     end
@@ -375,29 +692,60 @@ function mission:draw()
 
   self:drawMinimap()
   self:drawSelected()
+  self:drawActions()
 
-  dropshadow(
-    "Ore: "..math.floor(self.resources.ore).."/"..self.resources.ore_cargo.."[Δ"..math.floor(self.resources.ore_delta+0.5).."]\n"..
-    "Materials: "..math.floor(self.resources.material).."/"..self.resources.material_cargo.."[Δ"..math.floor(self.resources.material_delta+0.5).."]\n"..
-    "Food: "..math.floor(self.resources.food).."/"..self.resources.food_cargo.."[Δ"..math.floor(self.resources.food_delta+0.5).."]\n"..
-    "Crew: "..math.floor(self.resources.crew).."/"..self.resources.crew_cargo.."[Δ"..math.floor(self.resources.crew_delta+0.5).."]",
-    32,128+64)
+  for rindex,r in pairs(self.resources_types) do
+    if self.resources[r.."_delta"] < 0 then
+      love.graphics.setColor(255,0,0)
+    else
+      love.graphics.setColor(0,255,0)
+    end
+    dropshadow(
+      self.resources_types_formatted[rindex]..": "..
+      math.floor(self.resources[r]).."/"..self.resources[r.."_cargo"]..
+      " [Δ"..math.floor(self.resources[r.."_delta"]+0.5).."]",
+      32,128+64+18*rindex)
+  end
+  love.graphics.setColor(255,255,255)
 
 end
 
-function mission:selectedPadding()
+function mission:iconPadding()
   return 4
 end
 
-function mission:selectedArea()
+function mission:singleSelected()
   local count = 0
+  local cobject = nil
   for _,object in pairs(self.objects) do
     if object.selected then
       count = count + 1
+      cobject = object
+      if count > 1 then
+        break
+      end
     end
   end
-  -- hacking hacking hack hack hack
-  return 32,720-32-32,count*(32+mission:selectedPadding()),32
+  return count == 1 and cobject or nil
+end
+
+function mission:drawActions()
+  local cobject = self:singleSelected()
+  if cobject and cobject.actions then
+    for ai,a in pairs(cobject.actions) do
+      local x,y = 1280-64,32+(ai-1)*(32+self:iconPadding())
+      love.graphics.draw(self.icon_bg,x,y)
+      if a.hover then
+        dropshadowf(a.tooltip(cobject).."\n"..self.ships_info[cobject.type],
+        32,y+6,1280-96-8,"right")
+        love.graphics.setColor(0,255,0)
+      else
+        love.graphics.setColor(255,255,255)
+      end
+      love.graphics.draw(self.action_icons[a.icon],x,y)
+      love.graphics.setColor(255,255,255)
+    end
+  end
 end
 
 function mission:drawSelected()
@@ -405,7 +753,7 @@ function mission:drawSelected()
   local index = 0
   for _,object in pairs(self.objects) do
     if object.selected then
-      local x,y = index*(32+self:selectedPadding())+32,720-32-32
+      local x,y = index*(32+self:iconPadding())+32,720-32-32
       love.graphics.draw(self.icon_bg,x,y)
       index = index + 1
       local ship_icon = self.ships_icon[object.type]
@@ -435,6 +783,36 @@ function mission:mouseInSelected()
   local x,y,w,h = self:selectedArea()
   local mx,my = love.mouse.getPosition()
   return mx >= x and mx <= x+w and my >= y and my <= y+h
+end
+
+function mission:selectedArea()
+  local count = 0
+  for _,object in pairs(self.objects) do
+    if object.selected then
+      count = count + 1
+    end
+  end
+  -- hacking hacking hack hack hack
+  return 32,720-32-32,count*(32+self:iconPadding()),32
+end
+
+function mission:mouseInActions()
+  local x,y,w,h = self:actionArea()
+  local mx,my = love.mouse.getPosition()
+  return mx >= x and mx <= x+w and my >= y and my <= y+h
+end
+
+function mission:actionArea()
+  local cobject = mission:singleSelected()
+  if cobject and cobject.actions then
+    local count = -1
+    for ia,a in pairs(cobject.actions) do
+      count = count + 1
+    end
+    return 1280-64,32,32,32+count*(32+self:iconPadding())
+  else
+    return 0,0,0,0
+  end
 end
 
 function mission:ownerColor(owner)
@@ -475,8 +853,7 @@ function mission:update(dt)
     end
   end
 
-  local resources_types = {"ore","material","food","crew"}
-  for _,resource in pairs(resources_types) do
+  for _,resource in pairs(self.resources_types) do
     self.resources[resource.."_cargo"] = 0
     self.resources[resource.."_delta"] = 0
   end
@@ -536,7 +913,7 @@ function mission:update(dt)
       end
     end
 
-    if object.material_gather then
+    if object.refine and object.material_gather then
       local amount = object.material_gather*dt
       if amount > self.resources.ore then
         amount = self.resources.ore
@@ -600,7 +977,7 @@ function mission:update(dt)
     end
 
     if object.owner and object.owner == 0 then
-      for _,resource in pairs(resources_types) do
+      for _,resource in pairs(self.resources_types) do
         if object[resource] then
           self.resources[resource.."_cargo"] = self.resources[resource.."_cargo"] + object[resource]
         end
@@ -650,7 +1027,7 @@ function mission:update(dt)
 
   end
 
-  for _,resource in pairs(resources_types) do
+  for _,resource in pairs(self.resources_types) do
     self.resources[resource] = math.min(self.resources[resource],self.resources[resource.."_cargo"])
   end
 
@@ -667,6 +1044,14 @@ function mission:update(dt)
     self.resources.food = 0
   end
 
+  for _,object in pairs(self.objects) do
+    if object.actions then
+      for _,a in pairs(object.actions) do
+        a.hover = false
+      end
+    end
+  end
+
   if not self.select_start then
 
     if self:mouseInMiniMap() then
@@ -678,6 +1063,16 @@ function mission:update(dt)
       end
     elseif self:mouseInSelected() then
       -- nop
+    elseif self:mouseInActions() then
+      local cobject = self:singleSelected()
+      if cobject and cobject.actions then
+        local pos = math.floor((love.mouse.getY()-32)/(32+self:iconPadding()))+1
+        for ai,a in pairs(cobject.actions) do
+          if ai == pos then
+            a.hover = true
+          end
+        end
+      end
     else
 
       local left = love.keyboard.isDown("left") or love.mouse.getX() < 1280*self.camera.horizontal_mouse_move
