@@ -10,11 +10,13 @@ function mission:init()
     enemy = love.graphics.newImage("ships/enemy.png"),
     drydock = love.graphics.newImage("ships/drydock.png"),
     mining = love.graphics.newImage("ships/mining.png"),
+    asteroid = love.graphics.newImage("ships/asteroid.png"),
   }
   self.ships_icon = {
     enemy = love.graphics.newImage("ships/enemy_icon.png"),
     drydock = love.graphics.newImage("ships/drydock_icon.png"),
     mining = love.graphics.newImage("ships/mining_icon.png"),
+    asteroid = love.graphics.newImage("ships/asteroid_icon.png"),
   }
 
   self.bullets = {
@@ -82,7 +84,18 @@ function mission:enter()
       },
     })
   end
+
+  table.insert(self.objects,{
+    type = "asteroid",
+    position = {
+      x = 640,
+      y = 480,
+    },
+    size = 32,
+  })
+
 end
+
 
 function mission:findClosestObject(x,y,include)
   local distance = math.huge
@@ -266,13 +279,16 @@ function mission:draw()
       love.graphics.circle("line",object.position.x,object.position.y,
         object.size+object.anim/object.anim_max*4)
     end
-    local percent = object.health.current/object.health.max
-    if (object.selected and percent < 1) or love.keyboard.isDown("lalt") then
-      local bx,by,bw,bh = object.position.x-32,object.position.y+32,64,4
-      love.graphics.setColor(0,0,0,127)
-      love.graphics.rectangle("fill",bx,by,bw,bh)
-      love.graphics.setColor(libs.healthcolor(percent))
-      love.graphics.rectangle("fill",bx+1,by+1,(bw-2)*percent,bh-2)
+
+    if object.health then
+      local percent = object.health.current/object.health.max
+      if (object.selected and percent < 1) or love.keyboard.isDown("lalt") then
+        local bx,by,bw,bh = object.position.x-32,object.position.y+32,64,4
+        love.graphics.setColor(0,0,0,127)
+        love.graphics.rectangle("fill",bx,by,bw,bh)
+        love.graphics.setColor(libs.healthcolor(percent))
+        love.graphics.rectangle("fill",bx+1,by+1,(bw-2)*percent,bh-2)
+      end
     end
 
     love.graphics.setColor(self:ownerColor(object.owner))
@@ -351,7 +367,13 @@ function mission:mouseInMiniMap()
 end
 
 function mission:ownerColor(owner)
-  return owner == 0 and {0,255,0} or {255,0,0}
+  if owner == 0 then
+    return {0,255,0}
+  elseif owner == nil then
+    return {255,255,0}
+  else
+    return {255,0,0}
+  end
 end
 
 function mission:drawMinimap()
@@ -421,7 +443,7 @@ function mission:update(dt)
       end
       object.shoot.reload = object.shoot.reload - dt
       if object.shoot.reload <= 0 and
-        object.target_object and object.target_object.owner ~= object.owner and
+        object.target_object and object.target_object.owner ~= object.owner and object.target_object.health and
         self:distance(object.position,object.target_object.position) < object.shoot.range then
 
         object.shoot.reload = object.shoot.reload_t
@@ -438,7 +460,7 @@ function mission:update(dt)
     end
 
     if object.target_object then
-      if object.target_object.health.current <= 0 then
+      if object.target_object.health and object.target_object.health.current <= 0 then
         object.target_object = nil
         object.target = nil
       else
@@ -449,12 +471,12 @@ function mission:update(dt)
       end
 
     else
-      if object.shoot then
+      if object.shoot and object.health then
         local cobject = object
         local nearest,nearest_distance = self:findClosestObject(object.position.x,object.position.y,function(object)
           return object.owner ~= cobject.owner
         end)
-        if not object.target and nearest and  nearest_distance < object.shoot.aggression then
+        if not object.target and nearest and nearest.health and nearest_distance < object.shoot.aggression then
           object.target_object = nearest
         end
       end
@@ -484,7 +506,7 @@ function mission:update(dt)
     end
 
     for object_index,object in pairs(self.objects) do
-      if object.health.current <= 0 then
+      if object.health and object.health.current <= 0 then
         table.remove(self.objects,object_index)
         -- TODO: add explosion
       end
