@@ -25,12 +25,10 @@ libs = {
     camera = require "libs.camera",
   },
   healthcolor = require"libs.healthcolor",
-  splash = require "libs.splash",
   vn = require"libs.vn",
 }
 
 states = {
-  splash = require "states.splash",
   menu = require "states.menu",
   game = require "states.mission",
   credits = require "states.credits",
@@ -38,7 +36,7 @@ states = {
 
 function love.load()
   libs.hump.gamestate.registerEvents()
-  libs.hump.gamestate.switch(states.splash)
+  libs.hump.gamestate.switch(states.menu)
 end
 
 function dropshadow(text,x,y)
