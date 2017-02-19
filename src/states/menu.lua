@@ -27,8 +27,9 @@ end
 
 function mainmenu:update(dt)
 	self.buttons_y = love.graphics:getHeight() / 4
+	self.hovered_button = math.floor((love.mouse.getY() - self.buttons_y) / (fonts.menu:getHeight()))
 	if love.mouse.isDown(1) then
-		self.buttonpressed = math.floor((love.mouse.getY() - self.buttons_y) / (fonts.menu:getHeight()))
+		self.buttonpressed = self.hovered_button
 		if self.options[self.buttonpressed] then
 			self.options[self.buttonpressed].act()
 		end		
@@ -59,12 +60,15 @@ function mainmenu:draw()
 	local y_offset = love.graphics:getHeight() * 0.075
 	
 	love.graphics.setFont(fonts.title)
-	love.graphics.printf("Ultimate Space Rangers '95",0,y_offset + math.sin(love.timer.getTime()) * (y_offset / 4),love.graphics:getWidth(),"center")
+	dropshadowf("Ultimate Space Rangers '95",0,y_offset + math.sin(love.timer.getTime()) * (y_offset / 4),love.graphics:getWidth(),"center")
 	
 	love.graphics.setFont(fonts.menu)
 	for i = 1, #self.options do
-		love.graphics.printf(self.options[i].text ,0,math.floor(self.buttons_y) + i * fonts.menu:getHeight( ),love.graphics:getWidth(),"center")
+		local current_text = self.options[i].text
+		if self.hovered_button == i then current_text = "[" .. current_text .. "]" end
+		dropshadowf(current_text ,0,math.floor(self.buttons_y) + i * fonts.menu:getHeight( ),love.graphics:getWidth(),"center")
 	end
+	love.graphics.setFont(fonts.default)
 end
 
 return mainmenu

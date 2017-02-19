@@ -1,6 +1,6 @@
 credits = {}
 
-function credits:init()
+function credits:enter()
 	self.text = 
 	"CREDITS:\n" ..
 	"\n" ..
@@ -16,6 +16,8 @@ function credits:init()
 	for i = 1, 16 do
 		self.text = self.text .. "Cool Person\n"
 	end
+	
+	self.text = self.text .. "\n\nThanks for playing!\n"
 	
 	self.space = love.graphics.newImage("space.png")
 	
@@ -35,14 +37,26 @@ function credits:init()
 	
 	self.y = love.graphics:getHeight()
 	self.scroll_speed = 8
+	
+	self.escape_delay_timer = 0
+	self.escape_delay_max = 0.5
 end
 
 function credits:update(dt)
 	self.y = self.y - dt * self.scroll_speed
+	self.escape_delay_timer = self.escape_delay_timer + dt
 end
 
 function credits:keypressed(key)
-	libs.hump.gamestate.switch(states.menu)
+	if self.escape_delay_timer > self.escape_delay_max then
+		libs.hump.gamestate.switch(states.menu)
+	end
+end
+
+function credits:mousereleased(x,y,b)
+	if self.escape_delay_timer > self.escape_delay_max then
+		libs.hump.gamestate.switch(states.menu)
+	end
 end
 
 function credits:draw()
@@ -60,8 +74,9 @@ function credits:draw()
     -self.stars1:getHeight()+((love.timer.getTime()/2*self.background_scroll_speed)%self.stars1:getHeight()) )
 
 	love.graphics.setBlendMode("alpha")
-	
-	love.graphics.printf(self.text,0,self.y,love.graphics:getWidth(),"center")
+	love.graphics.setFont(fonts.menu)
+	dropshadowf(self.text,0,self.y,love.graphics:getWidth(),"center")
+	love.graphics.setFont(fonts.default)
 end
 
 return credits
