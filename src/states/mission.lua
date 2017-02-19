@@ -304,6 +304,7 @@ function mission:enter()
   end
 
   self.actions.build_drydock = {
+    type = "drydock",
     icon = "build_drydock",
     tooltip = function(object)
       return "Build Dry Dock ["..self:makeCostString(self.costs.drydock).."]"
@@ -317,6 +318,7 @@ function mission:enter()
   }
 
   self.actions.build_mining = {
+    type = "mining",
     icon = "build_mining",
     tooltip = function(object)
       return "Build Mining Rig ["..self:makeCostString(self.costs.mining).."]"
@@ -330,6 +332,7 @@ function mission:enter()
   }
 
   self.actions.build_combat = {
+    type = "combat",
     icon = "build_combat",
     tooltip = function(object)
       return "Build Battlestar ["..self:makeCostString(self.costs.combat).."]" end,
@@ -342,6 +345,7 @@ function mission:enter()
   }
 
   self.actions.build_refinery = {
+    type = "refinery",
     icon = "build_refinery",
     tooltip = function(object)
       return "Build Material Tug ["..self:makeCostString(self.costs.refinery).."]"
@@ -355,6 +359,7 @@ function mission:enter()
   }
 
   self.actions.build_habitat = {
+    type = "habitat",
     icon = "build_habitat",
     tooltip = function(object)
       return "Build Habitat ["..self:makeCostString(self.costs.habitat).."]"
@@ -368,6 +373,7 @@ function mission:enter()
   }
 
   self.actions.build_cargo = {
+    type = "cargo",
     icon = "build_cargo",
     tooltip = function(object)
       return "Build Freighter ["..self:makeCostString(self.costs.cargo).."]"
@@ -736,7 +742,7 @@ function mission:drawActions()
       local x,y = 1280-64,32+(ai-1)*(32+self:iconPadding())
       love.graphics.draw(self.icon_bg,x,y)
       if a.hover then
-        dropshadowf(a.tooltip(cobject).."\n"..self:info(cobject.type),
+        dropshadowf(a.tooltip(cobject).."\n"..self:info(a.type),
         32,y+6,1280-96-8,"right")
         love.graphics.setColor(0,255,0)
       else
@@ -749,7 +755,11 @@ function mission:drawActions()
 end
 
 function mission:info(type)
-  return self.ships_info[type]
+  if self.ships_info[type] then
+    return self.ships_info[type]
+  else
+    return ""
+  end
 end
 
 function mission:drawSelected()
