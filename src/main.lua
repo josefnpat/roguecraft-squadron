@@ -3,6 +3,8 @@ io.stdout:setvbuf("no")
 
 fonts = {
   default = love.graphics.newFont("fonts/Yantramanav-Black.ttf",16),
+  title = love.graphics.newFont("fonts/Yantramanav-Black.ttf",64),
+  menu = love.graphics.newFont("fonts/Yantramanav-Black.ttf",32),
   fallback = love.graphics.newFont("fonts/NovaMono.ttf",16),
 }
 
