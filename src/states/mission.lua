@@ -262,7 +262,7 @@ function mission:draw()
       love.graphics.circle("line",object.position.x,object.position.y,object.size)
     end
     if object.anim then
-      love.graphics.setColor(255,255,255)
+      love.graphics.setColor(255,255,255,255*object.anim/object.anim_max)
       love.graphics.circle("line",object.position.x,object.position.y,
         object.size+object.anim/object.anim_max*4)
     end
@@ -341,7 +341,7 @@ function mission:miniMapArea()
 end
 
 function mission:miniMapScale()
-  return 64
+  return 32
 end
 
 function mission:mouseInMiniMap()
