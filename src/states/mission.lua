@@ -9,10 +9,12 @@ function mission:init()
   self.ships = {
     enemy = love.graphics.newImage("ships/enemy.png"),
     drydock = love.graphics.newImage("ships/drydock.png"),
+    mining = love.graphics.newImage("ships/mining.png"),
   }
   self.ships_icon = {
     enemy = love.graphics.newImage("ships/enemy_icon.png"),
     drydock = love.graphics.newImage("ships/drydock_icon.png"),
+    mining = love.graphics.newImage("ships/mining_icon.png"),
   }
 
   self.bullets = {
