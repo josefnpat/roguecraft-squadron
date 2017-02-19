@@ -114,6 +114,18 @@ end
 
 function mission:mousepressed(x,y,b)
   if self:mouseInMiniMap() then
+  elseif self:mouseInSelected() then
+    local pos = math.floor((love.mouse.getX()-32)/(32+self:selectedPadding()))+1
+    local count = 0
+    for _,object in pairs(self.objects) do
+      if object.selected then
+        object.selected = false
+        count = count + 1
+        if count == pos then
+          object.selected = true
+        end
+      end
+    end
   else
 
     local ox,oy = self:getcameraoffset()
@@ -275,7 +287,7 @@ function mission:draw()
       love.graphics.circle("line",object.position.x,object.position.y,object.size)
     end
     if object.anim then
-      love.graphics.setColor(255,255,255,255*object.anim/object.anim_max)
+      love.graphics.setColor(255,255,255,255*object.anim/object.anim_max or object.anim)
       love.graphics.circle("line",object.position.x,object.position.y,
         object.size+object.anim/object.anim_max*4)
     end
@@ -335,12 +347,27 @@ function mission:draw()
 
 end
 
+function mission:selectedPadding()
+  return 4
+end
+
+function mission:selectedArea()
+  local count = 0
+  for _,object in pairs(self.objects) do
+    if object.selected then
+      count = count + 1
+    end
+  end
+  -- hacking hacking hack hack hack
+  return 32,720-32-32,count*(32+mission:selectedPadding()),32
+end
+
 function mission:drawSelected()
   -- TODO: add in rows when more selected
   local index = 0
   for _,object in pairs(self.objects) do
     if object.selected then
-      local x,y = index*(32+4)+32,720-32-32
+      local x,y = index*(32+self:selectedPadding())+32,720-32-32
       love.graphics.draw(self.icon_bg,x,y)
       index = index + 1
       local ship_icon = self.ships_icon[object.type]
@@ -362,6 +389,12 @@ end
 
 function mission:mouseInMiniMap()
   local x,y,w,h = self:miniMapArea()
+  local mx,my = love.mouse.getPosition()
+  return mx >= x and mx <= x+w and my >= y and my <= y+h
+end
+
+function mission:mouseInSelected()
+  local x,y,w,h = self:selectedArea()
   local mx,my = love.mouse.getPosition()
   return mx >= x and mx <= x+w and my >= y and my <= y+h
 end
@@ -523,6 +556,8 @@ function mission:update(dt)
         local ny = (love.mouse.getY()-y)*self:miniMapScale()
         self.camera:move(-self.camera.x + nx, -self.camera.y + ny)
       end
+    elseif self:mouseInSelected() then
+      -- nop
     else
 
       local left = love.keyboard.isDown("left") or love.mouse.getX() < 1280*self.camera.horizontal_mouse_move
