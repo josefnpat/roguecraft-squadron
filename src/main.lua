@@ -18,12 +18,14 @@ libs = {
 }
 
 states = {
-  mission = require "states.mission",
+  menu = require "states.menu",
+  game = require "states.mission",
+  credits = require "states.credits",
 }
 
 function love.load()
   libs.hump.gamestate.registerEvents()
-  libs.hump.gamestate.switch(states.mission)
+  libs.hump.gamestate.switch(states.menu)
 end
 
 function dropshadow(text,x,y)
