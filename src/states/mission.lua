@@ -15,7 +15,7 @@ function mission:init()
     drydock = love.graphics.newImage("ships/drydock_icon.png"),
   }
 
-  self.bullet = {
+  self.bullets = {
     laser = love.graphics.newImage("bullets/laser.png"),
   }
 
@@ -70,19 +70,28 @@ function mission:enter()
       health = {
         current = math.random(1,15),
         max = 14,
-      }
+      },
+      shoot = {
+        reload = 0.25,
+        damage = 2,
+        speed = 200,
+        range = 200,
+        aggression = 400,
+      },
     })
   end
 end
 
-function mission:findClosestObject(x,y)
+function mission:findClosestObject(x,y,include)
   local distance = math.huge
   local distance_object = nil
   for _,object in pairs(self.objects) do
-    local this_distance = self:distance({x=x,y=y},object.position)
-    if this_distance < distance then
-      distance = this_distance
-      distance_object = object
+    if include == nil or include(object) then
+      local this_distance = self:distance({x=x,y=y},object.position)
+      if this_distance < distance then
+        distance = this_distance
+        distance_object = object
+      end
     end
   end
   return distance_object,distance
@@ -269,6 +278,13 @@ function mission:draw()
       object.position.x,object.position.y,0,1,1,
       self.ships_chevron:getWidth()/2,self.ships_chevron:getHeight()/2)
 
+    if object.incoming_bullets then
+      for _,bullet in pairs(object.incoming_bullets) do
+        love.graphics.draw(self.bullets.laser,bullet.x,bullet.y,bullet.angle,
+          1,1,self.bullets.laser:getWidth()/2,self.bullets.laser:getHeight()/2)
+      end
+    end
+
     local ship = self.ships[object.type]
     love.graphics.setColor(255,255,255)
     love.graphics.draw(ship,
@@ -354,18 +370,32 @@ end
 
 function mission:update(dt)
 
-    if self.target_show then
-      if not self.target_show.anim_max then
-        self.target_show.anim_max = self.target_show.anim
-      end
-      self.target_show.anim = self.target_show.anim - dt
-      if self.target_show.anim <= 0 then
-        self.target_show = nil
-      end
+  if self.target_show then
+    if not self.target_show.anim_max then
+      self.target_show.anim_max = self.target_show.anim
     end
-
+    self.target_show.anim = self.target_show.anim - dt
+    if self.target_show.anim <= 0 then
+      self.target_show = nil
+    end
+  end
 
   for _,object in pairs(self.objects) do
+
+    if object.incoming_bullets then
+      for bullet_index,bullet in pairs(object.incoming_bullets) do
+        local distance = self:distance(bullet,object.position)
+        if distance > 4 then
+          local dx,dy = bullet.x-object.position.x,bullet.y-object.position.y
+          bullet.angle = math.atan2(dy,dx)+math.pi
+          bullet.x = bullet.x + math.cos(bullet.angle)*dt*bullet.speed
+          bullet.y = bullet.y + math.sin(bullet.angle)*dt*bullet.speed
+        else
+          object.health.current = math.max(0,object.health.current-bullet.damage)
+          table.remove(object.incoming_bullets,bullet_index)
+        end
+      end
+    end
 
     if object.health then
       if not object.health.current then
@@ -383,12 +413,43 @@ function mission:update(dt)
       end
     end
 
+    if object.shoot then
+      if object.shoot.reload_t == nil then
+        object.shoot.reload_t = object.shoot.reload
+      end
+      object.shoot.reload = object.shoot.reload - dt
+      if object.shoot.reload <= 0 and
+        object.target_object and object.target_object.owner ~= object.owner then
+
+        object.shoot.reload = object.shoot.reload_t
+        object.target_object.incoming_bullets = object.target_object.incoming_bullets or {}
+        table.insert(object.target_object.incoming_bullets,{
+          speed = object.shoot.speed,
+          damage = object.shoot.damage,
+          x = object.position.x,
+          y = object.position.y,
+          angle = object.angle,
+        })
+
+      end
+    end
 
     if object.target_object then
-      object.target = {
-        x=object.target_object.position.x,
-        y=object.target_object.position.y,
-      }
+      if object.target_object.health.current <= 0 then
+        object.target_object = nil
+      else
+        object.target = {
+          x=object.target_object.position.x,
+          y=object.target_object.position.y,
+        }
+      end
+
+    else
+      local cobject = object
+      local nearest = self:findClosestObject(object.position.x,object.position.y,function(object)
+        return object.owner ~= cobject.owner
+      end)
+      object.target_object = nearest
     end
 
     if object.target then
@@ -408,6 +469,13 @@ function mission:update(dt)
           object.position = object.target
           object.target = nil
         end
+      end
+    end
+
+    for object_index,object in pairs(self.objects) do
+      if object.health.current <= 0 then
+        table.remove(self.objects,object_index)
+        -- TODO: add explosion
       end
     end
 
