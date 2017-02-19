@@ -736,7 +736,7 @@ function mission:drawActions()
       local x,y = 1280-64,32+(ai-1)*(32+self:iconPadding())
       love.graphics.draw(self.icon_bg,x,y)
       if a.hover then
-        dropshadowf(a.tooltip(cobject).."\n"..self.ships_info[cobject.type],
+        dropshadowf(a.tooltip(cobject).."\n"..self:info(cobject.type),
         32,y+6,1280-96-8,"right")
         love.graphics.setColor(0,255,0)
       else
@@ -746,6 +746,10 @@ function mission:drawActions()
       love.graphics.setColor(255,255,255)
     end
   end
+end
+
+function mission:info(type)
+  return self.ships_info[type]
 end
 
 function mission:drawSelected()
@@ -762,6 +766,10 @@ function mission:drawSelected()
       love.graphics.draw(ship_icon,x,y)
       love.graphics.setColor(255,255,255)
     end
+  end
+  local cobject = self:singleSelected()
+  if cobject then
+    dropshadow(self:info(cobject.type),64+8,720-64)
   end
 end
 

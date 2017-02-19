@@ -1,0 +1,17 @@
+1 per ore
+1 per material
+1 per food
+1 per 1 speed
+1 per health
+50 per damage
+
+sfx:
+Ship Mining
+Ship Refine
+Ship Shooting
+Ship Damange
+Ship Explosion
+Ship Built?
+Ship repair
+Ship moving/attacking
+
