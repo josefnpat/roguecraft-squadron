@@ -86,20 +86,6 @@ function mission:init()
 
   self.controlgroups = {}
 
-end
-
-function mission:randomShipType()
-  local ships = {}
-  for i,v in pairs(self.ships) do
-    table.insert(ships,i)
-    -- Thanks Chris Nixon (ashlon23)!!! much love!
-  end
-  local val = ships[math.random(#ships)]
-  return val == "asteroid" and "combat" or val
-end
-
-function mission:enter()
-
   self.resources = {
     material = math.huge,
     material_cargo = 0,
@@ -392,13 +378,18 @@ function mission:enter()
     position = {x=1280/2,y=720/2}
   }
   table.insert(self.objects,self.build.drydock(start))
+  table.insert(self.objects,self.build.combat(start))
+
+end -- END OF INIT
+
+function mission:enter()
 
   for i = 1,10 do
     table.insert(self.objects,{
       type = "asteroid",
       position = {
-        x = math.random(0,1280),
-        y = math.random(0,720),
+        x = math.random(0,32*128),
+        y = math.random(0,32*128),
       },
       angle = math.random()*math.pi*2,
       size = 32,
@@ -406,7 +397,49 @@ function mission:enter()
     })
   end
 
+  for i = 1,10 do
+    table.insert(self.objects,{
+      owner = 1,
+      type = "enemy",
+      position = {
+        x = math.random(0,32*128),
+        y = math.random(0,32*128),
+      },
+      size = 32,
+      speed = 100,
+      health = {
+        max = 50,
+      },
+      shoot = {
+        reload = 0.25,
+        damage = 2,
+        speed = 200,
+        range = 200,
+        aggression = 400,
+      },
+      crew = self.costs.combat.crew,
+      repair = false,
+      actions = {
+        self.actions.salvage,
+        self.actions.repair,
+      }
+
+    })
+  end
+
+
+end -- END OF ENTER
+
+function mission:randomShipType()
+  local ships = {}
+  for i,v in pairs(self.ships) do
+    table.insert(ships,i)
+    -- Thanks Chris Nixon (ashlon23)!!! much love!
+  end
+  local val = ships[math.random(#ships)]
+  return val == "asteroid" and "combat" or val
 end
+
 
 function mission:nearbyPosition(position)
   return {
