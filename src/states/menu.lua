@@ -22,6 +22,9 @@ function mainmenu:init()
 	
 	self.background_scroll_speed = 4
 	
+	self.hover_sound = love.audio.newSource("assets/sfx/hover.wav")
+	self.select_sound = love.audio.newSource("assets/sfx/select.wav")
+	
 	self.buttons_y = 1
 end
 
@@ -32,8 +35,17 @@ function mainmenu:update(dt)
 		self.buttonpressed = self.hovered_button
 		if self.options[self.buttonpressed] then
 			self.options[self.buttonpressed].act()
+			love.audio.play(self.select_sound)
 		end		
 	end
+	
+	if self.oldhovered_button ~= self.hovered_button and 
+	self.hovered_button > 0 and 
+	self.hovered_button <= #self.options then 
+		love.audio.play(self.hover_sound) 
+	end
+	
+	self.oldhovered_button = self.hovered_button
 end
 
 function mainmenu:keypressed(key)
