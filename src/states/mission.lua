@@ -5,10 +5,10 @@ function mission:init()
   self.explosion_images = {}
   self.explosions = {}
 
-  for i = 0,2 do
+  for i = 1,6 do
     table.insert(
       self.explosion_images,
-      love.graphics.newImage("assets/explosion"..i..".png")
+      love.graphics.newImage("assets/explosions/b"..i..".png")
     )
   end
 
