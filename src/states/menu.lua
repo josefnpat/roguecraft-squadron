@@ -78,7 +78,7 @@ function mainmenu:draw()
 	local y_offset = love.graphics:getHeight() * 0.075
 	
 	love.graphics.setFont(fonts.title)
-	dropshadowf("Ultimate Space Rangers '95",0,y_offset + math.sin(love.timer.getTime()) * (y_offset / 4),love.graphics:getWidth(),"center")
+	dropshadowf(game_name,0,y_offset + math.sin(love.timer.getTime()) * (y_offset / 4),love.graphics:getWidth(),"center")
 	
 	love.graphics.setFont(fonts.menu)
 	for i = 1, #self.options do
