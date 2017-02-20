@@ -596,7 +596,7 @@ function mission:mousepressed(x,y,b)
   else
 
     local ox,oy = self:getcameraoffset()
-    local closest_object, closest_object_distance = mission:findClosestObject(x+ox,y+oy)
+    local closest_object, closest_object_distance = self:findClosestObject(x+ox,y+oy)
 
     if b == 1 then
       if closest_object and closest_object.owner == 0 and closest_object_distance < 32 then
@@ -1164,7 +1164,7 @@ function mission:updateMission(dt)
         amount = self.resources.ore
       end
 	  if amount > 0 then
-		loopSFX(self.sfx.refine)
+		  loopSFX(self.sfx.refine)
 	  end
       self.resources.material = self.resources.material + amount
       self.resources.material_delta = self.resources.material_delta + amount/dt
@@ -1175,17 +1175,17 @@ function mission:updateMission(dt)
     if object.repair then
       local amount_to_repair = math.min( (object.health.max - object.health.current) , object.health.max/10  )*dt
       if amount_to_repair < self.resources.material then
-		if math.ceil(object.health.current) < math.ceil(object.health.max) then 
-		  loopSFX(self.sfx.repairShip) 
-		  --repairing
-		else
-		  object.health.current = object.health.max
-		  --repair completed
-		end
+		    if math.ceil(object.health.current) < math.ceil(object.health.max) then
+          loopSFX(self.sfx.repairShip)
+          --repairing
+        else
+          object.health.current = object.health.max
+          --repair completed
+        end
         object.health.current = object.health.current + amount_to_repair
         self.resources.material = self.resources.material - amount_to_repair
         self.resources.material_delta = self.resources.material_delta - amount_to_repair/dt
-	  end
+      end
     end
 
     if object.food_gather then
