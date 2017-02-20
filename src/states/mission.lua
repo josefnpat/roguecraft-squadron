@@ -5,6 +5,8 @@ function mission:init()
   self.explosion_images = {}
   self.explosions = {}
 
+  self.selected_row_max = 16
+
   for i = 1,6 do
     table.insert(
       self.explosion_images,
@@ -85,15 +87,15 @@ function mission:init()
   self.camera.vertical_mouse_move = 1/16.875
   self.camera.horizontal_mouse_move = 1/30
 
-  self.space = love.graphics.newImage("assets/space.png")
+  self.space = bg.space
 
-  self.stars0 = love.graphics.newImage("assets/stars0.png")
+  self.stars0 = bg.stars0
   self.stars0:setWrap("repeat","repeat")
   self.stars0_quad = love.graphics.newQuad(0, 0,
     1280+self.stars0:getWidth(), 720+self.stars0:getHeight(),
     self.stars0:getWidth(), self.stars0:getHeight())
 
-  self.stars1 = love.graphics.newImage("assets/stars1.png")
+  self.stars1 = bg.stars1
   self.stars1:setWrap("repeat","repeat")
   self.stars1_quad = love.graphics.newQuad(0, 0,
     1280+self.stars1:getWidth(), 720+self.stars1:getHeight(),
@@ -604,7 +606,7 @@ function mission:moveSelected(x,y,ox,oy)
             anim=0.25
           }
         end
-        range = range + 0.1
+        range = range + 0.25
       end
     end
   end
@@ -623,14 +625,19 @@ function mission:mousepressed(x,y,b)
       self:moveSelected(px,py)
     end
   elseif self:mouseInSelected() then
-    local pos = math.floor((love.mouse.getX()-32)/(32+self:iconPadding()))+1
-    local count = 0
+    local posx = math.floor((love.mouse.getX()-32)/(32+self:iconPadding()))+1
+    local posy = -math.floor((love.mouse.getY()-720+32)/(32+self:iconPadding()))
+    local row,col = 0,0
     for _,object in pairs(self.objects) do
       if object.selected then
         object.selected = false
-        count = count + 1
-        if count == pos then
+        if col+1 == posx and row+1 == posy then
           object.selected = true
+        end
+        col = col + 1
+        if col >= self.selected_row_max then
+          col = 0
+          row = row + 1
         end
       end
     end
@@ -943,11 +950,11 @@ function mission:info(type)
 end
 
 function mission:drawSelected()
-  -- TODO: add in rows when more selected
   local index = 0
+  local row,col = 0,0
   for _,object in pairs(self.objects) do
     if object.selected then
-      local x,y = index*(32+self:iconPadding())+32,720-32-32
+      local x,y = col*(32+self:iconPadding())+32,720-32-32-row*(32+self:iconPadding())
       love.graphics.draw(self.icon_bg,x,y)
       index = index + 1
       local ship_icon = self.ships_icon[object.type]
@@ -955,6 +962,11 @@ function mission:drawSelected()
       love.graphics.setColor(libs.healthcolor(percent))
       love.graphics.draw(ship_icon,x,y)
       love.graphics.setColor(255,255,255)
+      col = col + 1
+      if col >= self.selected_row_max then
+        col = 0
+        row = row + 1
+      end
     end
   end
   local cobject = self:singleSelected()
@@ -1010,14 +1022,22 @@ function mission:mouseInSelected()
 end
 
 function mission:selectedArea()
-  local count = 0
+  local row,col = 0,0
   for _,object in pairs(self.objects) do
     if object.selected then
-      count = count + 1
+      col = col + 1
+      if col >= self.selected_row_max then
+        row = row + 1
+        col = 0
+      end
     end
   end
-  -- hacking hacking hack hack hack
-  return 32,720-32-32,count*(32+self:iconPadding()),32
+  -- NO UR A HACK
+  local mrow = col == 0 and row or row+1
+  local mcol = row>0 and self.selected_row_max or col
+  return 32,720-32-mrow*(32+self:iconPadding()),
+    mcol*(32+self:iconPadding()),
+    mrow*(32+self:iconPadding())
 end
 
 function mission:mouseInActions()
