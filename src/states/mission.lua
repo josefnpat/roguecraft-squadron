@@ -50,16 +50,16 @@ function mission:init()
 
   self.sfx = {
     buildShip = love.audio.newSource("assets/sfx/build.wav"),
-	repairShip = love.audio.newSource("assets/sfx/repair.wav"),
-	refine = love.audio.newSource("assets/sfx/refine.wav"),
-	moving = {love.audio.newSource("assets/sfx/moving on my way.wav"),
-	love.audio.newSource("assets/sfx/moving ready.wav"),
-	love.audio.newSource("assets/sfx/moving yes commander.wav"),},
-	mining = love.audio.newSource("assets/sfx/mining.wav"),
+    repairShip = love.audio.newSource("assets/sfx/repair.wav"),
+    refine = love.audio.newSource("assets/sfx/refine.wav"),
+    moving = {love.audio.newSource("assets/sfx/moving on my way.wav"),
+    love.audio.newSource("assets/sfx/moving ready.wav"),
+    love.audio.newSource("assets/sfx/moving yes commander.wav"),},
+    mining = love.audio.newSource("assets/sfx/mining.wav"),
   }
   
   self.action_icons = {
-	menu = love.graphics.newImage("assets/actions/repair.png"),
+    menu = love.graphics.newImage("assets/actions/repair.png"),
     repair = love.graphics.newImage("assets/actions/repair.png"),
     salvage = love.graphics.newImage("assets/actions/salvage.png"),
     refine = love.graphics.newImage("assets/actions/refine.png"),
@@ -100,13 +100,13 @@ function mission:init()
     self.stars1:getWidth(), self.stars1:getHeight())
 
   self.controlgroups = {}
-	
+  
   self.raw_planet_images = love.filesystem.getDirectoryItems("assets/planets/")
   self.planet_images = {}
   for i = 1, #self.raw_planet_images do
-		self.planet_images[i] = love.graphics.newImage("assets/planets/" .. self.raw_planet_images[i])
+    self.planet_images[i] = love.graphics.newImage("assets/planets/" .. self.raw_planet_images[i])
   end
-	
+  
   self.resources = {
     material = math.huge,
     material_cargo = 0,
@@ -177,7 +177,7 @@ function mission:init()
       health = {
         max = 25,
       },
-  	  death_sfx = self.ships_death_sfx.drydock,
+      death_sfx = self.ships_death_sfx.drydock,
       crew = self.costs.drydock.crew,
       ore = 400,
       material = 400,
@@ -210,7 +210,7 @@ function mission:init()
       },
       ore = 25,
       ore_gather = 25,
-	  death_sfx = self.ships_death_sfx.mining,
+      death_sfx = self.ships_death_sfx.mining,
       crew = self.costs.mining.crew,
       repair = false,
       actions = {
@@ -237,10 +237,10 @@ function mission:init()
         speed = 200,
         range = 200,
         aggression = 400,
-		sfx = love.audio.newSource("assets/sfx/laser_shoot.wav"),
-		collision_sfx = love.audio.newSource("assets/sfx/collision.wav"),
+        sfx = love.audio.newSource("assets/sfx/laser_shoot.wav"),
+        collision_sfx = love.audio.newSource("assets/sfx/collision.wav"),
       },
-	  death_sfx = self.ships_death_sfx.combat,
+      death_sfx = self.ships_death_sfx.combat,
       crew = self.costs.combat.crew,
       repair = false,
       actions = {
@@ -260,7 +260,7 @@ function mission:init()
       health = {
         max = 10,
       },
-	  death_sfx = self.ships_death_sfx.refinery,
+    death_sfx = self.ships_death_sfx.refinery,
       crew = self.costs.refinery.crew,
       material = 50,
       material_gather = 5,
@@ -284,7 +284,7 @@ function mission:init()
       health = {
         max = 5,
       },
-	  death_sfx = self.ships_death_sfx.habitat,
+      death_sfx = self.ships_death_sfx.habitat,
       crew = self.costs.habitat.crew,
       food = 50,
       food_gather = 40,
@@ -306,7 +306,7 @@ function mission:init()
       health = {
         max = 40,
       },
-	  death_sfx = self.ships_death_sfx.cargo,
+      death_sfx = self.ships_death_sfx.cargo,
       crew = self.costs.cargo.crew,
       ore = 100,
       material = 100,
@@ -499,15 +499,15 @@ function mission:nextLevel()
       })
     end
   end
-	
-	self:regroupByOwner(0,128)
+  
+  self:regroupByOwner(0,128)
 end
 
 function mission:regroupByOwner(owner,scatter)
   --scatter is amount of pixels they move randomly after regroup
   for _,object in pairs(self:getObjectsByOwner(owner)) do
     object.position.x = self.start.position.x + math.random(-scatter,scatter)
-	  object.position.y = self.start.position.y + math.random(-scatter,scatter)
+    object.position.y = self.start.position.y + math.random(-scatter,scatter)
     object.target = nil
     object.target_object = nil
   end
@@ -537,7 +537,7 @@ function mission:buyBuildObject(costs)
     for resource_type,cost in pairs(costs) do
       self.resources[resource_type] = self.resources[resource_type] - cost
     end
-	  playSFX(self.sfx.buildShip)
+    playSFX(self.sfx.buildShip)
     return true
   else
     return false
@@ -625,7 +625,7 @@ function mission:mousepressed(x,y,b)
           if object.selected then
             object.target_object = closest_object
             object.target_object.anim = 0.25
-			      playSFX(self.sfx.moving)
+            playSFX(self.sfx.moving)
           end
         end
 
@@ -656,7 +656,7 @@ function mission:mousepressed(x,y,b)
                 object.target = {x=gx*grid_size+ox,y=gy*grid_size+oy}
                 object.anim = 0.25
                 object.target_object = nil
-				        playSFX(self.sfx.moving)
+                playSFX(self.sfx.moving)
                 found = true
                 self.target_show = {
                   x=self.camera.x+x-1280/2,
@@ -682,7 +682,7 @@ function mission:keypressed(key)
   end
   local key_number = tonumber(key)
   if key == "escape" then
-		libs.hump.gamestate.switch(states.pause)
+    libs.hump.gamestate.switch(states.pause)
     self.select_start = nil
   end
   if key_number ~= nil and key_number >= 0 and key_number <= 9 then
@@ -1034,13 +1034,13 @@ function mission:ownerColor(owner)
 end
 
 function mission:getObjectsByOwner(val)
-	local OwnedObjects = {}
-	for _,object in pairs(self.objects) do
-		if object.owner == val then
-			table.insert(OwnedObjects,object)
-		end
-	end
-	return OwnedObjects
+  local OwnedObjects = {}
+  for _,object in pairs(self.objects) do
+    if object.owner == val then
+      table.insert(OwnedObjects,object)
+    end
+  end
+  return OwnedObjects
 end
 
 function mission:drawMinimap()
@@ -1078,7 +1078,7 @@ function mission:update(dt)
   end
 
   if not love.window.hasFocus() then
-		libs.hump.gamestate.switch(states.pause)
+    libs.hump.gamestate.switch(states.pause)
     self.select_start = nil
   end
 
@@ -1122,7 +1122,7 @@ function mission:updateMission(dt)
         else
           object.health.current = math.max(0,object.health.current-bullet.damage)
           table.remove(object.incoming_bullets,bullet_index)
-		      playSFX(bullet.collision_sfx)
+          playSFX(bullet.collision_sfx)
         end
       end
     end
@@ -1155,10 +1155,10 @@ function mission:updateMission(dt)
         object.shoot.reload = object.shoot.reload_t
         object.target_object.incoming_bullets = object.target_object.incoming_bullets or {}
         playSFX(object.shoot.sfx)
-		    table.insert(object.target_object.incoming_bullets,{
+        table.insert(object.target_object.incoming_bullets,{
           speed = object.shoot.speed,
           damage = object.shoot.damage,
-    		  collision_sfx = object.shoot.collision_sfx,
+          collision_sfx = object.shoot.collision_sfx,
           x = object.position.x,
           y = object.position.y,
           angle = object.angle,
@@ -1172,9 +1172,9 @@ function mission:updateMission(dt)
       if amount > self.resources.ore then
         amount = self.resources.ore
       end
-	  if amount > 0 then
-		  loopSFX(self.sfx.refine)
-	  end
+      if amount > 0 then
+        loopSFX(self.sfx.refine)
+      end
       self.resources.material = self.resources.material + amount
       self.resources.material_delta = self.resources.material_delta + amount/dt
       self.resources.ore = self.resources.ore - amount
@@ -1184,7 +1184,7 @@ function mission:updateMission(dt)
     if object.repair then
       local amount_to_repair = math.min( (object.health.max - object.health.current) , object.health.max/10  )*dt
       if amount_to_repair < self.resources.material then
-		    if math.ceil(object.health.current) < math.ceil(object.health.max) then
+        if math.ceil(object.health.current) < math.ceil(object.health.max) then
           loopSFX(self.sfx.repairShip)
           --repairing
         else
@@ -1206,7 +1206,7 @@ function mission:updateMission(dt)
     if object.target_object then
       if object.ore_gather and object.target_object.ore_supply and
         self:distance(object.position,object.target_object.position) < 48 then
-		
+    
         local amount = object.ore_gather*dt
         self.resources.ore_delta = self.resources.ore_delta + amount/dt
         if object.target_object.ore_supply > amount then
@@ -1216,7 +1216,7 @@ function mission:updateMission(dt)
           self.resources.ore = self.resources.ore + object.target_object.ore_supply
           object.target_object.ore_supply = 0
         end
-		    loopSFX(self.sfx.mining)
+        loopSFX(self.sfx.mining)
       end
       if object.target_object.health and object.target_object.health.current <= 0 then
         object.target_object = nil
@@ -1314,7 +1314,7 @@ function mission:updateMission(dt)
         angle = math.random()*math.pi*2,
         dt = 0,
       })
-	    playSFX(object.death_sfx)
+      playSFX(object.death_sfx)
     end
 
     if object.target_object and (
