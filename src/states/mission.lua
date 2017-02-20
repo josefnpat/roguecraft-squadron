@@ -391,17 +391,18 @@ function mission:init()
   }
 
   self.objects = {}
-  local start = {
+  self.start = {
     owner = 0,
     position = {x=1280/2,y=720/2}
   }
-  table.insert(self.objects,self.build.drydock(start))
+  table.insert(self.objects,self.build.drydock(self.start))
 
   self.level = 0
   states.game:nextLevel()
 end -- END OF INIT
 
 function mission:enter()
+
 end
 
 function mission:hasNextLevel()
@@ -476,7 +477,18 @@ function mission:nextLevel()
       })
     end
   end
+	
+	self:regroupByOwner(0,128)
 end
+
+function mission:regroupByOwner(owner,scatter)
+  --scatter is amount of pixels they move randomly after regroup
+  for _,object in pairs(self:getObjectsByOwner(owner)) do
+      object.position.x = self.start.position.x + math.random(-scatter,scatter)
+	  object.position.y = self.start.position.y + math.random(-scatter,scatter)
+  end
+end
+
 
     -- Thanks Chris Nixon (ashlon23)!!! much love!
 
@@ -1207,9 +1219,9 @@ function mission:updateMission(dt)
 
   -- cleanup
 
-  if #mission:getObjectsByOwner(0) < 1 then
+  if #self:getObjectsByOwner(0) < 1 then
     libs.hump.gamestate.switch(states.lose)
-  elseif #mission:getObjectsByOwner(1) < 1 then
+  elseif #self:getObjectsByOwner(1) < 1 then
     self.show_button = true
   else
     self.show_button = false
