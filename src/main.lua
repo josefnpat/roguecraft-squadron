@@ -133,9 +133,19 @@ function playBGM(source)
 end
 
 function playSFX(source)
-	source:stop()
-	if not settings.muted then
-		love.audio.play(source)
+	--hax hax hax
+	if type(source) == "table" then
+		for i = 1, #source do 
+			source[i]:stop()
+		end
+		if not settings.muted then
+		  love.audio.play(source[math.random(#source)])
+	  end
+	else
+	  source:stop()
+	  if not settings.muted then
+		  love.audio.play(source)
+	  end
 	end
 end
 

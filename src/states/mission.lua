@@ -52,7 +52,9 @@ function mission:init()
     buildShip = love.audio.newSource("assets/sfx/build.wav"),
 	repairShip = love.audio.newSource("assets/sfx/repair.wav"),
 	refine = love.audio.newSource("assets/sfx/refine.wav"),
-	moving = love.audio.newSource("assets/sfx/on my way (complete).wav"),
+	moving = {love.audio.newSource("assets/sfx/moving on my way.wav"),
+	love.audio.newSource("assets/sfx/moving ready.wav"),
+	love.audio.newSource("assets/sfx/moving yes commander.wav"),},
 	mining = love.audio.newSource("assets/sfx/mining.wav"),
   }
   
