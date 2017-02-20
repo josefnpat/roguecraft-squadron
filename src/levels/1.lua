@@ -7,4 +7,8 @@ level.intro = function(self)
   return tvn
 end
 
+level.asteroid = 10
+
+level.enemy = 0
+
 return level

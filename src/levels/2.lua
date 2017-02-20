@@ -7,4 +7,6 @@ level.intro = function(self)
   return tvn
 end
 
+level.enemy = 2
+
 return level

@@ -394,6 +394,9 @@ function mission:init()
   states.game:nextLevel()
 end -- END OF INIT
 
+function mission:enter()
+end
+
 function mission:hasNextLevel()
   return love.filesystem.exists("levels/"..(self.level+1)..".lua")
 end
@@ -404,18 +407,20 @@ function mission:nextLevel()
   local level_data = require("levels/"..self.level)
   self.vn = level_data:intro()
 
-  for i = 1,10 do
-    table.insert(self.objects,{
-      type = "asteroid",
-      position = {
-        x = math.random(0,32*128),
-        y = math.random(0,32*128),
-      },
-      angle = math.random()*math.pi*2,
-      size = 32,
-      ore_supply = 100,
-	    death_sfx = self.ships_death_sfx.asteroid,
-    })
+  if level_data.asteroid then
+    for i = 1,level_data.asteroid do
+      table.insert(self.objects,{
+        type = "asteroid",
+        position = {
+          x = math.random(0,32*128),
+          y = math.random(0,32*128),
+        },
+        angle = math.random()*math.pi*2,
+        size = 32,
+        ore_supply = 100,
+        death_sfx = self.ships_death_sfx.asteroid,
+      })
+    end
   end
 
   self.planets = {}
@@ -431,50 +436,42 @@ function mission:nextLevel()
     }
   end
 
-  for i = 1,10 do
-    table.insert(self.objects,{
-      owner = 1,
-      type = "enemy"..math.random(0,1),
-      position = {
-        x = math.random(0,32*128),
-        y = math.random(0,32*128),
-      },
-      size = 32,
-      speed = 100,
-      health = {
-        max = 50,
-      },
-      shoot = {
-        reload = 0.25,
-        damage = 2,
-        speed = 200,
-        range = 200,
-        aggression = 400,
-		sfx = love.audio.newSource("assets/sfx/laser_shoot.wav"),
-		collision_sfx = love.audio.newSource("assets/sfx/collision.wav"),
-      },
-	    death_sfx = self.ships_death_sfx.enemy0,
-      crew = self.costs.combat.crew,
-      repair = false,
-      actions = {
-        self.actions.salvage,
-        self.actions.repair,
-      }
-
-    })
+  if level_data.enemy then
+    for i = 1,level_data.enemy do
+      table.insert(self.objects,{
+        owner = 1,
+        type = "enemy"..math.random(0,1),
+        position = {
+          x = math.random(0,32*128),
+          y = math.random(0,32*128),
+        },
+        size = 32,
+        speed = 100,
+        health = {
+          max = 50,
+        },
+        shoot = {
+          reload = 0.25,
+          damage = 2,
+          speed = 200,
+          range = 200,
+          aggression = 400,
+          sfx = love.audio.newSource("assets/sfx/laser_shoot.wav"),
+          collision_sfx = love.audio.newSource("assets/sfx/collision.wav"),
+        },
+        death_sfx = self.ships_death_sfx.enemy0,
+        crew = self.costs.combat.crew,
+        repair = false,
+        actions = {
+          self.actions.salvage,
+          self.actions.repair,
+        }
+      })
+    end
   end
 end
 
-function mission:randomShipType()
-  local ships = {}
-  for i,v in pairs(self.ships) do
-    table.insert(ships,i)
     -- Thanks Chris Nixon (ashlon23)!!! much love!
-  end
-  local val = ships[math.random(#ships)]
-  return val == "asteroid" and "combat" or val
-end
-
 
 function mission:nearbyPosition(position)
   return {
@@ -551,6 +548,13 @@ function mission:mousepressed(x,y,b)
           a.exe(cobject)
         end
       end
+    end
+  elseif self:mouseInButton() then
+    self.show_button = false
+    if self:hasNextLevel() then
+      self:nextLevel()
+    else
+      libs.hump.gamestate.switch(states.win)
     end
   else
 
@@ -789,6 +793,7 @@ function mission:draw()
   self:drawMinimap()
   self:drawSelected()
   self:drawActions()
+  self:drawButton()
 
   for rindex,r in pairs(self.resources_types) do
     if self.resources[r.."_delta"] < 0 then
@@ -874,6 +879,32 @@ function mission:drawSelected()
   local cobject = self:singleSelected()
   if cobject then
     dropshadow(self:info(cobject.type),64+8,720-64)
+  end
+end
+
+function mission:buttonArea()
+  local w = 320
+  return (love.graphics.getWidth()-w)/2,love.graphics.getHeight()*1/8,w,32
+end
+
+function mission:drawButton()
+  if self.show_button then
+    local x,y,w,h = self:buttonArea()
+    local t = "Continue journey, and leave system"
+    if self:mouseInButton() then
+      t = "[" .. t .. "]"
+    end
+    dropshadowf(t,x,y,w,"center")
+  end
+end
+
+function mission:mouseInButton()
+  if self.show_button then
+    local x,y,w,h = self:buttonArea()
+    local mx,my = love.mouse.getPosition()
+    return mx >= x and mx <= x+w and my >= y and my <= y+h
+  else
+    return false
   end
 end
 
@@ -1153,11 +1184,9 @@ function mission:updateMission(dt)
   if #mission:getObjectsByOwner(0) < 1 then
     libs.hump.gamestate.switch(states.lose)
   elseif #mission:getObjectsByOwner(1) < 1 then
-    if self:hasNextLevel() then
-      self:nextLevel()
-    else
-      libs.hump.gamestate.switch(states.win)
-    end
+    self.show_button = true
+  else
+    self.show_button = false
   end
 
   for object_index,object in pairs(self.objects) do
@@ -1224,6 +1253,8 @@ function mission:updateMission(dt)
           end
         end
       end
+    elseif self:mouseInButton() then
+      -- nop
     else
 
       local left = love.keyboard.isDown("left") or love.mouse.getX() < 1280*self.camera.horizontal_mouse_move
