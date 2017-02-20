@@ -9,15 +9,29 @@ function credits:enter()
   "Mauricyo Furtado (@eternalnightpro) — Music\n" ..
   "Laura Vk (Solsforest) — Art, Voice Talent\n" ..
   "Arjan Vk (Vivid) — Code, SFX, Voice Talent \n" ..
-  "\n" ..
-  "Twitch Peeps:\n\n" ..
-  "\n"
+  "\n\n\n"
 
-  for i = 1, 16 do
-    self.text = self.text .. "Cool Person\n"
+  self.testers = {"Forer","EntranceJew","AshleyHooper"}
+  -- Thank you so much whiteland92!!! <3
+  self.ibtwitch = {"icecooltea","whiteland92"}
+  self.twitch = {}
+
+  self.text = self.text .. "Playtesters:\n\n"
+  for i,v in pairs(self.testers) do
+    self.text = self.text .. v .. "\n"
   end
 
-  self.text = self.text .. "\n\nThanks for playing!\n"
+  self.text = self.text .. "Twitch Internet Buck Millionaries:\n\n"
+  for i,v in pairs(self.ibtwitch) do
+    self.text = self.text .. v .. "\n"
+  end
+
+  self.text = self.text .. "Twitch Peeps:\n\n"
+  for i,v in pairs(self.twitch) do
+    self.text = self.text .. v .. "\n"
+  end
+
+  self.text = self.text .. "\n\n\nThanks for playing!\n"
 
   self.space = bg.space
 
