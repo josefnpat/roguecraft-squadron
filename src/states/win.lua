@@ -1,7 +1,7 @@
 local state = {}
 
 function state:enter()
-	self.text = "Winner is you!"
+	self.text = "You have defeated the alien invasion!\nYou win!"
 	
 	self.space = love.graphics.newImage("space.png")
 	

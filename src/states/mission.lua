@@ -15,8 +15,6 @@ function mission:init()
 
   self.ship_types = {"enemy0","enemy1","drydock","mining","asteroid","combat","refinery","habitat","cargo"}
 
-
-
   local basic_explosion = love.audio.newSource("assets/sfx/explosion.wav")
   self.ships = {}
   self.ships_icon = {}
