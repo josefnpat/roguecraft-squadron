@@ -6,9 +6,9 @@ function credits:enter()
 	"\n" ..
 	"Josef Patoprsty (@josefnpat) — Code, Art, Design, Voice Talent\n" ..
 	"Ashley Hooper (@ByteDesigning) — Art\n" ..
-	"Mauricyo Furtado (@eternalnightpro) — Music, SFX\n" ..
+	"Mauricyo Furtado (@eternalnightpro) — Music\n" ..
 	"Laura Vk (Solsforest) — Art, Voice Talent\n" ..
-	"Arjan Vk (Vivid) — Code \n" ..
+	"Arjan Vk (Vivid) — Code, SFX, Voice Talent \n" ..
 	"\n" ..
 	"Twitch Peeps:\n\n" ..
 	"\n"
