@@ -1009,11 +1009,12 @@ end
 
 function mission:drawMinimap()
   local x,y,w,h = self:miniMapArea()
+  love.graphics.setScissor(x-4,y-4,w+8,h+8)
   love.graphics.setColor(0,0,0)
-  love.graphics.rectangle("fill",x-1,y-1,w+2,h+2)
+  love.graphics.rectangle("fill",x,y,w,h)
   local scale = self:miniMapScale()
   love.graphics.setColor(self.colors.ui.primary)
-  love.graphics.rectangle("line",x,y,w,h)
+  love.graphics.rectangle("line",x-4,y-4,w+8,h+8)
   local cx,cy,cw,ch = (self.camera.x-1280/2)/scale,(self.camera.y-720/2)/scale,1280/scale,720/scale
   love.graphics.rectangle("line",x+cx,y+cy,cw,ch)
   for _,object in pairs(self.objects) do
@@ -1022,6 +1023,7 @@ function mission:drawMinimap()
     love.graphics.rectangle("fill",
       x+object.position.x/scale,y+object.position.y/scale,2,2)
   end
+  love.graphics.setScissor()
   love.graphics.setColor(255,255,255)
 end
 
