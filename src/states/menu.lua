@@ -25,6 +25,14 @@ function mainmenu:enter()
 	self.hover_sound = love.audio.newSource("assets/sfx/hover.wav")
 	self.select_sound = love.audio.newSource("assets/sfx/select.wav")
 	
+	self.raw_planet_images = love.filesystem.getDirectoryItems("assets/planets/")
+	self.planet_images = {}
+	for i = 1, #self.raw_planet_images do
+		self.planet_images[i] = love.graphics.newImage("assets/planets/" .. self.raw_planet_images[i])
+	end
+	self.random_planet = math.random(#self.planet_images)
+	self.planet_rotation = 0.01
+	
 	self.buttons_y = 1
 	
 	self.input_delay_timer = 0
@@ -74,6 +82,10 @@ function mainmenu:draw()
     -self.stars1:getHeight()+((love.timer.getTime()/2*self.background_scroll_speed)%self.stars1:getHeight()) )
 
 	love.graphics.setBlendMode("alpha")
+	
+	love.graphics.draw(self.planet_images[self.random_planet],love.graphics:getWidth() * 0.1,love.graphics:getHeight() * 0.75,
+		love.timer.getTime() * self.planet_rotation,1,1,
+		self.planet_images[self.random_planet]:getWidth()/2,self.planet_images[self.random_planet]:getHeight()/2)
 
 	local y_offset = love.graphics:getHeight() * 0.075
 	

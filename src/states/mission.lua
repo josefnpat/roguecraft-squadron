@@ -716,16 +716,6 @@ function mission:draw()
 
   love.graphics.draw(self.space)
 
-  for i = 1, #self.planets do
-    local x = self.planets[i].x - self.camera.x * self.planets[i].z
-    local y = self.planets[i].y - self.camera.y * self.planets[i].z
-    love.graphics.draw(self.planets[i].img,x,y,
-      self.planets[i].angle,
-      self.planets[i].size,self.planets[i].size,
-      self.planets[i].img:getWidth()/2,self.planets[i].img:getHeight()/2)
-    --love.graphics.circle("line",x,y,4)
-  end
-
   love.graphics.setBlendMode("add")
 
   love.graphics.draw(self.stars0, self.stars0_quad,
@@ -738,6 +728,16 @@ function mission:draw()
 
   love.graphics.setBlendMode("alpha")
 
+  for i = 1, #self.planets do
+    local x = self.planets[i].x - self.camera.x * self.planets[i].z
+    local y = self.planets[i].y - self.camera.y * self.planets[i].z
+    love.graphics.draw(self.planets[i].img,x,y,
+      self.planets[i].angle,
+      self.planets[i].size,self.planets[i].size,
+      self.planets[i].img:getWidth()/2,self.planets[i].img:getHeight()/2)
+    --love.graphics.circle("line",x,y,4)
+  end
+  
   self.camera:attach()
   for _,object in pairs(self.objects) do
     if object.selected then
