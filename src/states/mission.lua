@@ -809,6 +809,8 @@ function mission:draw()
   end
   love.graphics.setColor(255,255,255)
 
+  dropshadowf("Level "..self.level,32,720-32-8,1280-64,"right")
+
   if self.vn:getRun() then
     self.vn:draw()
   end
