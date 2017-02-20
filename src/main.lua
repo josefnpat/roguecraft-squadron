@@ -84,9 +84,15 @@ function love.load(arg)
     if v == "novn" then
       disable_vn = true
     end
+    if states[v] then
+      target_state = states[v]
+    end
+    if v == "cheat" then
+      cheat = true
+    end
   end
   libs.hump.gamestate.registerEvents()
-  libs.hump.gamestate.switch(states[arg[2]] or states.splash)
+  libs.hump.gamestate.switch(target_state or states.splash)
 end
 
 function love.update(dt)

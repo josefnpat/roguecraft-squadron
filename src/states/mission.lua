@@ -1056,6 +1056,12 @@ end
 
 function mission:update(dt)
 
+  if cheat then
+    for _,resource in pairs(self.resources_types) do
+      self.resources[resource] = math.huge
+    end
+  end
+
   if not self.vn:getRun() then
     self:updateMission(dt)
   else
