@@ -420,6 +420,13 @@ function mission:hasNextLevel()
 end
 
 function mission:nextLevel()
+
+  for i,v in pairs(self.objects) do
+    if v.owner ~= 0  then
+      table.remove(self.objects,i)
+    end
+  end
+
   self.level = self.level + 1
 
   local level_data = require("levels/"..self.level)
