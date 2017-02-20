@@ -44,7 +44,7 @@ end
 function vn:update(dt)
 	local cframe = self._frames[self._frame]
 	self.overlay_animation_timer = self.overlay_animation_timer + dt
-	if self.overlay_animation_timer > self.overlay_animation_limit then
+	if cframe.overlay and self.overlay_animation_timer > self.overlay_animation_limit then
 		self.overlay_current_frame = self.overlay_current_frame + 1
 		self.overlay_animation_timer = 0
 		if self.overlay_current_frame > #cframe.overlay then
