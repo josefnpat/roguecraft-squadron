@@ -1007,6 +1007,10 @@ function mission:update(dt)
 		libs.hump.gamestate.switch(states.pause)
   end
 
+  if debug_mode then
+    self.show_button = true
+  end
+
 end
 
 function mission:updateMission(dt)

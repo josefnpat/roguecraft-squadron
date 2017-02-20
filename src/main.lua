@@ -20,6 +20,17 @@ vn_audio = {
   },
 }
 
+difficulty = {
+  tutorial_asteroid = 4,
+  tutorial_enemy = 2,
+  low_asteroid = 10,
+  low_enemy = 10,
+  medium_asteroid = 25,
+  medium_enemy = 25,
+  high_asteroid = 100,
+  high_enemy = 100,
+}
+
 fonts = {
   default = love.graphics.newFont("fonts/Yantramanav-Black.ttf",16),
   title = love.graphics.newFont("fonts/ExpletusSans-Bold.ttf",64),
@@ -60,6 +71,12 @@ end
 
 function love.update(dt)
   love.mouse.setGrabbed(libs.hump.gamestate.current() == states.game and love.window.hasFocus())
+end
+
+function love.keypressed(key)
+  if key == "`" then
+    debug_mode = not debug_mode
+  end
 end
 
 function dropshadow(text,x,y)

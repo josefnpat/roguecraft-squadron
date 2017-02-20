@@ -73,7 +73,9 @@ function vn:draw()
     love.graphics.setColor(0,0,0,191)
     love.graphics.rectangle("fill",0,0,love.graphics.getWidth(),love.graphics.getHeight())
     love.graphics.setColor(255,255,255)
-    love.graphics.draw(cframe.image)
+    if cframe.image then
+      love.graphics.draw(cframe.image)
+    end
     love.graphics.setColor(0,0,0,191)
     love.graphics.rectangle("fill",padding,voffset+padding,
       love.graphics.getWidth()-padding*2,height-padding*2)
