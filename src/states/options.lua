@@ -8,7 +8,9 @@ function state:init()
 	self.options[1] = {text = "Fullscreen", act = function() settings.fullscreen = not settings.fullscreen; settings.update() end}
 	self.options[2] = {text = "Sound", act = function() settings.muted = not settings.muted; settings.update() end}
 	self.options[3] = {text = "Music", act = function() settings.muted_music = not settings.muted_music; settings.update() end}
-	self.options[4] = {text = "Back", act = function() libs.hump.gamestate.switch(settings.previousState) end}
+	self.options[4] = {text = "Sound", act = function() settings.sound_volume = settings.sound_volume + 1; settings.update() end}
+	self.options[5] = {text = "Music", act = function() settings.music_volume = settings.music_volume + 1; settings.update() end}
+	self.options[6] = {text = "Back", act = function() libs.hump.gamestate.switch(settings.previousState) end}
 	
 	self.hover_sound = love.audio.newSource("assets/sfx/hover.wav")
 	self.select_sound = love.audio.newSource("assets/sfx/select.wav")
@@ -17,12 +19,16 @@ function state:init()
 	
 	self.input_delay_timer = 0
 	self.input_delay_max = 0.1
+	
+	
 end
 
 function state:loadText()
 	self.options[1].text = "Fullscreen: " .. tostring(settings.fullscreen)
 	self.options[2].text = "Mute Sound: " .. tostring(settings.muted)
 	self.options[3].text = "Mute Music: " .. tostring(settings.muted_music)
+	self.options[4].text = "Sound Volume: " .. settings.volumes[settings.sound_volume] .. "%"
+	self.options[5].text = "Music Volume: " .. settings.volumes[settings.music_volume] .. "%"
 end
 
 function state:update(dt)
