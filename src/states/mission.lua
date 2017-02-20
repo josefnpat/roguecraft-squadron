@@ -958,6 +958,10 @@ function mission:update(dt)
     self:updateMission(dt)
   end
 
+  if not love.window.hasFocus() then
+		libs.hump.gamestate.switch(states.pause)
+  end
+
 end
 
 function mission:updateMission(dt)
