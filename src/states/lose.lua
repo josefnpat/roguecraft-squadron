@@ -1,7 +1,7 @@
 local state = {}
 
 function state:enter()
-	self.text = "You and your crew have been lost to the voide of space.\nYou Lose."
+	self.text = "You and your crew have been lost to the void of space.\nYou Lose."
 	
 	self.space = love.graphics.newImage("space.png")
 	
