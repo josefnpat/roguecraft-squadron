@@ -5,10 +5,10 @@ function mission:init()
   self.explosion_images = {}
   self.explosions = {}
 
-  for i = 0,2 do
+  for i = 1,6 do
     table.insert(
       self.explosion_images,
-      love.graphics.newImage("assets/explosion"..i..".png")
+      love.graphics.newImage("assets/explosions/b"..i..".png")
     )
   end
 
@@ -42,7 +42,7 @@ function mission:init()
     drydock = "A construction ship with some ore and material storage and bio-production.",
     mining = "An ore mining ship with some ore storage.",
     asteroid = "Stop! You can't be an asteroid!",
-    combat = "A combat ship,",
+    combat = "A combat ship to defend your squadron with.",
     refinery = "A material refining ship with some material storage.",
     habitat = "A bio-dome that produces food.",
     cargo = "A cargo ship that stores ore, material and food.",
@@ -1322,6 +1322,10 @@ function mission:updateMission(dt)
       (object.target_object.ore_supply and object.target_object.ore_supply <= 0 )) then
 
       object.target_object = nil
+      object.target = {
+        x = object.position.x+math.random(-128,128),
+        y = object.position.y+math.random(-128,128),
+      }
     end
 
   end
