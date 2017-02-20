@@ -73,6 +73,12 @@ states = {
   credits = require "states.credits",
 }
 
+bg = {
+	space = love.graphics.newImage("assets/space.png"),
+	stars0 = love.graphics.newImage("assets/stars0.png"),
+	stars1 = love.graphics.newImage("assets/stars1.png"),
+}
+
 function love.load(arg)
   for i,v in pairs(arg) do
     if v == "novn" then

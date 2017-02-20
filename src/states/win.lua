@@ -3,15 +3,15 @@ local state = {}
 function state:enter()
 	self.text = "You have defeated the alien invasion!\nYou win!"
 	
-	self.space = love.graphics.newImage("space.png")
-	
-	self.stars0 = love.graphics.newImage("stars0.png")
+  self.space = bg.space
+
+	self.stars0 = bg.stars0
 	self.stars0:setWrap("repeat","repeat")
 	self.stars0_quad = love.graphics.newQuad(0, 0,
 	1280+self.stars0:getWidth(), 720+self.stars0:getHeight(),
 		self.stars0:getWidth(), self.stars0:getHeight())
 	
-	self.stars1 = love.graphics.newImage("stars1.png")
+  self.stars1 = bg.stars1
 	self.stars1:setWrap("repeat","repeat")
 	self.stars1_quad = love.graphics.newQuad(0, 0,
     1280+self.stars1:getWidth(), 720+self.stars1:getHeight(),
