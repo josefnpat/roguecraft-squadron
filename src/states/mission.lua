@@ -417,10 +417,10 @@ function mission:nextLevel()
       angle = math.random()*math.pi*2,
       size = 32,
       ore_supply = 100,
-	  death_sfx = self.ships_death_sfx.asteroid,
+	    death_sfx = self.ships_death_sfx.asteroid,
     })
   end
-  
+
   planets = {}
   for i = 1, 10 do
 	planets[i] = {
@@ -458,7 +458,7 @@ function mission:nextLevel()
 		sfx = love.audio.newSource("assets/sfx/laser_shoot.wav"),
 		collision_sfx = love.audio.newSource("assets/sfx/collision.wav"),
       },
-	  death_sfx = self.ships_death_sfx.enemy,
+	    death_sfx = self.ships_death_sfx.enemy0,
       crew = self.costs.combat.crew,
       repair = false,
       actions = {
