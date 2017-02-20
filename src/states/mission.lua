@@ -42,7 +42,7 @@ function mission:init()
     drydock = "A construction ship with some ore and material storage and bio-production.",
     mining = "An ore mining ship with some ore storage.",
     asteroid = "Stop! You can't be an asteroid!",
-    combat = "A combat ship,",
+    combat = "A combat ship to defend your squadron with.",
     refinery = "A material refining ship with some material storage.",
     habitat = "A bio-dome that produces food.",
     cargo = "A cargo ship that stores ore, material and food.",
