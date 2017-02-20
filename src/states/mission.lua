@@ -424,7 +424,7 @@ function mission:nextLevel()
   planets = {}
   for i = 1, 10 do
 	planets[i] = {
-	  z = 0.01, -- the lower the Z, the slower the planets pan on camera
+	  z = 0.01, -- paralax scrolling: the lower the Z, the slower the planets pan on camera
       x = math.random(0,32)*128,
       y = math.random(0,32)*128,
 	  size = math.random(32,64)/64,
@@ -432,8 +432,6 @@ function mission:nextLevel()
 	  img = self.planet_images[math.random(#self.planet_images)],
       angle = math.random()*math.pi*2,
     }
-	planets[i].x = planets[i].x * (1-planets[i].z)
-	planets[i].y = planets[i].y * (1-planets[i].z)
   end
 
   for i = 1,10 do
@@ -708,8 +706,8 @@ function mission:draw()
   love.graphics.draw(self.space)
   for i = 1, #planets do
 	love.graphics.draw(planets[i].img,
-	planets[i].x - self.camera.x * planets[i].z,
-	planets[i].y - self.camera.y * planets[i].z,
+	planets[i].x - self.camera.x, --there should be magic code here with planets[i].z to have paralax scrolling
+	planets[i].y - self.camera.y, --there should be magic code here with planets[i].z to have paralax scrolling
 	planets[i].angle,planets[i].size,planets[i].size,planets[i].img:getWidth()/2,planets[i].img:getHeight()/2)
   end
   love.graphics.setBlendMode("add")
