@@ -444,8 +444,8 @@ function mission:nextLevel()
       table.insert(self.objects,{
         type = "asteroid",
         position = {
-          x = i == 1 and 1280*3/4 or math.random(0,32*128),
-          y = i == 1 and 720*3/4 or math.random(0,32*128),
+          x = self.level == 1 and math.random(0,1280) or math.random(0,32*128),
+          y = self.level == 1 and math.random(0,720) or math.random(0,32*128),
         },
         angle = math.random()*math.pi*2,
         size = 32,
