@@ -422,6 +422,13 @@ function mission:hasNextLevel()
 end
 
 function mission:nextLevel()
+
+  for i,v in pairs(self.objects) do
+    if v.owner ~= 0  then
+      table.remove(self.objects,i)
+    end
+  end
+
   self.level = self.level + 1
 
   local level_data = require("levels/"..self.level)
@@ -1075,7 +1082,7 @@ function mission:update(dt)
     self.select_start = nil
   end
 
-  if debug_mode then
+  if cheat then
     self.show_button = true
   end
 
@@ -1148,10 +1155,10 @@ function mission:updateMission(dt)
         object.shoot.reload = object.shoot.reload_t
         object.target_object.incoming_bullets = object.target_object.incoming_bullets or {}
         playSFX(object.shoot.sfx)
-		table.insert(object.target_object.incoming_bullets,{
+		    table.insert(object.target_object.incoming_bullets,{
           speed = object.shoot.speed,
           damage = object.shoot.damage,
-		  collision_sfx = object.shoot.collision_sfx,
+    		  collision_sfx = object.shoot.collision_sfx,
           x = object.position.x,
           y = object.position.y,
           angle = object.angle,

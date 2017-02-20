@@ -17,15 +17,19 @@ vn = {
 }
 
 vn_audio = {
-  -- level 1
-  {
-    --love.audio.newSource("vn/1_1.wav","stream"),
-    --love.audio.newSource("vn/1_2.wav","stream"),
-  },
-  -- level 2
-  {
-    --love.audio.newSource("vn/1_1.wav","stream"),
-    --love.audio.newSource("vn/1_2.wav","stream"),
+  adj = {
+    correct = love.audio.newSource("assets/vn/adj/audio/correct.wav"),
+    incorrect = love.audio.newSource("assets/vn/adj/audio/incorrect.wav"),
+    warning = love.audio.newSource("assets/vn/adj/audio/warning.wav"),
+    line1 = love.audio.newSource("assets/vn/adj/audio/line1.wav"),
+    line2 = love.audio.newSource("assets/vn/adj/audio/line2.wav"),
+    line3 = love.audio.newSource("assets/vn/adj/audio/line3.wav"),
+    line4 = love.audio.newSource("assets/vn/adj/audio/line4.wav"),
+    line5 = love.audio.newSource("assets/vn/adj/audio/line5.wav"),
+    line6 = love.audio.newSource("assets/vn/adj/audio/line6.wav"),
+    line7 = love.audio.newSource("assets/vn/adj/audio/line7.wav"),
+    line8 = love.audio.newSource("assets/vn/adj/audio/line8.wav"),
+    line9 = love.audio.newSource("assets/vn/adj/audio/line9.wav"),
   },
 }
 
@@ -101,12 +105,6 @@ function love.update(dt)
     not states.game.vn:getRun() and
     love.window.hasFocus()
   )
-end
-
-function love.keypressed(key)
-  if key == "`" then
-    --debug_mode = not debug_mode
-  end
 end
 
 function dropshadow(text,x,y)
