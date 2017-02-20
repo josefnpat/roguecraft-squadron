@@ -77,7 +77,11 @@ function love.load()
 end
 
 function love.update(dt)
-  love.mouse.setGrabbed(libs.hump.gamestate.current() == states.game and love.window.hasFocus())
+  love.mouse.setGrabbed(
+    libs.hump.gamestate.current() == states.game and
+    not states.game.vn:getRun() and
+    love.window.hasFocus()
+  )
 end
 
 function love.keypressed(key)
