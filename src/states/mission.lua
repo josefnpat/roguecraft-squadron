@@ -97,7 +97,13 @@ function mission:init()
     self.stars1:getWidth(), self.stars1:getHeight())
 
   self.controlgroups = {}
-
+	
+  self.raw_planet_images = love.filesystem.getDirectoryItems("assets/planets/")
+  self.planet_images = {}
+  for i = 1, #self.raw_planet_images do
+		self.planet_images[i] = love.graphics.newImage("assets/planets/" .. self.raw_planet_images[i])
+  end
+	
   self.resources = {
     material = math.huge,
     material_cargo = 0,
@@ -430,6 +436,21 @@ function mission:nextLevel()
 	  death_sfx = self.ships_death_sfx.asteroid,
     })
   end
+  
+  planets = {}
+  for i = 1, 10 do
+	planets[i] = {
+	  z = 0.01, -- the lower the Z, the slower the planets pan on camera
+      x = math.random(0,32)*128,
+      y = math.random(0,32)*128,
+	  size = math.random(32,64)/64,
+	  rotation = math.random(32,64)/5120,
+	  img = self.planet_images[math.random(#self.planet_images)],
+      angle = math.random()*math.pi*2,
+    }
+	planets[i].x = planets[i].x * (1-planets[i].z)
+	planets[i].y = planets[i].y * (1-planets[i].z)
+  end
 
   for i = 1,10 do
     table.insert(self.objects,{
@@ -698,7 +719,12 @@ end
 function mission:draw()
 
   love.graphics.draw(self.space)
-
+  for i = 1, #planets do
+	love.graphics.draw(planets[i].img,
+	planets[i].x - self.camera.x * planets[i].z,
+	planets[i].y - self.camera.y * planets[i].z,
+	planets[i].angle,planets[i].size,planets[i].size,planets[i].img:getWidth()/2,planets[i].img:getHeight()/2)
+  end
   love.graphics.setBlendMode("add")
 
   love.graphics.draw(self.stars0, self.stars0_quad,
@@ -975,6 +1001,10 @@ function mission:updateMission(dt)
   for _,resource in pairs(self.resources_types) do
     self.resources[resource.."_cargo"] = 0
     self.resources[resource.."_delta"] = 0
+  end
+  
+  for i = 1, #planets do
+	planets[i].angle = planets[i].angle + planets[i].rotation*dt
   end
 
   for _,object in pairs(self.objects) do
