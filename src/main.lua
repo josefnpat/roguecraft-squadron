@@ -73,9 +73,10 @@ states = {
   credits = require "states.credits",
 }
 
-function love.load()
+function love.load(arg)
   libs.hump.gamestate.registerEvents()
-  libs.hump.gamestate.switch(states.splash)
+  for i,v in pairs(arg) do print(i,v) end
+  libs.hump.gamestate.switch(states[arg[2]] or states.splash)
 end
 
 function love.update(dt)
