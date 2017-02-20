@@ -6,7 +6,7 @@ math.randomseed(os.time())
 vn = {
   adj = {
     default = love.graphics.newImage("assets/vn/adj/default.png"),
-	  overlay = {
+    overlay = {
       love.graphics.newImage("assets/vn/adj/shine1.png"),
       love.graphics.newImage("assets/vn/adj/shine2.png")
     },
@@ -78,9 +78,9 @@ states = {
 }
 
 bg = {
-	space = love.graphics.newImage("assets/space.png"),
-	stars0 = love.graphics.newImage("assets/stars0.png"),
-	stars1 = love.graphics.newImage("assets/stars1.png"),
+  space = love.graphics.newImage("assets/space.png"),
+  stars0 = love.graphics.newImage("assets/stars0.png"),
+  stars1 = love.graphics.newImage("assets/stars1.png"),
 }
 
 function love.load(arg)
@@ -124,13 +124,14 @@ function dropshadowf(text,x,y,w,a)
 end
 
 function playBGM(source)
-	love.audio.stop()
-	if not settings.muted then
-		love.audio.play(source)
-	end
+  love.audio.stop()
+  if not settings.muted then
+    love.audio.play(source)
+  end
 end
 
 function playSFX(source)
+<<<<<<< HEAD
 	--hax hax hax
 	if type(source) == "table" then
 	  for i = 1, #source do 
@@ -145,10 +146,26 @@ function playSFX(source)
 	    love.audio.play(source)
 	  end
 	end
+=======
+  --hax hax hax
+  if type(source) == "table" then
+    for i = 1, #source do 
+      source[i]:stop()
+    end
+    if not settings.muted then
+      love.audio.play(source[math.random(#source)])
+    end
+  else
+    source:stop()
+    if not settings.muted then
+      love.audio.play(source)
+    end
+  end
+>>>>>>> 66d84d5dff0b9c63ef4082d7eb829f87387f94a8
 end
 
 function loopSFX(source)
-	if not source:isPlaying( ) and not settings.muted then
-		love.audio.play(source)
-	end
+  if not source:isPlaying( ) and not settings.muted then
+    love.audio.play(source)
+  end
 end
