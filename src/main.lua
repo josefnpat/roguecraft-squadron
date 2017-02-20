@@ -51,7 +51,7 @@ vn_audio = {
 }
 
 difficulty = {
-  tutorial_asteroid = 4,
+  tutorial_asteroid = 6,
   tutorial_enemy = 2,
   low_asteroid = 10,
   low_enemy = 10,
@@ -150,23 +150,23 @@ function playBGM(source)
 end
 
 function playSFX(source)
-	--hax hax hax
-	if type(source) == "table" then
-	  for i = 1, #source do 
-	    source[i]:stop()
-	  end
-	  if not settings.muted then
-		local current_source = source[math.random(#source)]
-		current_source:setVolume(settings.sound_volume/10)
-	    love.audio.play(current_source)
-	  end
-	else
-	  source:stop()
-	  if not settings.muted then
-		source:setVolume(settings.sound_volume/10)
-	    love.audio.play(source)
-	  end
-	end
+  --hax hax hax
+  if type(source) == "table" then
+    for i = 1, #source do
+      source[i]:stop()
+    end
+    if not settings.muted then
+    local current_source = source[math.random(#source)]
+    current_source:setVolume(settings.sound_volume/10)
+      love.audio.play(current_source)
+    end
+  else
+    source:stop()
+    if not settings.muted then
+    source:setVolume(settings.sound_volume/10)
+      love.audio.play(source)
+    end
+  end
 end
 
 function loopSFX(source)
