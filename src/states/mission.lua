@@ -102,13 +102,13 @@ function mission:init()
     self.stars1:getWidth(), self.stars1:getHeight())
 
   self.controlgroups = {}
-  
+
   self.raw_planet_images = love.filesystem.getDirectoryItems("assets/planets/")
   self.planet_images = {}
   for i = 1, #self.raw_planet_images do
     self.planet_images[i] = love.graphics.newImage("assets/planets/" .. self.raw_planet_images[i])
   end
-  
+
   self.resources = {
     material = math.huge,
     material_cargo = 0,
@@ -125,7 +125,7 @@ function mission:init()
   }
 
   self.actions = {}
-  
+
   self.actions.repair = {
     icon = "repair",
     tooltip = function(object) return "Auto Repair "..(object.repair and "Enabled" or "Disabled") end,
@@ -665,8 +665,10 @@ function mission:mousepressed(x,y,b)
 
     if b == 1 then
       if closest_object and closest_object.owner == 0 and closest_object_distance < 32 then
-        for _,object in pairs(self.objects) do
-          object.selected = false
+        if not love.keyboard.isDown("lshift") then
+          for _,object in pairs(self.objects) do
+            object.selected = false
+          end
         end
         closest_object.selected = true
         closest_object.anim = 0.25
