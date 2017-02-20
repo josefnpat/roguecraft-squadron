@@ -1262,7 +1262,27 @@ function mission:updateMission(dt)
       end
     end
 
-  end
+    if object.owner and object.owner ~= 0 and not object.wander then
+      object.wander = {
+        x = math.random(0,128*32),
+        y = math.random(0,128*32),
+      }
+    end
+
+    if object.wander then
+      if self:distance(object.wander,object.position) < 4 then
+        object.wander = nil
+      end
+    end
+
+    if object.wander and not object.target and not object.target_object then
+      local dx,dy = object.position.x-object.wander.x,object.position.y-object.wander.y
+      object.angle = math.atan2(dy,dx)+math.pi
+      object.position.x = object.position.x + math.cos(object.angle)*dt*object.speed*self.speed_mult/2
+      object.position.y = object.position.y + math.sin(object.angle)*dt*object.speed*self.speed_mult/2
+    end
+
+  end -- end of object loop
 
   -- cleanup
 
