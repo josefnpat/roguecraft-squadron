@@ -6,8 +6,9 @@ require "settings"
 function state:init()
 	self.options = {}
 	self.options[1] = {text = "Fullscreen", act = function() settings.fullscreen = not settings.fullscreen; settings.update() end}
-	self.options[2] = {text = "Audio Mute", act = function() settings.muted = not settings.muted; settings.update() end}
-	self.options[3] = {text = "Back", act = function() libs.hump.gamestate.switch(states.pause) end}
+	self.options[2] = {text = "Sound", act = function() settings.muted = not settings.muted; settings.update() end}
+	self.options[3] = {text = "Music", act = function() settings.muted_music = not settings.muted_music; settings.update() end}
+	self.options[4] = {text = "Back", act = function() libs.hump.gamestate.switch(settings.previousState) end}
 	
 	self.hover_sound = love.audio.newSource("assets/sfx/hover.wav")
 	self.select_sound = love.audio.newSource("assets/sfx/select.wav")
@@ -20,7 +21,8 @@ end
 
 function state:loadText()
 	self.options[1].text = "Fullscreen: " .. tostring(settings.fullscreen)
-	self.options[2].text = "Mute Audio: " .. tostring(settings.muted)
+	self.options[2].text = "Mute Sound: " .. tostring(settings.muted)
+	self.options[3].text = "Mute Music: " .. tostring(settings.muted_music)
 end
 
 function state:update(dt)
@@ -55,7 +57,8 @@ end
 function state:draw()
 	love.graphics.setColor(255,255,255)
 	
-	states.game:draw()
+	states.menu:drawBackground()
+	
 	love.graphics.setColor(0,0,0,100)
 	love.graphics.rectangle("fill",0,0,love.graphics:getWidth(),love.graphics:getHeight())
 	love.graphics.setColor(255,255,255)

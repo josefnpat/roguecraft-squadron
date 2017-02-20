@@ -3,7 +3,7 @@ local state = {}
 function state:init()
 	self.options = {}
 	self.options[1] = {text = "Continue", act = function() libs.hump.gamestate.switch(states.game) end}
-	self.options[2] = {text = "Settings", act = function() libs.hump.gamestate.switch(states.options) end}
+	self.options[2] = {text = "Settings", act = function() libs.hump.gamestate.switch(states.options); settings.previousState = states.pause end}
 	self.options[3] = {text = "End Game", act = function() libs.hump.gamestate.switch(states.menu) end}
 	
 	self.hover_sound = love.audio.newSource("assets/sfx/hover.wav")

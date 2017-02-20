@@ -125,7 +125,8 @@ end
 
 function playBGM(source)
   love.audio.stop()
-  if not settings.muted then
+  settings.bgm = source
+  if not settings.muted_music then
     love.audio.play(source)
   end
 end

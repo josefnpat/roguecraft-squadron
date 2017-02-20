@@ -9,8 +9,9 @@ end
 function mainmenu:enter()
 	self.options = {}
 	self.options[1] = {text = "New Game", act = function() libs.hump.gamestate.switch(states.game); states.game:init() end}
-	self.options[2] = {text = "Credits", act = function() libs.hump.gamestate.switch(states.credits) end}
-	self.options[3] = {text = "Exit", act = function() love.event.quit() end}
+	self.options[2] = {text = "Settings", act = function() libs.hump.gamestate.switch(states.options); settings.previousState = states.menu  end}
+	self.options[3] = {text = "Credits", act = function() libs.hump.gamestate.switch(states.credits) end}
+	self.options[4] = {text = "Exit", act = function() love.event.quit() end}
 	
 	self.space = love.graphics.newImage("assets/space.png")
 	
@@ -72,7 +73,7 @@ function mainmenu:keypressed(key)
 
 end
 
-function mainmenu:draw()
+function mainmenu:drawBackground()
 	love.graphics.setColor(255,255,255)
 	
 	love.graphics.draw(self.space,0,0)
@@ -92,6 +93,10 @@ function mainmenu:draw()
 	love.graphics.draw(self.planet_images[self.random_planet],love.graphics:getWidth() * 0.1,love.graphics:getHeight() * 0.75,
 		love.timer.getTime() * self.planet_rotation,1,1,
 		self.planet_images[self.random_planet]:getWidth()/2,self.planet_images[self.random_planet]:getHeight()/2)
+end
+
+function mainmenu:draw()
+	self:drawBackground()
 
 	local y_offset = love.graphics:getHeight() * 0.075
 	
