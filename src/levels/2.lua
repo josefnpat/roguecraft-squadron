@@ -10,5 +10,6 @@ level.intro = function(self)
 end
 
 level.enemy = difficulty.tutorial_enemy
+level.asteroid = difficulty.tutorial_asteroid
 
 return level
