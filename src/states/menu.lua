@@ -87,6 +87,7 @@ function mainmenu:draw()
 		dropshadowf(current_text ,0,math.floor(self.buttons_y) + i * fonts.menu:getHeight( ),love.graphics:getWidth(),"center")
 	end
 	love.graphics.setFont(fonts.default)
+  love.graphics.print("GIT v"..git_count.." ["..git_hash.."]",32,32)
 end
 
 return mainmenu
