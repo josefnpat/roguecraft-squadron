@@ -74,6 +74,11 @@ states = {
 }
 
 function love.load(arg)
+  for i,v in pairs(arg) do
+    if v == "novn" then
+      disable_vn = true
+    end
+  end
   libs.hump.gamestate.registerEvents()
   libs.hump.gamestate.switch(states[arg[2]] or states.splash)
 end

@@ -2,6 +2,16 @@ local mission = {}
 
 function mission:init()
 
+  self.explosion_images = {}
+  self.explosions = {}
+
+  for i = 0,2 do
+    table.insert(
+      self.explosion_images,
+      love.graphics.newImage("assets/explosion"..i..".png")
+    )
+  end
+
   self.speed_mult = 2
 
   self.resources_types = {"ore","material","food","crew"}
@@ -414,6 +424,9 @@ function mission:nextLevel()
 
   local level_data = require("levels/"..self.level)
   self.vn = level_data:intro()
+  if disable_vn then
+    self.vn._run = false
+  end
 
   if level_data.asteroid then
     for i = 1,level_data.asteroid do
@@ -798,6 +811,20 @@ function mission:draw()
 
   end
 
+  for ei,explosion in pairs(self.explosions) do
+    local index = math.floor(explosion.dt)+1
+    local img = self.explosion_images[index]
+    if img then
+      love.graphics.draw(img,
+        explosion.x,explosion.y,
+        explosion.angle,1,1,
+        img:getWidth()/2,
+        img:getHeight()/2)
+    else
+      table.remove(self.explosions,ei)
+    end
+  end
+
   if self.target_show then
     local percent = self.target_show.anim/self.target_show.anim_max
     love.graphics.setColor(0,255,0)
@@ -1048,6 +1075,10 @@ end
 
 function mission:updateMission(dt)
 
+  for _,e in pairs(self.explosions) do
+    e.dt = e.dt + dt*#self.explosion_images*4
+  end
+
   if self.target_show then
     if not self.target_show.anim_max then
       self.target_show.anim_max = self.target_show.anim
@@ -1242,7 +1273,12 @@ function mission:updateMission(dt)
       (object.ore_supply and object.ore_supply <= 0) then
 
       table.remove(self.objects,object_index)
-      -- TODO: add explosion
+      table.insert(self.explosions,{
+        x = object.position.x + math.random(-8,8),
+        y = object.position.y + math.random(-8,8),
+        angle = math.random()*math.pi*2,
+        dt = 0,
+      })
 	    playSFX(object.death_sfx)
     end
 
