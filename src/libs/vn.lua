@@ -6,6 +6,7 @@ function vn.new(init)
 
   self._run = init.run or true
   self.getRun = vn.getRun
+  self.update = vn.update
   self._frames = {}
   self.addFrame = vn.addFrame
 
@@ -15,14 +16,20 @@ function vn.new(init)
   self.next = vn.next
   self.play = vn.play
   self.stop = vn.stop
-
+  
+  self.overlay_animation_limit = 1
+  self.overlay_animation_timer = 0
+  self.overlay_current_frame = 1
+  self.overlay_next_frame = 1
+  
+  
   self._init = true
 
   return self
 end
 
-function vn:addFrame(image,name,text,audio)
-  table.insert(self._frames,{image=image,name=name,text=text,audio=audio})
+function vn:addFrame(image,overlay,name,text,audio)
+  table.insert(self._frames,{image=image,overlay=overlay,name=name,text=text,audio=audio})
 end
 
 function vn:stop()
@@ -32,6 +39,22 @@ function vn:stop()
       cframe.audio:stop()
     end
   end
+end
+
+function vn:update(dt)
+	local cframe = self._frames[self._frame]
+	self.overlay_animation_timer = self.overlay_animation_timer + dt
+	if self.overlay_animation_timer > self.overlay_animation_limit then
+		self.overlay_current_frame = self.overlay_current_frame + 1
+		self.overlay_animation_timer = 0
+		if self.overlay_current_frame > #cframe.overlay then
+			self.overlay_current_frame = 1
+		end
+		self.overlay_next_frame = self.overlay_current_frame + 1
+		if self.overlay_next_frame > #cframe.overlay then
+			self.overlay_next_frame = 1
+		end
+	end
 end
 
 function vn:play()
@@ -75,6 +98,12 @@ function vn:draw()
     love.graphics.setColor(255,255,255)
     if cframe.image then
       love.graphics.draw(cframe.image)
+    end
+	if cframe.overlay and cframe.overlay[self.overlay_current_frame] and cframe.overlay[self.overlay_next_frame] then
+	  love.graphics.setColor(255,255,255,(self.overlay_animation_timer/self.overlay_animation_limit) * 255)
+      love.graphics.draw(cframe.overlay[self.overlay_current_frame])
+	  love.graphics.setColor(255,255,255,(1-(self.overlay_animation_timer/self.overlay_animation_limit)) * 255)
+      love.graphics.draw(cframe.overlay[self.overlay_next_frame])
     end
     love.graphics.setColor(0,0,0,191)
     love.graphics.rectangle("fill",padding,voffset+padding,

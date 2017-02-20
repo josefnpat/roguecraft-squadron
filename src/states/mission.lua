@@ -42,7 +42,7 @@ function mission:init()
     buildShip = love.audio.newSource("assets/sfx/build.wav"),
 	repairShip = love.audio.newSource("assets/sfx/repair.wav"),
 	refine = love.audio.newSource("assets/sfx/refine.wav"),
-	moving = love.audio.newSource("assets/sfx/moving.wav"),
+	moving = love.audio.newSource("assets/sfx/on my way (complete).wav"),
 	mining = love.audio.newSource("assets/sfx/mining.wav"),
   }
   
@@ -1024,6 +1024,8 @@ function mission:update(dt)
 
   if not self.vn:getRun() then
     self:updateMission(dt)
+  else
+    self.vn:update(dt)
   end
 
   if not love.window.hasFocus() then
