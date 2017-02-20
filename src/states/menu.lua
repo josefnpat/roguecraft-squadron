@@ -10,7 +10,7 @@ end
 function mainmenu:enter()
   self.options = {
     {
-      text = "New Game [Easy]",
+      text = "New Easy Game",
       act = function()
         difficulty.mult.enemy = 1
         difficulty.mult.asteroid = 1
@@ -18,7 +18,7 @@ function mainmenu:enter()
       end
     },
     {
-      text = "New Game [Medium]",
+      text = "New Medium Game",
       act = function()
         difficulty.mult.enemy = 2
         difficulty.mult.asteroid = 1+1/2
@@ -26,7 +26,7 @@ function mainmenu:enter()
       end
     },
     {
-      text = "New Game [Hard]",
+      text = "New Hard Game",
       act = function()
         difficulty.mult.enemy = 3
         difficulty.mult.asteroid = 1+2/2
@@ -34,7 +34,7 @@ function mainmenu:enter()
       end
     },
     {
-      text = "New Game [Insane]",
+      text = "New Insane Game",
       act = function()
         difficulty.mult.enemy = 4
         difficulty.mult.asteroid = 1+3/2
