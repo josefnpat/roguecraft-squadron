@@ -440,7 +440,7 @@ function mission:nextLevel()
   end
 
   if level_data.asteroid then
-    for i = 1,level_data.asteroid do
+    for i = 1,level_data.asteroid*difficulty.mult.asteroid do
       table.insert(self.objects,{
         type = "asteroid",
         position = {
@@ -469,7 +469,7 @@ function mission:nextLevel()
   end
 
   if level_data.enemy then
-    for i = 1,level_data.enemy do
+    for i = 1,level_data.enemy*difficulty.mult.enemy do
       table.insert(self.objects,{
         owner = 1,
         type = "enemy"..math.random(0,1),

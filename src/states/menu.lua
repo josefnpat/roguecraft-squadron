@@ -8,31 +8,79 @@ function mainmenu:init()
 end
 
 function mainmenu:enter()
-  self.options = {}
-  self.options[1] = {text = "New Game", act = function() libs.hump.gamestate.switch(states.game); states.game:init() end}
-  self.options[2] = {text = "Settings", act = function() libs.hump.gamestate.switch(states.options); settings.previousState = states.menu  end}
-  self.options[3] = {text = "Credits", act = function() libs.hump.gamestate.switch(states.credits) end}
-  self.options[4] = {text = "Exit", act = function() love.event.quit() end}
-  
+  self.options = {
+    {
+      text = "New Game [Easy]",
+      act = function()
+        difficulty.mult.enemy = 1
+        difficulty.mult.asteroid = 1
+        libs.hump.gamestate.switch(states.game); states.game:init()
+      end
+    },
+    {
+      text = "New Game [Medium]",
+      act = function()
+        difficulty.mult.enemy = 2
+        difficulty.mult.asteroid = 1+1/2
+        libs.hump.gamestate.switch(states.game); states.game:init()
+      end
+    },
+    {
+      text = "New Game [Hard]",
+      act = function()
+        difficulty.mult.enemy = 3
+        difficulty.mult.asteroid = 1+2/2
+        libs.hump.gamestate.switch(states.game); states.game:init()
+      end
+    },
+    {
+      text = "New Game [Insane]",
+      act = function()
+        difficulty.mult.enemy = 4
+        difficulty.mult.asteroid = 1+3/2
+        libs.hump.gamestate.switch(states.game); states.game:init()
+      end
+    },
+    {
+      text = "Settings",
+      act = function()
+        libs.hump.gamestate.switch(states.options)
+        settings.previousState = states.menu
+      end
+    },
+    {
+      text = "Credits",
+      act = function()
+        libs.hump.gamestate.switch(states.credits)
+      end
+    },
+    {
+      text = "Exit",
+      act = function()
+        love.event.quit()
+      end
+    },
+  }
+
   self.space = bg.space
-  
+
   self.stars0 = bg.stars0
   self.stars0:setWrap("repeat","repeat")
   self.stars0_quad = love.graphics.newQuad(0, 0,
   1280+self.stars0:getWidth(), 720+self.stars0:getHeight(),
     self.stars0:getWidth(), self.stars0:getHeight())
-  
+
   self.stars1 = bg.stars1
   self.stars1:setWrap("repeat","repeat")
   self.stars1_quad = love.graphics.newQuad(0, 0,
     1280+self.stars1:getWidth(), 720+self.stars1:getHeight(),
     self.stars1:getWidth(), self.stars1:getHeight())
-  
+
   self.background_scroll_speed = 4
-  
+
   self.hover_sound = love.audio.newSource("assets/sfx/hover.ogg")
   self.select_sound = love.audio.newSource("assets/sfx/select.ogg")
-  
+
   self.raw_planet_images = love.filesystem.getDirectoryItems("assets/planets/")
   self.planet_images = {}
   for i = 1, #self.raw_planet_images do
@@ -40,9 +88,9 @@ function mainmenu:enter()
   end
   self.random_planet = math.random(#self.planet_images)
   self.planet_rotation = 0.01
-  
+
   self.buttons_y = 1
-  
+
   self.input_delay_timer = 0
   self.input_delay_max = 0.1
 end

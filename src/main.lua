@@ -51,6 +51,10 @@ vn_audio = {
 }
 
 difficulty = {
+  mult = {
+    asteroid = 1,
+    enemy = 1,
+  },
   tutorial_asteroid = 6,
   tutorial_enemy = 2,
   low_asteroid = 10,
