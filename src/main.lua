@@ -108,3 +108,9 @@ function playSFX(source)
 		love.audio.play(source)
 	end
 end
+
+function loopSFX(source)
+	if not source:isPlaying( ) and not settings.muted then
+		love.audio.play(source)
+	end
+end

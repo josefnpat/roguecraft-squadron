@@ -38,6 +38,14 @@ function mission:init()
     cargo = "A cargo ship that stores ore, material and food.",
   }
 
+  self.sfx = {
+    buildShip = love.audio.newSource("assets/sfx/build.wav"),
+	repairShip = love.audio.newSource("assets/sfx/repair.wav"),
+	refine = love.audio.newSource("assets/sfx/refine.wav"),
+	moving = love.audio.newSource("assets/sfx/moving.wav"),
+	mining = love.audio.newSource("assets/sfx/mining.wav"),
+  }
+  
   self.action_icons = {
 	menu = love.graphics.newImage("actions/repair.png"),
     repair = love.graphics.newImage("actions/repair.png"),
@@ -491,6 +499,7 @@ function mission:buyBuildObject(costs)
     for resource_type,cost in pairs(costs) do
       self.resources[resource_type] = self.resources[resource_type] - cost
     end
+	playSFX(self.sfx.buildShip)
     return true
   else
     return false
@@ -578,6 +587,7 @@ function mission:mousepressed(x,y,b)
           if object.selected then
             object.target_object = closest_object
             object.target_object.anim = 0.25
+			playSFX(self.sfx.moving)
           end
         end
 
@@ -608,6 +618,7 @@ function mission:mousepressed(x,y,b)
                 object.target = {x=gx*grid_size+ox,y=gy*grid_size+oy}
                 object.anim = 0.25
                 object.target_object = nil
+				playSFX(self.sfx.moving)
                 found = true
                 self.target_show = {
                   x=self.camera.x+x-1280/2,
@@ -1093,6 +1104,9 @@ function mission:updateMission(dt)
       if amount > self.resources.ore then
         amount = self.resources.ore
       end
+	  if amount > 0 then
+		loopSFX(self.sfx.refine)
+	  end
       self.resources.material = self.resources.material + amount
       self.resources.material_delta = self.resources.material_delta + amount/dt
       self.resources.ore = self.resources.ore - amount
@@ -1102,10 +1116,17 @@ function mission:updateMission(dt)
     if object.repair then
       local amount_to_repair = math.min( (object.health.max - object.health.current) , object.health.max/10  )*dt
       if amount_to_repair < self.resources.material then
+		if math.ceil(object.health.current) < math.ceil(object.health.max) then 
+		  loopSFX(self.sfx.repairShip) 
+		  --repairing
+		else
+		  object.health.current = object.health.max
+		  --repair completed
+		end
         object.health.current = object.health.current + amount_to_repair
         self.resources.material = self.resources.material - amount_to_repair
         self.resources.material_delta = self.resources.material_delta - amount_to_repair/dt
-      end
+	  end
     end
 
     if object.food_gather then
@@ -1117,7 +1138,7 @@ function mission:updateMission(dt)
     if object.target_object then
       if object.ore_gather and object.target_object.ore_supply and
         self:distance(object.position,object.target_object.position) < 48 then
-
+		
         local amount = object.ore_gather*dt
         self.resources.ore_delta = self.resources.ore_delta + amount/dt
         if object.target_object.ore_supply > amount then
@@ -1127,7 +1148,7 @@ function mission:updateMission(dt)
           self.resources.ore = self.resources.ore + object.target_object.ore_supply
           object.target_object.ore_supply = 0
         end
-
+		loopSFX(self.sfx.mining)
       end
       if object.target_object.health and object.target_object.health.current <= 0 then
         object.target_object = nil
