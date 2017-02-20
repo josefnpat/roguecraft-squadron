@@ -983,7 +983,7 @@ end
 function mission:drawMinimap()
   local x,y,w,h = self:miniMapArea()
   love.graphics.setColor(0,0,0)
-  love.graphics.rectangle("fill",x,y,w,h)
+  love.graphics.rectangle("fill",x-1,y-1,w+2,h+2)
   local scale = self:miniMapScale()
   love.graphics.setColor(self.colors.ui.primary)
   love.graphics.rectangle("line",x,y,w,h)

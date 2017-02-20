@@ -2,8 +2,7 @@ local level = {}
 
 level.intro = function(self)
   local tvn = libs.vn.new()
-  tvn:addFrame(vn.adj.default,"Adj",string.rep("YOLO ",20),nil)
-  tvn:addFrame(vn.adj.default,"Adj",string.rep("CARPE DIEM ",20),nil)
+  tvn:addFrame(vn.adj.default,"Adj","I'm six foot three, and maintain a very consistent panda bear shape.",vn_audio[1][1])
   return tvn
 end
 

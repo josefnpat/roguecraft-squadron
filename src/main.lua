@@ -7,6 +7,19 @@ vn = {
   }
 }
 
+vn_audio = {
+  -- level 1
+  {
+    --love.audio.newSource("vn/1_1.wav","stream"),
+    --love.audio.newSource("vn/1_2.wav","stream"),
+  },
+  -- level 2
+  {
+    --love.audio.newSource("vn/1_1.wav","stream"),
+    --love.audio.newSource("vn/1_2.wav","stream"),
+  },
+}
+
 fonts = {
   default = love.graphics.newFont("fonts/Yantramanav-Black.ttf",16),
   title = love.graphics.newFont("fonts/ExpletusSans-Bold.ttf",64),
@@ -46,7 +59,7 @@ function love.load()
 end
 
 function love.update(dt)
-  love.mouse.setGrabbed(love.window.hasFocus())
+  love.mouse.setGrabbed(libs.hump.gamestate.current() == states.game and love.window.hasFocus())
 end
 
 function dropshadow(text,x,y)

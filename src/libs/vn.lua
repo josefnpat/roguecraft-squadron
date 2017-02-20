@@ -13,6 +13,10 @@ function vn.new(init)
 
   self.draw = vn.draw
   self.next = vn.next
+  self.play = vn.play
+  self.stop = vn.stop
+
+  self._init = true
 
   return self
 end
@@ -21,14 +25,40 @@ function vn:addFrame(image,name,text,audio)
   table.insert(self._frames,{image=image,name=name,text=text,audio=audio})
 end
 
+function vn:stop()
+  local cframe = self._frames[self._frame]
+  if cframe then
+    if cframe.audio then
+      cframe.audio:stop()
+    end
+  end
+end
+
+function vn:play()
+  local cframe = self._frames[self._frame]
+  if cframe then
+    if cframe.audio then
+      cframe.audio:play()
+    end
+  end
+end
+
 function vn:next()
+  self:stop()
   self._frame = self._frame + 1
   self._run = self._frames[self._frame] and true or false
+  self:play()
 end
 
 function vn:draw()
   local cframe = self._frames[self._frame]
   if cframe then
+
+    if self._init then
+      self._init = false
+      self:play()
+    end
+
     local orig_font = love.graphics.getFont()
     local padding = 16
 
