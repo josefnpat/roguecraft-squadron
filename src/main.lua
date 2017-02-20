@@ -1,6 +1,8 @@
 -- Thanks @bartbes! fixes cygwin buffer
 io.stdout:setvbuf("no")
 
+math.randomseed(os.time())
+
 vn = {
   adj = {
     default = love.graphics.newImage("assets/vn/adj/default.png"),
