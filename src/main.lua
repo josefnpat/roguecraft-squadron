@@ -3,7 +3,7 @@ io.stdout:setvbuf("no")
 
 vn = {
   adj = {
-    default = love.graphics.newImage("vn/adj/default.png"),
+    default = love.graphics.newImage("assets/vn/adj/default.png"),
   }
 }
 

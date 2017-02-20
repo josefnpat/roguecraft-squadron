@@ -6,15 +6,15 @@ function mainmenu:enter()
 	self.options[2] = {text = "Credits", act = function() libs.hump.gamestate.switch(states.credits) end}
 	self.options[3] = {text = "Exit", act = function() love.event.quit() end}
 	
-	self.space = love.graphics.newImage("space.png")
+	self.space = love.graphics.newImage("assets/space.png")
 	
-	self.stars0 = love.graphics.newImage("stars0.png")
+	self.stars0 = love.graphics.newImage("assets/stars0.png")
 	self.stars0:setWrap("repeat","repeat")
 	self.stars0_quad = love.graphics.newQuad(0, 0,
 	1280+self.stars0:getWidth(), 720+self.stars0:getHeight(),
 		self.stars0:getWidth(), self.stars0:getHeight())
 	
-	self.stars1 = love.graphics.newImage("stars1.png")
+	self.stars1 = love.graphics.newImage("assets/stars1.png")
 	self.stars1:setWrap("repeat","repeat")
 	self.stars1_quad = love.graphics.newQuad(0, 0,
     1280+self.stars1:getWidth(), 720+self.stars1:getHeight(),

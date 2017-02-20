@@ -20,8 +20,8 @@ function mission:init()
   self.ships_icon = {}
   self.ships_death_sfx = {}
   for i,v in pairs(self.ship_types) do
-    self.ships[v] = love.graphics.newImage("ships/"..v..".png")
-    self.ships_icon[v] = love.graphics.newImage("ships/"..v.."_icon.png")
+    self.ships[v] = love.graphics.newImage("assets/ships/"..v..".png")
+    self.ships_icon[v] = love.graphics.newImage("assets/ships/"..v.."_icon.png")
     self.ships_death_sfx[v] = basic_explosion
   end
   self.ships_death_sfx.asteroid = love.audio.newSource("assets/sfx/asteroid_death.wav")
@@ -47,10 +47,10 @@ function mission:init()
   }
   
   self.action_icons = {
-	menu = love.graphics.newImage("actions/repair.png"),
-    repair = love.graphics.newImage("actions/repair.png"),
-    salvage = love.graphics.newImage("actions/salvage.png"),
-    refine = love.graphics.newImage("actions/refine.png"),
+	menu = love.graphics.newImage("assets/actions/repair.png"),
+    repair = love.graphics.newImage("assets/actions/repair.png"),
+    salvage = love.graphics.newImage("assets/actions/salvage.png"),
+    refine = love.graphics.newImage("assets/actions/refine.png"),
     build_drydock = self.ships_icon.drydock,
     build_mining = self.ships_icon.mining,
     build_combat = self.ships_icon.combat,
@@ -61,27 +61,27 @@ function mission:init()
   --TODO: add passive icons, such as attack/mine
 
   self.bullets = {
-    laser = love.graphics.newImage("bullets/laser.png"),
+    laser = love.graphics.newImage("assets/bullets/laser.png"),
   }
 
-  self.ships_chevron = love.graphics.newImage("chevron.png")
-  self.target = love.graphics.newImage("target.png")
+  self.ships_chevron = love.graphics.newImage("assets/chevron.png")
+  self.target = love.graphics.newImage("assets/target.png")
 
-  self.icon_bg = love.graphics.newImage("icon_bg.png")
+  self.icon_bg = love.graphics.newImage("assets/icon_bg.png")
   self.camera = libs.hump.camera(1280/2,720/2)
   self.camera_speed = 300
   self.camera.vertical_mouse_move = 1/16.875
   self.camera.horizontal_mouse_move = 1/30
 
-  self.space = love.graphics.newImage("space.png")
+  self.space = love.graphics.newImage("assets/space.png")
 
-  self.stars0 = love.graphics.newImage("stars0.png")
+  self.stars0 = love.graphics.newImage("assets/stars0.png")
   self.stars0:setWrap("repeat","repeat")
   self.stars0_quad = love.graphics.newQuad(0, 0,
     1280+self.stars0:getWidth(), 720+self.stars0:getHeight(),
     self.stars0:getWidth(), self.stars0:getHeight())
 
-  self.stars1 = love.graphics.newImage("stars1.png")
+  self.stars1 = love.graphics.newImage("assets/stars1.png")
   self.stars1:setWrap("repeat","repeat")
   self.stars1_quad = love.graphics.newQuad(0, 0,
     1280+self.stars1:getWidth(), 720+self.stars1:getHeight(),
