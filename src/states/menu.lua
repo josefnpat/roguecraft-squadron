@@ -1,5 +1,10 @@
 local mainmenu = {}
 
+function mainmenu:init()
+  self.music = love.audio.newSource("assets/music/Terran4.ogg","stream")
+  playBGM(self.music)
+end
+
 function mainmenu:enter()
 	self.options = {}
 	self.options[1] = {text = "New Game", act = function() libs.hump.gamestate.switch(states.game); states.game:init() end}

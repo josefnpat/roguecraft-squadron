@@ -4,7 +4,14 @@ io.stdout:setvbuf("no")
 vn = {
   adj = {
     default = love.graphics.newImage("assets/vn/adj/default.png"),
+<<<<<<< HEAD
 	overlay = {love.graphics.newImage("assets/vn/adj/shine1.png"), love.graphics.newImage("assets/vn/adj/shine2.png")},
+=======
+	  overlay = {
+      love.graphics.newImage("assets/vn/adj/armour - blue.png"),
+      love.graphics.newImage("assets/vn/adj/armour - red.png")
+    },
+>>>>>>> d2e07689c0f9d1152c1d56d9681c198670f8ea27
   }
 }
 
