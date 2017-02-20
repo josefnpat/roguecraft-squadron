@@ -19,8 +19,8 @@ function state:init()
 end
 
 function state:loadText()
-	self.options[1].text = "Fullscreen:" .. tostring(settings.fullscreen)
-	self.options[2].text = "Audio Mute: " .. tostring(settings.muted)
+	self.options[1].text = "Fullscreen: " .. tostring(settings.fullscreen)
+	self.options[2].text = "Mute Audio: " .. tostring(settings.muted)
 end
 
 function state:update(dt)
