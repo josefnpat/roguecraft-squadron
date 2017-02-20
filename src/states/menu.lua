@@ -8,7 +8,6 @@ function mainmenu:init()
 end
 
 function mainmenu:enter()
-<<<<<<< HEAD
 	self.options = {}
 	self.options[1] = {text = "New Game", act = function() libs.hump.gamestate.switch(states.game); states.game:init() end}
 	self.options[2] = {text = "Settings", act = function() libs.hump.gamestate.switch(states.options); settings.previousState = states.menu  end}
@@ -26,24 +25,6 @@ function mainmenu:enter()
 	self.stars1 = love.graphics.newImage("assets/stars1.png")
 	self.stars1:setWrap("repeat","repeat")
 	self.stars1_quad = love.graphics.newQuad(0, 0,
-=======
-  self.options = {}
-  self.options[1] = {text = "New Game", act = function() libs.hump.gamestate.switch(states.game); states.game:init() end}
-  self.options[2] = {text = "Credits", act = function() libs.hump.gamestate.switch(states.credits) end}
-  self.options[3] = {text = "Exit", act = function() love.event.quit() end}
-  
-  self.space = love.graphics.newImage("assets/space.png")
-  
-  self.stars0 = love.graphics.newImage("assets/stars0.png")
-  self.stars0:setWrap("repeat","repeat")
-  self.stars0_quad = love.graphics.newQuad(0, 0,
-  1280+self.stars0:getWidth(), 720+self.stars0:getHeight(),
-    self.stars0:getWidth(), self.stars0:getHeight())
-  
-  self.stars1 = love.graphics.newImage("assets/stars1.png")
-  self.stars1:setWrap("repeat","repeat")
-  self.stars1_quad = love.graphics.newQuad(0, 0,
->>>>>>> da38c4c151ebad35799da3aaedc43173b560e366
     1280+self.stars1:getWidth(), 720+self.stars1:getHeight(),
     self.stars1:getWidth(), self.stars1:getHeight())
   
@@ -93,17 +74,10 @@ function mainmenu:keypressed(key)
 
 end
 
-<<<<<<< HEAD
 function mainmenu:drawBackground()
-	love.graphics.setColor(255,255,255)
-	
-	love.graphics.draw(self.space,0,0)
-=======
-function mainmenu:draw()
   love.graphics.setColor(255,255,255)
-  
+	
   love.graphics.draw(self.space,0,0)
->>>>>>> da38c4c151ebad35799da3aaedc43173b560e366
 
   love.graphics.setBlendMode("add")
   
@@ -115,7 +89,6 @@ function mainmenu:draw()
     -self.stars1:getWidth()+((love.timer.getTime()/2*self.background_scroll_speed)%self.stars1:getWidth()),
     -self.stars1:getHeight()+((love.timer.getTime()/2*self.background_scroll_speed)%self.stars1:getHeight()) )
 
-<<<<<<< HEAD
 	love.graphics.setBlendMode("alpha")
 	
 	love.graphics.draw(self.planet_images[self.random_planet],love.graphics:getWidth() * 0.1,love.graphics:getHeight() * 0.75,
@@ -124,14 +97,7 @@ function mainmenu:draw()
 end
 
 function mainmenu:draw()
-	self:drawBackground()
-=======
-  love.graphics.setBlendMode("alpha")
-  
-  love.graphics.draw(self.planet_images[self.random_planet],love.graphics:getWidth() * 0.1,love.graphics:getHeight() * 0.75,
-    love.timer.getTime() * self.planet_rotation,1,1,
-    self.planet_images[self.random_planet]:getWidth()/2,self.planet_images[self.random_planet]:getHeight()/2)
->>>>>>> da38c4c151ebad35799da3aaedc43173b560e366
+  self:drawBackground()
 
   local y_offset = love.graphics:getHeight() * 0.075
   
