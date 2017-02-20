@@ -2,6 +2,8 @@ local mission = {}
 
 function mission:init()
 
+  self.jump_sound = love.audio.newSource("assets/sfx/jump.ogg")
+
   self.explosion_images = {}
   self.explosions = {}
 
@@ -653,11 +655,8 @@ function mission:mousepressed(x,y,b)
     end
   elseif self:mouseInButton() then
     self.show_button = false
-    if self:hasNextLevel() then
-      self:nextLevel()
-    else
-      libs.hump.gamestate.switch(states.win)
-    end
+    self.jump = 2.8 -- Jump sfx length
+    playSFX(self.jump_sound)
   else
 
     local ox,oy = self:getCameraOffset()
@@ -899,6 +898,12 @@ function mission:draw()
 
   dropshadowf("Level "..self.level,32,720-32-8,1280-64,"right")
 
+  if self.jump then
+    love.graphics.setColor(0,0,0,255-255*self.jump/2.8) -- jump sfx length
+    love.graphics.rectangle("fill",0,0,1280,720)
+    love.graphics.setColor(255,255,255)
+  end
+
   if self.vn:getRun() then
     self.vn:draw()
   end
@@ -1127,6 +1132,19 @@ function mission:update(dt)
 end
 
 function mission:updateMission(dt)
+
+  if self.jump then
+    if self.jump_sound:isPlaying() then
+      self.jump = math.max(0,self.jump - dt*2.8) -- jump sfx length
+    else
+      self.jump = nil
+      if self:hasNextLevel() then
+        self:nextLevel()
+      else
+        libs.hump.gamestate.switch(states.win)
+      end
+    end
+  end
 
   for _,e in pairs(self.explosions) do
     e.dt = e.dt + dt*#self.explosion_images*4
