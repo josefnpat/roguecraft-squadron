@@ -1322,6 +1322,10 @@ function mission:updateMission(dt)
       (object.target_object.ore_supply and object.target_object.ore_supply <= 0 )) then
 
       object.target_object = nil
+      object.target = {
+        x = object.position.x+math.random(-128,128),
+        y = object.position.y+math.random(-128,128),
+      }
     end
 
   end
