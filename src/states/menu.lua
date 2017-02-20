@@ -30,8 +30,8 @@ function mainmenu:enter()
   
   self.background_scroll_speed = 4
   
-  self.hover_sound = love.audio.newSource("assets/sfx/hover.wav")
-  self.select_sound = love.audio.newSource("assets/sfx/select.wav")
+  self.hover_sound = love.audio.newSource("assets/sfx/hover.ogg")
+  self.select_sound = love.audio.newSource("assets/sfx/select.ogg")
   
   self.raw_planet_images = love.filesystem.getDirectoryItems("assets/planets/")
   self.planet_images = {}

@@ -25,7 +25,7 @@ function mission:init()
 
   self.ship_types = {"enemy0","enemy1","drydock","mining","asteroid","combat","refinery","habitat","cargo"}
 
-  local basic_explosion = love.audio.newSource("assets/sfx/explosion.wav")
+  local basic_explosion = love.audio.newSource("assets/sfx/explosion.ogg")
   self.ships = {}
   self.ships_icon = {}
   self.ships_death_sfx = {}
@@ -34,7 +34,7 @@ function mission:init()
     self.ships_icon[v] = love.graphics.newImage("assets/ships/"..v.."_icon.png")
     self.ships_death_sfx[v] = basic_explosion
   end
-  self.ships_death_sfx.asteroid = love.audio.newSource("assets/sfx/asteroid_death.wav")
+  self.ships_death_sfx.asteroid = love.audio.newSource("assets/sfx/asteroid_death.ogg")
 
   self.ships_info = {
     enemy0 = "How did you get this, go away!",
@@ -49,13 +49,13 @@ function mission:init()
   }
 
   self.sfx = {
-    buildShip = love.audio.newSource("assets/sfx/build.wav"),
-    repairShip = love.audio.newSource("assets/sfx/repair.wav"),
-    refine = love.audio.newSource("assets/sfx/refine.wav"),
-    moving = {love.audio.newSource("assets/sfx/moving on my way.wav"),
-    love.audio.newSource("assets/sfx/moving ready.wav"),
-    love.audio.newSource("assets/sfx/moving yes commander.wav"),},
-    mining = love.audio.newSource("assets/sfx/mining.wav"),
+    buildShip = love.audio.newSource("assets/sfx/build.ogg"),
+    repairShip = love.audio.newSource("assets/sfx/repair.ogg"),
+    refine = love.audio.newSource("assets/sfx/refine.ogg"),
+    moving = {love.audio.newSource("assets/sfx/moving on my way.ogg"),
+    love.audio.newSource("assets/sfx/moving ready.ogg"),
+    love.audio.newSource("assets/sfx/moving yes commander.ogg"),},
+    mining = love.audio.newSource("assets/sfx/mining.ogg"),
   }
   
   self.action_icons = {
@@ -237,8 +237,8 @@ function mission:init()
         speed = 200,
         range = 200,
         aggression = 400,
-        sfx = love.audio.newSource("assets/sfx/laser_shoot.wav"),
-        collision_sfx = love.audio.newSource("assets/sfx/collision.wav"),
+        sfx = love.audio.newSource("assets/sfx/laser_shoot.ogg"),
+        collision_sfx = love.audio.newSource("assets/sfx/collision.ogg"),
       },
       death_sfx = self.ships_death_sfx.combat,
       crew = self.costs.combat.crew,
@@ -486,8 +486,8 @@ function mission:nextLevel()
           speed = 200,
           range = 200,
           aggression = 400,
-          sfx = love.audio.newSource("assets/sfx/laser_shoot.wav"),
-          collision_sfx = love.audio.newSource("assets/sfx/collision.wav"),
+          sfx = love.audio.newSource("assets/sfx/laser_shoot.ogg"),
+          collision_sfx = love.audio.newSource("assets/sfx/collision.ogg"),
         },
         death_sfx = self.ships_death_sfx.enemy0,
         crew = self.costs.combat.crew,
@@ -676,15 +676,17 @@ function mission:mousepressed(x,y,b)
 end
 
 function mission:keypressed(key)
-  if self.vn:getRun() then
-    self.vn:next()
-    return
-  end
-  local key_number = tonumber(key)
   if key == "escape" then
     libs.hump.gamestate.switch(states.pause)
     self.select_start = nil
   end
+
+  if self.vn:getRun() then
+    self.vn:next()
+    return
+  end
+
+  local key_number = tonumber(key)
   if key_number ~= nil and key_number >= 0 and key_number <= 9 then
     if love.keyboard.isDown("lctrl") then
 
