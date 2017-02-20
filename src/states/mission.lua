@@ -567,12 +567,61 @@ function mission:findClosestObject(x,y,include)
   return distance_object,distance
 end
 
+function mission:moveSelected(x,y,ox,oy)
+
+  ox,oy = ox or 0,oy or 0
+
+  local grid = {}
+  local grid_size = 48
+  for _,object in pairs(self.objects) do
+    if not object.selected then
+      local sx = object.target and object.target.x or object.position.x
+      local sy = object.target and object.target.y or object.position.y
+      local gx,gy = math.floor(sx/grid_size),math.floor(sy/grid_size)
+      grid[gx] = grid[gx] or {}
+      grid[gx][gy] = object
+    end
+  end
+  for _,object in pairs(self.objects) do
+    if object.selected then
+      local range = 0
+      local found = false
+      while found == false do
+        local rx,ry = x + math.random(-range,range),y + math.random(-range,range)
+        local gx,gy = math.floor(rx/grid_size),math.floor(ry/grid_size)
+        if not grid[gx] or not grid[gx][gy] then
+          grid[gx] = grid[gx] or {}
+          grid[gx][gy] = object
+          --ox,oy = self:getCameraOffset()
+          object.target = {x=gx*grid_size+ox,y=gy*grid_size+oy}
+          object.anim = 0.25
+          object.target_object = nil
+          playSFX(self.sfx.moving)
+          found = true
+          self.target_show = {
+            x=self.camera.x+x-1280/2,
+            y=self.camera.y+y-720/2,
+            anim=0.25
+          }
+        end
+        range = range + 0.1
+      end
+    end
+  end
+
+end
+
 function mission:mousepressed(x,y,b)
   if self.vn:getRun() then
     self.vn:next()
     return
   end
   if self:mouseInMiniMap() then
+    if b == 2 then
+      local mx,my,mw,mh = self:miniMapArea()
+      local px,py = (x-mx)*32,(y-my)*32
+      self:moveSelected(px,py)
+    end
   elseif self:mouseInSelected() then
     local pos = math.floor((love.mouse.getX()-32)/(32+self:iconPadding()))+1
     local count = 0
@@ -604,7 +653,7 @@ function mission:mousepressed(x,y,b)
     end
   else
 
-    local ox,oy = self:getcameraoffset()
+    local ox,oy = self:getCameraOffset()
     local closest_object, closest_object_distance = self:findClosestObject(x+ox,y+oy)
 
     if b == 1 then
@@ -631,43 +680,8 @@ function mission:mousepressed(x,y,b)
 
       else
 
-        local grid = {}
-        local grid_size = 48
-        for _,object in pairs(self.objects) do
-          if not object.selected then
-            local sx = object.target and object.target.x or object.position.x
-            local sy = object.target and object.target.y or object.position.y
-            local gx,gy = math.floor(sx/grid_size),math.floor(sy/grid_size)
-            grid[gx] = grid[gx] or {}
-            grid[gx][gy] = object
-          end
-        end
-        for _,object in pairs(self.objects) do
-          if object.selected then
-            local range = 0
-            local found = false
-            while found == false do
-              local rx,ry = x + math.random(-range,range),y + math.random(-range,range)
-              local gx,gy = math.floor(rx/grid_size),math.floor(ry/grid_size)
-              if not grid[gx] or not grid[gx][gy] then
-                grid[gx] = grid[gx] or {}
-                grid[gx][gy] = object
-                local ox,oy = self:getcameraoffset()
-                object.target = {x=gx*grid_size+ox,y=gy*grid_size+oy}
-                object.anim = 0.25
-                object.target_object = nil
-                playSFX(self.sfx.moving)
-                found = true
-                self.target_show = {
-                  x=self.camera.x+x-1280/2,
-                  y=self.camera.y+y-720/2,
-                  anim=0.25
-                }
-              end
-              range = range + 0.1
-            end
-          end
-        end
+        local ox,oy = self:getCameraOffset()
+        self:moveSelected(x,y,ox,oy)
 
       end
 
@@ -715,7 +729,7 @@ function mission:keypressed(key)
   end
 end
 
-function mission:getcameraoffset()
+function mission:getCameraOffset()
   return self.camera.x-1280/2,self.camera.y-720/2
 end
 
@@ -724,7 +738,7 @@ function mission:mousereleased(x,y,b)
   if b == 1 then
     if self.select_start then
       for _,object in pairs(self.objects) do
-        local ox,oy = self:getcameraoffset()
+        local ox,oy = self:getCameraOffset()
         local xmin,ymin,xmax,ymax = self:selectminmax(self.select_start.x+ox,self.select_start.y+oy,x+ox,y+oy)
         if not love.keyboard.isDown("lshift") then
         object.selected = false
