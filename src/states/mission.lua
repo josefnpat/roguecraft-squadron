@@ -157,7 +157,7 @@ function mission:init()
       health = {
         max = 25,
       },
-	  death_sfx = self.ships_death_sfx.drydock,
+  	  death_sfx = self.ships_death_sfx.drydock,
       crew = self.costs.drydock.crew,
       ore = 400,
       material = 400,

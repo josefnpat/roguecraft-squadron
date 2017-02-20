@@ -75,7 +75,7 @@ end
 
 function love.keypressed(key)
   if key == "`" then
-    debug_mode = not debug_mode
+    --debug_mode = not debug_mode
   end
 end
 
