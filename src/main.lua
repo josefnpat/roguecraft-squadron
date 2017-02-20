@@ -31,6 +31,23 @@ vn_audio = {
     line8 = love.audio.newSource("assets/vn/adj/audio/line8.wav"),
     line9 = love.audio.newSource("assets/vn/adj/audio/line9.wav"),
   },
+  com = {
+    line1 = love.audio.newSource("assets/vn/com/audio/line1.ogg"),
+    line2 = love.audio.newSource("assets/vn/com/audio/line2.ogg"),
+    line3 = love.audio.newSource("assets/vn/com/audio/line3.ogg"),
+    line4 = love.audio.newSource("assets/vn/com/audio/line4.ogg"),
+    line5 = love.audio.newSource("assets/vn/com/audio/line5.ogg"),
+    line6 = love.audio.newSource("assets/vn/com/audio/line6.ogg"),
+    line7 = love.audio.newSource("assets/vn/com/audio/line7.ogg"),
+    line8 = love.audio.newSource("assets/vn/com/audio/line8.ogg"),
+    line9 = love.audio.newSource("assets/vn/com/audio/line9.ogg"),
+    line10 = love.audio.newSource("assets/vn/com/audio/line10.ogg"),
+    line11 = love.audio.newSource("assets/vn/com/audio/line11.ogg"),
+    line12 = love.audio.newSource("assets/vn/com/audio/line12.ogg"),
+    line13 = love.audio.newSource("assets/vn/com/audio/line13.ogg"),
+    line14 = love.audio.newSource("assets/vn/com/audio/line14.ogg"),
+    line15 = love.audio.newSource("assets/vn/com/audio/line15.ogg"),
+  },
 }
 
 difficulty = {
