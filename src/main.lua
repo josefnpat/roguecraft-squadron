@@ -107,12 +107,6 @@ function love.update(dt)
   )
 end
 
-function love.keypressed(key)
-  if key == "`" then
-    --debug_mode = not debug_mode
-  end
-end
-
 function dropshadow(text,x,y)
   local color = {love.graphics.getColor()}
   love.graphics.setColor(0,0,0,191)
