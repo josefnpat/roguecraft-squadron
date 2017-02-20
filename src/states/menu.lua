@@ -2,6 +2,7 @@ local mainmenu = {}
 
 function mainmenu:init()
   self.music = love.audio.newSource("assets/music/Terran4.ogg","stream")
+  self.music:setVolume(0.75)
   playBGM(self.music)
 end
 

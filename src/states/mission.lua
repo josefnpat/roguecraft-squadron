@@ -150,7 +150,7 @@ function mission:init()
     combat = {material=250,crew=50},
     refinery = {material=110,crew=10},
     habitat = {material=105,crew=5},
-    cargo = {material=690,crew=10},
+    cargo = {material=345,crew=10},
   }
 
   self.build = {}
@@ -296,9 +296,9 @@ function mission:init()
       },
 	  death_sfx = self.ships_death_sfx.cargo,
       crew = self.costs.cargo.crew,
-      ore = 200,
-      material = 200,
-      food = 200,
+      ore = 100,
+      material = 100,
+      food = 100,
       repair = false,
       actions = {
         self.actions.salvage,
@@ -420,8 +420,8 @@ function mission:nextLevel()
       table.insert(self.objects,{
         type = "asteroid",
         position = {
-          x = math.random(0,32*128),
-          y = math.random(0,32*128),
+          x = i == 1 and 1280*3/4 or math.random(0,32*128),
+          y = i == 1 and 720*3/4 or math.random(0,32*128),
         },
         angle = math.random()*math.pi*2,
         size = 32,
@@ -661,6 +661,7 @@ function mission:keypressed(key)
   local key_number = tonumber(key)
   if key == "escape" then
 		libs.hump.gamestate.switch(states.pause)
+    self.select_start = nil
   end
   if key_number ~= nil and key_number >= 0 and key_number <= 9 then
     if love.keyboard.isDown("lctrl") then
@@ -1034,6 +1035,7 @@ function mission:update(dt)
 
   if not love.window.hasFocus() then
 		libs.hump.gamestate.switch(states.pause)
+    self.select_start = nil
   end
 
   if debug_mode then
