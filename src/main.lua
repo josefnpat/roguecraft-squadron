@@ -143,6 +143,7 @@ end
 function playBGM(source)
   love.audio.stop()
   settings.bgm = source
+  source:setVolume(settings.music_volume/10)
   if not settings.muted_music then
     love.audio.play(source)
   end
@@ -155,11 +156,14 @@ function playSFX(source)
 	    source[i]:stop()
 	  end
 	  if not settings.muted then
-	    love.audio.play(source[math.random(#source)])
+		local current_source = source[math.random(#source)]
+		current_source:setVolume(settings.sound_volume/10)
+	    love.audio.play(current_source)
 	  end
 	else
 	  source:stop()
 	  if not settings.muted then
+		source:setVolume(settings.sound_volume/10)
 	    love.audio.play(source)
 	  end
 	end
