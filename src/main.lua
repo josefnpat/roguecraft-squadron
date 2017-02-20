@@ -45,6 +45,10 @@ function love.load()
   libs.hump.gamestate.switch(states.splash)
 end
 
+function love.update(dt)
+  love.mouse.setGrabbed(love.window.hasFocus())
+end
+
 function dropshadow(text,x,y)
   local color = {love.graphics.getColor()}
   love.graphics.setColor(0,0,0,191)

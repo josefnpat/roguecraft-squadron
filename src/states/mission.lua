@@ -645,7 +645,10 @@ function mission:mousepressed(x,y,b)
 end
 
 function mission:keypressed(key)
-  if self.vn:getRun() then return end
+  if self.vn:getRun() then
+    self.vn:next()
+    return
+  end
   local key_number = tonumber(key)
   if key == "escape" then
 		libs.hump.gamestate.switch(states.pause)
@@ -982,6 +985,10 @@ function mission:update(dt)
 
   if not self.vn:getRun() then
     self:updateMission(dt)
+  end
+
+  if not love.window.hasFocus() then
+		libs.hump.gamestate.switch(states.pause)
   end
 
 end
