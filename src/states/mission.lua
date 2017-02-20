@@ -484,9 +484,13 @@ end
 function mission:regroupByOwner(owner,scatter)
   --scatter is amount of pixels they move randomly after regroup
   for _,object in pairs(self:getObjectsByOwner(owner)) do
-      object.position.x = self.start.position.x + math.random(-scatter,scatter)
+    object.position.x = self.start.position.x + math.random(-scatter,scatter)
 	  object.position.y = self.start.position.y + math.random(-scatter,scatter)
+    object.target = nil
+    object.target_object = nil
   end
+  self.camera.x = 1280/2
+  self.camera.y = 720/2
 end
 
 
@@ -511,7 +515,7 @@ function mission:buyBuildObject(costs)
     for resource_type,cost in pairs(costs) do
       self.resources[resource_type] = self.resources[resource_type] - cost
     end
-	playSFX(self.sfx.buildShip)
+	  playSFX(self.sfx.buildShip)
     return true
   else
     return false
@@ -599,7 +603,7 @@ function mission:mousepressed(x,y,b)
           if object.selected then
             object.target_object = closest_object
             object.target_object.anim = 0.25
-			playSFX(self.sfx.moving)
+			      playSFX(self.sfx.moving)
           end
         end
 
@@ -630,7 +634,7 @@ function mission:mousepressed(x,y,b)
                 object.target = {x=gx*grid_size+ox,y=gy*grid_size+oy}
                 object.anim = 0.25
                 object.target_object = nil
-				playSFX(self.sfx.moving)
+				        playSFX(self.sfx.moving)
                 found = true
                 self.target_show = {
                   x=self.camera.x+x-1280/2,
@@ -1068,7 +1072,7 @@ function mission:updateMission(dt)
         else
           object.health.current = math.max(0,object.health.current-bullet.damage)
           table.remove(object.incoming_bullets,bullet_index)
-		  playSFX(bullet.collision_sfx)
+		      playSFX(bullet.collision_sfx)
         end
       end
     end
@@ -1162,7 +1166,7 @@ function mission:updateMission(dt)
           self.resources.ore = self.resources.ore + object.target_object.ore_supply
           object.target_object.ore_supply = 0
         end
-		loopSFX(self.sfx.mining)
+		    loopSFX(self.sfx.mining)
       end
       if object.target_object.health and object.target_object.health.current <= 0 then
         object.target_object = nil
@@ -1235,7 +1239,7 @@ function mission:updateMission(dt)
 
       table.remove(self.objects,object_index)
       -- TODO: add explosion
-	  playSFX(object.death_sfx)
+	    playSFX(object.death_sfx)
     end
 
     if object.target_object and (
