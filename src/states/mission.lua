@@ -394,12 +394,9 @@ function mission:init()
   states.game:nextLevel()
 end -- END OF INIT
 
-function mission:enter()
-
-  
-
-
-end -- END OF ENTER
+function mission:hasNextLevel()
+  return love.filesystem.exists("levels/"..(self.level+1)..".lua")
+end
 
 function mission:nextLevel()
   self.level = self.level + 1
@@ -1153,14 +1150,19 @@ function mission:updateMission(dt)
   end
 
   -- cleanup
-  
-  -- lose if you have no ships
-  if #mission:getObjectsByOwner(0) < 1 then libs.hump.gamestate.switch(states.lose) end
-  -- win if all enemies are dead
-  if #mission:getObjectsByOwner(1) < 1 then libs.hump.gamestate.switch(states.win) end
-  
+
+  if #mission:getObjectsByOwner(0) < 1 then
+    libs.hump.gamestate.switch(states.lose)
+  elseif #mission:getObjectsByOwner(1) < 1 then
+    if self:hasNextLevel() then
+      self:nextLevel()
+    else
+      libs.hump.gamestate.switch(states.win)
+    end
+  end
+
   for object_index,object in pairs(self.objects) do
-    if (object.health and object.health.current <= 0) or
+    if (object.health and object.health.current and object.health.current <= 0) or
       (object.ore_supply and object.ore_supply <= 0) then
 
       table.remove(self.objects,object_index)
