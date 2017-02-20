@@ -4,48 +4,31 @@ function mission:init()
 
   self.resources_types = {"ore","material","food","crew"}
   self.resources_types_formatted = {"Ore","Material","Food","Crew"}
-  
+
   self.colors = {
     ui = {
       primary = {0,255,127},
     }
   }
 
-  self.ships = {
-    enemy = love.graphics.newImage("ships/enemy.png"),
-    drydock = love.graphics.newImage("ships/drydock.png"),
-    mining = love.graphics.newImage("ships/mining.png"),
-    asteroid = love.graphics.newImage("ships/asteroid.png"),
-    combat = love.graphics.newImage("ships/combat.png"),
-    refinery = love.graphics.newImage("ships/refinery.png"),
-    habitat = love.graphics.newImage("ships/habitat.png"),
-    cargo = love.graphics.newImage("ships/cargo.png"),
-  }
+  self.ship_types = {"enemy0","enemy1","drydock","mining","asteroid","combat","refinery","habitat","cargo"}
 
-  self.ships_icon = {
-    enemy = love.graphics.newImage("ships/enemy_icon.png"),
-    drydock = love.graphics.newImage("ships/drydock_icon.png"),
-    mining = love.graphics.newImage("ships/mining_icon.png"),
-    asteroid = love.graphics.newImage("ships/asteroid_icon.png"),
-    combat = love.graphics.newImage("ships/combat_icon.png"),
-    refinery = love.graphics.newImage("ships/refinery_icon.png"),
-    habitat = love.graphics.newImage("ships/habitat_icon.png"),
-    cargo = love.graphics.newImage("ships/cargo_icon.png"),
-  }
-  
-  self.ships_death_sfx = {
-    enemy = love.audio.newSource("assets/sfx/explosion.wav"),
-    drydock = love.audio.newSource("assets/sfx/explosion.wav"),
-    mining = love.audio.newSource("assets/sfx/explosion.wav"),
-    asteroid = love.audio.newSource("assets/sfx/asteroid_death.wav"),
-    combat = love.audio.newSource("assets/sfx/explosion.wav"),
-    refinery = love.audio.newSource("assets/sfx/explosion.wav"),
-    habitat = love.audio.newSource("assets/sfx/explosion.wav"),
-    cargo = love.audio.newSource("assets/sfx/explosion.wav"),
-  }
+
+
+  local basic_explosion = love.audio.newSource("assets/sfx/explosion.wav")
+  self.ships = {}
+  self.ships_icon = {}
+  self.ships_death_sfx = {}
+  for i,v in pairs(self.ship_types) do
+    self.ships[v] = love.graphics.newImage("ships/"..v..".png")
+    self.ships_icon[v] = love.graphics.newImage("ships/"..v.."_icon.png")
+    self.ships_death_sfx[v] = basic_explosion
+  end
+  self.ships_death_sfx.asteroid = love.audio.newSource("assets/sfx/asteroid_death.wav")
 
   self.ships_info = {
-    enemy = "How did you get this, go away!",
+    enemy0 = "How did you get this, go away!",
+    enemy1 = "How did you get this, go away!",
     drydock = "A construction ship with some ore and material storage and bio-production.",
     mining = "An ore mining ship with some ore storage.",
     asteroid = "Stop! You can't be an asteroid!",
@@ -145,7 +128,8 @@ function mission:init()
   }
 
   self.costs = {
-    enemy = {},
+    enemy0 = {},
+    enemy1 = {},
     drydock = {material=975,crew=100},
     mining = {material=85,crew=10},
     asteroid = {},
@@ -434,7 +418,7 @@ function mission:nextLevel()
   for i = 1,10 do
     table.insert(self.objects,{
       owner = 1,
-      type = "enemy",
+      type = "enemy"..math.random(0,1),
       position = {
         x = math.random(0,32*128),
         y = math.random(0,32*128),
