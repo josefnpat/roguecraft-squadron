@@ -418,15 +418,15 @@ function mission:nextLevel()
     })
   end
 
-  planets = {}
-  for i = 1, 10 do
-	planets[i] = {
-	  z = 0.01, -- paralax scrolling: the lower the Z, the slower the planets pan on camera
-      x = math.random(0,32)*128,
-      y = math.random(0,32)*128,
-	  size = math.random(32,64)/64,
-	  rotation = math.random(32,64)/5120,
-	  img = self.planet_images[math.random(#self.planet_images)],
+  self.planets = {}
+  for i = 1, 5 do
+    self.planets[i] = {
+      z = 0.1, -- paralax scrolling: the lower the Z, the slower the planets pan on camera
+      x = math.random(0,1280)*1.5,
+      y = math.random(0,720)*1.5,
+      size = math.random(32,64)/64,
+      rotation = math.random(32,64)/5120,
+      img = self.planet_images[math.random(#self.planet_images)],
       angle = math.random()*math.pi*2,
     }
   end
@@ -701,12 +701,17 @@ end
 function mission:draw()
 
   love.graphics.draw(self.space)
-  for i = 1, #planets do
-	love.graphics.draw(planets[i].img,
-	planets[i].x - self.camera.x, --there should be magic code here with planets[i].z to have paralax scrolling
-	planets[i].y - self.camera.y, --there should be magic code here with planets[i].z to have paralax scrolling
-	planets[i].angle,planets[i].size,planets[i].size,planets[i].img:getWidth()/2,planets[i].img:getHeight()/2)
+
+  for i = 1, #self.planets do
+    local x = self.planets[i].x - self.camera.x * self.planets[i].z
+    local y = self.planets[i].y - self.camera.y * self.planets[i].z
+    love.graphics.draw(self.planets[i].img,x,y,
+      self.planets[i].angle,
+      self.planets[i].size,self.planets[i].size,
+      self.planets[i].img:getWidth()/2,self.planets[i].img:getHeight()/2)
+    --love.graphics.circle("line",x,y,4)
   end
+
   love.graphics.setBlendMode("add")
 
   love.graphics.draw(self.stars0, self.stars0_quad,
@@ -987,10 +992,6 @@ function mission:updateMission(dt)
   for _,resource in pairs(self.resources_types) do
     self.resources[resource.."_cargo"] = 0
     self.resources[resource.."_delta"] = 0
-  end
-  
-  for i = 1, #planets do
-	planets[i].angle = planets[i].angle + planets[i].rotation*dt
   end
 
   for _,object in pairs(self.objects) do
