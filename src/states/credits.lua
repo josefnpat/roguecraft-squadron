@@ -4,11 +4,11 @@ function credits:enter()
 	self.text = 
 	"CREDITS:\n" ..
 	"\n" ..
-	"Ashley Hooper @ByteDesigning (Art)\n" ..
-	"Josef Patoprsty @josefnpat (Code, Art, Design,Voice Talent)\n" ..
-	"Mauricyo Furtado @eternalnightpro (Music,SFX)\n" ..
-	"Arjan Vk (Vivid) (Code) \n" ..
-	"Laura Vk (Solsforest) (Art,Voice Talent) \n" ..
+	"Josef Patoprsty (@josefnpat) — Code, Art, Design, Voice Talent\n" ..
+	"Ashley Hooper (@ByteDesigning) — Art\n" ..
+	"Mauricyo Furtado (@eternalnightpro) — Music, SFX\n" ..
+	"Laura Vk (Solsforest) — Art, Voice Talent\n" ..
+	"Arjan Vk (Vivid) — Code \n" ..
 	"\n" ..
 	"Twitch Peeps:\n\n" ..
 	"\n"
@@ -36,7 +36,7 @@ function credits:enter()
 	self.background_scroll_speed = 4
 	
 	self.y = love.graphics:getHeight()
-	self.scroll_speed = 8
+	self.scroll_speed = 32
 	
 	self.escape_delay_timer = 0
 	self.escape_delay_max = 0.5
