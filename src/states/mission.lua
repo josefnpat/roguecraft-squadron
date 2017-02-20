@@ -2,6 +2,8 @@ local mission = {}
 
 function mission:init()
 
+  self.speed_mult = 2
+
   self.resources_types = {"ore","material","food","crew"}
   self.resources_types_formatted = {"Ore","Material","Food","Crew"}
 
@@ -344,7 +346,7 @@ function mission:init()
     type = "refinery",
     icon = "build_refinery",
     tooltip = function(object)
-      return "Build Material Tug ["..self:makeCostString(self.costs.refinery).."]"
+      return "Build Refinery ["..self:makeCostString(self.costs.refinery).."]"
     end,
     exe = function(object)
       if self:buyBuildObject(self.costs.refinery) then
@@ -388,7 +390,6 @@ function mission:init()
     position = {x=1280/2,y=720/2}
   }
   table.insert(self.objects,self.build.drydock(start))
-  table.insert(self.objects,self.build.combat(start))
 
   self.level = 0
   states.game:nextLevel()
@@ -1035,8 +1036,8 @@ function mission:updateMission(dt)
         if distance > 4 then
           local dx,dy = bullet.x-object.position.x,bullet.y-object.position.y
           bullet.angle = math.atan2(dy,dx)+math.pi
-          bullet.x = bullet.x + math.cos(bullet.angle)*dt*bullet.speed
-          bullet.y = bullet.y + math.sin(bullet.angle)*dt*bullet.speed
+          bullet.x = bullet.x + math.cos(bullet.angle)*dt*bullet.speed*self.speed_mult
+          bullet.y = bullet.y + math.sin(bullet.angle)*dt*bullet.speed*self.speed_mult
         else
           object.health.current = math.max(0,object.health.current-bullet.damage)
           table.remove(object.incoming_bullets,bullet_index)
@@ -1169,8 +1170,8 @@ function mission:updateMission(dt)
       if distance > range then
         local dx,dy = object.position.x-object.target.x,object.position.y-object.target.y
         object.angle = math.atan2(dy,dx)+math.pi
-        object.position.x = object.position.x + math.cos(object.angle)*dt*object.speed
-        object.position.y = object.position.y + math.sin(object.angle)*dt*object.speed
+        object.position.x = object.position.x + math.cos(object.angle)*dt*object.speed*self.speed_mult
+        object.position.y = object.position.y + math.sin(object.angle)*dt*object.speed*self.speed_mult
       else
         if not object.target_object then
           object.position = object.target
