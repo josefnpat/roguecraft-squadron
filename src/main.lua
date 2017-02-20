@@ -75,7 +75,6 @@ states = {
 
 function love.load(arg)
   libs.hump.gamestate.registerEvents()
-  for i,v in pairs(arg) do print(i,v) end
   libs.hump.gamestate.switch(states[arg[2]] or states.splash)
 end
 
