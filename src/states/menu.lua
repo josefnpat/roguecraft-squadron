@@ -12,7 +12,7 @@ function mainmenu:enter()
     {
       text = "New Easy Game",
       act = function()
-        difficulty.mult.enemy = 1
+        difficulty.mult.enemy = 1/2
         difficulty.mult.asteroid = 1
         libs.hump.gamestate.switch(states.game); states.game:init()
       end
@@ -20,7 +20,7 @@ function mainmenu:enter()
     {
       text = "New Medium Game",
       act = function()
-        difficulty.mult.enemy = 2
+        difficulty.mult.enemy = 2/2
         difficulty.mult.asteroid = 1+1/2
         libs.hump.gamestate.switch(states.game); states.game:init()
       end
@@ -28,7 +28,7 @@ function mainmenu:enter()
     {
       text = "New Hard Game",
       act = function()
-        difficulty.mult.enemy = 3
+        difficulty.mult.enemy = 3/2
         difficulty.mult.asteroid = 1+2/2
         libs.hump.gamestate.switch(states.game); states.game:init()
       end
@@ -36,7 +36,7 @@ function mainmenu:enter()
     {
       text = "New Insane Game",
       act = function()
-        difficulty.mult.enemy = 4
+        difficulty.mult.enemy = 4/2
         difficulty.mult.asteroid = 1+3/2
         libs.hump.gamestate.switch(states.game); states.game:init()
       end

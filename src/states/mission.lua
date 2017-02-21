@@ -27,7 +27,7 @@ function mission:init()
     }
   }
 
-  self.ship_types = {"enemy0","enemy1","drydock","mining","asteroid0","asteroid1","combat","refinery","habitat","cargo"}
+  self.ship_types = {"enemy0","enemy1","enemy2","drydock","mining","asteroid0","asteroid1","combat","refinery","habitat","cargo"}
 
   local basic_explosion = love.audio.newSource("assets/sfx/explosion.ogg")
   self.ships = {}
@@ -43,6 +43,7 @@ function mission:init()
   self.ships_info = {
     enemy0 = "How did you get this, go away!",
     enemy1 = "How did you get this, go away!",
+    enemy2 = "How did you get this, go away!",
     drydock = "A construction ship with some ore and material storage and bio-production.",
     mining = "An ore mining ship with some ore storage.",
     asteroid0 = "Stop! You can't be an asteroid!",
@@ -163,6 +164,7 @@ function mission:init()
   self.costs = {
     enemy0 = {},
     enemy1 = {},
+    enemy2 = {},
     drydock = {material=975,crew=100},
     mining = {material=85,crew=10},
     asteroid0 = {},
@@ -482,7 +484,7 @@ function mission:nextLevel()
       end
       table.insert(self.objects,{
         owner = 1,
-        type = "enemy"..math.random(0,1),
+        type = "enemy"..math.random(0,2),
         position = {
           x = unsafe_x,
           y = unsafe_y,
@@ -995,7 +997,7 @@ end
 
 function mission:buttonArea()
   local w = 320
-  return (love.graphics.getWidth()-w)/2,love.graphics.getHeight()*1/8,w,32
+  return (love.graphics.getWidth()-w)/2,love.graphics.getHeight()*1/32,w,32
 end
 
 function mission:drawButton()
@@ -1119,6 +1121,9 @@ end
 
 function mission:update(dt)
 
+  if cheat_operation_cwal then
+    dt = dt * (love.keyboard.isDown("space") and 4 or 0.1)
+  end
   if cheat then
     for _,resource in pairs(self.resources_types) do
       self.resources[resource] = math.huge

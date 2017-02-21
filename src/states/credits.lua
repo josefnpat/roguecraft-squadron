@@ -11,25 +11,30 @@ function credits:enter()
   "Arjan Vk (Vivid) — Code, SFX, Voice Talent \n" ..
   "\n\n\n"
 
-  self.testers = {"Forer","EntranceJew","@ByteDesigning","Vivid"}
+  self.testers = {"Forer","EntranceJew","ByteDesigning","Vivid"}
   -- Thank you so much whiteland92!!! <3
   self.ibtwitch = {"icecooltea","whiteland92"}
-  self.twitch = {}
+  self.twitch = {"bartbes","whitebot_","ashlon23","unekpl","hartlomiej",
+    "dozybrit","mcht2k","whiteland92","ikroth","human_regret","shakesoda",
+    "xghozt55","icecooltea","animegrillz","feilkin","frozenzerker","cerdus",
+    "davidgamedev","alloyed","gjallar_","fooblaz","statiyx","skaitiklis",
+    "jambis2","raycatrakittra","karai17","erikskogl","lewn1e","nzxlive",
+    "murii97","urbanbanchou","shouldbereading","returnnil","mightygamer",
+    "raxe88","bytedesigning",
+  }
 
   self.text = self.text .. "Playtesters:\n\n"
   for i,v in pairs(self.testers) do
     self.text = self.text .. v .. "\n"
   end
 
-  self.text = self.text .. "Twitch Internet Buck Millionaries:\n\n"
+  self.text = self.text .. "\nTwitch Internet Buck Millionaires:\n\n"
   for i,v in pairs(self.ibtwitch) do
     self.text = self.text .. v .. "\n"
   end
 
-  self.text = self.text .. "Twitch Peeps:\n\n"
-  for i,v in pairs(self.twitch) do
-    self.text = self.text .. v .. "\n"
-  end
+  self.text = self.text .. "\nTwitch Peeps:\n\n"
+  self.text = self.text .. table.concat(self.twitch," - ")
 
   self.text = self.text .. "\n\n\nThanks for playing!\n"
 

@@ -114,6 +114,9 @@ function love.load(arg)
     if states[v] then
       target_state = states[v]
     end
+    if v == "operationcwal" then
+      cheat_operation_cwal = true
+    end
     if v == "cheat" then
       cheat = true
     end
