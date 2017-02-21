@@ -27,7 +27,7 @@ function mission:init()
     }
   }
 
-  self.ship_types = {"enemy0","enemy1","drydock","mining","asteroid","combat","refinery","habitat","cargo"}
+  self.ship_types = {"enemy0","enemy1","drydock","mining","asteroid0","asteroid1","combat","refinery","habitat","cargo"}
 
   local basic_explosion = love.audio.newSource("assets/sfx/explosion.ogg")
   self.ships = {}
@@ -45,7 +45,8 @@ function mission:init()
     enemy1 = "How did you get this, go away!",
     drydock = "A construction ship with some ore and material storage and bio-production.",
     mining = "An ore mining ship with some ore storage.",
-    asteroid = "Stop! You can't be an asteroid!",
+    asteroid0 = "Stop! You can't be an asteroid!",
+    asteroid1 = "Stop! You can't be an asteroid!",
     combat = "A combat ship to defend your squadron with.",
     refinery = "A material refining ship with some material storage.",
     habitat = "A bio-dome that produces food.",
@@ -56,12 +57,14 @@ function mission:init()
     buildShip = love.audio.newSource("assets/sfx/build.ogg"),
     repairShip = love.audio.newSource("assets/sfx/repair.ogg"),
     refine = love.audio.newSource("assets/sfx/refine.ogg"),
-    moving = {love.audio.newSource("assets/sfx/moving on my way.ogg"),
-    love.audio.newSource("assets/sfx/moving ready.ogg"),
-    love.audio.newSource("assets/sfx/moving yes commander.ogg"),},
+    moving = {
+      love.audio.newSource("assets/sfx/moving on my way.ogg"),
+      love.audio.newSource("assets/sfx/moving ready.ogg"),
+      love.audio.newSource("assets/sfx/moving yes commander.ogg"),
+    },
     mining = love.audio.newSource("assets/sfx/mining.ogg"),
   }
-  
+
   self.action_icons = {
     menu = love.graphics.newImage("assets/actions/repair.png"),
     repair = love.graphics.newImage("assets/actions/repair.png"),
@@ -162,7 +165,8 @@ function mission:init()
     enemy1 = {},
     drydock = {material=975,crew=100},
     mining = {material=85,crew=10},
-    asteroid = {},
+    asteroid0 = {},
+    asteroid1 = {},
     combat = {material=250,crew=50},
     refinery = {material=110,crew=10},
     habitat = {material=105,crew=5},
@@ -444,7 +448,7 @@ function mission:nextLevel()
   if level_data.asteroid then
     for i = 1,level_data.asteroid*difficulty.mult.asteroid do
       table.insert(self.objects,{
-        type = "asteroid",
+        type = "asteroid"..math.random(0,1),
         position = {
           x = self.level == 1 and math.random(0,1280) or math.random(0,32*128),
           y = self.level == 1 and math.random(0,720) or math.random(0,32*128),
