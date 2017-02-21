@@ -118,10 +118,10 @@ function mission:init()
     ore = 0,
     ore_cargo = 0,
     ore_delta = 0,
-    food = math.huge,
+    food = 0,
     food_cargo = 0,
     food_delta = 0,
-    crew = math.huge,
+    crew = 10,
     crew_cargo = 0,
     crew_delta = 0,
   }
