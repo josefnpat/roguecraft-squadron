@@ -61,8 +61,10 @@ difficulty = {
   low_enemy = 10,
   medium_asteroid = 25,
   medium_enemy = 25,
-  high_asteroid = 100,
-  high_enemy = 100,
+  high_asteroid = 50,
+  high_enemy = 50,
+  insane_asteroid = 100,
+  insane_enemy = 100,
 }
 
 fonts = {
