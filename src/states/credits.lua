@@ -11,7 +11,7 @@ function credits:enter()
   "Arjan Vk (Vivid) — Code, SFX, Voice Talent \n" ..
   "\n\n\n"
 
-  self.testers = {"Forer","EntranceJew","AshleyHooper"}
+  self.testers = {"Forer","EntranceJew","@ByteDesigning","Vivid"}
   -- Thank you so much whiteland92!!! <3
   self.ibtwitch = {"icecooltea","whiteland92"}
   self.twitch = {}
