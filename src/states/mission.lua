@@ -472,12 +472,16 @@ function mission:nextLevel()
 
   if level_data.enemy then
     for i = 1,level_data.enemy*difficulty.mult.enemy do
+      local unsafe_x,unsafe_y = 0,0
+      while unsafe_x < 1280+400 and unsafe_y < 720+400 do
+        unsafe_x,unsafe_y = math.random(0,32*128),math.random(0,32*128)
+      end
       table.insert(self.objects,{
         owner = 1,
         type = "enemy"..math.random(0,1),
         position = {
-          x = math.random(0,32*128),
-          y = math.random(0,32*128),
+          x = unsafe_x,
+          y = unsafe_y,
         },
         size = 32,
         speed = 100,
