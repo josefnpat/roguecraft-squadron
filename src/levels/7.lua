@@ -9,6 +9,6 @@ level.intro = function(self)
   return tvn
 end
 
-level.asteroid = difficulty.high_asteroid
+level.asteroid = difficulty.insane_asteroid
 
 return level

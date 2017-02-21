@@ -8,8 +8,7 @@ level.intro = function(self)
   return tvn
 end
 
-level.asteroid = difficulty.high_asteroid
-level.enemy = difficulty.high_enemy
-level.boss = 1
+level.asteroid = difficulty.low_asteroid
+level.enemy = difficulty.insane_enemy
 
 return level
