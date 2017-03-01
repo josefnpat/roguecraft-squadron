@@ -8,7 +8,7 @@ function credits:enter()
   "Ashley Hooper (@ByteDesigning) — Art\n" ..
   "Mauricyo Furtado (@eternalnightpro) — Music\n" ..
   "Laura Vk (Solsforest) — Art, Voice Talent\n" ..
-  "Arjan Vk (Vivid) — Code, SFX, Voice Talent \n" ..
+  "Arjan Vk (Vivid) — Code, SFX, Voice Talent\n" ..
   "\n\n\n"
 
   self.testers = {"Forer","EntranceJew","ByteDesigning","Vivid"}
