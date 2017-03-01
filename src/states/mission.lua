@@ -27,27 +27,28 @@ function mission:init()
     }
   }
 
-  self.ship_types = {"enemy0","enemy1","enemy2","drydock","mining","asteroid0","asteroid1","combat","refinery","habitat","cargo"}
+  self.object_types = {}
+  for _,object_fn in pairs(love.filesystem.getDirectoryItems("assets/objects_data")) do
+    local object_type = getFileName(object_fn)
+    table.insert(self.object_types,object_type)
+  end
 
   local basic_explosion = love.audio.newSource("assets/sfx/explosion.ogg")
-  self.ships = {}
-  self.ships_icon = {}
-  self.ships_death_sfx = {}
-  for i,v in pairs(self.ship_types) do
-    self.ships[v] = love.graphics.newImage("assets/ships/"..v..".png")
-    self.ships_icon[v] = love.graphics.newImage("assets/ships/"..v.."_icon.png")
-    self.ships_death_sfx[v] = basic_explosion
+  self.objects_image = {}
+  self.objects_icon = {}
+  self.objects_death_sfx = {}
+  for i,v in pairs(self.object_types) do
+    self.objects_image[v] = {}
+    self.objects_icon[v] = {}
+    self.objects_death_sfx[v] = basic_explosion
   end
-  self.ships_death_sfx.asteroid = love.audio.newSource("assets/sfx/asteroid_death.ogg")
+  self.objects_death_sfx.asteroid = love.audio.newSource("assets/sfx/asteroid_death.ogg")
 
-  self.ships_info = {
-    enemy0 = "How did you get this, go away!",
-    enemy1 = "How did you get this, go away!",
-    enemy2 = "How did you get this, go away!",
+  self.objects_info = {
+    enemy = "How did you get this? Go away!",
     drydock = "A construction ship with some ore and material storage and bio-production.",
     mining = "An ore mining ship with some ore storage.",
-    asteroid0 = "Stop! You can't be an asteroid!",
-    asteroid1 = "Stop! You can't be an asteroid!",
+    asteroid = "Stop! You can't be an asteroid!",
     combat = "A combat ship to defend your squadron with.",
     refinery = "A material refining ship with some material storage.",
     habitat = "A bio-dome that produces food.",
@@ -71,12 +72,12 @@ function mission:init()
     repair = love.graphics.newImage("assets/actions/repair.png"),
     salvage = love.graphics.newImage("assets/actions/salvage.png"),
     refine = love.graphics.newImage("assets/actions/refine.png"),
-    build_drydock = self.ships_icon.drydock,
-    build_mining = self.ships_icon.mining,
-    build_combat = self.ships_icon.combat,
-    build_refinery = self.ships_icon.refinery,
-    build_habitat = self.ships_icon.habitat,
-    build_cargo = self.ships_icon.cargo,
+    build_drydock = love.graphics.newImage("assets/objects/drydock0_icon.png"),
+    build_mining = love.graphics.newImage("assets/objects/mining0_icon.png"),
+    build_combat = love.graphics.newImage("assets/objects/combat0_icon.png"),
+    build_refinery = love.graphics.newImage("assets/objects/refinery0_icon.png"),
+    build_habitat = love.graphics.newImage("assets/objects/habitat0_icon.png"),
+    build_cargo = love.graphics.newImage("assets/objects/cargo0_icon.png"),
   }
   --TODO: add passive icons, such as attack/mine
 
@@ -84,7 +85,7 @@ function mission:init()
     laser = love.graphics.newImage("assets/bullets/laser.png"),
   }
 
-  self.ships_chevron = love.graphics.newImage("assets/chevron.png")
+  self.objects_chevron = love.graphics.newImage("assets/chevron.png")
   self.target = love.graphics.newImage("assets/target.png")
 
   self.icon_bg = love.graphics.newImage("assets/icon_bg.png")
@@ -162,13 +163,10 @@ function mission:init()
   }
 
   self.costs = {
-    enemy0 = {},
-    enemy1 = {},
-    enemy2 = {},
+    enemy = {},
     drydock = {material=975,crew=100},
     mining = {material=85,crew=10},
-    asteroid0 = {},
-    asteroid1 = {},
+    asteroid = {},
     combat = {material=250,crew=50},
     refinery = {material=110,crew=10},
     habitat = {material=105,crew=5},
@@ -187,7 +185,7 @@ function mission:init()
       health = {
         max = 25,
       },
-      death_sfx = self.ships_death_sfx.drydock,
+      death_sfx = self.objects_death_sfx.drydock,
       crew = self.costs.drydock.crew,
       ore = 400,
       material = 400,
@@ -220,7 +218,7 @@ function mission:init()
       },
       ore = 25,
       ore_gather = 25,
-      death_sfx = self.ships_death_sfx.mining,
+      death_sfx = self.objects_death_sfx.mining,
       crew = self.costs.mining.crew,
       repair = false,
       actions = {
@@ -250,7 +248,7 @@ function mission:init()
         sfx = love.audio.newSource("assets/sfx/laser_shoot.ogg"),
         collision_sfx = love.audio.newSource("assets/sfx/collision.ogg"),
       },
-      death_sfx = self.ships_death_sfx.combat,
+      death_sfx = self.objects_death_sfx.combat,
       crew = self.costs.combat.crew,
       repair = false,
       actions = {
@@ -270,7 +268,7 @@ function mission:init()
       health = {
         max = 10,
       },
-    death_sfx = self.ships_death_sfx.refinery,
+    death_sfx = self.objects_death_sfx.refinery,
       crew = self.costs.refinery.crew,
       material = 50,
       material_gather = 5,
@@ -294,7 +292,7 @@ function mission:init()
       health = {
         max = 5,
       },
-      death_sfx = self.ships_death_sfx.habitat,
+      death_sfx = self.objects_death_sfx.habitat,
       crew = self.costs.habitat.crew,
       food = 50,
       food_gather = 40,
@@ -316,7 +314,7 @@ function mission:init()
       health = {
         max = 40,
       },
-      death_sfx = self.ships_death_sfx.cargo,
+      death_sfx = self.objects_death_sfx.cargo,
       crew = self.costs.cargo.crew,
       ore = 100,
       material = 100,
@@ -337,8 +335,8 @@ function mission:init()
     end,
     exe = function(object)
       if self:buyBuildObject(self.costs.drydock) then
-        local ship = self.build.drydock(object)
-        table.insert(self.objects,ship)
+        local object = self.build.drydock(object)
+        table.insert(self.objects,object)
       end
     end,
   }
@@ -351,8 +349,8 @@ function mission:init()
     end,
     exe = function(object)
       if self:buyBuildObject(self.costs.mining) then
-        local ship = self.build.mining(object)
-        table.insert(self.objects,ship)
+        local object = self.build.mining(object)
+        table.insert(self.objects,object)
       end
     end,
   }
@@ -364,8 +362,8 @@ function mission:init()
       return "Build Battlestar ["..self:makeCostString(self.costs.combat).."]" end,
     exe = function(object)
       if self:buyBuildObject(self.costs.combat) then
-        local ship = self.build.combat(object)
-        table.insert(self.objects,ship)
+        local object = self.build.combat(object)
+        table.insert(self.objects,object)
       end
     end,
   }
@@ -378,8 +376,8 @@ function mission:init()
     end,
     exe = function(object)
       if self:buyBuildObject(self.costs.refinery) then
-        local ship = self.build.refinery(object)
-        table.insert(self.objects,ship)
+        local object = self.build.refinery(object)
+        table.insert(self.objects,object)
       end
     end,
   }
@@ -392,8 +390,8 @@ function mission:init()
     end,
     exe = function(object)
       if self:buyBuildObject(self.costs.habitat) then
-        local ship = self.build.habitat(object)
-        table.insert(self.objects,ship)
+        local object = self.build.habitat(object)
+        table.insert(self.objects,object)
       end
     end,
   }
@@ -406,8 +404,8 @@ function mission:init()
     end,
     exe = function(object)
       if self:buyBuildObject(self.costs.cargo) then
-        local ship = self.build.cargo(object)
-        table.insert(self.objects,ship)
+        local object = self.build.cargo(object)
+        table.insert(self.objects,object)
       end
     end,
   }
@@ -450,7 +448,8 @@ function mission:nextLevel()
   if level_data.asteroid then
     for i = 1,level_data.asteroid*difficulty.mult.asteroid do
       table.insert(self.objects,{
-        type = "asteroid"..math.random(0,1),
+        type = "asteroid",
+        variation = math.random(0,1),
         position = {
           x = self.level == 1 and math.random(0,1280) or math.random(0,32*128),
           y = self.level == 1 and math.random(0,720) or math.random(0,32*128),
@@ -458,7 +457,7 @@ function mission:nextLevel()
         angle = math.random()*math.pi*2,
         size = 32,
         ore_supply = 100,
-        death_sfx = self.ships_death_sfx.asteroid,
+        death_sfx = self.objects_death_sfx.asteroid,
       })
     end
   end
@@ -484,7 +483,8 @@ function mission:nextLevel()
       end
       table.insert(self.objects,{
         owner = 1,
-        type = "enemy"..math.random(0,2),
+        type = "enemy",
+        variation = math.random(0,2),
         position = {
           x = unsafe_x,
           y = unsafe_y,
@@ -503,7 +503,7 @@ function mission:nextLevel()
           sfx = love.audio.newSource("assets/sfx/laser_shoot.ogg"),
           collision_sfx = love.audio.newSource("assets/sfx/collision.ogg"),
         },
-        death_sfx = self.ships_death_sfx.enemy0,
+        death_sfx = self.objects_death_sfx.enemy,
         crew = self.costs.combat.crew,
         repair = false,
         actions = {
@@ -513,7 +513,7 @@ function mission:nextLevel()
       })
     end
   end
-  
+
   self:regroupByOwner(0,128)
 end
 
@@ -810,7 +810,7 @@ function mission:draw()
       self.planets[i].img:getWidth()/2,self.planets[i].img:getHeight()/2)
     --love.graphics.circle("line",x,y,4)
   end
-  
+
   self.camera:attach()
   for _,object in pairs(self.objects) do
     if object.selected then
@@ -835,9 +835,9 @@ function mission:draw()
     end
 
     love.graphics.setColor(self:ownerColor(object.owner))
-    love.graphics.draw(self.ships_chevron,
+    love.graphics.draw(self.objects_chevron,
       object.position.x,object.position.y,0,1,1,
-      self.ships_chevron:getWidth()/2,self.ships_chevron:getHeight()/2)
+      self.objects_chevron:getWidth()/2,self.objects_chevron:getHeight()/2)
 
     love.graphics.setColor(255,255,255)
     if object.incoming_bullets then
@@ -847,10 +847,20 @@ function mission:draw()
       end
     end
 
-    local ship = self.ships[object.type]
-    love.graphics.draw(ship,
+    local object_variation = object.variation or 0
+    local object_image = self.objects_image[object.type][object_variation]
+    if object_image == nil then
+      object_image = love.graphics.newImage("assets/objects/"..
+        object.type..object_variation..".png")
+      self.objects_image[object.type][object_variation] = object_image
+
+      local object_icon = love.graphics.newImage("assets/objects/"..
+        object.type..object_variation.."_icon.png")
+      self.objects_icon[object.type][object_variation] = object_icon
+    end
+    love.graphics.draw(object_image,
       object.position.x,object.position.y,
-      object.angle or 0,1,1,ship:getWidth()/2,ship:getHeight()/2)
+      object.angle or 0,1,1,object_image:getWidth()/2,object_image:getHeight()/2)
 
   end
 
@@ -962,8 +972,8 @@ function mission:drawActions()
 end
 
 function mission:info(type)
-  if self.ships_info[type] then
-    return self.ships_info[type]
+  if self.objects_info[type] then
+    return self.objects_info[type]
   else
     return ""
   end
@@ -977,10 +987,10 @@ function mission:drawSelected()
       local x,y = col*(32+self:iconPadding())+32,720-32-32-row*(32+self:iconPadding())
       love.graphics.draw(self.icon_bg,x,y)
       index = index + 1
-      local ship_icon = self.ships_icon[object.type]
+      local object_icon = self.objects_icon[object.type][object.variation or 0]
       local percent = object.health.current/object.health.max
       love.graphics.setColor(libs.healthcolor(percent))
-      love.graphics.draw(ship_icon,x,y)
+      love.graphics.draw(object_icon,x,y)
       love.graphics.setColor(255,255,255)
       col = col + 1
       if col >= self.selected_row_max then
@@ -1278,7 +1288,7 @@ function mission:updateMission(dt)
     if object.target_object then
       if object.ore_gather and object.target_object.ore_supply and
         self:distance(object.position,object.target_object.position) < 48 then
-    
+
         local amount = object.ore_gather*dt
         self.resources.ore_delta = self.resources.ore_delta + amount/dt
         if object.target_object.ore_supply > amount then

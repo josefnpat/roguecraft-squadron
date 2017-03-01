@@ -183,3 +183,8 @@ function loopSFX(source)
     love.audio.play(source)
   end
 end
+
+function getFileName(i)
+  local _,_,fname,extension = i:find("^(.+)%.(.*)")
+  return fname
+end
