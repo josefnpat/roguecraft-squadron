@@ -175,11 +175,9 @@ function mission:init()
 
   self.build = {}
 
-  self.build.drydock = function(parent)
+  self.build.drydock = function()
     return {
-      owner = parent.owner,
       type = "drydock",
-      position = self:nearbyPosition(parent.position),
       size = 32,
       speed = 50,
       health = {
@@ -206,11 +204,9 @@ function mission:init()
     }
   end
 
-  self.build.mining = function(parent)
+  self.build.mining = function()
     return {
-      owner = parent.owner,
       type = "mining",
-      position = self:nearbyPosition(parent.position),
       size = 32,
       speed = 50,
       health = {
@@ -229,11 +225,9 @@ function mission:init()
 
   end
 
-  self.build.combat = function(parent)
+  self.build.combat = function()
     return {
-      owner = parent.owner,
       type = "combat",
-      position = self:nearbyPosition(parent.position),
       size = 32,
       speed = 100,
       health = {
@@ -258,11 +252,9 @@ function mission:init()
     }
   end
 
-  self.build.refinery = function(parent)
+  self.build.refinery = function()--parent)
     return {
-      owner = parent.owner,
       type = "refinery",
-      position = self:nearbyPosition(parent.position),
       size = 32,
       speed = 50,
       health = {
@@ -282,11 +274,9 @@ function mission:init()
     }
   end
 
-  self.build.habitat = function(parent)
+  self.build.habitat = function()--parent)
     return {
-      owner = parent.owner,
       type = "habitat",
-      position = self:nearbyPosition(parent.position),
       size = 32,
       speed = 50,
       health = {
@@ -304,11 +294,9 @@ function mission:init()
     }
   end
 
-  self.build.cargo = function(parent)
+  self.build.cargo = function()--parent)
     return {
-      owner = parent.owner,
       type = "cargo",
-      position = self:nearbyPosition(parent.position),
       size = 32,
       speed = 50,
       health = {
@@ -335,7 +323,7 @@ function mission:init()
     end,
     exe = function(object)
       if self:buyBuildObject(self.costs.drydock) then
-        local object = self.build.drydock(object)
+        local object = self:build_object("drydock",object)
         table.insert(self.objects,object)
       end
     end,
@@ -349,7 +337,7 @@ function mission:init()
     end,
     exe = function(object)
       if self:buyBuildObject(self.costs.mining) then
-        local object = self.build.mining(object)
+        local object = self:build_object("mining",object)
         table.insert(self.objects,object)
       end
     end,
@@ -362,7 +350,7 @@ function mission:init()
       return "Build Battlestar ["..self:makeCostString(self.costs.combat).."]" end,
     exe = function(object)
       if self:buyBuildObject(self.costs.combat) then
-        local object = self.build.combat(object)
+        local object = self:build_object("combat",object)
         table.insert(self.objects,object)
       end
     end,
@@ -376,7 +364,7 @@ function mission:init()
     end,
     exe = function(object)
       if self:buyBuildObject(self.costs.refinery) then
-        local object = self.build.refinery(object)
+        local object = self:build_object("refinery",object)
         table.insert(self.objects,object)
       end
     end,
@@ -390,7 +378,7 @@ function mission:init()
     end,
     exe = function(object)
       if self:buyBuildObject(self.costs.habitat) then
-        local object = self.build.habitat(object)
+        local object = self:build_object("habitat",object)
         table.insert(self.objects,object)
       end
     end,
@@ -404,7 +392,7 @@ function mission:init()
     end,
     exe = function(object)
       if self:buyBuildObject(self.costs.cargo) then
-        local object = self.build.cargo(object)
+        local object = self:build_object("cargo",object)
         table.insert(self.objects,object)
       end
     end,
@@ -415,11 +403,19 @@ function mission:init()
     owner = 0,
     position = {x=1280/2,y=720/2}
   }
-  table.insert(self.objects,self.build.drydock(self.start))
+
+  table.insert(self.objects,self:build_object("drydock",self.start))
 
   self.level = 0
   states.game:nextLevel()
 end -- END OF INIT
+
+function mission:build_object(object_name,parent)
+  local obj = self.build[object_name]()
+  obj.position = self:nearbyPosition(parent.position)
+  obj.owner = parent.owner
+  return obj
+end
 
 function mission:enter()
 
