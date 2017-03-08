@@ -25,5 +25,7 @@ level.intro = function(self)
 end
 
 level.asteroid = difficulty.tutorial_asteroid
+level.scrap = difficulty.tutorial_scrap
+level.station = difficulty.tutorial_station
 
 return level

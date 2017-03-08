@@ -167,6 +167,7 @@ function mission:init()
       end
       object.health.current = 0
       object.repair = false
+      object.no_scrap_drop = true
     end,
   }
 
@@ -267,8 +268,34 @@ function mission:nextLevel()
           y = self.level == 1 and math.random(0,720) or math.random(0,32*128),
         },
       }
-      local asteroid_object = self:build_object("scrap",parent_object)
+      local asteroid_object = self:build_object("asteroid",parent_object)
       table.insert(self.objects,asteroid_object)
+    end
+  end
+
+  if level_data.scrap then
+    for i = 1,level_data.scrap*difficulty.mult.scrap do
+      local parent_object = {
+        position = {
+          x = self.level == 1 and math.random(0,1280) or math.random(0,32*128),
+          y = self.level == 1 and math.random(0,720) or math.random(0,32*128),
+        },
+      }
+      local scrap_object = self:build_object("scrap",parent_object)
+      table.insert(self.objects,scrap_object)
+    end
+  end
+
+  if level_data.station then
+    for i = 1,level_data.station*difficulty.mult.station do
+      local parent_object = {
+        position = {
+          x = self.level == 1 and math.random(0,1280) or math.random(0,32*128),
+          y = self.level == 1 and math.random(0,720) or math.random(0,32*128),
+        },
+      }
+      local station_object = self:build_object("station",parent_object)
+      table.insert(self.objects,station_object)
     end
   end
 
@@ -1103,6 +1130,20 @@ function mission:updateMission(dt)
           loopSFX(self.sfx.salvaging)
         end
 
+        -- collect crew from things with crew_supply
+        if object.crew_gather and object.target_object.crew_supply then
+
+          local amount = object.crew_gather*dt
+          self.resources.crew_delta = self.resources.crew_delta + amount/dt
+          if object.target_object.crew_supply > amount then
+            object.target_object.crew_supply = object.target_object.crew_supply - amount
+            self.resources.crew = self.resources.crew + amount
+          else
+            self.resources.crew = self.resources.crew + object.target_object.crew_supply
+            object.target_object.crew_supply = 0
+          end
+        end
+
       end --end of distance check
 
 
@@ -1193,10 +1234,19 @@ function mission:updateMission(dt)
 
   for object_index,object in pairs(self.objects) do
     if (object.health and object.health.current and object.health.current <= 0) or
-      (object.ore_supply and object.ore_supply <= 0) or
-      (object.scrap_supply and object.scrap_supply <= 0) then
+      (object.scrap_supply and object.scrap_supply <= 0) or
+      (object.crew_supply and object.crew_supply <= 0) or
+      (object.ore_supply and object.ore_supply <= 0) then
+
+      if object.cost and object.cost.material and not object.no_scrap_drop then
+        local scrap_object = self:build_object("scrap",object)
+        scrap_object.scrap_supply = object.cost.material*0.5
+        scrap_object.owner = nil
+        table.insert(self.objects,scrap_object)
+      end
 
       table.remove(self.objects,object_index)
+
       table.insert(self.explosions,{
         x = object.position.x + math.random(-8,8),
         y = object.position.y + math.random(-8,8),
@@ -1209,6 +1259,7 @@ function mission:updateMission(dt)
     if object.target_object and (
       (object.target_object.health and object.target_object.health.current <= 0) or
       (object.target_object.scrap_supply and object.target_object.scrap_supply <= 0 ) or
+      (object.target_object.crew_supply and object.target_object.crew_supply <= 0 ) or
       (object.target_object.ore_supply and object.target_object.ore_supply <= 0 )) then
 
       object.target_object = nil
