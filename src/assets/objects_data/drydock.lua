@@ -22,6 +22,7 @@ return function()
       "build_habitat",
       "build_combat",
       "build_cargo",
+      "build_troopship",
     },
   }
 end

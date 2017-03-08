@@ -83,6 +83,7 @@ function mission:init()
     build_refinery = love.graphics.newImage("assets/objects/refinery0_icon.png"),
     build_habitat = love.graphics.newImage("assets/objects/habitat0_icon.png"),
     build_cargo = love.graphics.newImage("assets/objects/cargo0_icon.png"),
+    build_troopship = love.graphics.newImage("assets/objects/troopship0_icon.png"),
   }
   --TODO: add passive icons, such as attack/mine
 
