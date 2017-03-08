@@ -1,30 +1,17 @@
-return = function(parent)
+return function()
   return {
-    owner = parent.owner,
-    type = "drydock",
-    position = self:nearbyPosition(parent.position),
+    type = "mining",
+    display_name = "Mining Rig",
+    info = "An ore mining ship with some ore storage.",
+    cost = {material=85,crew=10},
+    crew = 10,
     size = 32,
     speed = 50,
-    health = {
-      max = 25,
-    },
-    death_sfx = self.objects_death_sfx.drydock,
-    crew = self.costs.drydock.crew,
-    ore = 400,
-    material = 400,
-    food = 100,
-    food_gather = 10,
+    health = {max = 10,},
+    ore = 25,
+    ore_gather = 25,
     repair = false,
-    actions = {
-      self.actions.salvage,
-      self.actions.repair,
-      self.actions.build_drydock,
-      self.actions.build_mining,
-      self.actions.build_refinery,
-      self.actions.build_habitat,
-      self.actions.build_combat,
-      self.actions.build_cargo,
-    }
-
+    actions = {"salvage","repair"}
   }
+
 end

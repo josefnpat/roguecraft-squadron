@@ -170,124 +170,8 @@ function mission:init()
   }
 
   self.build = {}
-
-  self.build.drydock = function()
-    return {
-      type = "drydock",
-      display_name = "Dry Dock",
-      info =  "A construction ship with some ore and material storage and bio-production.",
-      cost = {material=975,crew=100},
-      crew = 100,
-      size = 32,
-      speed = 50,
-      health = {max = 25,},
-      ore = 400,
-      material = 400,
-      food = 100,
-      food_gather = 10,
-      repair = false,
-      actions = {
-        "salvage","repair",
-        "build_drydock","build_mining","build_refinery","build_habitat","build_combat","build_cargo",
-      },
-    }
-  end
-
-  self.build.mining = function()
-    return {
-      type = "mining",
-      display_name = "Mining Rig",
-      info = "An ore mining ship with some ore storage.",
-      cost = {material=85,crew=10},
-      crew = 10,
-      size = 32,
-      speed = 50,
-      health = {max = 10,},
-      ore = 25,
-      ore_gather = 25,
-      repair = false,
-      actions = {"salvage","repair"}
-    }
-
-  end
-
-  self.build.combat = function()
-    return {
-      type = "combat",
-      display_name = "Battlestar",
-      info = "A combat ship to defend your squadron with.",
-      cost = {material=250,crew=50},
-      crew = 50,
-      size = 32,
-      speed = 100,
-      health = {max = 50,},
-      shoot = {
-        reload = 0.25,
-        damage = 2,
-        speed = 200,
-        range = 200,
-        aggression = 400,
-        sfx = {
-          construct = "laser",
-          destruct = "collision"
-        },
-      },
-      repair = false,
-      actions = {"salvage","repair"}
-    }
-  end
-
-  self.build.refinery = function()
-    return {
-      type = "refinery",
-      display_name = "Refinery",
-      info ="A material refining ship with some material storage.",
-      cost = {material=110,crew=10},
-      crew = 10,
-      size = 32,
-      speed = 50,
-      health = {max = 10,},
-      material = 50,
-      material_gather = 5,
-      repair = false,
-      refine = true,
-      actions = {"salvage","repair","refine"}
-    }
-  end
-
-  self.build.habitat = function()
-    return {
-      type = "habitat",
-      display_name = "Habitat",
-      info = "A bio-dome that produces food.",
-      cost = {material=105,crew=5},
-      crew = 5,
-      size = 32,
-      speed = 50,
-      health = {max = 5,},
-      food = 50,
-      food_gather = 40,
-      repair = false,
-      actions = {"salvage","repair"}
-    }
-  end
-
-  self.build.cargo = function()
-    return {
-      type = "cargo",
-      display_name = "Freighter",
-      info = "A cargo ship that stores ore, material and food.",
-      cost = {material=345,crew=10},
-      crew = 10,
-      size = 32,
-      speed = 50,
-      health = {max = 40,},
-      ore = 100,
-      material = 100,
-      food = 100,
-      repair = false,
-      actions = {"salvage","repair"}
-    }
+  for i,v in pairs(self.object_types) do
+    self.build[v] = require("assets.objects_data."..v)
   end
 
   for objtype,objbuildfn in pairs(self.build) do
@@ -330,7 +214,7 @@ function mission:build_object(object_name,parent)
   obj.owner = parent.owner
   obj.angle = math.random()*math.pi*2
   local tactions = {}
-  for i,v in pairs(obj.actions) do
+  for i,v in pairs(obj.actions or {}) do
     table.insert(tactions,self.actions[v])
   end
   obj.actions = tactions
@@ -361,22 +245,6 @@ function mission:nextLevel()
     self.vn._run = false
   end
 
-  if level_data.asteroid then
-    for i = 1,level_data.asteroid*difficulty.mult.asteroid do
-      table.insert(self.objects,{
-        type = "asteroid",
-        variation = math.random(0,1),
-        position = {
-          x = self.level == 1 and math.random(0,1280) or math.random(0,32*128),
-          y = self.level == 1 and math.random(0,720) or math.random(0,32*128),
-        },
-        angle = math.random()*math.pi*2,
-        size = 32,
-        ore_supply = 100,
-      })
-    end
-  end
-
   self.planets = {}
   for i = 1, 5 do
     self.planets[i] = {
@@ -390,38 +258,34 @@ function mission:nextLevel()
     }
   end
 
+  if level_data.asteroid then
+    for i = 1,level_data.asteroid*difficulty.mult.asteroid do
+      local parent_object = {
+        position = {
+          x = self.level == 1 and math.random(0,1280) or math.random(0,32*128),
+          y = self.level == 1 and math.random(0,720) or math.random(0,32*128),
+        },
+      }
+      local asteroid_object = self:build_object("asteroid",parent_object)
+      table.insert(self.objects,asteroid_object)
+    end
+  end
+
   if level_data.enemy then
     for i = 1,level_data.enemy*difficulty.mult.enemy do
       local unsafe_x,unsafe_y = 0,0
       while unsafe_x < 1280+400 and unsafe_y < 720+400 do
         unsafe_x,unsafe_y = math.random(0,32*128),math.random(0,32*128)
       end
-      table.insert(self.objects,{
-        owner = 1,
-        type = "enemy",
-        variation = math.random(0,2),
+      local parent_object = {
         position = {
           x = unsafe_x,
           y = unsafe_y,
         },
-        size = 32,
-        speed = 100,
-        health = {
-          max = 50,
-        },
-        shoot = {
-          reload = 0.25,
-          damage = 2,
-          speed = 200,
-          range = 200,
-          aggression = 400,
-          sfx = {
-            construct = "laser",
-            destruct = "collision",
-          },
-        },
-        repair = false,
-      })
+        owner = 1,
+      }
+      local enemy_object = self:build_object("enemy",parent_object)
+      table.insert(self.objects,enemy_object)
     end
   end
 
