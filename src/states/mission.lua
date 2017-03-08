@@ -44,17 +44,6 @@ function mission:init()
   end
   self.objects_death_sfx.asteroid = love.audio.newSource("assets/sfx/asteroid_death.ogg")
 
-  self.objects_info = {
-    enemy = "How did you get this? Go away!",
-    drydock = "A construction ship with some ore and material storage and bio-production.",
-    mining = "An ore mining ship with some ore storage.",
-    asteroid = "Stop! You can't be an asteroid!",
-    combat = "A combat ship to defend your squadron with.",
-    refinery = "A material refining ship with some material storage.",
-    habitat = "A bio-dome that produces food.",
-    cargo = "A cargo ship that stores ore, material and food.",
-  }
-
   self.sfx = {
     buildShip = love.audio.newSource("assets/sfx/build.ogg"),
     repairShip = love.audio.newSource("assets/sfx/repair.ogg"),
@@ -63,6 +52,11 @@ function mission:init()
       love.audio.newSource("assets/sfx/moving on my way.ogg"),
       love.audio.newSource("assets/sfx/moving ready.ogg"),
       love.audio.newSource("assets/sfx/moving yes commander.ogg"),
+    },
+    insufficient = {
+      crew = love.audio.newSource("assets/sfx/voice insufficient crew.ogg"),
+      material = love.audio.newSource("assets/sfx/voice insufficient material.ogg"),
+      funds = love.audio.newSource("assets/sfx/voice insufficient funds.ogg"),
     },
     mining = love.audio.newSource("assets/sfx/mining.ogg"),
   }
@@ -136,6 +130,7 @@ function mission:init()
   self.actions.repair = {
     icon = "repair",
     tooltip = function(object) return "Auto Repair "..(object.repair and "Enabled" or "Disabled") end,
+    color = function(object) return object.repair and {0,255,0} or {255,255,255} end,
     exe = function(object)
       object.repair = not object.repair
     end,
@@ -144,6 +139,7 @@ function mission:init()
   self.actions.refine = {
     icon = "refine",
     tooltip = function(object) return "Auto Refine "..(object.refine and "Enabled" or "Disabled") end,
+    color = function(object) return object.refine and {0,255,0} or {255,255,255} end,
     exe = function(object)
       object.refine = not object.refine
     end,
@@ -152,9 +148,10 @@ function mission:init()
   self.actions.salvage = {
     icon = "salvage",
     tooltip = function(object) return "Salvage ship for 90% value" end,
+    color = function(object) return {255,0,0} end,
     exe = function(object)
       local percent = object.health.current/object.health.max * 0.9
-      for resource_type,cost in pairs( self.costs[object.type] ) do
+      for resource_type,cost in pairs( object.cost ) do --self.costs[object.type] ) do
         self.resources[resource_type] = self.resources[resource_type] + cost*percent
       end
       object.health.current = 0
@@ -162,29 +159,20 @@ function mission:init()
     end,
   }
 
-  self.costs = {
-    enemy = {},
-    drydock = {material=975,crew=100},
-    mining = {material=85,crew=10},
-    asteroid = {},
-    combat = {material=250,crew=50},
-    refinery = {material=110,crew=10},
-    habitat = {material=105,crew=5},
-    cargo = {material=345,crew=10},
-  }
-
   self.build = {}
 
   self.build.drydock = function()
     return {
       type = "drydock",
+      info =  "A construction ship with some ore and material storage and bio-production.",
+      cost = {material=975,crew=100},
+      crew = 100,
       size = 32,
       speed = 50,
       health = {
         max = 25,
       },
       death_sfx = self.objects_death_sfx.drydock,
-      crew = self.costs.drydock.crew,
       ore = 400,
       material = 400,
       food = 100,
@@ -207,6 +195,9 @@ function mission:init()
   self.build.mining = function()
     return {
       type = "mining",
+      info = "An ore mining ship with some ore storage.",
+      cost = {material=85,crew=10},
+      crew = 10,
       size = 32,
       speed = 50,
       health = {
@@ -215,7 +206,6 @@ function mission:init()
       ore = 25,
       ore_gather = 25,
       death_sfx = self.objects_death_sfx.mining,
-      crew = self.costs.mining.crew,
       repair = false,
       actions = {
         self.actions.salvage,
@@ -228,6 +218,9 @@ function mission:init()
   self.build.combat = function()
     return {
       type = "combat",
+      info = "A combat ship to defend your squadron with.",
+      cost = {material=250,crew=50},
+      crew = 50,
       size = 32,
       speed = 100,
       health = {
@@ -243,7 +236,6 @@ function mission:init()
         collision_sfx = love.audio.newSource("assets/sfx/collision.ogg"),
       },
       death_sfx = self.objects_death_sfx.combat,
-      crew = self.costs.combat.crew,
       repair = false,
       actions = {
         self.actions.salvage,
@@ -252,16 +244,18 @@ function mission:init()
     }
   end
 
-  self.build.refinery = function()--parent)
+  self.build.refinery = function()
     return {
       type = "refinery",
+      info ="A material refining ship with some material storage.",
+      cost = {material=110,crew=10},
+      crew = 10,
       size = 32,
       speed = 50,
       health = {
         max = 10,
       },
     death_sfx = self.objects_death_sfx.refinery,
-      crew = self.costs.refinery.crew,
       material = 50,
       material_gather = 5,
       repair = false,
@@ -274,16 +268,18 @@ function mission:init()
     }
   end
 
-  self.build.habitat = function()--parent)
+  self.build.habitat = function()
     return {
       type = "habitat",
+      info = "A bio-dome that produces food.",
+      cost = {material=105,crew=5},
+      crew = 5,
       size = 32,
       speed = 50,
       health = {
         max = 5,
       },
       death_sfx = self.objects_death_sfx.habitat,
-      crew = self.costs.habitat.crew,
       food = 50,
       food_gather = 40,
       repair = false,
@@ -294,16 +290,18 @@ function mission:init()
     }
   end
 
-  self.build.cargo = function()--parent)
+  self.build.cargo = function()
     return {
       type = "cargo",
+      info = "A cargo ship that stores ore, material and food.",
+      cost = {material=345,crew=10},
+      crew = 10,
       size = 32,
       speed = 50,
       health = {
         max = 40,
       },
       death_sfx = self.objects_death_sfx.cargo,
-      crew = self.costs.cargo.crew,
       ore = 100,
       material = 100,
       food = 100,
@@ -319,10 +317,16 @@ function mission:init()
     type = "drydock",
     icon = "build_drydock",
     tooltip = function(object)
-      return "Build Dry Dock ["..self:makeCostString(self.costs.drydock).."]"
+      local tobject = self.build.drydock()
+      return "Build Dry Dock ["..self:makeCostString(tobject.cost).."]"
+    end,
+    color = function(object)
+      local tobject = self.build.drydock()
+      return self:canAffordObject(tobject) and {0,255,0} or {255,0,0}
     end,
     exe = function(object)
-      if self:buyBuildObject(self.costs.drydock) then
+      local tobject = self.build.drydock()
+      if self:buyBuildObject(tobject.cost) then
         local object = self:build_object("drydock",object)
         table.insert(self.objects,object)
       end
@@ -333,10 +337,16 @@ function mission:init()
     type = "mining",
     icon = "build_mining",
     tooltip = function(object)
-      return "Build Mining Rig ["..self:makeCostString(self.costs.mining).."]"
+      local tobject = self.build.mining()
+      return "Build Mining Rig ["..self:makeCostString(tobject.cost).."]"
+    end,
+    color = function(object)
+      local tobject = self.build.mining()
+      return self:canAffordObject(tobject) and {0,255,0} or {255,0,0}
     end,
     exe = function(object)
-      if self:buyBuildObject(self.costs.mining) then
+      local tobject = self.build.mining()
+      if self:buyBuildObject(tobject.cost) then
         local object = self:build_object("mining",object)
         table.insert(self.objects,object)
       end
@@ -347,9 +357,16 @@ function mission:init()
     type = "combat",
     icon = "build_combat",
     tooltip = function(object)
-      return "Build Battlestar ["..self:makeCostString(self.costs.combat).."]" end,
+      local tobject = self.build.combat()
+      return "Build Battlestar ["..self:makeCostString(tobject.cost).."]"
+    end,
+    color = function(object)
+      local tobject = self.build.combat()
+      return self:canAffordObject(tobject) and {0,255,0} or {255,0,0}
+    end,
     exe = function(object)
-      if self:buyBuildObject(self.costs.combat) then
+      local tobject = self.build.combat()
+      if self:buyBuildObject(tobject.cost) then
         local object = self:build_object("combat",object)
         table.insert(self.objects,object)
       end
@@ -360,10 +377,16 @@ function mission:init()
     type = "refinery",
     icon = "build_refinery",
     tooltip = function(object)
-      return "Build Refinery ["..self:makeCostString(self.costs.refinery).."]"
+      local tobject = self.build.refinery()
+      return "Build Refinery ["..self:makeCostString(tobject.cost).."]"
+    end,
+    color = function(object)
+      local tobject = self.build.refinery()
+      return self:canAffordObject(tobject) and {0,255,0} or {255,0,0}
     end,
     exe = function(object)
-      if self:buyBuildObject(self.costs.refinery) then
+      local tobject = self.build.refinery()
+      if self:buyBuildObject(tobject.cost) then
         local object = self:build_object("refinery",object)
         table.insert(self.objects,object)
       end
@@ -374,10 +397,16 @@ function mission:init()
     type = "habitat",
     icon = "build_habitat",
     tooltip = function(object)
-      return "Build Habitat ["..self:makeCostString(self.costs.habitat).."]"
+      local tobject = self.build.habitat()
+      return "Build Habitat ["..self:makeCostString(tobject.cost).."]"
+    end,
+    color = function(object)
+      local tobject = self.build.habitat()
+      return self:canAffordObject(tobject) and {0,255,0} or {255,0,0}
     end,
     exe = function(object)
-      if self:buyBuildObject(self.costs.habitat) then
+      local tobject = self.build.habitat()
+      if self:buyBuildObject(tobject.cost) then
         local object = self:build_object("habitat",object)
         table.insert(self.objects,object)
       end
@@ -388,10 +417,16 @@ function mission:init()
     type = "cargo",
     icon = "build_cargo",
     tooltip = function(object)
-      return "Build Freighter ["..self:makeCostString(self.costs.cargo).."]"
+      local tobject = self.build.cargo()
+      return "Build Freighter ["..self:makeCostString(tobject.cost).."]"
+    end,
+    color = function(object)
+      local tobject = self.build.cargo()
+      return self:canAffordObject(tobject) and {0,255,0} or {255,0,0}
     end,
     exe = function(object)
-      if self:buyBuildObject(self.costs.cargo) then
+      local tobject = self.build.cargo()
+      if self:buyBuildObject(tobject.cost) then
         local object = self:build_object("cargo",object)
         table.insert(self.objects,object)
       end
@@ -414,6 +449,7 @@ function mission:build_object(object_name,parent)
   local obj = self.build[object_name]()
   obj.position = self:nearbyPosition(parent.position)
   obj.owner = parent.owner
+  obj.angle = math.random()*math.pi*2
   return obj
 end
 
@@ -500,7 +536,6 @@ function mission:nextLevel()
           collision_sfx = love.audio.newSource("assets/sfx/collision.ogg"),
         },
         death_sfx = self.objects_death_sfx.enemy,
-        crew = self.costs.combat.crew,
         repair = false,
         actions = {
           self.actions.salvage,
@@ -535,11 +570,26 @@ function mission:nearbyPosition(position)
   }
 end
 
+function mission:canAffordObject(object)
+  for resource_type,cost in pairs(object.cost) do
+    if self.resources[resource_type] < cost then
+      return false
+    end
+  end
+  return true
+end
+
 function mission:buyBuildObject(costs)
   local good = true
   for resource_type,cost in pairs(costs) do
     if self.resources[resource_type] < cost then
       good = false
+      print("Insufficient "..resource_type.." [have: "..self.resources[resource_type].." need: "..cost.."]")
+      if self.sfx.insufficient[resource_type] then
+        playSFX(self.sfx.insufficient[resource_type])
+      else
+        playSFX(self.sfx.insufficient.funds)
+      end
       break
     end
   end
@@ -954,24 +1004,17 @@ function mission:drawActions()
     for ai,a in pairs(cobject.actions) do
       local x,y = 1280-64,32+(ai-1)*(32+self:iconPadding())
       love.graphics.draw(self.icon_bg,x,y)
+      love.graphics.setColor(a.color and a.color(cobject) or {255,0,255,127})
       if a.hover then
-        dropshadowf(a.tooltip(cobject).."\n"..self:info(a.type),
+        local r,g,b = love.graphics.getColor()
+        love.graphics.setColor(r,g,b)
+        local tobject = a.type and self.build[a.type]() or ""
+        dropshadowf(a.tooltip(cobject).."\n"..(tobject.info or ""),
         32,y+6,1280-96-8,"right")
-        love.graphics.setColor(0,255,0)
-      else
-        love.graphics.setColor(255,255,255)
       end
       love.graphics.draw(self.action_icons[a.icon],x,y)
       love.graphics.setColor(255,255,255)
     end
-  end
-end
-
-function mission:info(type)
-  if self.objects_info[type] then
-    return self.objects_info[type]
-  else
-    return ""
   end
 end
 
@@ -997,7 +1040,7 @@ function mission:drawSelected()
   end
   local cobject = self:singleSelected()
   if cobject then
-    dropshadow(self:info(cobject.type),64+8,720-64)
+    dropshadow(cobject.info or "",64+8,720-64)
   end
 end
 
