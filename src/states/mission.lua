@@ -2,8 +2,6 @@ local mission = {}
 
 function mission:init()
 
-  self.jump_sound = love.audio.newSource("assets/sfx/jump.ogg")
-
   self.explosion_images = {}
   self.explosions = {}
 
@@ -59,10 +57,12 @@ function mission:init()
       funds = love.audio.newSource("assets/sfx/voice insufficient funds.ogg"),
     },
     mining = love.audio.newSource("assets/sfx/mining.ogg"),
+    salvaging = love.audio.newSource("assets/sfx/mining.ogg"),
     shoot = {
       laser = love.audio.newSource("assets/sfx/laser_shoot.ogg"),
       collision = love.audio.newSource("assets/sfx/collision.ogg"),
     },
+    jump = love.audio.newSource("assets/sfx/jump.ogg")
   }
 
   self.objects_death_sfx = {}
@@ -77,6 +77,7 @@ function mission:init()
     salvage = love.graphics.newImage("assets/actions/salvage.png"),
     refine = love.graphics.newImage("assets/actions/refine.png"),
     build_drydock = love.graphics.newImage("assets/objects/drydock0_icon.png"),
+    build_salvager = love.graphics.newImage("assets/objects/salvager0_icon.png"),
     build_mining = love.graphics.newImage("assets/objects/mining0_icon.png"),
     build_combat = love.graphics.newImage("assets/objects/combat0_icon.png"),
     build_refinery = love.graphics.newImage("assets/objects/refinery0_icon.png"),
@@ -266,7 +267,7 @@ function mission:nextLevel()
           y = self.level == 1 and math.random(0,720) or math.random(0,32*128),
         },
       }
-      local asteroid_object = self:build_object("asteroid",parent_object)
+      local asteroid_object = self:build_object("scrap",parent_object)
       table.insert(self.objects,asteroid_object)
     end
   end
@@ -456,7 +457,7 @@ function mission:mousepressed(x,y,b)
   elseif self:mouseInButton() then
     self.show_button = false
     self.jump = 2.8 -- Jump sfx length
-    playSFX(self.jump_sound)
+    playSFX(self.sfx.jump)
   else
 
     local ox,oy = self:getCameraOffset()
@@ -943,7 +944,7 @@ end
 function mission:updateMission(dt)
 
   if self.jump then
-    if self.jump_sound:isPlaying() then
+    if self.sfx.jump:isPlaying() then
       self.jump = math.max(0,self.jump - dt*2.8) -- jump sfx length
     else
       self.jump = nil
@@ -1069,20 +1070,42 @@ function mission:updateMission(dt)
     end
 
     if object.target_object then
-      if object.ore_gather and object.target_object.ore_supply and
-        self:distance(object.position,object.target_object.position) < 48 then
 
-        local amount = object.ore_gather*dt
-        self.resources.ore_delta = self.resources.ore_delta + amount/dt
-        if object.target_object.ore_supply > amount then
-          object.target_object.ore_supply = object.target_object.ore_supply - amount
-          self.resources.ore = self.resources.ore + amount
-        else
-          self.resources.ore = self.resources.ore + object.target_object.ore_supply
-          object.target_object.ore_supply = 0
+      if self:distance(object.position,object.target_object.position) < 48 then
+
+        -- mine ore from things with ore_supply
+        if object.ore_gather and object.target_object.ore_supply then
+
+          local amount = object.ore_gather*dt
+          self.resources.ore_delta = self.resources.ore_delta + amount/dt
+          if object.target_object.ore_supply > amount then
+            object.target_object.ore_supply = object.target_object.ore_supply - amount
+            self.resources.ore = self.resources.ore + amount
+          else
+            self.resources.ore = self.resources.ore + object.target_object.ore_supply
+            object.target_object.ore_supply = 0
+          end
+          loopSFX(self.sfx.mining)
         end
-        loopSFX(self.sfx.mining)
-      end
+
+        -- collect scrap from things with scrap_supply
+        if object.scrap_gather and object.target_object.scrap_supply then
+
+          local amount = object.scrap_gather*dt
+          self.resources.material_delta = self.resources.material_delta + amount/dt
+          if object.target_object.scrap_supply > amount then
+            object.target_object.scrap_supply = object.target_object.scrap_supply - amount
+            self.resources.material = self.resources.material + amount
+          else
+            self.resources.material = self.resources.material + object.target_object.scrap_supply
+            object.target_object.scrap_supply = 0
+          end
+          loopSFX(self.sfx.salvaging)
+        end
+
+      end --end of distance check
+
+
       if object.target_object.health and object.target_object.health.current <= 0 then
         object.target_object = nil
         object.target = nil
@@ -1170,7 +1193,8 @@ function mission:updateMission(dt)
 
   for object_index,object in pairs(self.objects) do
     if (object.health and object.health.current and object.health.current <= 0) or
-      (object.ore_supply and object.ore_supply <= 0) then
+      (object.ore_supply and object.ore_supply <= 0) or
+      (object.scrap_supply and object.scrap_supply <= 0) then
 
       table.remove(self.objects,object_index)
       table.insert(self.explosions,{
@@ -1184,6 +1208,7 @@ function mission:updateMission(dt)
 
     if object.target_object and (
       (object.target_object.health and object.target_object.health.current <= 0) or
+      (object.target_object.scrap_supply and object.target_object.scrap_supply <= 0 ) or
       (object.target_object.ore_supply and object.target_object.ore_supply <= 0 )) then
 
       object.target_object = nil

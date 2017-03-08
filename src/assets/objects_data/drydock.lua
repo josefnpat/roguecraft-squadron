@@ -15,7 +15,13 @@ return function()
     repair = false,
     actions = {
       "salvage","repair",
-      "build_drydock","build_mining","build_refinery","build_habitat","build_combat","build_cargo",
+      "build_drydock",
+      "build_salvager",
+      "build_mining",
+      "build_refinery",
+      "build_habitat",
+      "build_combat",
+      "build_cargo",
     },
   }
 end
