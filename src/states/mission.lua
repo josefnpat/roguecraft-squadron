@@ -200,15 +200,19 @@ function mission:init()
   end
 
   self.objects = {}
-  self.start = {
-    owner = 0,
-    position = {x=1280/2,y=720/2}
-  }
-
-  table.insert(self.objects,self:build_object("drydock",self.start))
 
   self.level = 0
   states.game:nextLevel()
+
+  self.start = {
+    position = {x=1280/2,y=720/2}
+  }
+
+  table.insert(self.objects,self:build_object("troopship",{position=self.start.position,owner=0}))
+  local abandoned_drydock = self:build_object("drydock",{position=self.start.position})
+  abandoned_drydock.health.current = 1
+  table.insert(self.objects,abandoned_drydock)
+
 end -- END OF INIT
 
 function mission:build_object(object_name,parent)
@@ -681,6 +685,10 @@ function mission:draw()
       object.position.x,object.position.y,
       object.angle or 0,1,1,object_image:getWidth()/2,object_image:getHeight()/2)
 
+    if debug_mode then
+      love.graphics.print(tostring(object),object.position.x,object.position.y)
+    end
+
   end
 
   for ei,explosion in pairs(self.explosions) do
@@ -800,7 +808,7 @@ function mission:drawSelected()
       love.graphics.draw(self.icon_bg,x,y)
       index = index + 1
       local object_icon = self.objects_icon[object.type][object.variation or 0]
-      local percent = object.health.current/object.health.max
+      local percent = object.health and object.health.current/object.health.max or 1
       love.graphics.setColor(libs.healthcolor(percent))
       love.graphics.draw(object_icon,x,y)
       love.graphics.setColor(255,255,255)
@@ -813,7 +821,7 @@ function mission:drawSelected()
   end
   local cobject = self:singleSelected()
   if cobject then
-    dropshadow(cobject.display_name.." — "..cobject.info,64+8,720-64)
+    dropshadow((cobject.display_name or "").." — "..(cobject.info or ""),64+8,720-64)
   end
 end
 
@@ -1200,15 +1208,17 @@ function mission:updateMission(dt)
           range = 48
         end
       end
-      if distance > range then
-        local dx,dy = object.position.x-object.target.x,object.position.y-object.target.y
-        object.angle = math.atan2(dy,dx)+math.pi
-        object.position.x = object.position.x + math.cos(object.angle)*dt*object.speed*self.speed_mult
-        object.position.y = object.position.y + math.sin(object.angle)*dt*object.speed*self.speed_mult
-      else
-        if not object.target_object then
-          object.position = object.target
-          object.target = nil
+      if object.speed then
+        if distance > range then
+          local dx,dy = object.position.x-object.target.x,object.position.y-object.target.y
+          object.angle = math.atan2(dy,dx)+math.pi
+          object.position.x = object.position.x + math.cos(object.angle)*dt*object.speed*self.speed_mult
+          object.position.y = object.position.y + math.sin(object.angle)*dt*object.speed*self.speed_mult
+        else
+          if not object.target_object then
+            object.position = object.target
+            object.target = nil
+          end
         end
       end
     end

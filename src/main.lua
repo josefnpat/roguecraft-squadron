@@ -124,6 +124,9 @@ function love.load(arg)
     if v == "cheat" then
       cheat = true
     end
+    if v == "debug" then
+      debug_mode = true
+    end
   end
   libs.hump.gamestate.registerEvents()
   libs.hump.gamestate.switch(target_state or states.splash)
