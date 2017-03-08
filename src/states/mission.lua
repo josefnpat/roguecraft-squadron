@@ -33,18 +33,18 @@ function mission:init()
     table.insert(self.object_types,object_type)
   end
 
-  local basic_explosion = love.audio.newSource("assets/sfx/explosion.ogg")
   self.objects_image = {}
   self.objects_icon = {}
-  self.objects_death_sfx = {}
   for i,v in pairs(self.object_types) do
     self.objects_image[v] = {}
     self.objects_icon[v] = {}
-    self.objects_death_sfx[v] = basic_explosion
   end
-  self.objects_death_sfx.asteroid = love.audio.newSource("assets/sfx/asteroid_death.ogg")
 
   self.sfx = {
+    explosion = {
+      basic = love.audio.newSource("assets/sfx/explosion.ogg"),
+      asteroid = love.audio.newSource("assets/sfx/asteroid_death.ogg")
+    },
     buildShip = love.audio.newSource("assets/sfx/build.ogg"),
     repairShip = love.audio.newSource("assets/sfx/repair.ogg"),
     refine = love.audio.newSource("assets/sfx/refine.ogg"),
@@ -60,6 +60,12 @@ function mission:init()
     },
     mining = love.audio.newSource("assets/sfx/mining.ogg"),
   }
+
+  self.objects_death_sfx = {}
+  for i,v in pairs(self.object_types) do
+    self.objects_death_sfx[v] = self.sfx.explosion.basic
+  end
+  self.objects_death_sfx.asteroid = self.sfx.explosion.asteroid
 
   self.action_icons = {
     menu = love.graphics.newImage("assets/actions/repair.png"),
@@ -173,7 +179,6 @@ function mission:init()
       health = {
         max = 25,
       },
-      death_sfx = self.objects_death_sfx.drydock,
       ore = 400,
       material = 400,
       food = 100,
@@ -207,7 +212,6 @@ function mission:init()
       },
       ore = 25,
       ore_gather = 25,
-      death_sfx = self.objects_death_sfx.mining,
       repair = false,
       actions = {
         self.actions.salvage,
@@ -238,7 +242,6 @@ function mission:init()
         sfx = love.audio.newSource("assets/sfx/laser_shoot.ogg"),
         collision_sfx = love.audio.newSource("assets/sfx/collision.ogg"),
       },
-      death_sfx = self.objects_death_sfx.combat,
       repair = false,
       actions = {
         self.actions.salvage,
@@ -259,7 +262,6 @@ function mission:init()
       health = {
         max = 10,
       },
-    death_sfx = self.objects_death_sfx.refinery,
       material = 50,
       material_gather = 5,
       repair = false,
@@ -284,7 +286,6 @@ function mission:init()
       health = {
         max = 5,
       },
-      death_sfx = self.objects_death_sfx.habitat,
       food = 50,
       food_gather = 40,
       repair = false,
@@ -307,7 +308,6 @@ function mission:init()
       health = {
         max = 40,
       },
-      death_sfx = self.objects_death_sfx.cargo,
       ore = 100,
       material = 100,
       food = 100,
@@ -397,7 +397,6 @@ function mission:nextLevel()
         angle = math.random()*math.pi*2,
         size = 32,
         ore_supply = 100,
-        death_sfx = self.objects_death_sfx.asteroid,
       })
     end
   end
@@ -443,7 +442,6 @@ function mission:nextLevel()
           sfx = love.audio.newSource("assets/sfx/laser_shoot.ogg"),
           collision_sfx = love.audio.newSource("assets/sfx/collision.ogg"),
         },
-        death_sfx = self.objects_death_sfx.enemy,
         repair = false,
         actions = {
           self.actions.salvage,
@@ -1343,7 +1341,7 @@ function mission:updateMission(dt)
         angle = math.random()*math.pi*2,
         dt = 0,
       })
-      playSFX(object.death_sfx)
+      playSFX(self.objects_death_sfx[object.type])
     end
 
     if object.target_object and (
