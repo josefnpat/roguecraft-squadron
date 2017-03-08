@@ -164,6 +164,7 @@ function mission:init()
   self.build.drydock = function()
     return {
       type = "drydock",
+      display_name = "Dry Dock",
       info =  "A construction ship with some ore and material storage and bio-production.",
       cost = {material=975,crew=100},
       crew = 100,
@@ -195,6 +196,7 @@ function mission:init()
   self.build.mining = function()
     return {
       type = "mining",
+      display_name = "Mining Rig",
       info = "An ore mining ship with some ore storage.",
       cost = {material=85,crew=10},
       crew = 10,
@@ -218,6 +220,7 @@ function mission:init()
   self.build.combat = function()
     return {
       type = "combat",
+      display_name = "Battlestar",
       info = "A combat ship to defend your squadron with.",
       cost = {material=250,crew=50},
       crew = 50,
@@ -247,6 +250,7 @@ function mission:init()
   self.build.refinery = function()
     return {
       type = "refinery",
+      display_name = "Refinery",
       info ="A material refining ship with some material storage.",
       cost = {material=110,crew=10},
       crew = 10,
@@ -271,6 +275,7 @@ function mission:init()
   self.build.habitat = function()
     return {
       type = "habitat",
+      display_name = "Habitat",
       info = "A bio-dome that produces food.",
       cost = {material=105,crew=5},
       crew = 5,
@@ -293,6 +298,7 @@ function mission:init()
   self.build.cargo = function()
     return {
       type = "cargo",
+      display_name = "Freighter",
       info = "A cargo ship that stores ore, material and food.",
       cost = {material=345,crew=10},
       crew = 10,
@@ -313,125 +319,27 @@ function mission:init()
     }
   end
 
-  self.actions.build_drydock = {
-    type = "drydock",
-    icon = "build_drydock",
-    tooltip = function(object)
-      local tobject = self.build.drydock()
-      return "Build Dry Dock ["..self:makeCostString(tobject.cost).."]"
-    end,
-    color = function(object)
-      local tobject = self.build.drydock()
-      return self:canAffordObject(tobject) and {0,255,0} or {255,0,0}
-    end,
-    exe = function(object)
-      local tobject = self.build.drydock()
-      if self:buyBuildObject(tobject.cost) then
-        local object = self:build_object("drydock",object)
-        table.insert(self.objects,object)
-      end
-    end,
-  }
-
-  self.actions.build_mining = {
-    type = "mining",
-    icon = "build_mining",
-    tooltip = function(object)
-      local tobject = self.build.mining()
-      return "Build Mining Rig ["..self:makeCostString(tobject.cost).."]"
-    end,
-    color = function(object)
-      local tobject = self.build.mining()
-      return self:canAffordObject(tobject) and {0,255,0} or {255,0,0}
-    end,
-    exe = function(object)
-      local tobject = self.build.mining()
-      if self:buyBuildObject(tobject.cost) then
-        local object = self:build_object("mining",object)
-        table.insert(self.objects,object)
-      end
-    end,
-  }
-
-  self.actions.build_combat = {
-    type = "combat",
-    icon = "build_combat",
-    tooltip = function(object)
-      local tobject = self.build.combat()
-      return "Build Battlestar ["..self:makeCostString(tobject.cost).."]"
-    end,
-    color = function(object)
-      local tobject = self.build.combat()
-      return self:canAffordObject(tobject) and {0,255,0} or {255,0,0}
-    end,
-    exe = function(object)
-      local tobject = self.build.combat()
-      if self:buyBuildObject(tobject.cost) then
-        local object = self:build_object("combat",object)
-        table.insert(self.objects,object)
-      end
-    end,
-  }
-
-  self.actions.build_refinery = {
-    type = "refinery",
-    icon = "build_refinery",
-    tooltip = function(object)
-      local tobject = self.build.refinery()
-      return "Build Refinery ["..self:makeCostString(tobject.cost).."]"
-    end,
-    color = function(object)
-      local tobject = self.build.refinery()
-      return self:canAffordObject(tobject) and {0,255,0} or {255,0,0}
-    end,
-    exe = function(object)
-      local tobject = self.build.refinery()
-      if self:buyBuildObject(tobject.cost) then
-        local object = self:build_object("refinery",object)
-        table.insert(self.objects,object)
-      end
-    end,
-  }
-
-  self.actions.build_habitat = {
-    type = "habitat",
-    icon = "build_habitat",
-    tooltip = function(object)
-      local tobject = self.build.habitat()
-      return "Build Habitat ["..self:makeCostString(tobject.cost).."]"
-    end,
-    color = function(object)
-      local tobject = self.build.habitat()
-      return self:canAffordObject(tobject) and {0,255,0} or {255,0,0}
-    end,
-    exe = function(object)
-      local tobject = self.build.habitat()
-      if self:buyBuildObject(tobject.cost) then
-        local object = self:build_object("habitat",object)
-        table.insert(self.objects,object)
-      end
-    end,
-  }
-
-  self.actions.build_cargo = {
-    type = "cargo",
-    icon = "build_cargo",
-    tooltip = function(object)
-      local tobject = self.build.cargo()
-      return "Build Freighter ["..self:makeCostString(tobject.cost).."]"
-    end,
-    color = function(object)
-      local tobject = self.build.cargo()
-      return self:canAffordObject(tobject) and {0,255,0} or {255,0,0}
-    end,
-    exe = function(object)
-      local tobject = self.build.cargo()
-      if self:buyBuildObject(tobject.cost) then
-        local object = self:build_object("cargo",object)
-        table.insert(self.objects,object)
-      end
-    end,
-  }
+  for objtype,objbuildfn in pairs(self.build) do
+    self.actions["build_"..objtype] = {
+      type = objtype,
+      icon = "build_"..objtype,
+      color = function(object)
+        local tobject = self.build[objtype]()
+        return self:canAffordObject(tobject) and {0,255,0} or {127,127,127}
+      end,
+      tooltip = function(object)
+        local tobject = self.build[objtype]()
+        return "Build "..tobject.display_name.." ["..self:makeCostString(tobject.cost).."]\n"..tobject.info
+      end,
+      exe = function(object)
+        local tobject = self.build[objtype]()
+        if self:buyBuildObject(tobject.cost) then
+          local object = self:build_object(objtype,object)
+          table.insert(self.objects,object)
+        end
+      end,
+    }
+  end
 
   self.objects = {}
   self.start = {
@@ -1009,7 +917,7 @@ function mission:drawActions()
         local r,g,b = love.graphics.getColor()
         love.graphics.setColor(r,g,b)
         local tobject = a.type and self.build[a.type]() or ""
-        dropshadowf(a.tooltip(cobject).."\n"..(tobject.info or ""),
+        dropshadowf(a.tooltip(cobject),
         32,y+6,1280-96-8,"right")
       end
       love.graphics.draw(self.action_icons[a.icon],x,y)
@@ -1040,7 +948,7 @@ function mission:drawSelected()
   end
   local cobject = self:singleSelected()
   if cobject then
-    dropshadow(cobject.info or "",64+8,720-64)
+    dropshadow(cobject.display_name.." — "..cobject.info,64+8,720-64)
   end
 end
 
