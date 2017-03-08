@@ -59,6 +59,10 @@ function mission:init()
       funds = love.audio.newSource("assets/sfx/voice insufficient funds.ogg"),
     },
     mining = love.audio.newSource("assets/sfx/mining.ogg"),
+    shoot = {
+      laser = love.audio.newSource("assets/sfx/laser_shoot.ogg"),
+      collision = love.audio.newSource("assets/sfx/collision.ogg"),
+    },
   }
 
   self.objects_death_sfx = {}
@@ -157,7 +161,7 @@ function mission:init()
     color = function(object) return {255,0,0} end,
     exe = function(object)
       local percent = object.health.current/object.health.max * 0.9
-      for resource_type,cost in pairs( object.cost ) do --self.costs[object.type] ) do
+      for resource_type,cost in pairs( object.cost ) do
         self.resources[resource_type] = self.resources[resource_type] + cost*percent
       end
       object.health.current = 0
@@ -176,9 +180,7 @@ function mission:init()
       crew = 100,
       size = 32,
       speed = 50,
-      health = {
-        max = 25,
-      },
+      health = {max = 25,},
       ore = 400,
       material = 400,
       food = 100,
@@ -200,9 +202,7 @@ function mission:init()
       crew = 10,
       size = 32,
       speed = 50,
-      health = {
-        max = 10,
-      },
+      health = {max = 10,},
       ore = 25,
       ore_gather = 25,
       repair = false,
@@ -220,17 +220,17 @@ function mission:init()
       crew = 50,
       size = 32,
       speed = 100,
-      health = {
-        max = 50,
-      },
+      health = {max = 50,},
       shoot = {
         reload = 0.25,
         damage = 2,
         speed = 200,
         range = 200,
         aggression = 400,
-        sfx = love.audio.newSource("assets/sfx/laser_shoot.ogg"),
-        collision_sfx = love.audio.newSource("assets/sfx/collision.ogg"),
+        sfx = {
+          construct = "laser",
+          destruct = "collision"
+        },
       },
       repair = false,
       actions = {"salvage","repair"}
@@ -246,9 +246,7 @@ function mission:init()
       crew = 10,
       size = 32,
       speed = 50,
-      health = {
-        max = 10,
-      },
+      health = {max = 10,},
       material = 50,
       material_gather = 5,
       repair = false,
@@ -266,9 +264,7 @@ function mission:init()
       crew = 5,
       size = 32,
       speed = 50,
-      health = {
-        max = 5,
-      },
+      health = {max = 5,},
       food = 50,
       food_gather = 40,
       repair = false,
@@ -285,9 +281,7 @@ function mission:init()
       crew = 10,
       size = 32,
       speed = 50,
-      health = {
-        max = 40,
-      },
+      health = {max = 40,},
       ore = 100,
       material = 100,
       food = 100,
@@ -421,8 +415,10 @@ function mission:nextLevel()
           speed = 200,
           range = 200,
           aggression = 400,
-          sfx = love.audio.newSource("assets/sfx/laser_shoot.ogg"),
-          collision_sfx = love.audio.newSource("assets/sfx/collision.ogg"),
+          sfx = {
+            construct = "laser",
+            destruct = "collision",
+          },
         },
         repair = false,
       })
@@ -1127,7 +1123,7 @@ function mission:updateMission(dt)
         else
           object.health.current = math.max(0,object.health.current-bullet.damage)
           table.remove(object.incoming_bullets,bullet_index)
-          playSFX(bullet.collision_sfx)
+          playSFX(self.sfx.shoot[bullet.sfx.destruct])
         end
       end
     end
@@ -1159,11 +1155,11 @@ function mission:updateMission(dt)
 
         object.shoot.reload = object.shoot.reload_t
         object.target_object.incoming_bullets = object.target_object.incoming_bullets or {}
-        playSFX(object.shoot.sfx)
+        playSFX(self.sfx.shoot[object.shoot.sfx.construct])
         table.insert(object.target_object.incoming_bullets,{
           speed = object.shoot.speed,
           damage = object.shoot.damage,
-          collision_sfx = object.shoot.collision_sfx,
+          sfx = object.shoot.sfx,
           x = object.position.x,
           y = object.position.y,
           angle = object.angle,
