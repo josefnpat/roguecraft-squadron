@@ -185,16 +185,9 @@ function mission:init()
       food_gather = 10,
       repair = false,
       actions = {
-        self.actions.salvage,
-        self.actions.repair,
-        self.actions.build_drydock,
-        self.actions.build_mining,
-        self.actions.build_refinery,
-        self.actions.build_habitat,
-        self.actions.build_combat,
-        self.actions.build_cargo,
-      }
-
+        "salvage","repair",
+        "build_drydock","build_mining","build_refinery","build_habitat","build_combat","build_cargo",
+      },
     }
   end
 
@@ -213,10 +206,7 @@ function mission:init()
       ore = 25,
       ore_gather = 25,
       repair = false,
-      actions = {
-        self.actions.salvage,
-        self.actions.repair,
-      }
+      actions = {"salvage","repair"}
     }
 
   end
@@ -243,10 +233,7 @@ function mission:init()
         collision_sfx = love.audio.newSource("assets/sfx/collision.ogg"),
       },
       repair = false,
-      actions = {
-        self.actions.salvage,
-        self.actions.repair,
-      }
+      actions = {"salvage","repair"}
     }
   end
 
@@ -266,11 +253,7 @@ function mission:init()
       material_gather = 5,
       repair = false,
       refine = true,
-      actions = {
-        self.actions.salvage,
-        self.actions.repair,
-        self.actions.refine,
-      }
+      actions = {"salvage","repair","refine"}
     }
   end
 
@@ -289,10 +272,7 @@ function mission:init()
       food = 50,
       food_gather = 40,
       repair = false,
-      actions = {
-        self.actions.salvage,
-        self.actions.repair,
-      }
+      actions = {"salvage","repair"}
     }
   end
 
@@ -312,10 +292,7 @@ function mission:init()
       material = 100,
       food = 100,
       repair = false,
-      actions = {
-        self.actions.salvage,
-        self.actions.repair,
-      }
+      actions = {"salvage","repair"}
     }
   end
 
@@ -358,6 +335,11 @@ function mission:build_object(object_name,parent)
   obj.position = self:nearbyPosition(parent.position)
   obj.owner = parent.owner
   obj.angle = math.random()*math.pi*2
+  local tactions = {}
+  for i,v in pairs(obj.actions) do
+    table.insert(tactions,self.actions[v])
+  end
+  obj.actions = tactions
   return obj
 end
 
@@ -443,10 +425,6 @@ function mission:nextLevel()
           collision_sfx = love.audio.newSource("assets/sfx/collision.ogg"),
         },
         repair = false,
-        actions = {
-          self.actions.salvage,
-          self.actions.repair,
-        }
       })
     end
   end
