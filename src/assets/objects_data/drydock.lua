@@ -20,6 +20,7 @@ return function()
       "build_mining",
       "build_refinery",
       "build_habitat",
+      "build_fighter",
       "build_combat",
       "build_cargo",
       "build_troopship",

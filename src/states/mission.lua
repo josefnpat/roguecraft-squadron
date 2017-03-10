@@ -76,14 +76,6 @@ function mission:init()
     repair = love.graphics.newImage("assets/actions/repair.png"),
     salvage = love.graphics.newImage("assets/actions/salvage.png"),
     refine = love.graphics.newImage("assets/actions/refine.png"),
-    build_drydock = love.graphics.newImage("assets/objects/drydock0_icon.png"),
-    build_salvager = love.graphics.newImage("assets/objects/salvager0_icon.png"),
-    build_mining = love.graphics.newImage("assets/objects/mining0_icon.png"),
-    build_combat = love.graphics.newImage("assets/objects/combat0_icon.png"),
-    build_refinery = love.graphics.newImage("assets/objects/refinery0_icon.png"),
-    build_habitat = love.graphics.newImage("assets/objects/habitat0_icon.png"),
-    build_cargo = love.graphics.newImage("assets/objects/cargo0_icon.png"),
-    build_troopship = love.graphics.newImage("assets/objects/troopship0_icon.png"),
   }
   --TODO: add passive icons, such as attack/mine
 
@@ -178,6 +170,9 @@ function mission:init()
   end
 
   for objtype,objbuildfn in pairs(self.build) do
+    self.action_icons["build_"..objtype] =
+      love.graphics.newImage("assets/objects/"..objtype.."0_icon.png")
+
     self.actions["build_"..objtype] = {
       type = objtype,
       icon = "build_"..objtype,
