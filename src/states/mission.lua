@@ -230,11 +230,14 @@ end
 
 function mission:nextLevel()
 
+  local tobjects = {}
   for i,v in pairs(self.objects) do
-    if v.owner ~= 0  then
-      table.remove(self.objects,i)
+    if v.owner == 0  then
+      table.insert(tobjects,v)
     end
   end
+  -- Removing things in lua pairs breaks things badly.
+  self.objects = tobjects
 
   self.level = self.level + 1
 
@@ -804,11 +807,6 @@ function mission:drawSelected()
   end
 end
 
-function mission:buttonArea()
-  local w = 320
-  return (love.graphics.getWidth()-w)/2,love.graphics.getHeight()*1/32,w,32
-end
-
 function mission:miniMapArea()
   return 32,32,128,128
 end
@@ -927,10 +925,6 @@ function mission:update(dt)
   if not love.window.hasFocus() then
     libs.hump.gamestate.switch(states.pause)
     self.select_start = nil
-  end
-
-  if cheat then
-    self.show_button = true
   end
 
 end
@@ -1208,9 +1202,7 @@ function mission:updateMission(dt)
   if #self:getObjectsByOwner(0) < 1 then
     libs.hump.gamestate.switch(states.lose)
   elseif #self:getObjectsByOwner(1) < 1 then
-    self.show_button = true
-  else
-    self.show_button = false
+    --TODO: Enable jump
   end
 
   for object_index,object in pairs(self.objects) do
