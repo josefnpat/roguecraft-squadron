@@ -25,7 +25,6 @@ function stars:load()
 end
 
 function stars:reload()
-  print("reloading stars")
   self:load()
 end
 
