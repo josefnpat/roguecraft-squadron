@@ -715,7 +715,7 @@ function mission:draw()
         love.graphics.draw(self.fow_img,
           object.position.x-self.camera.x+love.graphics.getWidth()/2,
           object.position.y-self.camera.y+love.graphics.getHeight()/2,
-          0,1,1,
+          object.fow_rot,1,1,
           self.fow_img:getWidth()/2,
           self.fow_img:getHeight()/2)
       end
@@ -997,6 +997,10 @@ function mission:updateMission(dt)
   end
 
   for _,object in pairs(self.objects) do
+
+    if object.owner == 0 then
+      object.fow_rot = object.fow_rot and object.fow_rot + dt/60 or math.random()*math.pi*2
+    end
 
     if object.incoming_bullets then
       for bullet_index,bullet in pairs(object.incoming_bullets) do
