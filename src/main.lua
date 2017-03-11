@@ -91,6 +91,7 @@ libs = {
   healthcolor = require"libs.healthcolor",
   splash = require "libs.splash",
   vn = require"libs.vn",
+  stars = require"libs.stars",
 }
 
 states = {
@@ -102,12 +103,6 @@ states = {
   win = require "states.win",
   game = require "states.mission",
   credits = require "states.credits",
-}
-
-bg = {
-  space = love.graphics.newImage("assets/space.png"),
-  stars0 = love.graphics.newImage("assets/stars0.png"),
-  stars1 = love.graphics.newImage("assets/stars1.png"),
 }
 
 function love.load(arg)
@@ -130,6 +125,10 @@ function love.load(arg)
   end
   libs.hump.gamestate.registerEvents()
   libs.hump.gamestate.switch(target_state or states.splash)
+end
+
+function love.resize()
+  libs.stars:reload()
 end
 
 function love.update(dt)

@@ -16,13 +16,12 @@ function vn.new(init)
   self.next = vn.next
   self.play = vn.play
   self.stop = vn.stop
-  
+
   self.overlay_animation_limit = 1
   self.overlay_animation_timer = 0
   self.overlay_current_frame = 1
   self.overlay_next_frame = 1
-  
-  
+
   self._init = true
 
   return self
@@ -42,19 +41,19 @@ function vn:stop()
 end
 
 function vn:update(dt)
-	local cframe = self._frames[self._frame]
-	self.overlay_animation_timer = self.overlay_animation_timer + dt
-	if cframe.overlay and self.overlay_animation_timer > self.overlay_animation_limit then
-		self.overlay_current_frame = self.overlay_current_frame + 1
-		self.overlay_animation_timer = 0
-		if self.overlay_current_frame > #cframe.overlay then
-			self.overlay_current_frame = 1
-		end
-		self.overlay_next_frame = self.overlay_current_frame + 1
-		if self.overlay_next_frame > #cframe.overlay then
-			self.overlay_next_frame = 1
-		end
-	end
+  local cframe = self._frames[self._frame]
+  self.overlay_animation_timer = self.overlay_animation_timer + dt
+  if cframe.overlay and self.overlay_animation_timer > self.overlay_animation_limit then
+    self.overlay_current_frame = self.overlay_current_frame + 1
+    self.overlay_animation_timer = 0
+    if self.overlay_current_frame > #cframe.overlay then
+      self.overlay_current_frame = 1
+    end
+    self.overlay_next_frame = self.overlay_current_frame + 1
+    if self.overlay_next_frame > #cframe.overlay then
+      self.overlay_next_frame = 1
+    end
+  end
 end
 
 function vn:play()
@@ -96,24 +95,26 @@ function vn:draw()
     love.graphics.setColor(0,0,0,191)
     love.graphics.rectangle("fill",0,0,love.graphics.getWidth(),love.graphics.getHeight())
     love.graphics.setColor(255,255,255)
+
     if cframe.image then
-      love.graphics.draw(cframe.image)
-    end
-	if cframe.overlay and cframe.overlay[self.overlay_current_frame] and cframe.overlay[self.overlay_next_frame] then
-	  love.graphics.setColor(255,255,255,(self.overlay_animation_timer/self.overlay_animation_limit) * 255)
-      love.graphics.draw(cframe.overlay[self.overlay_current_frame])
-	  love.graphics.setColor(255,255,255,(1-(self.overlay_animation_timer/self.overlay_animation_limit)) * 255)
-      love.graphics.draw(cframe.overlay[self.overlay_next_frame])
+      local coffx,coffy = hoffset+padding*2,love.graphics.getHeight()-cframe.image:getHeight()-padding*2
+      love.graphics.draw(cframe.image,coffx,coffy)
+      if cframe.overlay and cframe.overlay[self.overlay_current_frame] and cframe.overlay[self.overlay_next_frame] then
+        love.graphics.setColor(255,255,255,(self.overlay_animation_timer/self.overlay_animation_limit) * 255)
+        love.graphics.draw(cframe.overlay[self.overlay_current_frame],coffx,coffy)
+        love.graphics.setColor(255,255,255,(1-(self.overlay_animation_timer/self.overlay_animation_limit)) * 255)
+        love.graphics.draw(cframe.overlay[self.overlay_next_frame],coffx,coffy)
+      end
+
     end
     love.graphics.setColor(0,0,0,191)
     love.graphics.rectangle("fill",padding,voffset+padding,
-      love.graphics.getWidth()-padding*2,height-padding*2)
+    love.graphics.getWidth()-padding*2,height-padding*2)
     love.graphics.setColor(255,255,255)
     love.graphics.setFont(fonts.vn_name)
     dropshadow(cframe.name,padding*2,voffset+padding*2)
     love.graphics.setFont(fonts.vn_text)
-    dropshadowf(cframe.text,hoffset+padding*2,voffset+padding*2,
-      width-padding*4,"left")
+    dropshadowf(cframe.text,hoffset+padding*2,voffset+padding*2,width-padding*4,"left")
     love.graphics.setFont(orig_font)
   end
 end

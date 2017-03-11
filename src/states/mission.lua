@@ -88,24 +88,10 @@ function mission:init()
   self.target = love.graphics.newImage("assets/target.png")
 
   self.icon_bg = love.graphics.newImage("assets/icon_bg.png")
-  self.camera = libs.hump.camera(1280/2,720/2)
+  self.camera = libs.hump.camera(love.graphics.getWidth()/2,love.graphics.getHeight()/2)
   self.camera_speed = 300
   self.camera.vertical_mouse_move = 1/16.875
   self.camera.horizontal_mouse_move = 1/30
-
-  self.space = bg.space
-
-  self.stars0 = bg.stars0
-  self.stars0:setWrap("repeat","repeat")
-  self.stars0_quad = love.graphics.newQuad(0, 0,
-    1280+self.stars0:getWidth(), 720+self.stars0:getHeight(),
-    self.stars0:getWidth(), self.stars0:getHeight())
-
-  self.stars1 = bg.stars1
-  self.stars1:setWrap("repeat","repeat")
-  self.stars1_quad = love.graphics.newQuad(0, 0,
-    1280+self.stars1:getWidth(), 720+self.stars1:getHeight(),
-    self.stars1:getWidth(), self.stars1:getHeight())
 
   self.controlgroups = {}
 
@@ -211,7 +197,7 @@ function mission:init()
   states.game:nextLevel()
 
   self.start = {
-    position = {x=1280/2,y=720/2}
+    position = {x=love.graphics.getWidth()/2,y=love.graphics.getHeight()/2}
   }
 
   table.insert(self.objects,self:build_object("troopship",{position=self.start.position,owner=0}))
@@ -262,8 +248,8 @@ function mission:nextLevel()
   for i = 1, 5 do
     self.planets[i] = {
       z = 0.1, -- paralax scrolling: the lower the Z, the slower the planets pan on camera
-      x = math.random(0,1280)*1.5,
-      y = math.random(0,720)*1.5,
+      x = math.random(0,love.graphics.getWidth())*1.5,
+      y = math.random(0,love.graphics.getHeight())*1.5,
       size = math.random(32,64)/64,
       rotation = math.random(32,64)/5120,
       img = self.planet_images[math.random(#self.planet_images)],
@@ -275,8 +261,8 @@ function mission:nextLevel()
     for i = 1,level_data.asteroid*difficulty.mult.asteroid do
       local parent_object = {
         position = {
-          x = self.level == 1 and math.random(0,1280) or math.random(0,32*128),
-          y = self.level == 1 and math.random(0,720) or math.random(0,32*128),
+          x = self.level == 1 and math.random(0,love.graphics.getWidth()) or math.random(0,32*128),
+          y = self.level == 1 and math.random(0,love.graphics.getHeight()) or math.random(0,32*128),
         },
       }
       local asteroid_object = self:build_object("asteroid",parent_object)
@@ -288,8 +274,8 @@ function mission:nextLevel()
     for i = 1,level_data.scrap*difficulty.mult.scrap do
       local parent_object = {
         position = {
-          x = self.level == 1 and math.random(0,1280) or math.random(0,32*128),
-          y = self.level == 1 and math.random(0,720) or math.random(0,32*128),
+          x = self.level == 1 and math.random(0,love.graphics.getWidth()) or math.random(0,32*128),
+          y = self.level == 1 and math.random(0,love.graphics.getHeight()) or math.random(0,32*128),
         },
       }
       local scrap_object = self:build_object("scrap",parent_object)
@@ -301,8 +287,8 @@ function mission:nextLevel()
     for i = 1,level_data.station*difficulty.mult.station do
       local parent_object = {
         position = {
-          x = self.level == 1 and math.random(0,1280) or math.random(0,32*128),
-          y = self.level == 1 and math.random(0,720) or math.random(0,32*128),
+          x = self.level == 1 and math.random(0,love.graphics.getWidth()) or math.random(0,32*128),
+          y = self.level == 1 and math.random(0,love.graphics.getHeight()) or math.random(0,32*128),
         },
       }
       local station_object = self:build_object("station",parent_object)
@@ -313,7 +299,7 @@ function mission:nextLevel()
   if level_data.enemy then
     for i = 1,level_data.enemy*difficulty.mult.enemy do
       local unsafe_x,unsafe_y = 0,0
-      while unsafe_x < 1280+400 and unsafe_y < 720+400 do
+      while unsafe_x < love.graphics.getWidth()+400 and unsafe_y < love.graphics.getHeight()+400 do
         unsafe_x,unsafe_y = math.random(0,32*128),math.random(0,32*128)
       end
       local parent_object = {
@@ -339,8 +325,8 @@ function mission:regroupByOwner(owner,scatter)
     object.target = nil
     object.target_object = nil
   end
-  self.camera.x = 1280/2
-  self.camera.y = 720/2
+  self.camera.x = love.graphics.getWidth()/2
+  self.camera.y = love.graphics.getHeight()/2
 end
 
 
@@ -442,8 +428,8 @@ function mission:moveSelected(x,y,ox,oy)
           playSFX(self.sfx.moving)
           found = true
           self.target_show = {
-            x=self.camera.x+x-1280/2,
-            y=self.camera.y+y-720/2,
+            x=self.camera.x+x-love.graphics.getWidth()/2,
+            y=self.camera.y+y-love.graphics.getHeight()/2,
             anim=0.25
           }
         end
@@ -467,7 +453,7 @@ function mission:mousepressed(x,y,b)
     end
   elseif self:mouseInSelected() then
     local posx = math.floor((love.mouse.getX()-32)/(32+self:iconPadding()))+1
-    local posy = -math.floor((love.mouse.getY()-720+32)/(32+self:iconPadding()))
+    local posy = -math.floor((love.mouse.getY()-love.graphics.getHeight()+32)/(32+self:iconPadding()))
     local row,col = 0,0
     for _,object in pairs(self.objects) do
       if object.selected then
@@ -573,7 +559,7 @@ function mission:keypressed(key)
 end
 
 function mission:getCameraOffset()
-  return self.camera.x-1280/2,self.camera.y-720/2
+  return self.camera.x-love.graphics.getWidth()/2,self.camera.y-love.graphics.getHeight()/2
 end
 
 function mission:mousereleased(x,y,b)
@@ -612,19 +598,7 @@ end
 
 function mission:draw()
 
-  love.graphics.draw(self.space)
-
-  love.graphics.setBlendMode("add")
-
-  love.graphics.draw(self.stars0, self.stars0_quad,
-    -self.stars0:getWidth()+(self.camera.x%self.stars0:getWidth()),
-    -self.stars0:getHeight()+(self.camera.y%self.stars0:getHeight()) )
-
-  love.graphics.draw(self.stars1, self.stars1_quad,
-    -self.stars1:getWidth()+((self.camera.x/2)%self.stars1:getWidth()),
-    -self.stars1:getHeight()+((self.camera.y/2)%self.stars1:getHeight()) )
-
-  love.graphics.setBlendMode("alpha")
+  libs.stars:draw(self.camera.x/2,self.camera.y/2)
 
   for i = 1, #self.planets do
     local x = self.planets[i].x - self.camera.x * self.planets[i].z
@@ -747,11 +721,11 @@ function mission:draw()
   end
   love.graphics.setColor(255,255,255)
 
-  dropshadowf("Level "..self.level,32,720-32-8,1280-64,"right")
+  dropshadowf("Level "..self.level,32,love.graphics.getHeight()-32-8,love.graphics.getWidth()-64,"right")
 
   if self.jump then
     love.graphics.setColor(0,0,0,255-255*self.jump/2.8) -- jump sfx length
-    love.graphics.rectangle("fill",0,0,1280,720)
+    love.graphics.rectangle("fill",0,0,love.graphics.getWidth(),love.graphics.getHeight())
     love.graphics.setColor(255,255,255)
   end
 
@@ -784,7 +758,7 @@ function mission:drawActions()
   local cobject = self:singleSelected()
   if cobject and cobject.actions then
     for ai,a in pairs(cobject.actions) do
-      local x,y = 1280-64,32+(ai-1)*(32+self:iconPadding())
+      local x,y = love.graphics.getWidth()-64,32+(ai-1)*(32+self:iconPadding())
       love.graphics.draw(self.icon_bg,x,y)
       love.graphics.setColor(a.color and a.color(cobject) or {255,0,255,127})
       if a.hover then
@@ -792,7 +766,7 @@ function mission:drawActions()
         love.graphics.setColor(r,g,b)
         local tobject = a.type and self.build[a.type]() or ""
         dropshadowf(a.tooltip(cobject),
-        32,y+6,1280-96-8,"right")
+        32,y+6,love.graphics.getWidth()-96-8,"right")
       end
       love.graphics.draw(self.action_icons[a.icon],x,y)
       love.graphics.setColor(255,255,255)
@@ -805,7 +779,7 @@ function mission:drawSelected()
   local row,col = 0,0
   for _,object in pairs(self.objects) do
     if object.selected then
-      local x,y = col*(32+self:iconPadding())+32,720-32-32-row*(32+self:iconPadding())
+      local x,y = col*(32+self:iconPadding())+32,love.graphics.getHeight()-32-32-row*(32+self:iconPadding())
       love.graphics.draw(self.icon_bg,x,y)
       index = index + 1
       local object_icon = self.objects_icon[object.type][object.variation or 0]
@@ -822,7 +796,7 @@ function mission:drawSelected()
   end
   local cobject = self:singleSelected()
   if cobject then
-    dropshadow((cobject.display_name or "").." — "..(cobject.info or ""),64+8,720-64)
+    dropshadow((cobject.display_name or "").." — "..(cobject.info or ""),64+8,love.graphics.getHeight()-64)
   end
 end
 
@@ -865,7 +839,7 @@ function mission:selectedArea()
   -- NO UR A HACK
   local mrow = col == 0 and row or row+1
   local mcol = row>0 and self.selected_row_max or col
-  return 32,720-32-mrow*(32+self:iconPadding()),
+  return 32,love.graphics.getHeight()-32-mrow*(32+self:iconPadding()),
     mcol*(32+self:iconPadding()),
     mrow*(32+self:iconPadding())
 end
@@ -883,7 +857,7 @@ function mission:actionArea()
     for ia,a in pairs(cobject.actions) do
       count = count + 1
     end
-    return 1280-64,32,32,32+count*(32+self:iconPadding())
+    return love.graphics.getWidth()-64,32,32,32+count*(32+self:iconPadding())
   else
     return 0,0,0,0
   end
@@ -917,7 +891,7 @@ function mission:drawMinimap()
   local scale = self:miniMapScale()
   love.graphics.setColor(self.colors.ui.primary)
   love.graphics.rectangle("line",x-4,y-4,w+8,h+8)
-  local cx,cy,cw,ch = (self.camera.x-1280/2)/scale,(self.camera.y-720/2)/scale,1280/scale,720/scale
+  local cx,cy,cw,ch = (self.camera.x-love.graphics.getWidth()/2)/scale,(self.camera.y-love.graphics.getHeight()/2)/scale,love.graphics.getWidth()/scale,love.graphics.getHeight()/scale
   love.graphics.rectangle("line",x+cx,y+cy,cw,ch)
   for _,object in pairs(self.objects) do
     love.graphics.setColor(self:ownerColor(object.owner))
@@ -1322,10 +1296,10 @@ function mission:updateMission(dt)
       end
     else
 
-      local left = love.keyboard.isDown("left") or love.mouse.getX() < 1280*self.camera.horizontal_mouse_move
-      local right = love.keyboard.isDown("right") or love.mouse.getX() > 1280*(1-self.camera.horizontal_mouse_move)
-      local up = love.keyboard.isDown("up") or love.mouse.getY() < 720*self.camera.vertical_mouse_move
-      local down = love.keyboard.isDown("down") or love.mouse.getY() > 720*(1-self.camera.vertical_mouse_move)
+      local left = love.keyboard.isDown("left") or love.mouse.getX() < love.graphics.getWidth()*self.camera.horizontal_mouse_move
+      local right = love.keyboard.isDown("right") or love.mouse.getX() > love.graphics.getWidth()*(1-self.camera.horizontal_mouse_move)
+      local up = love.keyboard.isDown("up") or love.mouse.getY() < love.graphics.getHeight()*self.camera.vertical_mouse_move
+      local down = love.keyboard.isDown("down") or love.mouse.getY() > love.graphics.getHeight()*(1-self.camera.vertical_mouse_move)
 
       local dx,dy = 0,0
       if left then
