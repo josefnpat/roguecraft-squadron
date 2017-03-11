@@ -14,7 +14,7 @@ function mainmenu:enter()
       act = function()
         difficulty.mult.enemy = 1/2
         difficulty.mult.asteroid = 1
-        libs.hump.gamestate.switch(states.game); states.game:init()
+        libs.hump.gamestate.switch(states.mission); states.mission:init()
       end
     },
     {
@@ -22,7 +22,7 @@ function mainmenu:enter()
       act = function()
         difficulty.mult.enemy = 2/2
         difficulty.mult.asteroid = 1+1/2
-        libs.hump.gamestate.switch(states.game); states.game:init()
+        libs.hump.gamestate.switch(states.mission); states.mission:init()
       end
     },
     {
@@ -30,7 +30,7 @@ function mainmenu:enter()
       act = function()
         difficulty.mult.enemy = 3/2
         difficulty.mult.asteroid = 1+2/2
-        libs.hump.gamestate.switch(states.game); states.game:init()
+        libs.hump.gamestate.switch(states.mission); states.mission:init()
       end
     },
     {
@@ -38,7 +38,7 @@ function mainmenu:enter()
       act = function()
         difficulty.mult.enemy = 4/2
         difficulty.mult.asteroid = 1+3/2
-        libs.hump.gamestate.switch(states.game); states.game:init()
+        libs.hump.gamestate.switch(states.mission); states.mission:init()
       end
     },
     {

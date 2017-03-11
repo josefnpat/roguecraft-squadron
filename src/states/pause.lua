@@ -2,7 +2,7 @@ local state = {}
 
 function state:init()
   self.options = {}
-  self.options[1] = {text = "Continue", act = function() libs.hump.gamestate.switch(states.game) end}
+  self.options[1] = {text = "Continue", act = function() libs.hump.gamestate.switch(states.mission) end}
   self.options[2] = {text = "Settings", act = function() libs.hump.gamestate.switch(states.options); settings.previousState = states.pause end}
   self.options[3] = {text = "End Game", act = function() libs.hump.gamestate.switch(states.menu) end}
   
@@ -46,7 +46,7 @@ end
 function state:draw()
   love.graphics.setColor(255,255,255)
   
-  states.game:draw()
+  states.mission:draw()
   love.graphics.setColor(0,0,0,100)
   love.graphics.rectangle("fill",0,0,love.graphics:getWidth(),love.graphics:getHeight())
   love.graphics.setColor(255,255,255)

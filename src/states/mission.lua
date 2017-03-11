@@ -2,8 +2,7 @@ local mission = {}
 
 function mission:init()
 
-  --TODO add resize callback
-  self.fow = love.graphics.newCanvas(love.graphics.getWidth(),love.graphics.getHeight())
+  self:resize()
   self.fow_img = love.graphics.newImage("assets/fow.png")
 
   self.explosion_images = {}
@@ -198,7 +197,7 @@ function mission:init()
   self.objects = {}
 
   self.level = 0
-  states.game:nextLevel()
+  states.mission:nextLevel()
 
   self.start = {
     position = {x=love.graphics.getWidth()/2,y=love.graphics.getHeight()/2}
@@ -774,6 +773,10 @@ end
 
 function mission:iconPadding()
   return 4
+end
+
+function mission:resize()
+  self.fow = love.graphics.newCanvas(love.graphics.getWidth(),love.graphics.getHeight())
 end
 
 function mission:singleSelected()

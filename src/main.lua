@@ -101,7 +101,7 @@ states = {
   options = require "states.options",
   lose = require "states.lose",
   win = require "states.win",
-  game = require "states.mission",
+  mission = require "states.mission",
   credits = require "states.credits",
 }
 
@@ -129,12 +129,13 @@ end
 
 function love.resize()
   libs.stars:reload()
+  states.mission:resize()
 end
 
 function love.update(dt)
   love.mouse.setGrabbed(
-    libs.hump.gamestate.current() == states.game and
-    not states.game.vn:getRun() and
+    libs.hump.gamestate.current() == states.mission and
+    not states.mission.vn:getRun() and
     love.window.hasFocus()
   )
 end
