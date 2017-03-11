@@ -520,13 +520,17 @@ end
 
 function mission:keypressed(key)
   if key == "escape" then
-    libs.hump.gamestate.switch(states.pause)
-    self.select_start = nil
-  end
-
-  if self.vn:getRun() then
-    self.vn:next()
-    return
+    if self.vn:getRun() then
+      self.vn:stop()
+    else
+      libs.hump.gamestate.switch(states.pause)
+      self.select_start = nil
+    end
+  else
+    if self.vn:getRun() then
+      self.vn:next()
+      return
+    end
   end
 
   local key_number = tonumber(key)

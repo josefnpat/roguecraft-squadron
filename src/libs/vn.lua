@@ -38,6 +38,7 @@ function vn:stop()
       cframe.audio:stop()
     end
   end
+  self._run = false
 end
 
 function vn:update(dt)
