@@ -2,6 +2,10 @@ local mission = {}
 
 function mission:init()
 
+  --TODO add resize callback
+  self.fow = love.graphics.newCanvas(love.graphics.getWidth(),love.graphics.getHeight())
+  self.fow_img = love.graphics.newImage("assets/fow.png")
+
   self.explosion_images = {}
   self.explosions = {}
 
@@ -618,6 +622,7 @@ function mission:draw()
   end
 
   self.camera:attach()
+
   for _,object in pairs(self.objects) do
     if object.selected then
       love.graphics.setColor(self.colors.ui.primary)
@@ -698,6 +703,31 @@ function mission:draw()
   end
 
   self.camera:detach()
+
+  self.fow:renderTo(function()
+    love.graphics.clear()
+    love.graphics.setColor(255,255,255)
+    love.graphics.rectangle("fill",0,0,
+      love.graphics.getWidth(),
+      love.graphics.getHeight()
+    )
+    for _,object in pairs(self.objects) do
+      if object.owner == 0 then
+        love.graphics.draw(self.fow_img,
+          object.position.x-self.camera.x+love.graphics.getWidth()/2,
+          object.position.y-self.camera.y+love.graphics.getHeight()/2,
+          0,1,1,
+          self.fow_img:getWidth()/2,
+          self.fow_img:getHeight()/2)
+      end
+    end
+  end)
+
+  love.graphics.setBlendMode("subtract")
+  love.graphics.setColor(255,255,255)
+  love.graphics.draw(self.fow)
+  love.graphics.setBlendMode("alpha")
+
   love.graphics.setColor(self.colors.ui.primary)
   if self.select_start then
     local mx,my = love.mouse.getPosition()
