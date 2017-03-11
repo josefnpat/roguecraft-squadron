@@ -14,7 +14,7 @@ return function()
     food_gather = 10,
     repair = false,
     actions = {
-      "salvage","repair",
+      "salvage","repair","jump",
       "build_drydock",
       "build_salvager",
       "build_mining",

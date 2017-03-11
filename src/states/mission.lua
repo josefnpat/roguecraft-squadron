@@ -76,6 +76,7 @@ function mission:init()
     repair = love.graphics.newImage("assets/actions/repair.png"),
     salvage = love.graphics.newImage("assets/actions/salvage.png"),
     refine = love.graphics.newImage("assets/actions/refine.png"),
+    jump = love.graphics.newImage("assets/actions/jump.png"),
   }
   --TODO: add passive icons, such as attack/mine
 
@@ -161,6 +162,16 @@ function mission:init()
       object.health.current = 0
       object.repair = false
       object.no_scrap_drop = true
+    end,
+  }
+
+  self.actions.jump = {
+    icon = "jump",
+    tooltip = function(object) return "Jump to the next sector" end,
+    color = function(object) return {0,255,0} end,
+    exe = function(object)
+      self.jump = 2.8 -- Jump sfx length
+      playSFX(self.sfx.jump)
     end,
   }
 
@@ -481,10 +492,12 @@ function mission:mousepressed(x,y,b)
         end
       end
     end
+    --[[
   elseif self:mouseInButton() then
     self.show_button = false
     self.jump = 2.8 -- Jump sfx length
     playSFX(self.sfx.jump)
+    --]]
   else
 
     local ox,oy = self:getCameraOffset()
@@ -722,7 +735,7 @@ function mission:draw()
   self:drawMinimap()
   self:drawSelected()
   self:drawActions()
-  self:drawButton()
+  --self:drawButton()
 
   for rindex,r in pairs(self.resources_types) do
     local symbol
@@ -825,6 +838,7 @@ function mission:buttonArea()
   return (love.graphics.getWidth()-w)/2,love.graphics.getHeight()*1/32,w,32
 end
 
+--[[
 function mission:drawButton()
   if self.show_button then
     local x,y,w,h = self:buttonArea()
@@ -845,6 +859,7 @@ function mission:mouseInButton()
     return false
   end
 end
+--]]
 
 function mission:miniMapArea()
   return 32,32,128,128
@@ -1335,8 +1350,10 @@ function mission:updateMission(dt)
           end
         end
       end
+      --[[
     elseif self:mouseInButton() then
       -- nop
+      --]]
     else
 
       local left = love.keyboard.isDown("left") or love.mouse.getX() < 1280*self.camera.horizontal_mouse_move
