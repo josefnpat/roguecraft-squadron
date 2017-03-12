@@ -648,15 +648,19 @@ function mission:draw()
   self.camera:attach()
 
   for _,object in pairs(self.objects) do
+
     if object.selected then
       love.graphics.setColor(self.colors.ui.primary)
       love.graphics.circle("line",object.position.x,object.position.y,object.size)
     end
+
     if object.anim then
       love.graphics.setColor(255,255,255,255*object.anim/(object.anim_max or object.anim))
       love.graphics.circle("line",object.position.x,object.position.y,
         object.size+object.anim/object.anim_max*4)
     end
+
+    local ship_color = {255,255,255}
 
     if object.health and object.health.current then
       local percent = object.health.current/object.health.max
@@ -666,6 +670,11 @@ function mission:draw()
         love.graphics.rectangle("fill",bx,by,bw,bh)
         love.graphics.setColor(libs.healthcolor(percent))
         love.graphics.rectangle("fill",bx+1,by+1,(bw-2)*percent,bh-2)
+      end
+      local hue_change = 0.5
+      if percent < hue_change then
+        local hue = 255*percent/hue_change
+        ship_color = {255,hue,hue}
       end
     end
 
@@ -693,9 +702,11 @@ function mission:draw()
         object.type..object_variation.."_icon.png")
       self.objects_icon[object.type][object_variation] = object_icon
     end
+    love.graphics.setColor(ship_color)
     love.graphics.draw(object_image,
       object.position.x,object.position.y,
       object.angle or 0,1,1,object_image:getWidth()/2,object_image:getHeight()/2)
+    love.graphics.setColor({255,255,255})
 
     if debug_mode then
       love.graphics.print(tostring(object),object.position.x,object.position.y)
