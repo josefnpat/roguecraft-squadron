@@ -6,5 +6,6 @@ return function()
     variation = math.random(0,5),
     size = 32,
     scrap_supply = math.random(25,50),
+    rotate = (math.random(0,1)*2-1)/20,
   }
 end

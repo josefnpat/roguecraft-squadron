@@ -1042,6 +1042,10 @@ function mission:updateMission(dt)
 
   for _,object in pairs(self.objects) do
 
+    if object.rotate then
+      object.angle = object.angle + object.rotate*dt
+    end
+
     if object.crew_generate then
       self.resources.crew = self.resources.crew + object.crew_generate*dt
       self.resources.crew_delta = self.resources.crew_delta + object.crew_generate

@@ -20,5 +20,6 @@ return function()
     info = "This station contains [Crew] which can be collected by a [Habitat].",
     size = 64,
     crew_supply = math.random(25,50),
+    rotate = (math.random(0,1)*2-1)/10,
   }
 end

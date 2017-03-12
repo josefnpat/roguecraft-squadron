@@ -8,5 +8,6 @@ return function()
       damage = 10,
     },
     size = 128,
+    rotate = (math.random(0,1)*2-1),
   }
 end
