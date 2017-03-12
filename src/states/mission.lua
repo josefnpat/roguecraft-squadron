@@ -664,7 +664,7 @@ function mission:draw()
 
     if object.health and object.health.current then
       local percent = object.health.current/object.health.max
-      if (object.selected and percent < 1) or love.keyboard.isDown("lalt") then
+      if (object.owner == 0 and percent < 1) or love.keyboard.isDown("lalt") then
         local bx,by,bw,bh = object.position.x-32,object.position.y+32,64,6
         love.graphics.setColor(0,0,0,127)
         love.graphics.rectangle("fill",bx,by,bw,bh)
