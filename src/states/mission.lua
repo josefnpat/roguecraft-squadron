@@ -203,10 +203,14 @@ function mission:init()
     position = {x=love.graphics.getWidth()/2,y=love.graphics.getHeight()/2}
   }
 
+  --[[
   table.insert(self.objects,self:build_object("troopship",{position=self.start.position,owner=0}))
   local abandoned_drydock = self:build_object("drydock",{position=self.start.position})
   abandoned_drydock.health.current = 1
   table.insert(self.objects,abandoned_drydock)
+  --]]
+  table.insert(self.objects,self:build_object("blackhole",{position=self.start.position}))
+  table.insert(self.objects,self:build_object("drydock",{position=self.start.position,owner=0}))
 
 end -- END OF INIT
 
@@ -998,6 +1002,29 @@ function mission:updateMission(dt)
 
   for _,object in pairs(self.objects) do
 
+    if object.gravity_well then
+      for _,other in pairs(self.objects) do
+        if object ~= other then
+          local distance = self:distance(object.position,other.position)
+          if distance < object.gravity_well.range then
+            local dx,dy = other.position.x-object.position.x,other.position.y-object.position.y
+            local angle = math.atan2(dy,dx)+math.pi
+            other.position.x = other.position.x + math.cos(angle)*dt*10
+            other.position.y = other.position.y + math.sin(angle)*dt*10
+          end
+          if distance < 48 then
+            if other.health then
+              if other.health.current then
+                other.health.current = math.max(0,other.health.current - object.gravity_well.damage*dt)
+              end
+            else
+              other.remove_from_game = true
+            end
+          end
+        end
+      end
+    end
+
     if object.owner == 0 then
       object.fow_rot = object.fow_rot and object.fow_rot + dt/60 or math.random()*math.pi*2
     end
@@ -1219,17 +1246,18 @@ function mission:updateMission(dt)
       }
     end
 
-    if object.wander then
-      if self:distance(object.wander,object.position) < 4 then
-        object.wander = nil
+    if object.speed then
+      if object.wander then
+        if not object.target and not object.target_object then
+          local dx,dy = object.position.x-object.wander.x,object.position.y-object.wander.y
+          object.angle = math.atan2(dy,dx)+math.pi
+          object.position.x = object.position.x + math.cos(object.angle)*dt*object.speed*self.speed_mult/2
+          object.position.y = object.position.y + math.sin(object.angle)*dt*object.speed*self.speed_mult/2
+        end
+        if self:distance(object.wander,object.position) < 32 then
+          object.wander = nil
+        end
       end
-    end
-
-    if object.wander and not object.target and not object.target_object then
-      local dx,dy = object.position.x-object.wander.x,object.position.y-object.wander.y
-      object.angle = math.atan2(dy,dx)+math.pi
-      object.position.x = object.position.x + math.cos(object.angle)*dt*object.speed*self.speed_mult/2
-      object.position.y = object.position.y + math.sin(object.angle)*dt*object.speed*self.speed_mult/2
     end
 
   end -- end of object loop
@@ -1246,7 +1274,8 @@ function mission:updateMission(dt)
     if (object.health and object.health.current and object.health.current <= 0) or
       (object.scrap_supply and object.scrap_supply <= 0) or
       (object.crew_supply and object.crew_supply <= 0) or
-      (object.ore_supply and object.ore_supply <= 0) then
+      (object.ore_supply and object.ore_supply <= 0) or
+      object.remove_from_game then
 
       if object.cost and object.cost.material and not object.no_scrap_drop then
         local scrap_object = self:build_object("scrap",object)
