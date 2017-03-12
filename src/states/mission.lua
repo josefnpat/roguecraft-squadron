@@ -984,7 +984,7 @@ function mission:drawMinimap()
     love.graphics.rectangle("fill",
       x+object.position.x/scale,y+object.position.y/scale,2,2)
   end
-
+  love.graphics.setColor(self.colors.ui.primary)
   local cx,cy,cw,ch = (self.camera.x-love.graphics.getWidth()/2)/scale,(self.camera.y-love.graphics.getHeight()/2)/scale,love.graphics.getWidth()/scale,love.graphics.getHeight()/scale
   love.graphics.rectangle("line",x+cx,y+cy,cw,ch)
 
