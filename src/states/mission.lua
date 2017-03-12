@@ -255,8 +255,6 @@ end
 
 function mission:nextLevel()
 
-  self.jump = self.jump_max
-
   local tobjects = {}
   for i,v in pairs(self.objects) do
     if v.owner == 0  then
@@ -269,6 +267,9 @@ function mission:nextLevel()
   self.level = self.level + 1
 
   local level_data = require("levels/"..self.level)
+
+  self.jump = (1-level_data.jump)*self.jump_max or self.jump_max
+
   self.vn = level_data:intro()
   if disable_vn then
     self.vn._run = false
