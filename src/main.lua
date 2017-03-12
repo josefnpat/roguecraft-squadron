@@ -57,9 +57,9 @@ difficulty = {
     scrap = 1,
     station = 1,
   },
-  tutorial_asteroid = 6,
-  tutorial_scrap = 4,
-  tutorial_station = 4,
+  tutorial_asteroid = 3,-- used to be 6
+  tutorial_scrap = 8, -- used to be 4
+  tutorial_station = 2,-- used to be 4
   tutorial_enemy = 2,
   low_asteroid = 10,
   low_enemy = 10,

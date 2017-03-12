@@ -119,7 +119,7 @@ function mission:init()
     ore = 0,
     ore_cargo = 0,
     ore_delta = 0,
-    crew = 10,
+    crew = 50, -- used to be 10
     crew_cargo = 0,
     crew_delta = 0,
   }

@@ -3,9 +3,12 @@ return function()
     type = "drydock",
     display_name = "Dry Dock",
     info =  "A construction ship that can build many types of ships.",
-    cost = {material=400,crew=15},
+    cost = {
+      material=200,-- used to be 400
+      crew=15,
+    },
     fow = 0.5,
-    crew = 100,
+    crew = 15,
     size = 32,
     speed = 50,
     health = {max = 25,},
