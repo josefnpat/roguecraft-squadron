@@ -414,7 +414,7 @@ function mission:moveSelected(x,y,ox,oy)
   local grid = {}
   local grid_size = 48
   for _,object in pairs(self.objects) do
-    if not object.selected then
+    if not object.selected and object.owner == 0 then
       local sx = object.target and object.target.x or object.position.x
       local sy = object.target and object.target.y or object.position.y
       local gx,gy = math.floor(sx/grid_size),math.floor(sy/grid_size)
@@ -423,7 +423,7 @@ function mission:moveSelected(x,y,ox,oy)
     end
   end
   for _,object in pairs(self.objects) do
-    if object.selected then
+    if object.selected and object.owner == 0 then
       local range = 0
       local found = false
       while found == false do
@@ -495,7 +495,7 @@ function mission:mousepressed(x,y,b)
     local closest_object, closest_object_distance = self:findClosestObject(x+ox,y+oy)
 
     if b == 1 then
-      if closest_object and closest_object.owner == 0 and closest_object_distance < 32 then
+      if closest_object and closest_object_distance < 32 then
         if not love.keyboard.isDown("lshift") then
           for _,object in pairs(self.objects) do
             object.selected = false
@@ -511,7 +511,7 @@ function mission:mousepressed(x,y,b)
       if closest_object and closest_object_distance < 32 then
 
         for _,object in pairs(self.objects) do
-          if object.selected then
+          if object.selected and object.owner == 0 then
             object.target_object = closest_object
             object.target_object.anim = 0.25
             playSFX(self.sfx.moving)
@@ -585,7 +585,7 @@ function mission:mousereleased(x,y,b)
         local ox,oy = self:getCameraOffset()
         local xmin,ymin,xmax,ymax = self:selectminmax(self.select_start.x+ox,self.select_start.y+oy,x+ox,y+oy)
         if not love.keyboard.isDown("lshift") then
-        object.selected = false
+          object.selected = false
         end
         if object.position.x >= xmin and object.position.x <= xmax and
           object.position.y >= ymin and object.position.y <= ymax and object.owner == 0 then
