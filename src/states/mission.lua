@@ -1392,10 +1392,18 @@ function mission:updateMission(dt)
       end
     else
 
-      local left = love.keyboard.isDown("left") or love.mouse.getX() < love.graphics.getWidth()*self.camera.horizontal_mouse_move
-      local right = love.keyboard.isDown("right") or love.mouse.getX() > love.graphics.getWidth()*(1-self.camera.horizontal_mouse_move)
-      local up = love.keyboard.isDown("up") or love.mouse.getY() < love.graphics.getHeight()*self.camera.vertical_mouse_move
-      local down = love.keyboard.isDown("down") or love.mouse.getY() > love.graphics.getHeight()*(1-self.camera.vertical_mouse_move)
+      local left = love.keyboard.isDown("left") or
+        love.keyboard.isDown("a") or
+        love.mouse.getX() < love.graphics.getWidth()*self.camera.horizontal_mouse_move
+      local right = love.keyboard.isDown("right") or
+        love.keyboard.isDown("d") or
+        love.mouse.getX() > love.graphics.getWidth()*(1-self.camera.horizontal_mouse_move)
+      local up = love.keyboard.isDown("up") or
+        love.keyboard.isDown("w") or
+        love.mouse.getY() < love.graphics.getHeight()*self.camera.vertical_mouse_move
+      local down = love.keyboard.isDown("down") or
+        love.keyboard.isDown("s") or
+        love.mouse.getY() > love.graphics.getHeight()*(1-self.camera.vertical_mouse_move)
 
       local dx,dy = 0,0
       if left then
