@@ -216,7 +216,8 @@ end -- END OF INIT
 
 function mission:build_object(object_name,parent)
   local obj = self.build[object_name]()
-  obj.position = self:nearbyPosition(parent.position)
+  obj.position = {x = parent.position.x,y=parent.position.y}
+  obj.target = self:nearbyPosition(parent.position)
   obj.owner = parent.owner
   obj.angle = math.random()*math.pi*2
   local tactions = {}
@@ -344,8 +345,8 @@ end
 
 function mission:nearbyPosition(position)
   return {
-    x = position.x + math.random(-32,32),
-    y = position.y + math.random(-32,32),
+    x = position.x + math.random(-128,128),
+    y = position.y + math.random(-128,128),
   }
 end
 
