@@ -18,7 +18,7 @@ return function()
     type = "station",
     display_name = stations[math.random(#stations)],
     info = "This station contains [Crew] which can be collected by a [Habitat].",
-    size = 32,
+    size = 64,
     crew_supply = math.random(25,50),
   }
 end
