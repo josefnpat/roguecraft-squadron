@@ -19,6 +19,7 @@ return function()
       "build_mining",
       "build_refinery",
       "build_research",
+      "build_jump",
       "build_cargo",
       "build_radar",
       "build_combat",

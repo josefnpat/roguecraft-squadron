@@ -2,6 +2,8 @@ local mission = {}
 
 function mission:init()
 
+  self.jump_max = 60*5
+
   self:resize()
   self.fow_img = love.graphics.newImage("assets/fow.png")
 
@@ -41,6 +43,11 @@ function mission:init()
     self.objects_icon[v] = {}
   end
 
+
+  self.sfx_data = {
+    jump = love.sound.newSoundData("assets/sfx/jump.ogg"),
+  }
+
   self.sfx = {
     explosion = {
       basic = love.audio.newSource("assets/sfx/explosion.ogg"),
@@ -65,7 +72,7 @@ function mission:init()
       laser = love.audio.newSource("assets/sfx/laser_shoot.ogg"),
       collision = love.audio.newSource("assets/sfx/collision.ogg"),
     },
-    jump = love.audio.newSource("assets/sfx/jump.ogg")
+    jump = love.audio.newSource(self.sfx_data.jump),
   }
 
   self.objects_death_sfx = {}
@@ -157,11 +164,22 @@ function mission:init()
 
   self.actions.jump = {
     icon = "jump",
-    tooltip = function(object) return "Jump to the next sector" end,
-    color = function(object) return {0,255,0} end,
+    tooltip = function(object)
+      local percent = math.floor((1 - self.jump/self.jump_max)*1000)/10
+      return self.jump <= 0 and
+        "Jump to the next sector (Ready)" or
+        ("Jump to the next sector (Calculating: "..percent.."%)")
+    end,
+    color = function(object)
+      return self.jump <= 0 and {0,255,0} or {255,0,0}
+    end,
     exe = function(object)
-      self.jump = 2.8 -- Jump sfx length
-      playSFX(self.sfx.jump)
+      if self.jump <= 0 then
+        self.jump_active = self.sfx_data.jump:getDuration()
+        playSFX(self.sfx.jump)
+      else
+        --playSFX(self.sfx.insufficient.calibration)
+      end
     end,
   }
 
@@ -238,6 +256,8 @@ function mission:hasNextLevel()
 end
 
 function mission:nextLevel()
+
+  self.jump = self.jump_max
 
   local tobjects = {}
   for i,v in pairs(self.objects) do
@@ -776,8 +796,8 @@ function mission:draw()
 
   dropshadowf("Level "..self.level,32,love.graphics.getHeight()-32-8,love.graphics.getWidth()-64,"right")
 
-  if self.jump then
-    love.graphics.setColor(0,0,0,255-255*self.jump/2.8) -- jump sfx length
+  if self.jump_active then
+    love.graphics.setColor(0,0,0,255-255*self.jump_active/self.sfx_data.jump:getDuration())
     love.graphics.rectangle("fill",0,0,love.graphics.getWidth(),love.graphics.getHeight())
     love.graphics.setColor(255,255,255)
   end
@@ -989,11 +1009,11 @@ end
 
 function mission:updateMission(dt)
 
-  if self.jump then
+  if self.jump_active then
     if self.sfx.jump:isPlaying() then
-      self.jump = math.max(0,self.jump - dt*2.8) -- jump sfx length
+      self.jump_active = math.max(0,self.jump_active - dt*self.sfx_data.jump:getDuration())
     else
-      self.jump = nil
+      self.jump_active = nil
       if self:hasNextLevel() then
         self:nextLevel()
       else
@@ -1022,6 +1042,10 @@ function mission:updateMission(dt)
   end
 
   for _,object in pairs(self.objects) do
+
+    if object.owner == 0 and object.jump then
+      self.jump = math.max(0,self.jump - dt)
+    end
 
     if object.gravity_well then
       for _,other in pairs(self.objects) do
@@ -1287,8 +1311,6 @@ function mission:updateMission(dt)
 
   if #self:getObjectsByOwner(0) < 1 then
     libs.hump.gamestate.switch(states.lose)
-  elseif #self:getObjectsByOwner(1) < 1 then
-    --TODO: Enable jump
   end
 
   for object_index,object in pairs(self.objects) do
