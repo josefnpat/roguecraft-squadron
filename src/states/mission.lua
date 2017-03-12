@@ -719,7 +719,7 @@ function mission:draw()
         love.graphics.draw(self.fow_img,
           object.position.x-self.camera.x+love.graphics.getWidth()/2,
           object.position.y-self.camera.y+love.graphics.getHeight()/2,
-          object.fow_rot,1,1,
+          object.fow_rot,object.fow or 1,object.fow or 1,
           self.fow_img:getWidth()/2,
           self.fow_img:getHeight()/2)
       end
@@ -928,16 +928,27 @@ function mission:drawMinimap()
   love.graphics.setColor(0,0,0)
   love.graphics.rectangle("fill",x,y,w,h)
   local scale = self:miniMapScale()
-  love.graphics.setColor(self.colors.ui.primary)
-  love.graphics.rectangle("line",x-4,y-4,w+8,h+8)
-  local cx,cy,cw,ch = (self.camera.x-love.graphics.getWidth()/2)/scale,(self.camera.y-love.graphics.getHeight()/2)/scale,love.graphics.getWidth()/scale,love.graphics.getHeight()/scale
-  love.graphics.rectangle("line",x+cx,y+cy,cw,ch)
+  for _,object in pairs(self.objects) do
+    if object.owner == 0 then
+      love.graphics.setColor(63,63,63)
+      love.graphics.circle("fill",
+        x+object.position.x/scale,y+object.position.y/scale,
+        self.fow_img:getWidth()/scale/2*(object.fow or 1))
+    end
+  end
   for _,object in pairs(self.objects) do
     love.graphics.setColor(self:ownerColor(object.owner))
     --love.graphics.points(x+object.position.x/scale,y+object.position.y/scale)
     love.graphics.rectangle("fill",
       x+object.position.x/scale,y+object.position.y/scale,2,2)
   end
+
+  love.graphics.setColor(self.colors.ui.primary)
+  love.graphics.rectangle("line",x-4,y-4,w+8,h+8)
+  local cx,cy,cw,ch = (self.camera.x-love.graphics.getWidth()/2)/scale,(self.camera.y-love.graphics.getHeight()/2)/scale,love.graphics.getWidth()/scale,love.graphics.getHeight()/scale
+  love.graphics.rectangle("line",x+cx,y+cy,cw,ch)
+
+
   love.graphics.setScissor()
   love.graphics.setColor(255,255,255)
 end

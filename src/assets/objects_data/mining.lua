@@ -4,6 +4,7 @@ return function()
     display_name = "Mining Rig",
     info = "An ore mining ship with some ore storage.",
     cost = {material=85,crew=10},
+    fow = 0.5,
     crew = 10,
     size = 32,
     speed = 50,

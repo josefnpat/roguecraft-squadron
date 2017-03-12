@@ -4,6 +4,7 @@ return function()
     display_name = "Refinery",
     info ="A material refining ship with some material storage.",
     cost = {material=110,crew=10},
+    fow = 0.5,
     crew = 10,
     size = 32,
     speed = 50,

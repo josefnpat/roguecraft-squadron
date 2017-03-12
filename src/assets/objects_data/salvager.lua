@@ -4,6 +4,7 @@ return function()
     display_name = "Salvager",
     info = "A ship used to gather salvage from destroyed ships.",
     cost = {material=30,crew=10},
+    fow = 0.5,
     crew = 5,
     size = 32,
     speed = 50,

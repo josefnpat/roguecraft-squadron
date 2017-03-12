@@ -4,6 +4,7 @@ return function()
     display_name = "Fighter",
     info = "A small combat ship to defend your squadron with.",
     cost = {material=25,crew=5},
+    fow = 0.75,
     crew = 5,
     size = 32,
     speed = 100,

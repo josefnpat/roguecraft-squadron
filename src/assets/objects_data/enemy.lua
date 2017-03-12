@@ -3,7 +3,7 @@ return function()
     type = "enemy",
     display_name = "Enemy Battleship",
     info = "A fearsome enemy.",
-    variation = math.random(0,2),
+    variation = math.random(0,3),
     cost = {material=250,crew=50},
     crew = 50,
     size = 32,

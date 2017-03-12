@@ -4,6 +4,7 @@ return function()
     display_name = "Freighter",
     info = "A cargo ship that stores ore, material and food.",
     cost = {material=345,crew=10},
+    fow = 0.5,
     crew = 10,
     size = 32,
     speed = 50,
