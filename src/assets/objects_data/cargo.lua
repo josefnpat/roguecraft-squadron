@@ -2,7 +2,7 @@ return function()
   return {
     type = "cargo",
     display_name = "Freighter",
-    info = "A cargo ship that stores ore, material and food.",
+    info = "A cargo ship that stores ore and material.",
     cost = {material=345,crew=10},
     fow = 0.5,
     crew = 10,
@@ -11,7 +11,6 @@ return function()
     health = {max = 40,},
     ore = 100,
     material = 100,
-    food = 100,
     repair = false,
     actions = {"salvage","repair"}
   }

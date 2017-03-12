@@ -21,8 +21,8 @@ function mission:init()
 
   self.speed_mult = 2
 
-  self.resources_types = {"ore","material","food","crew"}
-  self.resources_types_formatted = {"Ore","Material","Food","Crew"}
+  self.resources_types = {"ore","material","crew"}
+  self.resources_types_formatted = {"Ore","Material","Crew"}
 
   self.colors = {
     ui = {
@@ -119,9 +119,6 @@ function mission:init()
     ore = 0,
     ore_cargo = 0,
     ore_delta = 0,
-    food = 0,
-    food_cargo = 0,
-    food_delta = 0,
     crew = 10,
     crew_cargo = 0,
     crew_delta = 0,
@@ -1044,6 +1041,11 @@ function mission:updateMission(dt)
 
   for _,object in pairs(self.objects) do
 
+    if object.crew_generate then
+      self.resources.crew = self.resources.crew + object.crew_generate*dt
+      self.resources.crew_delta = self.resources.crew_delta + object.crew_generate
+    end
+
     if object.owner == 0 and object.jump then
       self.jump = math.max(0,self.jump - dt)
     end
@@ -1159,12 +1161,6 @@ function mission:updateMission(dt)
         self.resources.material = self.resources.material - amount_to_repair
         self.resources.material_delta = self.resources.material_delta - amount_to_repair/dt
       end
-    end
-
-    if object.food_gather then
-      local amount = object.food_gather*dt
-      self.resources.food = self.resources.food + amount
-      self.resources.food_delta = self.resources.food_delta + amount/dt
     end
 
     if object.target_object then
@@ -1358,19 +1354,6 @@ function mission:updateMission(dt)
 
   for _,resource in pairs(self.resources_types) do
     self.resources[resource] = math.min(self.resources[resource],self.resources[resource.."_cargo"])
-  end
-
-  local crew_amount = self.resources.crew_cargo/100*dt
-  self.resources.crew_delta = self.resources.crew_delta + crew_amount/dt
-  self.resources.crew = self.resources.crew + crew_amount
-  local food_amount = self.resources.crew*dt
-  self.resources.food = self.resources.food - food_amount
-  self.resources.food_delta = self.resources.food_delta - food_amount/dt
-  if self.resources.food < 0 then
-    self.resources.crew = math.max(0,self.resources.crew + self.resources.food)
-    self.resources.crew_delta = 0
-    self.resources.food_delta = 0
-    self.resources.food = 0
   end
 
   for _,object in pairs(self.objects) do

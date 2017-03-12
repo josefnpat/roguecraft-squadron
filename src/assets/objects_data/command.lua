@@ -11,8 +11,6 @@ return function()
     health = {max = 75,},
     ore = 400,
     material = 400,
-    food = 100,
-    food_gather = 10,
     repair = false,
     actions = {
       "salvage","repair","jump",
