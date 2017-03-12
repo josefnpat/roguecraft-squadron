@@ -21,6 +21,5 @@ return function()
       "build_fighter",
       "build_drydock",
     },
-    jump = 1,
   }
 end
