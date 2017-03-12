@@ -724,6 +724,17 @@ function mission:draw()
           self.fow_img:getHeight()/2)
       end
     end
+    for _,explosion in pairs(self.explosions) do
+      local percent = 1 - explosion.dt/#self.explosion_images
+      local fow_scale = (explosion.fow or 1)*percent
+      love.graphics.setColor(255,255,255,percent*255)
+      love.graphics.draw(self.fow_img,
+        explosion.x-self.camera.x+love.graphics.getWidth()/2,
+        explosion.y-self.camera.y+love.graphics.getHeight()/2,
+        explosion.fow_rot,fow_scale,fow_scale,
+        self.fow_img:getWidth()/2,
+        self.fow_img:getHeight()/2)
+    end
   end)
 
   love.graphics.setBlendMode("subtract")
@@ -1302,6 +1313,8 @@ function mission:updateMission(dt)
         y = object.position.y + math.random(-8,8),
         angle = math.random()*math.pi*2,
         dt = 0,
+        fow_rot = object.fow_rot,
+        fow = object.fow or 1,
       })
       playSFX(self.objects_death_sfx[object.type])
     end
