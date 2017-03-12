@@ -90,6 +90,7 @@ function mission:init()
   self.objects_chevron = love.graphics.newImage("assets/chevron.png")
   self.target = love.graphics.newImage("assets/target.png")
 
+  self.map_bg = love.graphics.newImage("assets/map_bg.png")
   self.icon_bg = love.graphics.newImage("assets/icon_bg.png")
   self.camera = libs.hump.camera(love.graphics.getWidth()/2,love.graphics.getHeight()/2)
   self.camera_speed = 300
@@ -936,13 +937,12 @@ end
 
 function mission:drawMinimap()
   local x,y,w,h = self:miniMapArea()
+  love.graphics.draw(self.map_bg)
   love.graphics.setScissor(x-4,y-4,w+8,h+8)
-  love.graphics.setColor(0,0,0)
-  love.graphics.rectangle("fill",x,y,w,h)
   local scale = self:miniMapScale()
   for _,object in pairs(self.objects) do
     if object.owner == 0 then
-      love.graphics.setColor(63,63,63)
+      love.graphics.setColor(255,255,255,63)
       love.graphics.circle("fill",
         x+object.position.x/scale,y+object.position.y/scale,
         self.fow_img:getWidth()/scale/2*(object.fow or 1))
@@ -955,8 +955,6 @@ function mission:drawMinimap()
       x+object.position.x/scale,y+object.position.y/scale,2,2)
   end
 
-  love.graphics.setColor(self.colors.ui.primary)
-  love.graphics.rectangle("line",x-4,y-4,w+8,h+8)
   local cx,cy,cw,ch = (self.camera.x-love.graphics.getWidth()/2)/scale,(self.camera.y-love.graphics.getHeight()/2)/scale,love.graphics.getWidth()/scale,love.graphics.getHeight()/scale
   love.graphics.rectangle("line",x+cx,y+cy,cw,ch)
 
