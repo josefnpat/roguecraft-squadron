@@ -210,7 +210,7 @@ function mission:init()
   table.insert(self.objects,abandoned_drydock)
   --]]
   table.insert(self.objects,self:build_object("blackhole",{position={x=love.graphics.getWidth(),y=love.graphics.getHeight()}}))
-  table.insert(self.objects,self:build_object("drydock",{position=self.start.position,owner=0}))
+  table.insert(self.objects,self:build_object("command",{position=self.start.position,owner=0}))
 
 end -- END OF INIT
 
