@@ -1,7 +1,8 @@
 local state = {}
 
 function state:enter()
-  self.text = "You and your crew have been lost to the void of space.\nYou Lose."
+  self.text = "You and your crew have been lost to the void of space.\nYou Lose.\n\n"..
+    states.mission.score:render()
 
   self.escape_delay_timer = 0
   self.escape_delay_max = 0.5
@@ -28,7 +29,7 @@ function state:draw()
   libs.stars:draw()
 
   love.graphics.setFont(fonts.menu)
-  dropshadowf(self.text,0,love.graphics:getHeight()/2,love.graphics:getWidth(),"center")
+  dropshadowf(self.text,0,love.graphics:getHeight()/4,love.graphics:getWidth(),"center")
   love.graphics.setFont(fonts.default)
 end
 

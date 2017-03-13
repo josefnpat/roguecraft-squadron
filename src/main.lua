@@ -92,6 +92,7 @@ libs = {
   splash = require "libs.splash",
   vn = require"libs.vn",
   stars = require"libs.stars",
+  score = require"libs.score",
 }
 
 states = {

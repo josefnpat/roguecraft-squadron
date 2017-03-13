@@ -2,6 +2,19 @@ local mission = {}
 
 function mission:init()
 
+  self.time = 0
+
+  self.score = libs.score.new()
+  self.score:define("kill","Killed","ship","ships",100)
+  self.score:define("lost","Lost","ship","ships",100)
+  self.score:define("scrap","Collected","scrap")
+  self.score:define("ore","Collected","ore")
+  self.score:define("crew","Saved","crew member","crew members")
+  self.score:define("born","Raised","crew member","crew members",0)
+  self.score:define("takeover","Boarded","ship","ships",100)
+  self.score:define("egg","Found","easter egg","easter eggs",200)
+  self.score:define("time","Game ended in","second","seconds",-1)--used to be -10
+
   self.jump_max = 60*5
 
   self:resize()
@@ -344,6 +357,12 @@ function mission:nextLevel()
       table.insert(self.objects,enemy_object)
     end
   end
+
+  -- easter egg cat
+  local cat_object = self:build_object("cat",{position={
+    x = math.random(0,32*128),
+    y = math.random(0,32*128),}})
+  table.insert(self.objects,cat_object)
 
   self:regroupByOwner(0,128)
 end
@@ -979,10 +998,12 @@ function mission:drawMinimap()
     end
   end
   for _,object in pairs(self.objects) do
-    love.graphics.setColor(self:ownerColor(object.owner))
-    --love.graphics.points(x+object.position.x/scale,y+object.position.y/scale)
-    love.graphics.rectangle("fill",
-      x+object.position.x/scale,y+object.position.y/scale,2,2)
+    if object.minimap ~= false then
+      love.graphics.setColor(self:ownerColor(object.owner))
+      --love.graphics.points(x+object.position.x/scale,y+object.position.y/scale)
+      love.graphics.rectangle("fill",
+        x+object.position.x/scale,y+object.position.y/scale,2,2)
+    end
   end
   love.graphics.setColor(self.colors.ui.primary)
   local cx,cy,cw,ch = (self.camera.x-love.graphics.getWidth()/2)/scale,(self.camera.y-love.graphics.getHeight()/2)/scale,love.graphics.getWidth()/scale,love.graphics.getHeight()/scale
@@ -994,6 +1015,8 @@ function mission:drawMinimap()
 end
 
 function mission:update(dt)
+
+  self.time = self.time + dt
 
   if cheat_operation_cwal then
     dt = dt * (love.keyboard.isDown("space") and 4 or 0.1)
@@ -1025,6 +1048,8 @@ function mission:updateMission(dt)
     else
       self.jump_active = nil
       if self:hasNextLevel() then
+        self.score:add("time",self.time)
+        self.time = 0
         self:nextLevel()
       else
         libs.hump.gamestate.switch(states.win)
@@ -1058,7 +1083,9 @@ function mission:updateMission(dt)
     end
 
     if object.crew_generate then
-      self.resources.crew = self.resources.crew + object.crew_generate*dt
+      local amount = object.crew_generate*dt
+      self.score:add("born",amount)
+      self.resources.crew = self.resources.crew + amount
       self.resources.crew_delta = self.resources.crew_delta + object.crew_generate
     end
 
@@ -1199,6 +1226,7 @@ function mission:updateMission(dt)
         if object.ore_gather and object.target_object.ore_supply then
 
           local amount = object.ore_gather*dt
+          self.score:add("ore",amount)
           self.resources.ore_delta = self.resources.ore_delta + amount/dt
           if object.target_object.ore_supply > amount then
             object.target_object.ore_supply = object.target_object.ore_supply - amount
@@ -1214,6 +1242,7 @@ function mission:updateMission(dt)
         if object.scrap_gather and object.target_object.scrap_supply then
 
           local amount = object.scrap_gather*dt
+          self.score:add("scrap")
           self.resources.material_delta = self.resources.material_delta + amount/dt
           if object.target_object.scrap_supply > amount then
             object.target_object.scrap_supply = object.target_object.scrap_supply - amount
@@ -1229,6 +1258,7 @@ function mission:updateMission(dt)
         if object.crew_gather and object.target_object.crew_supply then
 
           local amount = object.crew_gather*dt
+          self.score:add("crew")
           self.resources.crew_delta = self.resources.crew_delta + amount/dt
           if object.target_object.crew_supply > amount then
             object.target_object.crew_supply = object.target_object.crew_supply - amount
@@ -1338,6 +1368,13 @@ function mission:updateMission(dt)
         scrap_object.scrap_supply = object.cost.material*0.5
         scrap_object.owner = nil
         table.insert(self.objects,scrap_object)
+      end
+
+      if object.owner == 0 then
+        self.score:add("lost")
+      elseif object.owner == 1 then
+        self.score:add("kill")
+      elseif object.owner == nil then
       end
 
       table.remove(self.objects,object_index)

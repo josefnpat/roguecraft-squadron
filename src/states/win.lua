@@ -1,7 +1,8 @@
 local state = {}
 
 function state:enter()
-  self.text = "You have defeated the alien invasion!\nYou win!"
+  self.text = "You have defeated the alien invasion!\nYou win!\n\n"..
+    states.mission.score:render()
 
   self.scroll_speed = 8
 
@@ -30,7 +31,7 @@ function state:draw()
   libs.stars:draw()
 
   love.graphics.setFont(fonts.menu)
-  dropshadowf(self.text,0,love.graphics:getHeight()/2,love.graphics:getWidth(),"center")
+  dropshadowf(self.text,0,love.graphics:getHeight()/4,love.graphics:getWidth(),"center")
   love.graphics.setFont(fonts.default)
 end
 
