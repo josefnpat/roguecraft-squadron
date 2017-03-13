@@ -13,7 +13,7 @@ return function()
     material = 400,
     repair = false,
     actions = {
-      "salvage","repair","jump",
+      "salvage","repair",
       "build_salvager",
       "build_habitat",
       "build_fighter",
