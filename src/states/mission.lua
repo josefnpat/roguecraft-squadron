@@ -1211,11 +1211,23 @@ function mission:updateMission(dt)
       if self:distance(object.position,object.target_object.position) < 48 then
 
         -- takeover ships
-        if object.takeover and object.target_object.owner ~= 0  and object.target_object.health then
-          local percent = object.target_object.health.current/object.target_object.health.max
-          if percent < object.takeover then
+        if object.takeover and object.target_object.owner ~= 0 then
+          local gotyou = false
+          if object.target_object.health then
+            local percent = object.target_object.health.current/object.target_object.health.max
+            if percent < object.takeover then
+              gotyou = true
+            end
+          else
+            gotyou = true
+          end
+          if gotyou then
+            self.score:add("takeover")
+            if object.target_object.type == "cat" then
+              self.score:add("egg")
+            end
             object.target_object.owner = 0
-            object.health.current = 0
+            object.remove_from_game = true
             object.no_scrap_drop = true
             object.repair = false
             object.target_object.wander = nil
