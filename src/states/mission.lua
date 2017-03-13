@@ -281,7 +281,7 @@ function mission:nextLevel()
 
   local level_data = require("levels/"..self.level)
 
-  self.jump = (1-(level_data.jump or 1))*self.jump_max or self.jump_max
+  self.jump = level_data.jump and (1-level_data.jump)*self.jump_max or self.jump_max
 
   self.vn = level_data:intro()
   if disable_vn then
