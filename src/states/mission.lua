@@ -823,7 +823,10 @@ function mission:draw()
   end
   love.graphics.setColor(255,255,255)
 
-  dropshadowf("Level "..self.level,32,love.graphics.getHeight()-32-8,love.graphics.getWidth()-64,"right")
+  local font = love.graphics.getFont()
+  dropshadowf("Level "..self.level,
+    32,love.graphics.getHeight()-32-font:getHeight(),
+    love.graphics.getWidth()-64,"right")
 
   if self.jump_active then
     love.graphics.setColor(0,0,0,255-255*self.jump_active/self.sfx_data.jump:getDuration())
