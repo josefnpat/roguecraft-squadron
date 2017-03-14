@@ -1253,7 +1253,7 @@ function mission:updateMission(dt)
       self.resources.ore_delta = self.resources.ore_delta - amount/dt
     end
 
-    if object.repair then
+    if object.repair and object.health.current > 0 then
       local amount_to_repair = math.min( (object.health.max - object.health.current) , object.health.max/10  )*dt
       if amount_to_repair < self.resources.material then
         if math.ceil(object.health.current) < math.ceil(object.health.max) then
