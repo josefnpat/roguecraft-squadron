@@ -36,6 +36,18 @@ function state:init()
     end)
 
   self.menu:add(
+    function() return "Voiceover Volume: "..math.floor(settings:read("voiceover_vol",1)*100).."%" end,
+    function()
+      local vol = settings:read("voiceover_vol",1) - 0.1
+      if vol <= 0 then
+        vol = 1
+      end
+      settings:write("voiceover_vol",vol)
+      states.menu.music:setVolume(vol)
+    end)
+
+
+  self.menu:add(
     function() return "Fog of War Quality: "..
       (settings:read("fow_quality","img_canvas") == "img_canvas" and "High" or "Low")
     end,
