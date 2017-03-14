@@ -41,7 +41,7 @@ function score:render()
       table.insert(t,v.string.." "..math.floor(v.value).." "..(v.value == 1 and v.q.sing or v.q.plur))
     end
   end
-  return table.concat(t,"\n").."\n\nTotal Score: "..self:total()
+  return table.concat(t,"\n").."\n\nTotal Score: "..math.floor(self:total())
 end
 
 return score
