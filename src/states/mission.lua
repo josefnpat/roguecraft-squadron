@@ -370,6 +370,7 @@ function mission:nextLevel()
 
   self.jump_inform = false
 
+  self.multi.collect = false
   local tobjects = {}
   for _,object in pairs(self.objects) do
     if collect ~= nil then
