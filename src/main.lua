@@ -29,7 +29,7 @@ vn_audio = {
     line6 = love.audio.newSource("assets/vn/adj/audio/line6.ogg"),
     line7 = love.audio.newSource("assets/vn/adj/audio/line7.ogg"),
     line8 = love.audio.newSource("assets/vn/adj/audio/line8.ogg"),
-    line9 = love.audio.newSource("assets/vn/adj/audio/line9.ogg"),
+    --line9 = love.audio.newSource("assets/vn/adj/audio/line9.ogg"),
   },
   com = {
     line1 = love.audio.newSource("assets/vn/com/audio/line1.ogg"),
