@@ -26,6 +26,7 @@ return function()
       "build_cargo",
       "build_radar",
       "build_combat",
+      "build_tank",
       "build_troopship",
     },
   }
