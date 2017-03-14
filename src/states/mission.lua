@@ -86,6 +86,7 @@ function mission:init()
       collision = love.audio.newSource("assets/sfx/collision.ogg"),
     },
     jump = love.audio.newSource(self.sfx_data.jump),
+    jumpReady = love.audio.newSource("assets/sfx/voice ready for jump.ogg"),
   }
 
   self.objects_death_sfx = {}
@@ -299,6 +300,8 @@ function mission:hasNextLevel()
 end
 
 function mission:nextLevel()
+
+  self.jump_inform = false
 
   local tobjects = {}
   for _,object in pairs(self.objects) do
@@ -1195,6 +1198,10 @@ function mission:updateMission(dt)
 
     if object.jump and object.jump_process then
       self.jump = math.min(self.jump_max,math.max(0,self.jump - dt*object.jump))
+      if self.jump <= 0 and self.jump_inform ~= true then
+        self.jump_inform = true
+        playSFX(self.sfx.jumpReady)
+      end
     end
 
     if object.gravity_well then
