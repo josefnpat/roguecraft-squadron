@@ -177,16 +177,20 @@ function mission:init()
   self.actions.jump = {
     icon = "jump",
     tooltip = function(object)
+      if #self:getObjectWithModifier("jump_disable") > 0 then
+        return "Jump to the next sector (Disabled by Enemy)"
+      end
       local percent = math.floor((1 - self.jump/self.jump_max)*1000)/10
       return self.jump <= 0 and
         "Jump to the next sector (Ready)" or
         ("Jump to the next sector (Calculating: "..percent.."%)")
     end,
     color = function(object)
-      return self.jump <= 0 and {0,255,0} or {255,0,0}
+      return (self.jump <= 0 and #self:getObjectWithModifier("jump_disable") == 0) and
+        {0,255,0} or {255,0,0}
     end,
     exe = function(object)
-      if self.jump <= 0 then
+      if self.jump <= 0 and #self:getObjectWithModifier("jump_disable") == 0 then
         self.jump_active = self.sfx_data.jump:getDuration()
         playSFX(self.sfx.jump)
       else
@@ -385,6 +389,25 @@ function mission:nextLevel()
       local enemy_object = self:build_object("enemy",parent_object)
       table.insert(self.objects,enemy_object)
     end
+  end
+
+  if level_data.boss then
+    for i = 1,level_data.boss do
+      local unsafe_x,unsafe_y = 0,0
+      while unsafe_x < love.graphics.getWidth()+400 and unsafe_y < love.graphics.getHeight()+400 do
+        unsafe_x,unsafe_y = math.random(0,32*128),math.random(0,32*128)
+      end
+      local parent_object = {
+        position = {
+          x = unsafe_x,
+          y = unsafe_y,
+        },
+        owner = 1,
+      }
+      local enemy_object = self:build_object("boss",parent_object)
+      table.insert(self.objects,enemy_object)
+    end
+
   end
 
   -- easter egg cat
@@ -1155,8 +1178,8 @@ function mission:updateMission(dt)
       self.resources.crew_delta = self.resources.crew_delta + object.crew_generate
     end
 
-    if object.owner == 0 and object.jump and object.jump_process then
-      self.jump = math.max(0,self.jump - dt)
+    if object.jump and object.jump_process then
+      self.jump = math.min(self.jump_max,math.max(0,self.jump - dt*object.jump))
     end
 
     if object.gravity_well then

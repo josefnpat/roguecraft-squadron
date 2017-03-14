@@ -10,5 +10,6 @@ end
 
 level.asteroid = difficulty.low_asteroid
 level.enemy = difficulty.insane_enemy
+level.boss = 1
 
 return level
