@@ -11,7 +11,7 @@ return function()
     health = {max = 10,},
     repair = false,
     actions = {"salvage","repair","jump","jump_process"},
-    jump = 1,
+    jump = 2,--used to be 1
     jump_process = true,
   }
 end
