@@ -391,6 +391,21 @@ function mission:nextLevel()
     end
   end
 
+  if level_data.jumpscrambler then
+    for i = 1,level_data.jumpscrambler do
+      local parent_object = {
+        position = {
+          x = self.level == 1 and math.random(0,love.graphics.getWidth()) or math.random(0,32*128),
+          y = self.level == 1 and math.random(0,love.graphics.getHeight()) or math.random(0,32*128),
+        },
+        owner = 1,
+      }
+      local station_object = self:build_object("jumpscrambler",parent_object)
+      table.insert(self.objects,station_object)
+    end
+  end
+
+
   if level_data.boss then
     for i = 1,level_data.boss do
       local unsafe_x,unsafe_y = 0,0

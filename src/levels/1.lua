@@ -28,5 +28,6 @@ level.asteroid = difficulty.tutorial_asteroid
 level.scrap = difficulty.tutorial_scrap
 level.station = difficulty.tutorial_station
 level.jump = 0.9
+level.jumpscrambler = 1
 
 return level
