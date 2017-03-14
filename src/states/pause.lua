@@ -12,8 +12,8 @@ function state:init()
     previousState = states.pause
   end)
 
-  self.menu:add("End game",function()
-    libs.hump.gamestate.switch(states.menu)
+  self.menu:add("Surrender",function()
+    libs.hump.gamestate.switch(states.lose)
   end)
 
 end
