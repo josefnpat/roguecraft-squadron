@@ -93,6 +93,7 @@ libs = {
   vn = require"libs.vn",
   stars = require"libs.stars",
   score = require"libs.score",
+  menu = require"libs.menu",
 }
 
 states = {
@@ -141,6 +142,10 @@ function love.update(dt)
   )
 end
 
+function love.quit()
+  settings:save()
+end
+
 function dropshadow(text,x,y)
   local color = {love.graphics.getColor()}
   love.graphics.setColor(0,0,0,191)
@@ -157,37 +162,24 @@ function dropshadowf(text,x,y,w,a)
   love.graphics.printf(text,x,y,w,a)
 end
 
-function playBGM(source)
-  love.audio.stop()
-  settings.bgm = source
-  source:setVolume(settings.music_volume/10)
-  if not settings.muted_music then
-    love.audio.play(source)
-  end
-end
-
 function playSFX(source)
-  --hax hax hax
+  local current_source
   if type(source) == "table" then
-    for i = 1, #source do
-      source[i]:stop()
+    for _,v in pairs(source) do
+      v:stop()
     end
-    if not settings.muted then
-    local current_source = source[math.random(#source)]
-    current_source:setVolume(settings.sound_volume/10)
-      love.audio.play(current_source)
-    end
+    current_source = source[math.random(#source)]
   else
     source:stop()
-    if not settings.muted then
-    source:setVolume(settings.sound_volume/10)
-      love.audio.play(source)
-    end
+    current_source = source
   end
+  current_source:setVolume(settings:read("sfx_vol",1))
+  love.audio.play(current_source)
 end
 
 function loopSFX(source)
-  if not source:isPlaying( ) and not settings.muted then
+  source:setVolume(settings:read("sfx_vol",1))
+  if not source:isPlaying( ) then
     love.audio.play(source)
   end
 end
