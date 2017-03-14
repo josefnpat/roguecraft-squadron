@@ -37,9 +37,10 @@ function menu:onCallback()
 end
 
 function menu:getEntryArea(i)
+  local p = 4
   local x = love.graphics.getWidth()/4
   local w = love.graphics.getWidth()/2
-  local y = love.graphics.getHeight()/2+32*(i-1)
+  local y = love.graphics.getHeight()/2+(32+p)*(i-1)
   local h = 32
   return x,y,w,h
 end
