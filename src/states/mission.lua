@@ -688,7 +688,12 @@ function mission:draw()
         love.graphics.setColor(0,0,0,127)
         love.graphics.rectangle("fill",bx,by,bw,bh)
         love.graphics.setColor(libs.healthcolor(percent))
-        love.graphics.rectangle("fill",bx+1,by+1,(bw-2)*percent,bh-2)
+        --love.graphics.rectangle("fill",bx+1,by+1,(bw-2)*percent,bh-2)
+        local bw = 64/object.health.max*5
+        for i = 1,object.health.max/5*percent do
+          love.graphics.rectangle("fill",bx+bw*(i-1)+1,by+1,bw-1,bh-2)
+        end
+        print(bw)
       end
       local hue_change = 0.5
       if percent < hue_change then
