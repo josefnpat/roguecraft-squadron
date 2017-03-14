@@ -498,11 +498,13 @@ function mission:moveSelected(x,y,ox,oy)
       while found == false do
         local rx,ry = x + math.random(-range,range),y + math.random(-range,range)
         local gx,gy = math.floor(rx/grid_size),math.floor(ry/grid_size)
-        if not grid[gx] or not grid[gx][gy] then
+        local tx,ty = gx*grid_size+ox,gy*grid_size+oy
+        if tx > 0 and ty > 0 and tx < 128*32 and ty < 128*32 and
+          (not grid[gx] or not grid[gx][gy]) then
+
           grid[gx] = grid[gx] or {}
           grid[gx][gy] = object
-          --ox,oy = self:getCameraOffset()
-          object.target = {x=gx*grid_size+ox,y=gy*grid_size+oy}
+          object.target = {x=tx,y=ty}
           object.anim = 0.25
           object.target_object = nil
           playSFX(self.sfx.moving)
@@ -512,6 +514,7 @@ function mission:moveSelected(x,y,ox,oy)
             y=self.camera.y+y-love.graphics.getHeight()/2,
             anim=0.25
           }
+
         end
         range = range + 0.25
       end
@@ -1520,7 +1523,9 @@ function mission:updateMission(dt)
         local x,y,w,h = self:miniMapArea()
         local nx = (love.mouse.getX()-x)*self:miniMapScale()
         local ny = (love.mouse.getY()-y)*self:miniMapScale()
+
         self.camera:move(-self.camera.x + nx, -self.camera.y + ny)
+        mission:clampCamera()
       end
     elseif self:mouseInSelected() then
       -- nop
@@ -1536,17 +1541,13 @@ function mission:updateMission(dt)
       end
     else
 
-      local left = love.keyboard.isDown("left") or
-        love.keyboard.isDown("a") or
+      local left = love.keyboard.isDown("left","a") or
         love.mouse.getX() < love.graphics.getWidth()*self.camera.horizontal_mouse_move
-      local right = love.keyboard.isDown("right") or
-        love.keyboard.isDown("d") or
+      local right = love.keyboard.isDown("right","d") or
         love.mouse.getX() > love.graphics.getWidth()*(1-self.camera.horizontal_mouse_move)
-      local up = love.keyboard.isDown("up") or
-        love.keyboard.isDown("w") or
+      local up = love.keyboard.isDown("up","w") or
         love.mouse.getY() < love.graphics.getHeight()*self.camera.vertical_mouse_move
-      local down = love.keyboard.isDown("down") or
-        love.keyboard.isDown("s") or
+      local down = love.keyboard.isDown("down","s") or
         love.mouse.getY() > love.graphics.getHeight()*(1-self.camera.vertical_mouse_move)
 
       local dx,dy = 0,0
@@ -1562,12 +1563,22 @@ function mission:updateMission(dt)
       if down then
         dy = self.camera_speed*dt
       end
-      self.camera:move(dx,dy)
 
+      self.camera:move(dx,dy)
+      self:clampCamera()
     end
 
   end
 
+end
+
+function mission:clampCamera()
+  local nx = math.max(self.camera.x,love.graphics.getWidth()/2)
+  local ny = math.max(self.camera.y,love.graphics.getHeight()/2)
+  nx = math.min(nx,128*self:miniMapScale()-love.graphics.getWidth()/2)
+  ny = math.min(ny,128*self:miniMapScale()-love.graphics.getHeight()/2)
+  self.camera.x = nx
+  self.camera.y = ny
 end
 
 return mission
