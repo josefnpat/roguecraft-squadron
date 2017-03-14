@@ -1097,6 +1097,8 @@ function mission:updateMission(dt)
     self.resources[resource.."_delta"] = 0
   end
 
+  local player_ships = self:getObjectsByOwner(0)
+
   for _,object in pairs(self.objects) do
 
     if object.rotate then
@@ -1361,10 +1363,18 @@ function mission:updateMission(dt)
     end
 
     if object.owner and object.owner ~= 0 and not object.wander then
-      object.wander = {
-        x = math.random(0,128*32),
-        y = math.random(0,128*32),
-      }
+      if self.jump > 0 then
+        object.wander = {
+          x = math.random(0,128*32),
+          y = math.random(0,128*32),
+        }
+      else
+        local target = player_ships[math.random(#player_ships)]
+        object.wander = {
+          x = target.position.x,
+          y = target.position.y,
+        }
+      end
     end
 
     if object.speed then
@@ -1385,7 +1395,7 @@ function mission:updateMission(dt)
 
   -- cleanup
 
-  if #self:getObjectsByOwner(0) < 1 then
+  if #player_ships < 1 then
     libs.hump.gamestate.switch(states.lose)
   end
 
