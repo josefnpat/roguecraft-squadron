@@ -100,6 +100,7 @@ function mission:init()
     salvage = love.graphics.newImage("assets/actions/salvage.png"),
     refine = love.graphics.newImage("assets/actions/refine.png"),
     jump = love.graphics.newImage("assets/actions/jump.png"),
+    jump_process = love.graphics.newImage("assets/actions/jump_process.png"),
   }
   --TODO: add passive icons, such as attack/mine
 
@@ -190,6 +191,19 @@ function mission:init()
       else
         --playSFX(self.sfx.insufficient.calibration)
       end
+    end,
+  }
+
+  self.actions.jump_process = {
+    icon = "jump_process",
+    tooltip = function(object)
+      return "Calculate jump coordinates "..(object.jump_process and "Enabled" or "Disabled")
+    end,
+    color = function(object)
+      return object.jump_process and {0,255,0} or {255,0,0}
+    end,
+    exe = function(object)
+      object.jump_process = not object.jump_process
     end,
   }
 
@@ -1112,7 +1126,7 @@ function mission:updateMission(dt)
       self.resources.crew_delta = self.resources.crew_delta + object.crew_generate
     end
 
-    if object.owner == 0 and object.jump then
+    if object.owner == 0 and object.jump and object.jump_process then
       self.jump = math.max(0,self.jump - dt)
     end
 
