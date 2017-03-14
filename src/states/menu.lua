@@ -5,11 +5,12 @@ function mainmenu:init()
   self.music:setVolume(settings:read("music_vol",1))
   self.music:setLooping(true)
   self.music:play()
+  self.logo = love.graphics.newImage("assets/logo.png")
 end
 
 function mainmenu:enter()
 
-  self.menu = libs.menu.new{title=game_name}
+  self.menu = libs.menu.new()--{title=game_name}
 
   self.menu:add("New Easy Game",function()
     difficulty.mult.enemy = 1/2
@@ -66,10 +67,15 @@ end
 
 function mainmenu:draw()
   libs.stars:draw()
+
   love.graphics.draw(self.planet_images[self.random_planet],love.graphics:getWidth() * 0.1,love.graphics:getHeight() * 0.75,
     love.timer.getTime() * self.planet_rotation,1,1,
     self.planet_images[self.random_planet]:getWidth()/2,
     self.planet_images[self.random_planet]:getHeight()/2)
+
+  local logox = (love.graphics.getWidth()-self.logo:getWidth())/2
+  local logoy = love.graphics.getHeight()/16
+  love.graphics.draw(self.logo,logox,logoy)
 
   self.menu:draw()
 
