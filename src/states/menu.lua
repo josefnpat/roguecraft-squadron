@@ -10,44 +10,52 @@ end
 
 function mainmenu:enter()
 
-  self.menu = libs.menu.new()--{title=game_name}
+  self.menum = libs.menu.new()--{title=game_name}
 
-  self.menu:add("New Easy Game",function()
+  self.menum:add("New Game",function()
+    self.menu = self.menud
+  end)
+
+  self.menum:add("Options",function()
+    libs.hump.gamestate.switch(states.options)
+    previousState = states.menu
+  end)
+
+  self.menum:add("Credits",function()
+    libs.hump.gamestate.switch(states.credits)
+  end)
+
+  self.menum:add("Exit",function()
+    love.event.quit()
+  end)
+
+  self.menud = libs.menu.new()
+
+  self.menud:add("Can I play, Daddy?",function()
     difficulty.mult.enemy = 1/2
     difficulty.mult.asteroid = 1
     libs.hump.gamestate.switch(states.mission); states.mission:init()
   end)
 
-  self.menu:add("New Medium Game",function()
+  self.menud:add("Don't hurt me.",function()
     difficulty.mult.enemy = 2/2
     difficulty.mult.asteroid = 1+1/2
     libs.hump.gamestate.switch(states.mission); states.mission:init()
   end)
 
-  self.menu:add("New Hard Game",function()
+  self.menud:add("Bring 'em on!",function()
     difficulty.mult.enemy = 3/2
     difficulty.mult.asteroid = 1+2/2
     libs.hump.gamestate.switch(states.mission); states.mission:init()
   end)
 
-  self.menu:add("New Insane Game",function()
+  self.menud:add("I am Death incarnate!",function()
     difficulty.mult.enemy = 4/2
     difficulty.mult.asteroid = 1+3/2
     libs.hump.gamestate.switch(states.mission); states.mission:init()
   end)
 
-  self.menu:add("Options",function()
-    libs.hump.gamestate.switch(states.options)
-    previousState = states.menu
-  end)
-
-  self.menu:add("Credits",function()
-    libs.hump.gamestate.switch(states.credits)
-  end)
-
-  self.menu:add("Exit",function()
-    love.event.quit()
-  end)
+  self.menu = self.menum
 
   self.raw_planet_images = love.filesystem.getDirectoryItems("assets/planets/")
   self.planet_images = {}
