@@ -12,6 +12,7 @@ return function()
     ore = 25,
     ore_gather = 25,
     repair = false,
-    actions = {"salvage","repair","collect"}
+    actions = {"salvage","repair","collect"},
+    collect = false,
   }
 end

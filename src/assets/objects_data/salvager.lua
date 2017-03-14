@@ -13,5 +13,6 @@ return function()
     scrap_gather = 25,
     repair = false,
     actions = {"salvage","repair","collect"},
+    collect = false,
   }
 end

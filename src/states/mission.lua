@@ -4,6 +4,12 @@ function mission:init()
 
   self.time = 0
 
+  -- defaults
+  self.multi = {
+    refine = true,
+    jump_process = true,
+  }
+
   self.score = libs.score.new()
   self.score:define("kill","Killed","ship","ships",100)
   self.score:define("lost","Lost","ship","ships",100)
@@ -146,6 +152,18 @@ function mission:init()
     icon = "repair",
     tooltip = function(object) return "Auto Repair "..(object.repair and "Enabled" or "Disabled") end,
     color = function(object) return object.repair and {0,255,0} or {255,255,255} end,
+    multi = {
+      tooltip = function(object) return "Auto Repair All Ships "..(object.repair and "Enabled" or "Disabled") end,
+      color = function(object) return object.repair and {0,255,0} or {255,255,255} end,
+      exe = function(object)
+        object.repair = not object.repair
+        for _,tobject in pairs(self:getObjectsByOwner(0)) do
+          if tobject.repair ~= nil then
+            tobject.repair = object.repair
+          end
+        end
+      end,
+    },
     exe = function(object)
       object.repair = not object.repair
     end,
@@ -155,6 +173,18 @@ function mission:init()
     icon = "refine",
     tooltip = function(object) return "Auto Refine "..(object.refine and "Enabled" or "Disabled") end,
     color = function(object) return object.refine and {0,255,0} or {255,255,255} end,
+    multi = {
+      tooltip = function(object) return "Fleet Wide Auto Refine "..(object.refine and "Enabled" or "Disabled") end,
+      color = function(object) return object.refine and {0,255,0} or {255,255,255} end,
+      exe = function(object)
+        object.refine = not object.refine
+        for _,tobject in pairs(self:getObjectsByOwner(0)) do
+          if tobject.refine ~= nil then
+            tobject.refine = object.refine
+          end
+        end
+      end,
+    },
     exe = function(object)
       object.refine = not object.refine
     end,
@@ -208,6 +238,20 @@ function mission:init()
     color = function(object)
       return object.jump_process and {0,255,0} or {255,255,255}
     end,
+    multi = {
+      tooltip = function(object)
+        return "Fleet Wide Calculate Jump Coordinates "..(object.jump_process and "Enabled" or "Disabled")
+      end,
+      color = function(object) return object.jump_process and {0,255,0} or {255,255,255} end,
+      exe = function(object)
+        object.jump_process = not object.jump_process
+        for _,tobject in pairs(self:getObjectsByOwner(0)) do
+          if tobject.jump_process ~= nil then
+            tobject.jump_process = object.jump_process
+          end
+        end
+      end,
+    },
     exe = function(object)
       object.jump_process = not object.jump_process
     end,
@@ -221,6 +265,24 @@ function mission:init()
     color = function(object)
       return object.collect and {0,255,0} or {255,255,255}
     end,
+    multi = {
+      tooltip = function(object)
+        return "Fleet Wide Automatic Resource Collection "..(object.collect and "Enabled" or "Disabled")
+      end,
+      color = function(object) return object.collect and {0,255,0} or {255,255,255} end,
+      exe = function(object)
+        object.collect = not object.collect
+        for _,tobject in pairs(self:getObjectsByOwner(0)) do
+          if tobject.collect ~= nil then
+            tobject.collect = object.collect
+            if object.collect == false then
+              tobject.target_object = nil
+              tobject.target = nil
+            end
+          end
+        end
+      end,
+    },
     exe = function(object)
       object.collect = not object.collect
     end,
@@ -287,6 +349,11 @@ function mission:build_object(object_name,parent)
   for i,v in pairs(obj.actions or {}) do
     table.insert(tactions,self.actions[v])
   end
+  for i,v in pairs(self.multi) do
+    if obj[i] ~= nil then
+      obj[i] = v
+    end
+  end
   obj.actions = tactions
   return obj
 end
@@ -305,7 +372,9 @@ function mission:nextLevel()
 
   local tobjects = {}
   for _,object in pairs(self.objects) do
-    object.collect = nil
+    if collect ~= nil then
+      object.collect = false
+    end
     if object.owner == 0  then
       table.insert(tobjects,object)
     end
@@ -533,7 +602,9 @@ function mission:moveSelected(x,y,ox,oy)
   end
   for _,object in pairs(self.objects) do
     if object.selected and object.owner == 0 then
-      object.collect = nil
+      if object.collect ~= nil then
+        object.collect = false
+      end
       local range = 0
       local found = false
       while found == false do
@@ -593,12 +664,17 @@ function mission:mousepressed(x,y,b)
       end
     end
   elseif self:mouseInActions() then
+    local actions = self:getActions()
     local cobject = self:singleSelected()
-    if cobject and cobject.actions then
+    if actions then
       local pos = math.floor((love.mouse.getY()-32)/(32+self:iconPadding()))+1
-      for ai,a in pairs(cobject.actions) do
+      for ai,a in pairs(actions) do
         if ai == pos then
-          a.exe(cobject)
+          if cobject then
+            a.exe(cobject)
+          else
+            a.multi.exe(self.multi)
+          end
         end
       end
     end
@@ -955,24 +1031,45 @@ function mission:singleSelected()
   return count == 1 and cobject or nil
 end
 
-function mission:drawActions()
+function mission:getActions()
   local cobject = self:singleSelected()
+  local actions
   if cobject and cobject.actions then
-    for ai,a in pairs(cobject.actions) do
-      local x,y = love.graphics.getWidth()-64,32+(ai-1)*(32+self:iconPadding())
-      love.graphics.draw(self.icon_bg,x,y)
-      love.graphics.setColor(a.color and a.color(cobject) or {255,0,255,127})
-      if a.hover then
-        local r,g,b = love.graphics.getColor()
-        love.graphics.setColor(r,g,b)
-        local tobject = a.type and self.build[a.type]() or ""
-        dropshadowf(a.tooltip(cobject),
-        32,y+6,love.graphics.getWidth()-96-8,"right")
+    actions = cobject.actions
+  else
+    actions = {}
+    for _,action in pairs(self.actions) do
+      if action.multi then
+        table.insert(actions,action)
       end
-      love.graphics.draw(self.action_icons[a.icon],x,y)
-      love.graphics.setColor(255,255,255)
     end
   end
+  return actions
+end
+
+function mission:drawActions()
+
+  local cobject = self:singleSelected()
+  for ai,a in pairs(self:getActions()) do
+    local x,y = love.graphics.getWidth()-64,32+(ai-1)*(32+self:iconPadding())
+    love.graphics.draw(self.icon_bg,x,y)
+
+    --lol ternaries
+    love.graphics.setColor(a.color and (
+      cobject and a.color(cobject) or a.multi.color(self.multi)
+    ) or {255,0,255,127})
+
+    if a.hover then
+      local r,g,b = love.graphics.getColor()
+      love.graphics.setColor(r,g,b)
+      local tobject = a.type and self.build[a.type]() or ""
+      dropshadowf(cobject and a.tooltip(cobject) or a.multi.tooltip(self.multi),
+        32,y+6,love.graphics.getWidth()-96-8,"right")
+    end
+    love.graphics.draw(self.action_icons[a.icon],x,y)
+    love.graphics.setColor(255,255,255)
+  end
+
 end
 
 function mission:drawSelected()
@@ -1047,10 +1144,10 @@ function mission:mouseInActions()
 end
 
 function mission:actionArea()
-  local cobject = mission:singleSelected()
-  if cobject and cobject.actions then
+  local actions = self:getActions()
+  if actions then
     local count = -1
-    for ia,a in pairs(cobject.actions) do
+    for ia,a in pairs(actions) do
       count = count + 1
     end
     return love.graphics.getWidth()-64,32,32,32+count*(32+self:iconPadding())
@@ -1553,12 +1650,8 @@ function mission:updateMission(dt)
     self.resources[resource] = math.min(self.resources[resource],self.resources[resource.."_cargo"])
   end
 
-  for _,object in pairs(self.objects) do
-    if object.actions then
-      for _,a in pairs(object.actions) do
-        a.hover = false
-      end
-    end
+  for _,action in pairs(self.actions) do
+    action.hover = false
   end
 
   if not self.select_start then
@@ -1575,10 +1668,10 @@ function mission:updateMission(dt)
     elseif self:mouseInSelected() then
       -- nop
     elseif self:mouseInActions() then
-      local cobject = self:singleSelected()
-      if cobject and cobject.actions then
+      local actions = self:getActions()
+      if actions then
         local pos = math.floor((love.mouse.getY()-32)/(32+self:iconPadding()))+1
-        for ai,a in pairs(cobject.actions) do
+        for ai,a in pairs(actions) do
           if ai == pos then
             a.hover = true
           end

@@ -12,6 +12,7 @@ return function()
     speed = 50,
     health = {max = 5,},
     repair = false,
-    actions = {"salvage","repair","collect"}
+    actions = {"salvage","repair","collect"},
+    collect = false,
   }
 end
