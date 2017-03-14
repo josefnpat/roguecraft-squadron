@@ -1232,7 +1232,7 @@ function mission:updateMission(dt)
       if self:distance(object.position,object.target_object.position) < 48 then
 
         -- takeover ships
-        if object.takeover and object.target_object.owner ~= 0 then
+        if object.takeover and object.target_object.pc ~= false and object.target_object.owner ~= 0 then
           local gotyou = false
           if object.target_object.health then
             local percent = object.target_object.health.current/object.target_object.health.max
