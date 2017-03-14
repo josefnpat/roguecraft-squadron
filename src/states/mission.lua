@@ -101,6 +101,7 @@ function mission:init()
     refine = love.graphics.newImage("assets/actions/refine.png"),
     jump = love.graphics.newImage("assets/actions/jump.png"),
     jump_process = love.graphics.newImage("assets/actions/jump_process.png"),
+    collect = love.graphics.newImage("assets/actions/collect.png"),
   }
   --TODO: add passive icons, such as attack/mine
 
@@ -197,13 +198,26 @@ function mission:init()
   self.actions.jump_process = {
     icon = "jump_process",
     tooltip = function(object)
-      return "Calculate jump coordinates "..(object.jump_process and "Enabled" or "Disabled")
+      return "Calculate Jump Coordinates "..(object.jump_process and "Enabled" or "Disabled")
     end,
     color = function(object)
-      return object.jump_process and {0,255,0} or {255,0,0}
+      return object.jump_process and {0,255,0} or {255,255,255}
     end,
     exe = function(object)
       object.jump_process = not object.jump_process
+    end,
+  }
+
+  self.actions.collect = {
+    icon = "collect",
+    tooltip = function(object)
+      return "Automatic Resource Collection "..(object.collect and "Enabled" or "Disabled")
+    end,
+    color = function(object)
+      return object.collect and {0,255,0} or {255,255,255}
+    end,
+    exe = function(object)
+      object.collect = not object.collect
     end,
   }
 
@@ -283,9 +297,10 @@ end
 function mission:nextLevel()
 
   local tobjects = {}
-  for i,v in pairs(self.objects) do
-    if v.owner == 0  then
-      table.insert(tobjects,v)
+  for _,object in pairs(self.objects) do
+    object.collect = nil
+    if object.owner == 0  then
+      table.insert(tobjects,object)
     end
   end
   -- Removing things in lua pairs breaks things badly.
@@ -477,6 +492,7 @@ function mission:moveSelected(x,y,ox,oy)
   end
   for _,object in pairs(self.objects) do
     if object.selected and object.owner == 0 then
+      object.collect = nil
       local range = 0
       local found = false
       while found == false do
@@ -1019,6 +1035,16 @@ function mission:getObjectsByOwner(val)
   return OwnedObjects
 end
 
+function mission:getObjectWithModifier(val)
+  local ModifierObjects = {}
+  for _,object in pairs(self.objects) do
+    if object[val] then
+      table.insert(ModifierObjects,object)
+    end
+  end
+  return ModifierObjects
+end
+
 function mission:drawMinimap()
   local x,y,w,h = self:miniMapArea()
   love.graphics.draw(self.map_bg)
@@ -1320,7 +1346,6 @@ function mission:updateMission(dt)
 
       end --end of distance check
 
-
       if object.target_object.health and object.target_object.health.current <= 0 then
         object.target_object = nil
         object.target = nil
@@ -1341,6 +1366,20 @@ function mission:updateMission(dt)
           object.target_object = nearest
         end
       end
+
+      if object.collect then
+
+        for _,resource_type in pairs({"scrap","ore","crew"}) do
+          if object[resource_type.."_gather"] then
+            local modobjs = mission:getObjectWithModifier(resource_type.."_supply")
+            if #modobjs > 0 then
+              object.target_object = modobjs[math.random(#modobjs)]
+            end
+          end
+        end
+
+      end
+
     end
 
     if object.owner and object.owner == 0 then
