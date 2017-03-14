@@ -767,24 +767,38 @@ function mission:draw()
     )
     for _,object in pairs(self.objects) do
       if object.owner == 0 then
-        love.graphics.draw(self.fow_img,
-          object.position.x-self.camera.x+love.graphics.getWidth()/2,
-          object.position.y-self.camera.y+love.graphics.getHeight()/2,
-          object.fow_rot,object.fow or 1,object.fow or 1,
-          self.fow_img:getWidth()/2,
-          self.fow_img:getHeight()/2)
+        local x = object.position.x-self.camera.x+love.graphics.getWidth()/2
+        local y = object.position.y-self.camera.y+love.graphics.getHeight()/2
+
+        if settings:read("fow_quality","img_canvas") == "img_canvas" then
+          love.graphics.draw(self.fow_img,x,y,
+            object.fow_rot,object.fow or 1,object.fow or 1,
+            self.fow_img:getWidth()/2,
+            self.fow_img:getHeight()/2)
+        else
+          love.graphics.setColor(0,0,0)
+          love.graphics.circle("fill",x,y,512*(object.fow or 1))
+          love.graphics.setColor(255,255,255)
+        end
       end
     end
     for _,explosion in pairs(self.explosions) do
       local percent = 1 - explosion.dt/#self.explosion_images
       local fow_scale = (explosion.fow or 1)*percent
       love.graphics.setColor(255,255,255,percent*255)
-      love.graphics.draw(self.fow_img,
-        explosion.x-self.camera.x+love.graphics.getWidth()/2,
-        explosion.y-self.camera.y+love.graphics.getHeight()/2,
-        explosion.fow_rot,fow_scale,fow_scale,
-        self.fow_img:getWidth()/2,
-        self.fow_img:getHeight()/2)
+      local x = explosion.x-self.camera.x+love.graphics.getWidth()/2
+      local y = explosion.y-self.camera.y+love.graphics.getHeight()/2
+
+      if settings:read("fow_quality","img_canvas") == "img_canvas" then
+        love.graphics.draw(self.fow_img,x,y,
+          explosion.fow_rot,fow_scale,fow_scale,
+          self.fow_img:getWidth()/2,
+          self.fow_img:getHeight()/2)
+      else
+        love.graphics.setColor(0,0,0)
+        love.graphics.circle("fill",x,y,512*fow_scale)
+        love.graphics.setColor(255,255,255)
+      end
     end
   end)
 

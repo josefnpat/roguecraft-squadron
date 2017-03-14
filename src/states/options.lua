@@ -35,6 +35,15 @@ function state:init()
       states.menu.music:setVolume(vol)
     end)
 
+  self.menu:add(
+    function() return "Fog of War Quality: "..
+      (settings:read("fow_quality","img_canvas") == "img_canvas" and "High" or "Low")
+    end,
+    function()
+      local fowq = settings:read("fow_quality","img_canvas")
+      settings:write("fow_quality", fowq == "img_canvas" and "circle_canvas" or "img_canvas")
+    end)
+
   self.menu:add("Back",function()
     libs.hump.gamestate.switch(previousState)
   end)
