@@ -11,6 +11,7 @@ return function()
     health = {max = 25,},
     repair = false,
     takeover = 0.25,
-    actions = {"salvage","repair"}
+    actions = {"salvage","repair"},
+    build_time = 5,
   }
 end

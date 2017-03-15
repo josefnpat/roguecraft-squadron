@@ -94,6 +94,7 @@ libs = {
   stars = require"libs.stars",
   score = require"libs.score",
   menu = require"libs.menu",
+  pcb = require"libs.progresscirclebar",
 }
 
 states = {

@@ -30,5 +30,6 @@ return function()
       "build_artillery",
       "build_troopship",
     },
+    build_time = 10,
   }
 end

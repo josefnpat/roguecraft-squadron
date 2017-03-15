@@ -20,6 +20,7 @@ return function()
       },
     },
     repair = false,
-    actions = {"salvage","repair"}
+    actions = {"salvage","repair"},
+    build_time = 30,
   }
 end

@@ -14,5 +14,6 @@ return function()
     repair = false,
     actions = {"salvage","repair","collect"},
     collect = false,
+    build_time = 1,
   }
 end

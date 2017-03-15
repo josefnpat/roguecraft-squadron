@@ -13,5 +13,6 @@ return function()
     actions = {"salvage","repair","jump","jump_process"},
     jump = 2,--used to be 1
     jump_process = true,
+    build_time = 5,
   }
 end

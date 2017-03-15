@@ -322,10 +322,20 @@ function mission:init()
         return "Build "..tobject.display_name.." ["..self:makeCostString(tobject.cost).."]\n"..tobject.info
       end,
       exe = function(object)
-        local tobject = self.build[objtype]()
-        if self:buyBuildObject(tobject.cost) then
-          local object = self:build_object(objtype,object)
-          table.insert(self.objects,object)
+        if object.work == nil then
+          local tobject = self.build[objtype]()
+          object.work = {
+            time = tobject.build_time,
+            callback = function(object)
+              if self:buyBuildObject(tobject.cost) then
+                local object = self:build_object(objtype,object)
+                table.insert(self.objects,object)
+              end
+            end,
+          }
+        else
+          -- TODO: add queue
+          -- unit already being built
         end
       end,
     }
@@ -832,6 +842,12 @@ function mission:draw()
 
   for _,object in pairs(self.objects) do
 
+    if object.work then
+      love.graphics.setColor(self.colors.ui.primary)
+      local percent = (object.work.current or 0)/object.work.time
+      libs.pcb(object.position.x,object.position.y,object.size*1.2,0.9,percent)
+    end
+
     if object.selected then
       love.graphics.setColor(self.colors.ui.primary)
       love.graphics.circle("line",object.position.x,object.position.y,object.size)
@@ -1295,6 +1311,17 @@ function mission:updateMission(dt)
   local player_ships = self:getObjectsByOwner(0)
 
   for _,object in pairs(self.objects) do
+
+    if object.work then
+      if object.work.current == nil then
+        object.work.current = 0
+      end
+      object.work.current = object.work.current + dt
+      if object.work.current >= object.work.time then
+        object.work.callback(object)
+        object.work = nil
+      end
+    end
 
     if object.rotate then
       object.angle = object.angle + object.rotate*dt

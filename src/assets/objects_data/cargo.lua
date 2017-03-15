@@ -12,6 +12,7 @@ return function()
     ore = 100,
     material = 100,
     repair = false,
-    actions = {"salvage","repair"}
+    actions = {"salvage","repair"},
+    build_time = 10,
   }
 end
