@@ -14,7 +14,6 @@ return function(ix,iy,r,rp,p,dt)
 
   love.graphics.stencil(stencilf,"increment")
   love.graphics.setStencilTest("less", 1)
-  love.graphics.setColor(0,255,0)
   love.graphics.arc("fill",x,y,radius,start,stop)
   love.graphics.setStencilTest()
 end

@@ -46,6 +46,7 @@ function mission:init()
   self.colors = {
     ui = {
       primary = {0,255,127},
+      secondary = {0,127,255},
     }
   }
 
@@ -843,7 +844,7 @@ function mission:draw()
   for _,object in pairs(self.objects) do
 
     if object.work then
-      love.graphics.setColor(self.colors.ui.primary)
+      love.graphics.setColor(self.colors.ui.secondary)
       local percent = (object.work.current or 0)/object.work.time
       libs.pcb(object.position.x,object.position.y,object.size*1.2,0.9,percent)
     end
