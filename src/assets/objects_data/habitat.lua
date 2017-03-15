@@ -12,7 +12,7 @@ return function()
     speed = 50,
     health = {max = 5,},
     repair = false,
-    actions = {"salvage","repair","collect"},
+    actions = {"salvage","repair","collect","upgrade_crew"},
     collect = false,
     build_time = 5,
   }

@@ -14,7 +14,7 @@ return function()
     health = {max = 25,},
     repair = false,
     actions = {
-      "salvage","repair",
+      "salvage","repair","upgrade_build_time",
       "build_salvager",
       "build_habitat",
       "build_fighter",

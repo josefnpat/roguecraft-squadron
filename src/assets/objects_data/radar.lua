@@ -10,7 +10,7 @@ return function()
     speed = 100,
     health = {max = 20,},
     repair = false,
-    actions = {"salvage","repair"},
+    actions = {"salvage","repair","upgrade_fow"},
     build_time = 2,
   }
 end

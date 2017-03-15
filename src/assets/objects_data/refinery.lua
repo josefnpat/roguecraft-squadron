@@ -13,7 +13,7 @@ return function()
     material_gather = 5,
     repair = false,
     refine = true,
-    actions = {"salvage","repair","refine"},
+    actions = {"salvage","repair","refine","upgrade_refine"},
     build_time = 5,
   }
 end

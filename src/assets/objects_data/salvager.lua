@@ -12,7 +12,7 @@ return function()
     material = 10,
     scrap_gather = 25,
     repair = false,
-    actions = {"salvage","repair","collect"},
+    actions = {"salvage","repair","collect","upgrade_salvage"},
     collect = false,
     build_time = 1,
   }

@@ -12,7 +12,7 @@ return function()
     ore = 25,
     ore_gather = 25,
     repair = false,
-    actions = {"salvage","repair","collect"},
+    actions = {"salvage","repair","collect","upgrade_mining"},
     collect = false,
     build_time = 5,
   }

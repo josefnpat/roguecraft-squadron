@@ -111,6 +111,7 @@ function mission:init()
     jump_process = love.graphics.newImage("assets/actions/jump_process.png"),
     collect = love.graphics.newImage("assets/actions/collect.png"),
     egg = love.graphics.newImage("assets/objects/cat0_icon.png"),
+    upgrade = love.graphics.newImage("assets/actions/upgrade.png"),
   }
   --TODO: add passive icons, such as attack/mine
 
@@ -302,6 +303,175 @@ function mission:init()
     end,
   }
 
+  self.upgrades = {}
+  self.upgrades_lock = {}
+  local upgrades_data = {}
+
+  upgrades_data.speed = {
+    display_name = "Ship Speed",
+    info = "Increase the speed of all your ships.",
+    max = 3,
+    cost = {material=100},
+    time = 10,
+    mult = 1.5,
+  }
+
+  upgrades_data.armor = {
+    display_name = "Ship Armor",
+    info = "Reduce the amount of damage your ships take.",
+    max = 3,
+    cost = {material=100},
+    time = 10,
+    mult = 1.5,
+  }
+
+  upgrades_data.damage = {
+    display_name = "Ship Damage",
+    info = "Increase the amount of damage your ships deal.",
+    max = 3,
+    cost = {material=100},
+    time = 10,
+    mult = 1.5,
+  }
+
+  upgrades_data.refine = {
+    display_name = "Refinery Efficiency",
+    info = "Increase the efficiency of your ore refining process.",
+    max = 3,
+    cost = {ore=100},
+    time = 10,
+    mult = 1.5,
+  }
+
+  upgrades_data.repair = {
+    display_name = "Repair Efficiency",
+    info = "Increase the efficiency of your repair process.",
+    max = 3,
+    cost = {material=100},
+    time = 10,
+    mult = 1.5,
+  }
+
+  upgrades_data.range = {
+    display_name = "Ship Projectile Calculation",
+    info = "Increase the range of your ships weapons",
+    max = 3,
+    cost = {material=100},
+    time = 10,
+    mult = 1.5,
+  }
+
+  upgrades_data.build_time = {
+    display_name = "Construction Efficiency",
+    info = "Reduce the amount of time it takes to build new ships.",
+    max = 3,
+    cost = {material=100},
+    time = 10,
+    mult = 1.5,
+  }
+
+  upgrades_data.fow = {
+    display_name = "Sensor Boost",
+    info = "Increase the range of your ships sensors.",
+    max = 3,
+    cost = {material=100},
+    time = 10,
+    mult = 1.5,
+  }
+
+  upgrades_data.jump = {
+    display_name = "Advanced Jump Drive Calculation Algorithm",
+    info = "Increase the speed at which Jumpgate Calibrators calculate the jump coordinates.",
+    max = 3,
+    cost = {material=100},
+    time = 10,
+    mult = 1.5,
+  }
+
+  upgrades_data.crew = {
+    display_name = "Pregnancy Term Reduction",
+    info = "Increase the crew gain from Habitats.",
+    max = 3,
+    cost = {material=100},
+    time = 10,
+    mult = 1.5,
+  }
+
+  upgrades_data.salvage = {
+    display_name = "Salvager Scrap Detector",
+    info = "Increase the speed at which Salvagers collect material from scrap.",
+    max = 3,
+    cost = {material=100},
+    time = 10,
+    mult = 1.5,
+  }
+
+  upgrades_data.mining = {
+    display_name = "Mining Asteroid Detector",
+    info = "Increase the speed at which Mining Rigs collect ore from asteroids.",
+    max = 3,
+    cost = {material=100},
+    time = 10,
+    mult = 1.5,
+  }
+
+  for upgrade_type,upgrade in pairs(upgrades_data) do
+    self.upgrades[upgrade_type] = 0
+    self.actions["upgrade_"..upgrade_type] = {
+      icon = "upgrade",
+      tooltip = function(object)
+        if self.upgrades_lock[upgrade_type] and self.upgrades_lock[upgrade_type] ~= object then
+          return "Another ship is already upgrading "..upgrade.display_name
+        elseif object.work then
+          local percent = math.floor((object.work.current/object.work.time)*1000)/10
+          return "Ship is currently busy: "..percent.."%"
+        elseif self.upgrades[upgrade_type] < upgrade.max then
+          local newcost = self:multCost(upgrade.cost,upgrade.mult,self.upgrades[upgrade_type])
+          return "Upgrade "..upgrade.display_name..
+            " "..self.upgrades[upgrade_type].."/"..upgrade.max..
+            " ["..self:makeCostString(newcost).."]\n"..upgrade.info
+        else
+          return "Upgrade "..upgrade.display_name.." Maxed"
+        end
+      end,
+      color = function(object)
+        if self.upgrades_lock[upgrade_type] and self.upgrades_lock[upgrade_type] ~= object then
+          return {127,127,127}
+        elseif object.work then
+          return {255,0,255}
+        elseif self.upgrades[upgrade_type] < upgrade.max then
+          local newcost = self:multCost(upgrade.cost,upgrade.mult,self.upgrades[upgrade_type])
+          return self:canAffordObject({cost=newcost}) and {0,255,0} or {127,127,127}
+        else
+          return {127,127,127}
+        end
+      end,
+      exe = function(object)
+        if object.work or self.upgrades_lock[upgrade_type] then
+          -- TODO: add queue
+          -- research already being upgraded
+        else
+          self.upgrades_lock[upgrade_type] = object
+          local newcost = self:multCost(upgrade.cost,upgrade.mult,self.upgrades[upgrade_type])
+          if self.upgrades[upgrade_type] < upgrade.max and self:buyBuildObject(newcost) then
+            --TODO
+            --playSFX(self.sfx.researchStarted)
+            object.work = {
+              time = cheat_operation_cwal and 1 or upgrade.time*(1+(self.upgrades[upgrade_type]*upgrade.mult)),
+              callback = function(object)
+                self.upgrades[upgrade_type] = self.upgrades[upgrade_type] + 1
+                self.upgrades_lock[upgrade_type] = nil
+                --TODO
+                --playSFX(self.sfx.researchComplete)
+              end,
+            }
+          end
+        end
+      end,
+    }
+  end
+
+
   self.build = {}
   for i,v in pairs(self.object_types) do
     self.build[v] = require("assets.objects_data."..v)
@@ -326,11 +496,14 @@ function mission:init()
         if object.work == nil then
           local tobject = self.build[objtype]()
           object.work = {
-            time = tobject.build_time,
+            time = cheat_operation_cwal and 1 or tobject.build_time*(1-self.upgrades.build_time*0.1),
             callback = function(object)
+              --TODO
+              --playSFX(self.sfx.shipStarted)
               if self:buyBuildObject(tobject.cost) then
                 local object = self:build_object(objtype,object)
                 table.insert(self.objects,object)
+                playSFX(self.sfx.buildShip)
               end
             end,
           }
@@ -362,6 +535,14 @@ function mission:init()
   table.insert(self.objects,self:build_object("jump",{position=self.start.position,owner=0}))
 
 end -- END OF INIT
+
+function mission:multCost(cost,mult,level)
+  local newcost = {}
+  for i,v in pairs(cost) do
+    newcost[i] = v*(1+mult*level)
+  end
+  return newcost
+end
 
 function mission:build_object(object_name,parent)
   local obj = self.build[object_name]()
@@ -580,7 +761,6 @@ function mission:buyBuildObject(costs)
     for resource_type,cost in pairs(costs) do
       self.resources[resource_type] = self.resources[resource_type] - cost
     end
-    playSFX(self.sfx.buildShip)
     return true
   else
     return false
@@ -955,14 +1135,17 @@ function mission:draw()
         local x = object.position.x-self.camera.x+love.graphics.getWidth()/2
         local y = object.position.y-self.camera.y+love.graphics.getHeight()/2
 
+        -- don't forget minimap
+        local fow = object.fow*(1+self.upgrades.fow*0.25) or 1
+
         if settings:read("fow_quality","img_canvas") == "img_canvas" then
           love.graphics.draw(self.fow_img,x,y,
-            object.fow_rot,object.fow or 1,object.fow or 1,
+            object.fow_rot,fow,fow,
             self.fow_img:getWidth()/2,
             self.fow_img:getHeight()/2)
         else
           love.graphics.setColor(0,0,0)
-          love.graphics.circle("fill",x,y,512*(object.fow or 1))
+          love.graphics.circle("fill",x,y,512*fow)
           love.graphics.setColor(255,255,255)
         end
       end
@@ -1225,9 +1408,13 @@ function mission:drawMinimap()
   for _,object in pairs(self.objects) do
     if object.owner == 0 then
       love.graphics.setColor(255,255,255,63)
+
+      -- don't forget canvas mask
+      local fow = object.fow*(1+self.upgrades.fow*0.25) or 1
+
       love.graphics.circle("fill",
         x+object.position.x/scale,y+object.position.y/scale,
-        self.fow_img:getWidth()/scale/2*(object.fow or 1))
+        self.fow_img:getWidth()/scale/2*fow)
     end
   end
   for _,object in pairs(self.objects) do
@@ -1252,7 +1439,7 @@ function mission:update(dt)
   self.time = self.time + dt
 
   if cheat_operation_cwal then
-    dt = dt * (love.keyboard.isDown("space") and 4 or 0.1)
+    dt = dt * (love.keyboard.isDown("space") and 4 or 1)
   end
   if cheat then
     for _,resource in pairs(self.resources_types) do
@@ -1329,14 +1516,16 @@ function mission:updateMission(dt)
     end
 
     if object.crew_generate then
-      local amount = object.crew_generate*dt
+      local amount = object.crew_generate*dt*(1+self.upgrades.crew*0.25)
       self.score:add("born",amount)
       self.resources.crew = self.resources.crew + amount
-      self.resources.crew_delta = self.resources.crew_delta + object.crew_generate
+      self.resources.crew_delta = self.resources.crew_delta + amount/dt
     end
 
     if object.jump and object.jump_process then
-      self.jump = math.min(self.jump_max,math.max(0,self.jump - dt*object.jump))
+      self.jump = math.min(self.jump_max,
+        math.max(0,
+          self.jump - dt*object.jump*(1+self.upgrades.jump*0.1)))
       if self.jump <= 0 and self.jump_inform ~= true then
         self.jump_inform = true
         playSFX(self.sfx.jumpReady)
@@ -1379,7 +1568,12 @@ function mission:updateMission(dt)
           bullet.x = bullet.x + math.cos(bullet.angle)*dt*bullet.speed*self.speed_mult
           bullet.y = bullet.y + math.sin(bullet.angle)*dt*bullet.speed*self.speed_mult
         else
-          object.health.current = math.max(0,object.health.current-bullet.damage)
+          -- yo momma is a ternary
+          local damage = object.owner == 0 and
+            (bullet.damage*(1-self.upgrades.armor*0.1)) or
+            (bullet.damage*(1+self.upgrades.damage*0.1))
+
+          object.health.current = math.max(0,object.health.current-damage)
           table.remove(object.incoming_bullets,bullet_index)
           playSFX(self.sfx.shoot[bullet.sfx.destruct])
         end
@@ -1407,9 +1601,11 @@ function mission:updateMission(dt)
         object.shoot.reload_t = object.shoot.reload
       end
       object.shoot.reload = object.shoot.reload - dt
+      -- don't forget the range for movement
+      local newrange = object.owner == 0 and object.shoot.range*(1+self.upgrades.range*0.1) or object.shoot.range
       if object.shoot.reload <= 0 and
         object.target_object and object.target_object.owner ~= object.owner and object.target_object.health and
-        self:distance(object.position,object.target_object.position) < object.shoot.range then
+        self:distance(object.position,object.target_object.position) < newrange then
 
         object.shoot.reload = object.shoot.reload_t
         object.target_object.incoming_bullets = object.target_object.incoming_bullets or {}
@@ -1427,7 +1623,7 @@ function mission:updateMission(dt)
     end
 
     if object.refine and object.material_gather then
-      local amount = object.material_gather*dt
+      local amount = object.material_gather*dt*(1+self.upgrades.refine*0.1)
       if amount > self.resources.ore then
         amount = self.resources.ore
       end
@@ -1441,7 +1637,12 @@ function mission:updateMission(dt)
     end
 
     if object.repair and object.health.current > 0 then
-      local amount_to_repair = math.min( (object.health.max - object.health.current) , object.health.max/10  )*dt
+
+      local amount_to_repair = math.min(
+        (object.health.max - object.health.current),
+        object.health.max/10*(1+self.upgrades.repair*0.25)
+      )*dt
+
       if amount_to_repair < self.resources.material then
         if math.ceil(object.health.current) < math.ceil(object.health.max) then
           loopSFX(self.sfx.repairShip)
@@ -1487,7 +1688,7 @@ function mission:updateMission(dt)
         -- mine ore from things with ore_supply
         if object.ore_gather and object.target_object.ore_supply then
 
-          local amount = object.ore_gather*dt
+          local amount = object.ore_gather*dt*(1+self.upgrades.mining*0.25)
           self.score:add("ore",amount)
           self.resources.ore_delta = self.resources.ore_delta + amount/dt
           if object.target_object.ore_supply > amount then
@@ -1503,7 +1704,7 @@ function mission:updateMission(dt)
         -- collect scrap from things with scrap_supply
         if object.scrap_gather and object.target_object.scrap_supply then
 
-          local amount = object.scrap_gather*dt
+          local amount = object.scrap_gather*dt*(1+self.upgrades.salvage*0.25)
           self.score:add("scrap")
           self.resources.material_delta = self.resources.material_delta + amount/dt
           if object.target_object.scrap_supply > amount then
@@ -1582,17 +1783,19 @@ function mission:updateMission(dt)
       local range = 4
       if object.target_object then
         if object.shoot and object.target_object.owner ~= object.owner then
-          range = object.shoot.range
+          -- don't forget the range for shooting
+          range = object.owner == 0 and object.shoot.range*(1+self.upgrades.range*0.1) or object.shoot.range
         else
           range = 48
         end
       end
       if object.speed then
         if distance > range then
+          local speed = object.owner == 0  and object.speed*(1+self.upgrades.speed*0.1) or object.speed
           local dx,dy = object.position.x-object.target.x,object.position.y-object.target.y
           object.angle = math.atan2(dy,dx)+math.pi
-          object.position.x = object.position.x + math.cos(object.angle)*dt*object.speed*self.speed_mult
-          object.position.y = object.position.y + math.sin(object.angle)*dt*object.speed*self.speed_mult
+          object.position.x = object.position.x + math.cos(object.angle)*dt*speed*self.speed_mult
+          object.position.y = object.position.y + math.sin(object.angle)*dt*speed*self.speed_mult
         else
           if not object.target_object then
             object.position = object.target
