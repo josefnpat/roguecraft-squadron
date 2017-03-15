@@ -109,6 +109,7 @@ function mission:init()
     jump = love.graphics.newImage("assets/actions/jump.png"),
     jump_process = love.graphics.newImage("assets/actions/jump_process.png"),
     collect = love.graphics.newImage("assets/actions/collect.png"),
+    egg = love.graphics.newImage("assets/objects/cat0_icon.png"),
   }
   --TODO: add passive icons, such as attack/mine
 
@@ -285,6 +286,18 @@ function mission:init()
     },
     exe = function(object)
       object.collect = not object.collect
+    end,
+  }
+
+  self.actions.egg = {
+    icon = "egg",
+    tooltip = function(object) return "Fortune smiles upon you. Redeem for 100 materials" end,
+    color = function(object) return object.owner == 0 and {0,255,0} or {255,0,0} end,
+    exe = function(object)
+      if object.owner == 0 then
+        object.remove_from_game = true
+        self.resources.material = self.resources.material + 100
+      end
     end,
   }
 
