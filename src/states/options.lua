@@ -7,12 +7,34 @@ function state:init()
   self.menu:add("Fullscreen",function()
     local fs = not settings:read("window_fullscreen",false)
     settings:write("window_fullscreen",fs)
+
+    local msaa = settings:read("window_msaa",2)
     love.window.setMode(
       settings:read("window_width",1280),
       settings:read("window_height",720),
-      {fullscreen=fs,resizable=true,fullscreentype="desktop"}
+      {fullscreen=fs,resizable=true,fullscreentype="desktop",msaa=msaa}
     )
   end)
+
+  self.menu:add(
+    function()
+      return "Multisample Anti-Aliasing (MSAA): "..settings:read("window_msaa",2).."×" end,
+    function()
+    local msaa = settings:read("window_msaa",2)
+    msaa = msaa + 1
+    if msaa > 4 then
+      msaa = 0
+    end
+    settings:write("window_msaa",msaa)
+
+    local fs = settings:read("window_fullscreen",false)
+    love.window.setMode(
+      settings:read("window_width",1280),
+      settings:read("window_height",720),
+      {fullscreen=fs,resizable=true,fullscreentype="desktop",msaa=msaa}
+    )
+    end
+  )
 
   self.menu:add(
     function() return "Sound Effect Volume: "..math.floor(settings:read("sfx_vol",1)*100).."%" end,
@@ -22,7 +44,8 @@ function state:init()
         vol = 1
       end
       settings:write("sfx_vol",vol)
-    end)
+    end
+  )
 
   self.menu:add(
     function() return "Music Volume: "..math.floor(settings:read("music_vol",1)*100).."%" end,
