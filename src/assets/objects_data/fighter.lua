@@ -6,7 +6,7 @@ return function()
     cost = {material=25,crew=5},
     fow = 0.75,
     crew = 5,
-    size = 32,
+    size = 16,
     speed = 100,
     health = {max = 5,},
     shoot = {
