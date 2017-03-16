@@ -66,9 +66,7 @@ function state:init()
         vol = 1
       end
       settings:write("voiceover_vol",vol)
-      states.menu.music:setVolume(vol)
     end)
-
 
   self.menu:add(
     function() return "Fog of War Quality: "..
