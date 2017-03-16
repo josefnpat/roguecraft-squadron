@@ -34,25 +34,25 @@ function mainmenu:enter()
   self.menud:add("Can I play, Daddy?",function()
     difficulty.mult.enemy = 1/2
     difficulty.mult.asteroid = 1
-    libs.hump.gamestate.switch(states.mission); states.mission:init()
+    libs.hump.gamestate.switch(states.disclaimer)
   end)
 
   self.menud:add("Don't hurt me.",function()
     difficulty.mult.enemy = 2/2
     difficulty.mult.asteroid = 1+1/2
-    libs.hump.gamestate.switch(states.mission); states.mission:init()
+    libs.hump.gamestate.switch(states.disclaimer)
   end)
 
   self.menud:add("Bring 'em on!",function()
     difficulty.mult.enemy = 3/2
     difficulty.mult.asteroid = 1+2/2
-    libs.hump.gamestate.switch(states.mission); states.mission:init()
+    libs.hump.gamestate.switch(states.disclaimer)
   end)
 
   self.menud:add("I am Death incarnate!",function()
     difficulty.mult.enemy = 4/2
     difficulty.mult.asteroid = 1+3/2
-    libs.hump.gamestate.switch(states.mission); states.mission:init()
+    libs.hump.gamestate.switch(states.disclaimer)
   end)
 
   self.menu = self.menum

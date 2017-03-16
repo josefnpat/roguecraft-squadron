@@ -106,6 +106,7 @@ states = {
   win = require "states.win",
   mission = require "states.mission",
   credits = require "states.credits",
+  disclaimer = require "states.disclaimer",
 }
 
 function love.load(arg)
