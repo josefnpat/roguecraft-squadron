@@ -1136,7 +1136,7 @@ function mission:draw()
         local y = object.position.y-self.camera.y+love.graphics.getHeight()/2
 
         -- don't forget minimap
-        local fow = object.fow*(1+self.upgrades.fow*0.25) or 1
+        local fow = (object.fow or 1)*(1+self.upgrades.fow*0.25)
 
         if settings:read("fow_quality","img_canvas") == "img_canvas" then
           love.graphics.draw(self.fow_img,x,y,
@@ -1410,7 +1410,7 @@ function mission:drawMinimap()
       love.graphics.setColor(255,255,255,63)
 
       -- don't forget canvas mask
-      local fow = object.fow*(1+self.upgrades.fow*0.25) or 1
+      local fow = (object.fow or 1)*(1+self.upgrades.fow*0.25)
 
       love.graphics.circle("fill",
         x+object.position.x/scale,y+object.position.y/scale,
