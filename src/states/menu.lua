@@ -1,7 +1,7 @@
 local mainmenu = {}
 
 function mainmenu:init()
-  self.music = love.audio.newSource("assets/music/Terran4.ogg","stream")
+  self.music = love.audio.newSource("assets/music/Terran4.1.ogg","stream")
   self.music:setVolume(settings:read("music_vol",1))
   self.music:setLooping(true)
   self.music:play()
