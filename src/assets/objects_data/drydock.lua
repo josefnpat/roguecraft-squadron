@@ -2,7 +2,7 @@ return function()
   return {
     type = "drydock",
     display_name = "Dry Dock",
-    info =  "A construction ship that can build many types of ships.",
+    info =  "A construction ship that can build basic ships.",
     cost = {
       material=200,-- used to be 400
       crew=15,
@@ -14,21 +14,13 @@ return function()
     health = {max = 25,},
     repair = false,
     actions = {
-      "salvage","repair","upgrade_build_time",
-      "build_salvager",
-      "build_habitat",
-      "build_fighter",
-      "build_drydock",
+      "salvage","repair",
       "build_mining",
       "build_refinery",
-      "build_research",
-      "build_jump",
       "build_cargo",
-      "build_radar",
-      "build_combat",
-      "build_tank",
-      "build_artillery",
       "build_troopship",
+      "build_combat",
+      "build_advdrydock",
     },
     build_time = 10,
   }
