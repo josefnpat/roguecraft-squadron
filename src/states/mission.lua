@@ -1206,7 +1206,7 @@ function mission:draw()
   love.graphics.setColor(255,255,255)
 
   local font = love.graphics.getFont()
-  dropshadowf("Level "..self.level,
+  dropshadowf("Level "..self.level.."/8",
     32,love.graphics.getHeight()-32-font:getHeight(),
     love.graphics.getWidth()-64,"right")
 
