@@ -28,6 +28,10 @@ BUILD_WIN32=${PROJECT_SHORTNAME}_win32_${BUILD_INFO}
 BUILD_WIN64=${PROJECT_SHORTNAME}_win64_${BUILD_INFO}
 BUILD_MACOS=${PROJECT_SHORTNAME}_macosx_${BUILD_INFO}
 
+BUTLER=butler
+BUTLER_VERSION=${GIT_COUNT}[git:${GIT_HASH}]
+BUTLER_ITCHNAME=roguecraft-squadron
+
 .PHONY: clean
 clean:
 	#Remove generated `${GIT_TARGET}`
@@ -115,16 +119,17 @@ all: build_love build_win32 build_win64 build_macos
 .PHONY: deploy
 deploy: all
 	${BUTLER} login
-	${BUTLER} push ${BUILD_DIR}/${BUILD_LOVE}.love josefnpat/codename-ada:love\
+	${BUTLER} push ${BUILD_DIR}/${BUILD_LOVE}.love josefnpat/${BUTLER_ITCHNAME}:love\
 		--userversion ${BUTLER_VERSION}
-	${BUTLER} push ${BUILD_DIR}/${BUILD_WIN32}.zip josefnpat/codename-ada:win32\
+	${BUTLER} push ${BUILD_DIR}/${BUILD_WIN32}.zip josefnpat/${BUTLER_ITCHNAME}:win32\
 		--userversion ${BUTLER_VERSION}
-	${BUTLER} push ${BUILD_DIR}/${BUILD_WIN64}.zip josefnpat/codename-ada:win64\
+	${BUTLER} push ${BUILD_DIR}/${BUILD_WIN64}.zip josefnpat/${BUTLER_ITCHNAME}:win64\
 		--userversion ${BUTLER_VERSION}
-	${BUTLER} push ${BUILD_DIR}/${BUILD_MACOS}.zip josefnpat/codename-ada:macosx\
+	${BUTLER} push ${BUILD_DIR}/${BUILD_MACOS}.zip josefnpat/${BUTLER_ITCHNAME}:macosx\
 		--userversion ${BUTLER_VERSION}
-	${BUTLER} status josefnpat/codename-ada
+	${BUTLER} status josefnpat/${BUTLER_ITCHNAME}
 
 .PHONY: status
 status:
 	#VERSION: ${BUILD_INFO}
+	butler status josefnpat/${BUTLER_ITCHNAME}
