@@ -8,10 +8,10 @@ return function()
     crew = 25,
     size = 32,
     speed = 150,
-    health = {max = 25,},
+    health = {max = 15,},
     repair = false,
     takeover = 0.25,
     actions = {"salvage","repair"},
-    build_time = 5,
+    build_time = 3,
   }
 end

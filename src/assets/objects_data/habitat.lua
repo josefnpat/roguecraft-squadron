@@ -3,7 +3,7 @@ return function()
     type = "habitat",
     display_name = "Habitat",
     info = "A bio-dome that produces crew and can pick up crew from stations.",
-    cost = {material=105,crew=5},
+    cost = {material=100,crew=5},
     fow = 0.5,
     crew = 5,
     crew_gather = 10,

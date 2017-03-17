@@ -1,8 +1,8 @@
 return function()
   return {
-    type = "artillery",
-    display_name = "Artillery Vessel",
-    info = "A long ranged combat ship to defend your squadron with.",
+    type = "enemy_artillery",
+    display_name = "Enemy Artillery Vessel",
+    info = "A long ranged combat ship.",
     cost = {material=375,crew=50},
     crew = 50,
     size = 32,

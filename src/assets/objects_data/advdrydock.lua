@@ -5,10 +5,10 @@ return function()
     info =  "A construction ship that can build advanced ships.",
     cost = {
       material=400,
-      crew=30,
+      crew=100,
     },
     fow = 0.5,
-    crew = 30,
+    crew = 100,
     size = 48,
     speed = 50,
     health = {max = 50,},

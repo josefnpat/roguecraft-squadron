@@ -4,7 +4,7 @@ return function()
     display_name = "Command Ship",
     info =  "A basic construction ship with some ore and material storage and bio-production.",
     cost = {material=1000,crew=100},
-    fow = 0.5,
+    fow = cheat and 32 or 0.5,
     crew = 100,
     size = 32,
     speed = 50,

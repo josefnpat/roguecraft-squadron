@@ -9,6 +9,7 @@ function credits:enter()
   "Mauricyo Furtado (@eternalnightpro) — Music\n" ..
   "Laura Vk (Solsforest) — Art, Voice Talent\n" ..
   "Arjan Vk (Vivid) — Code, SFX, Voice Talent\n" ..
+  "Ethan Blackley — Video Marketing\n" ..
   "\n\n\n"
 
   self.testers = {"Forer","EntranceJew","ByteDesigning","Vivid"}

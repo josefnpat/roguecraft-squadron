@@ -40,8 +40,12 @@ function disclaimer:mousepressed()
   self:getouttahere()
 end
 
-function disclaimer:keypressed()
-  self:getouttahere()
+function disclaimer:keypressed(key)
+  if key == "f5" then
+    self:enter()
+  else
+    self:getouttahere()
+  end
 end
 
 function disclaimer:getouttahere()

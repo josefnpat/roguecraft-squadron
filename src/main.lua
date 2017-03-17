@@ -55,20 +55,7 @@ difficulty = {
     asteroid = 1,
     enemy = 1,
     scrap = 1,
-    station = 1,
   },
-  tutorial_asteroid = 3,-- used to be 6
-  tutorial_scrap = 8, -- used to be 4
-  tutorial_station = 2,-- used to be 4
-  tutorial_enemy = 2,
-  low_asteroid = 10,
-  low_enemy = 10,
-  medium_asteroid = 25,
-  medium_enemy = 25,
-  high_asteroid = 50,
-  high_enemy = 50,
-  insane_asteroid = 100,
-  insane_enemy = 100,
 }
 
 fonts = {

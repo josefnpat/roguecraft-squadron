@@ -8,7 +8,7 @@ return function()
     crew = 25,
     size = 32,
     speed = 50,
-    health = {max = 20,},
+    health = {max = 25,},
     repair = false,
     actions = {
       "salvage","repair",
@@ -18,6 +18,6 @@ return function()
       "upgrade_repair",
       "upgrade_range",
     },
-    build_time = 10,
+    build_time = 20,
   }
 end

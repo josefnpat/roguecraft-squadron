@@ -9,7 +9,11 @@ level.intro = function(self)
   return tvn
 end
 
-level.enemy = difficulty.tutorial_enemy
-level.asteroid = difficulty.tutorial_asteroid
+level.blackhole = 1
+level.station = 4
+level.asteroid = 8
+level.scrap = 32
+level.enemy = 2
+level.jumpscrambler = nil
 
 return level

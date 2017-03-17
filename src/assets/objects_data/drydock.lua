@@ -4,7 +4,7 @@ return function()
     display_name = "Dry Dock",
     info =  "A construction ship that can build basic ships.",
     cost = {
-      material=200,-- used to be 400
+      material=200,
       crew=15,
     },
     fow = 0.5,

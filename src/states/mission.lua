@@ -529,8 +529,8 @@ function mission:init()
   local abandoned_drydock = self:build_object("drydock",{position=self.start.position})
   abandoned_drydock.health.current = 1
   table.insert(self.objects,abandoned_drydock)
-  --]]
   table.insert(self.objects,self:build_object("blackhole",{position={x=love.graphics.getWidth(),y=love.graphics.getHeight()}}))
+  --]]
   table.insert(self.objects,self:build_object("command",{position=self.start.position,owner=0}))
   table.insert(self.objects,self:build_object("jump",{position=self.start.position,owner=0}))
 
@@ -639,7 +639,7 @@ function mission:nextLevel()
   end
 
   if level_data.station then
-    for i = 1,level_data.station*difficulty.mult.station do
+    for i = 1,level_data.station do
       local parent_object = {
         position = {
           x = self.level == 1 and math.random(0,love.graphics.getWidth()) or math.random(0,32*128),
@@ -652,20 +652,42 @@ function mission:nextLevel()
   end
 
   if level_data.enemy then
+    local enemy_types = {
+      {type="enemy_artillery",q=1},
+      {type="enemy_combat",q=1},
+      {type="enemy_tank",q=1},
+      {type="enemy_miniboss",q=0.5},
+      {type="enemy_fighter",q=4},
+    }
+    local skip = false
     for i = 1,level_data.enemy*difficulty.mult.enemy do
-      local unsafe_x,unsafe_y = 0,0
-      while unsafe_x < love.graphics.getWidth()+400 and unsafe_y < love.graphics.getHeight()+400 do
-        unsafe_x,unsafe_y = math.random(0,32*128),math.random(0,32*128)
+      if skip then
+        skip = false
+      else
+        local unsafe_x,unsafe_y = 0,0
+        while unsafe_x < love.graphics.getWidth()+400 and unsafe_y < love.graphics.getHeight()+400 do
+          unsafe_x,unsafe_y = math.random(0,32*128),math.random(0,32*128)
+        end
+        local parent_object = {
+          position = {
+            x = unsafe_x,
+            y = unsafe_y,
+          },
+          owner = 1,
+        }
+        local enemy = enemy_types[math.random(#enemy_types)]
+        if enemy.q == 0.5 then
+          skip = true
+          local enemy_object = self:build_object(enemy.type,parent_object)
+          table.insert(self.objects,enemy_object)
+        else
+          for i = 1,enemy.q do
+            local enemy_object = self:build_object(enemy.type,parent_object)
+            table.insert(self.objects,enemy_object)
+          end
+        end
+
       end
-      local parent_object = {
-        position = {
-          x = unsafe_x,
-          y = unsafe_y,
-        },
-        owner = 1,
-      }
-      local enemy_object = self:build_object("enemy",parent_object)
-      table.insert(self.objects,enemy_object)
     end
   end
 
@@ -697,10 +719,22 @@ function mission:nextLevel()
         },
         owner = 1,
       }
-      local enemy_object = self:build_object("boss",parent_object)
+      local enemy_object = self:build_object("enemy_boss",parent_object)
       table.insert(self.objects,enemy_object)
     end
+  end
 
+  if level_data.blackhole then
+    for i = 1,level_data.blackhole do
+      local parent_object = {
+        position = {
+          x = self.level == 1 and math.random(0,love.graphics.getWidth()) or math.random(0,32*128),
+          y = self.level == 1 and math.random(0,love.graphics.getHeight()) or math.random(0,32*128),
+        },
+      }
+      local bh_object = self:build_object("blackhole",parent_object)
+      table.insert(self.objects,bh_object)
+    end
   end
 
   -- easter egg cat

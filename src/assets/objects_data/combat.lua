@@ -6,7 +6,7 @@ return function()
     cost = {material=250,crew=50},
     crew = 50,
     size = 32,
-    speed = 100,
+    speed = 75,
     health = {max = 50,},
     shoot = {
       reload = 0.25,
