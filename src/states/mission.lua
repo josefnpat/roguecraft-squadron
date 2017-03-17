@@ -585,6 +585,8 @@ function mission:nextLevel()
   self.multi.collect = false
   local tobjects = {}
   for _,object in pairs(self.objects) do
+    object.target = nil
+    object.target_object = nil
     if collect ~= nil then
       object.collect = false
     end
@@ -1806,6 +1808,8 @@ function mission:updateMission(dt)
             local modobjs = mission:getObjectWithModifier(resource_type.."_supply")
             if #modobjs > 0 then
               object.target_object = modobjs[math.random(#modobjs)]
+            else
+              object.collect = false
             end
           end
         end
