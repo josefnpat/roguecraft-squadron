@@ -1,4 +1,5 @@
 src/git.lua
+src/demo.ogv
 *.swp
 builds/
 *.love
