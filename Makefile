@@ -29,6 +29,8 @@ BUTLER_VERSION=${GIT_COUNT}[git:${GIT_HASH}]
 BUTLER_ITCHNAME=roguecraft-squadron
 BUTLER_ITCHUSERNAME=josefnpat
 
+DEMOVIDEO_URL=http://50.116.63.25/public/rcs/demo.ogv
+
 .PHONY: clean
 clean:
 	#Remove generated `${GIT_TARGET}`
@@ -112,6 +114,11 @@ build_macos: love
 
 .PHONY: all
 all: build_love build_win32 build_win64 build_macos
+
+.PHONY: demovideo
+demovideo:
+	cd ${SRC_DIR}
+	wget -c ${DEMOVIDEO_URL}
 
 .PHONY: deploy
 deploy: all
