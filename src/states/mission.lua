@@ -118,6 +118,7 @@ function mission:init()
     collect = love.graphics.newImage("assets/actions/collect.png"),
     egg = love.graphics.newImage("assets/objects/cat0_icon.png"),
     upgrade = love.graphics.newImage("assets/actions/upgrade.png"),
+    cta = love.graphics.newImage("assets/actions/cta.png"),
   }
   --TODO: add passive icons, such as attack/mine
 
@@ -296,6 +297,24 @@ function mission:init()
     exe = function(object)
       object.collect = not object.collect
     end,
+  }
+
+  self.actions.cta = {
+    icon = "cta",
+    color = function(object) return {255,255,255} end,
+    multi = {
+      tooltip = function(object)
+        return "Call to Arms - Select all ships with weapons."
+      end,
+      color = function(object)
+        return #self:getObjectWithModifierByOwner("shoot",0) > 0 and {0,255,0} or {127,127,127}
+      end,
+      exe = function(data_object)
+        for _,object in pairs(self.objects) do
+          object.selected = object.owner == 0 and object.shoot
+        end
+      end,
+    },
   }
 
   self.actions.egg = {
@@ -1439,6 +1458,16 @@ function mission:getObjectWithModifier(val)
   local ModifierObjects = {}
   for _,object in pairs(self.objects) do
     if object[val] then
+      table.insert(ModifierObjects,object)
+    end
+  end
+  return ModifierObjects
+end
+
+function mission:getObjectWithModifierByOwner(mod,own)
+  local ModifierObjects = {}
+  for _,object in pairs(self.objects) do
+    if object[mod] and object.owner == own then
       table.insert(ModifierObjects,object)
     end
   end
