@@ -6,6 +6,11 @@ function mainmenu:init()
   self.music:setLooping(true)
   self.music:play()
   self.logo = love.graphics.newImage("assets/logo.png")
+
+  if love.filesystem.exists("demo.ogv") then
+    self.demo = love.graphics.newVideo("demo.ogv")
+  end
+
 end
 
 function mainmenu:enter()
@@ -75,6 +80,14 @@ end
 
 function mainmenu:update(dt)
   self.menu:update(dt)
+  if self.demo then
+    if not self.demo:isPlaying() then
+      self.music:play()
+    else
+      self.music:pause()
+    end
+    self.demo_dt = (self.demo_dt or 0) + dt
+  end
 end
 
 function mainmenu:draw()
@@ -93,6 +106,34 @@ function mainmenu:draw()
 
   love.graphics.setFont(fonts.default)
   love.graphics.print("GIT v"..git_count.." ["..git_hash.."]",32,32)
+
+  if self.demo and self.demo_dt > 4 then
+    self.demo:play()
+    love.graphics.draw(self.demo,x,y,0,
+      love.graphics.getWidth()/self.demo:getWidth(),
+      love.graphics.getHeight()/self.demo:getHeight()
+    )
+  end
+end
+
+function mainmenu:mousemoved()
+  if self.demo then
+    self:stopDemo()
+  end
+end
+
+function mainmenu:keypressed()
+  if self.demo then
+    self:stopDemo()
+  end
+end
+
+function mainmenu:stopDemo()
+  if self.demo:isPlaying() then
+    self.demo:pause()
+    self.demo:rewind()
+  end
+  self.demo_dt = nil
 end
 
 return mainmenu
