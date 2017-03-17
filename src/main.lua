@@ -167,9 +167,10 @@ function playSFX(source)
 end
 
 function loopSFX(source)
-  source:setVolume(settings:read("sfx_vol",1))
-  if not source:isPlaying( ) then
-    love.audio.play(source)
+  local current_source = type(source) == "table" and source[math.random(#source)] or source
+  current_source:setVolume(settings:read("sfx_vol",1))
+  if not current_source:isPlaying( ) then
+    love.audio.play(current_source)
   end
 end
 

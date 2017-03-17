@@ -9,6 +9,7 @@ return function()
     speed = 75,
     health = {max = 50,},
     shoot = {
+      image = "missile",
       reload = 0.25,
       damage = 2,
       speed = 200,

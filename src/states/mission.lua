@@ -89,7 +89,13 @@ function mission:init()
     mining = love.audio.newSource("assets/sfx/mining.ogg"),
     salvaging = love.audio.newSource("assets/sfx/mining.ogg"),
     shoot = {
-      laser = love.audio.newSource("assets/sfx/laser_shoot.ogg"),
+      laser = {
+        love.audio.newSource("assets/sfx/laser_shoot0.ogg"),
+        love.audio.newSource("assets/sfx/laser_shoot1.ogg"),
+        love.audio.newSource("assets/sfx/laser_shoot2.ogg"),
+        love.audio.newSource("assets/sfx/laser_shoot3.ogg"),
+        love.audio.newSource("assets/sfx/laser_shoot4.ogg"),
+      },
       collision = love.audio.newSource("assets/sfx/collision.ogg"),
     },
     jump = love.audio.newSource(self.sfx_data.jump),
@@ -117,6 +123,7 @@ function mission:init()
 
   self.bullets = {
     laser = love.graphics.newImage("assets/bullets/laser.png"),
+    missile = love.graphics.newImage("assets/bullets/missile.png"),
   }
 
   self.objects_chevron = love.graphics.newImage("assets/chevron.png")
@@ -1105,8 +1112,9 @@ function mission:draw()
     love.graphics.setColor(255,255,255)
     if object.incoming_bullets then
       for _,bullet in pairs(object.incoming_bullets) do
-        love.graphics.draw(self.bullets.laser,bullet.x,bullet.y,bullet.angle,
-          1,1,self.bullets.laser:getWidth()/2,self.bullets.laser:getHeight()/2)
+        local image = self.bullets[bullet.image]
+        love.graphics.draw(image,bullet.x,bullet.y,bullet.angle,
+          1,1,image:getWidth()/2,image:getHeight()/2)
       end
     end
 
@@ -1610,7 +1618,7 @@ function mission:updateMission(dt)
 
           object.health.current = math.max(0,object.health.current-damage)
           table.remove(object.incoming_bullets,bullet_index)
-          playSFX(self.sfx.shoot[bullet.sfx.destruct])
+          loopSFX(self.sfx.shoot[bullet.sfx.destruct])
         end
       end
     end
@@ -1644,10 +1652,11 @@ function mission:updateMission(dt)
 
         object.shoot.reload = object.shoot.reload_t
         object.target_object.incoming_bullets = object.target_object.incoming_bullets or {}
-        playSFX(self.sfx.shoot[object.shoot.sfx.construct])
+        loopSFX(self.sfx.shoot[object.shoot.sfx.construct])
         table.insert(object.target_object.incoming_bullets,{
           speed = object.shoot.speed,
           damage = object.shoot.damage,
+          image = object.shoot.image or "laser",
           sfx = object.shoot.sfx,
           x = object.position.x,
           y = object.position.y,
