@@ -117,7 +117,7 @@ all: build_love build_win32 build_win64 build_macos
 
 .PHONY: demovideo
 demovideo:
-	cd ${SRC_DIR}
+	cd ${SRC_DIR};\
 	wget -c ${DEMOVIDEO_URL}
 
 .PHONY: deploy
