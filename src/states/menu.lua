@@ -107,7 +107,7 @@ function mainmenu:draw()
   love.graphics.setFont(fonts.default)
   love.graphics.print("GIT v"..git_count.." ["..git_hash.."]",32,32)
 
-  if self.demo and self.demo_dt > 4 then
+  if self.demo and self.demo_dt > 30 then
     self.demo:play()
     love.graphics.draw(self.demo,x,y,0,
       love.graphics.getWidth()/self.demo:getWidth(),
