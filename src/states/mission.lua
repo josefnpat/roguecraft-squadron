@@ -70,36 +70,36 @@ function mission:init()
 
   self.sfx = {
     explosion = {
-      basic = love.audio.newSource("assets/sfx/explosion.ogg"),
-      asteroid = love.audio.newSource("assets/sfx/asteroid_death.ogg")
+      basic = love.audio.newSource("assets/sfx/explosion.ogg","static"),
+      asteroid = love.audio.newSource("assets/sfx/asteroid_death.ogg","static")
     },
-    buildShip = love.audio.newSource("assets/sfx/build.ogg"),
-    repairShip = love.audio.newSource("assets/sfx/repair.ogg"),
-    refine = love.audio.newSource("assets/sfx/refine.ogg"),
+    buildShip = love.audio.newSource("assets/sfx/build.ogg","static"),
+    repairShip = love.audio.newSource("assets/sfx/repair.ogg","static"),
+    refine = love.audio.newSource("assets/sfx/refine.ogg","static"),
     moving = {
-      love.audio.newSource("assets/sfx/moving on my way.ogg"),
-      love.audio.newSource("assets/sfx/moving ready.ogg"),
-      love.audio.newSource("assets/sfx/moving yes commander.ogg"),
+      love.audio.newSource("assets/sfx/moving on my way.ogg","static"),
+      love.audio.newSource("assets/sfx/moving ready.ogg","static"),
+      love.audio.newSource("assets/sfx/moving yes commander.ogg","static"),
     },
     insufficient = {
-      crew = love.audio.newSource("assets/sfx/voice insufficient crew.ogg"),
-      material = love.audio.newSource("assets/sfx/voice insufficient material.ogg"),
-      funds = love.audio.newSource("assets/sfx/voice insufficient funds.ogg"),
+      crew = love.audio.newSource("assets/sfx/voice insufficient crew.ogg","static"),
+      material = love.audio.newSource("assets/sfx/voice insufficient material.ogg","static"),
+      funds = love.audio.newSource("assets/sfx/voice insufficient funds.ogg","static"),
     },
-    mining = love.audio.newSource("assets/sfx/mining.ogg"),
-    salvaging = love.audio.newSource("assets/sfx/mining.ogg"),
+    mining = love.audio.newSource("assets/sfx/mining.ogg","static"),
+    salvaging = love.audio.newSource("assets/sfx/mining.ogg","static"),
     shoot = {
       laser = {
-        love.audio.newSource("assets/sfx/laser_shoot0.ogg"),
-        love.audio.newSource("assets/sfx/laser_shoot1.ogg"),
-        love.audio.newSource("assets/sfx/laser_shoot2.ogg"),
-        love.audio.newSource("assets/sfx/laser_shoot3.ogg"),
-        love.audio.newSource("assets/sfx/laser_shoot4.ogg"),
+        love.audio.newSource("assets/sfx/laser_shoot0.ogg","static"),
+        love.audio.newSource("assets/sfx/laser_shoot1.ogg","static"),
+        love.audio.newSource("assets/sfx/laser_shoot2.ogg","static"),
+        love.audio.newSource("assets/sfx/laser_shoot3.ogg","static"),
+        love.audio.newSource("assets/sfx/laser_shoot4.ogg","static"),
       },
-      collision = love.audio.newSource("assets/sfx/collision.ogg"),
+      collision = love.audio.newSource("assets/sfx/collision.ogg","static"),
     },
-    jump = love.audio.newSource(self.sfx_data.jump),
-    jumpReady = love.audio.newSource("assets/sfx/voice ready for jump.ogg"),
+    jump = love.audio.newSource(self.sfx_data.jump,"static"),
+    jumpReady = love.audio.newSource("assets/sfx/voice ready for jump.ogg","static"),
   }
 
   self.objects_death_sfx = {}
@@ -895,7 +895,7 @@ function mission:moveSelected(x,y,ox,oy)
           }
 
         end
-        range = range + 0.25
+        range = range + 8
       end
     end
   end
