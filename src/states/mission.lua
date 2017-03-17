@@ -457,7 +457,7 @@ function mission:init()
             --TODO
             --playSFX(self.sfx.researchStarted)
             object.work = {
-              time = cheat_operation_cwal and 1 or upgrade.time*(1+(self.upgrades[upgrade_type]*upgrade.mult)),
+              time = cheat_operation_cwal and 0.1 or upgrade.time*(1+(self.upgrades[upgrade_type]*upgrade.mult)),
               callback = function(object)
                 self.upgrades[upgrade_type] = self.upgrades[upgrade_type] + 1
                 self.upgrades_lock[upgrade_type] = nil
@@ -496,7 +496,7 @@ function mission:init()
         if object.work == nil then
           local tobject = self.build[objtype]()
           object.work = {
-            time = cheat_operation_cwal and 1 or tobject.build_time*(1-self.upgrades.build_time*0.1),
+            time = cheat_operation_cwal and 0.1 or tobject.build_time*(1-self.upgrades.build_time*0.1),
             callback = function(object)
               --TODO
               --playSFX(self.sfx.shipStarted)
@@ -958,6 +958,7 @@ function mission:mousepressed(x,y,b)
 end
 
 function mission:keypressed(key)
+  if cheat and key == "n" then self.level = self.level + 1 end
   if key == "escape" then
     if self.vn:getRun() then
       self.vn:stop()
