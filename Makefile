@@ -6,11 +6,7 @@ SRC_DIR=src
 GIT_HASH=$(shell git log --pretty=format:'%h' -n 1 ${SRC_DIR})
 GIT_COUNT=$(shell git log --pretty=format:'' ${SRC_DIR} | wc -l)
 GIT_TARGET=${SRC_DIR}/git.lua
-TMX_FILES=$(shell find ${SRC_DIR} -type f -name '*.tmx')
 WORKING_DIRECTORY=$(shell pwd)
-GAL_DIR=${SRC_DIR}/assets/gallery
-GAL_FILES=$(shell find ${GAL_DIR} -type f)
-GALTN_DIR=${SRC_DIR}/assets/gallery_tn
 
 LOVE_TARGET=${PROJECT_SHORTNAME}.love
 
@@ -31,6 +27,7 @@ BUILD_MACOS=${PROJECT_SHORTNAME}_macosx_${BUILD_INFO}
 BUTLER=butler
 BUTLER_VERSION=${GIT_COUNT}[git:${GIT_HASH}]
 BUTLER_ITCHNAME=roguecraft-squadron
+BUTLER_ITCHUSERNAME=josefnpat
 
 .PHONY: clean
 clean:
@@ -119,17 +116,17 @@ all: build_love build_win32 build_win64 build_macos
 .PHONY: deploy
 deploy: all
 	${BUTLER} login
-	${BUTLER} push ${BUILD_DIR}/${BUILD_LOVE}.love josefnpat/${BUTLER_ITCHNAME}:love\
+	${BUTLER} push ${BUILD_DIR}/${BUILD_LOVE}.love ${BUTLER_ITCHUSERNAME}/${BUTLER_ITCHNAME}:love\
 		--userversion ${BUTLER_VERSION}
-	${BUTLER} push ${BUILD_DIR}/${BUILD_WIN32}.zip josefnpat/${BUTLER_ITCHNAME}:win32\
+	${BUTLER} push ${BUILD_DIR}/${BUILD_WIN32}.zip ${BUTLER_ITCHUSERNAME}/${BUTLER_ITCHNAME}:win32\
 		--userversion ${BUTLER_VERSION}
-	${BUTLER} push ${BUILD_DIR}/${BUILD_WIN64}.zip josefnpat/${BUTLER_ITCHNAME}:win64\
+	${BUTLER} push ${BUILD_DIR}/${BUILD_WIN64}.zip ${BUTLER_ITCHUSERNAME}/${BUTLER_ITCHNAME}:win64\
 		--userversion ${BUTLER_VERSION}
-	${BUTLER} push ${BUILD_DIR}/${BUILD_MACOS}.zip josefnpat/${BUTLER_ITCHNAME}:macosx\
+	${BUTLER} push ${BUILD_DIR}/${BUILD_MACOS}.zip ${BUTLER_ITCHUSERNAME}/${BUTLER_ITCHNAME}:macosx\
 		--userversion ${BUTLER_VERSION}
-	${BUTLER} status josefnpat/${BUTLER_ITCHNAME}
+	${BUTLER} status ${BUTLER_ITCHUSERNAME}/${BUTLER_ITCHNAME}
 
 .PHONY: status
 status:
 	#VERSION: ${BUILD_INFO}
-	butler status josefnpat/${BUTLER_ITCHNAME}
+	butler status ${BUTLER_ITCHUSERNAME}/${BUTLER_ITCHNAME}
