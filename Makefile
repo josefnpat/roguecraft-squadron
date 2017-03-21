@@ -16,7 +16,7 @@ DEPS_DOWNLOAD_LINUX_TARGET=http://50.116.63.25/public/love/
 DEPS_WIN32_TARGET=love-${LOVE_VERSION}\-win64.zip
 DEPS_WIN64_TARGET=love-${LOVE_VERSION}\-win32.zip
 DEPS_MACOS_TARGET=love-${LOVE_VERSION}\-macosx-x64.zip
-DEPS_LINUX_TARGET=love-${LOVE_VERSION}\-amd64.tar.gz
+DEPS_LINUX_TARGET=love-${LOVE_VERSION}\-amd64.zip
 
 BUILD_INFO=v${GIT_COUNT}-[${GIT_HASH}]
 BUILD_BIN_NAME=${PROJECT_SHORTNAME}_${BUILD_INFO}
@@ -126,7 +126,7 @@ build_linux64: love
 	cp ${TMP}/usr/bin/love ${TMP}/usr/bin/love_bin
 	cat ${TMP}/usr/bin/love_bin ${LOVE_TARGET} > ${TMP}/usr/bin/love
 	cd ${TMP}; \
-	tar czvf ${WORKING_DIRECTORY}/${BUILD_DIR}/${BUILD_LINUX}.tar.gz *
+	zip -ry ${WORKING_DIRECTORY}/${BUILD_DIR}/${BUILD_LINUX}.zip *
 	rm -rf $(TMP)
 
 .PHONY: all
@@ -148,7 +148,7 @@ deploy: all
 		--userversion ${BUTLER_VERSION}
 	${BUTLER} push ${BUILD_DIR}/${BUILD_MACOS}.zip ${BUTLER_ITCHUSERNAME}/${BUTLER_ITCHNAME}:macosx\
 		--userversion ${BUTLER_VERSION}
-	${BUTLER} push ${BUILD_DIR}/${BUILD_LINUX}.tar.gz ${BUTLER_ITCHUSERNAME}/${BUTLER_ITCHNAME}:linux64\
+	${BUTLER} push ${BUILD_DIR}/${BUILD_LINUX}.zip ${BUTLER_ITCHUSERNAME}/${BUTLER_ITCHNAME}:linux64\
 		--userversion ${BUTLER_VERSION}
 	${BUTLER} status ${BUTLER_ITCHUSERNAME}/${BUTLER_ITCHNAME}
 
