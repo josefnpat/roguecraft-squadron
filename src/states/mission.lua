@@ -559,6 +559,8 @@ function mission:init()
   --]]
   table.insert(self.objects,self:build_object("command",{position=self.start.position,owner=0}))
   table.insert(self.objects,self:build_object("jump",{position=self.start.position,owner=0}))
+  table.insert(self.objects,self:build_object("habitat",{position=self.start.position,owner=0}))
+  table.insert(self.objects,self:build_object("salvager",{position=self.start.position,owner=0}))
 
 end -- END OF INIT
 

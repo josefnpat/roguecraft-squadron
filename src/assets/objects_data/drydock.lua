@@ -22,6 +22,6 @@ return function()
       "build_combat",
       "build_advdrydock",
     },
-    build_time = 10,
+    build_time = 5,
   }
 end

@@ -14,6 +14,6 @@ level.station = 4
 level.asteroid = 8
 level.scrap = 32
 level.enemy = 2
-level.jumpscrambler = nil
+level.jumpscrambler = 1
 
 return level

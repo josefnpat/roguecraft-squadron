@@ -26,10 +26,10 @@ end
 
 level.blackhole = nil
 level.station = 2
-level.asteroid = 8
-level.scrap = 16
+level.asteroid = 0
+level.scrap = 32
 level.enemy = nil
-level.jumpscrambler = 1
+level.jumpscrambler = nil
 level.jump = 0.9
 
 return level

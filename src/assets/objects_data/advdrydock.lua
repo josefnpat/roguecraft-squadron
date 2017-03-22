@@ -21,6 +21,6 @@ return function()
       "build_artillery",
       "build_research",
     },
-    build_time = 20,
+    build_time = 10,
   }
 end

@@ -10,7 +10,7 @@ return function()
     speed = 50,
     health = {max = 75,},
     ore = 400,
-    material = 400,
+    material = 1600,
     repair = false,
     actions = {
       "salvage","repair",
