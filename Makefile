@@ -12,9 +12,11 @@ LOVE_TARGET=${PROJECT_SHORTNAME}.love
 
 DEPS_DATA=dev/build_data
 DEPS_DOWNLOAD_TARGET=https://bitbucket.org/rude/love/downloads/
+DEPS_DOWNLOAD_LINUX_TARGET=http://50.116.63.25/public/love/
 DEPS_WIN32_TARGET=love-${LOVE_VERSION}\-win64.zip
 DEPS_WIN64_TARGET=love-${LOVE_VERSION}\-win32.zip
 DEPS_MACOS_TARGET=love-${LOVE_VERSION}\-macosx-x64.zip
+DEPS_LINUX_TARGET=love-${LOVE_VERSION}\-amd64.tar.gz
 
 BUILD_INFO=v${GIT_COUNT}-[${GIT_HASH}]
 BUILD_BIN_NAME=${PROJECT_SHORTNAME}_${BUILD_INFO}
@@ -23,6 +25,7 @@ BUILD_LOVE=${PROJECT_SHORTNAME}_${BUILD_INFO}
 BUILD_WIN32=${PROJECT_SHORTNAME}_win32_${BUILD_INFO}
 BUILD_WIN64=${PROJECT_SHORTNAME}_win64_${BUILD_INFO}
 BUILD_MACOS=${PROJECT_SHORTNAME}_macosx_${BUILD_INFO}
+BUILD_LINUX=${PROJECT_SHORTNAME}_linux64_${BUILD_INFO}
 
 BUTLER=butler
 BUTLER_VERSION=${GIT_COUNT}[git:${GIT_HASH}]
@@ -76,6 +79,8 @@ deps:
 	wget -t 2 -c ${DEPS_DOWNLOAD_TARGET}${DEPS_MACOS_TARGET};\
 	unzip -o ${DEPS_MACOS_TARGET};\
 	\
+	wget -t 2 -c ${DEPS_DOWNLOAD_LINUX_TARGET}${DEPS_LINUX_TARGET};\
+	tar xvf ${DEPS_LINUX_TARGET};\
 	cd -
 
 .PHONY: build_love
@@ -112,8 +117,20 @@ build_macos: love
 	cd ${WORKING_DIRECTORY}
 	rm -rf $(TMP)
 
+.PHONY: build_linux64
+build_linux64: love
+	mkdir -p ${BUILD_DIR}
+	$(eval TMP := $(shell mktemp -d))
+	cp -r ${DEPS_DATA}/love-${LOVE_VERSION}\-amd64/* ${TMP}
+	mv ${TMP}/love ${TMP}/${BUILD_BIN_NAME}
+	cp ${TMP}/usr/bin/love ${TMP}/usr/bin/love_bin
+	cat ${TMP}/usr/bin/love_bin ${LOVE_TARGET} > ${TMP}/usr/bin/love
+	cd ${TMP}; \
+	zip -ry ${WORKING_DIRECTORY}/${BUILD_DIR}/${BUILD_LINUX}.zip *
+	rm -rf $(TMP)
+
 .PHONY: all
-all: build_love build_win32 build_win64 build_macos
+all: build_love build_win32 build_win64 build_macos build_linux64
 
 .PHONY: demovideo
 demovideo:
@@ -130,6 +147,8 @@ deploy: all
 	${BUTLER} push ${BUILD_DIR}/${BUILD_WIN64}.zip ${BUTLER_ITCHUSERNAME}/${BUTLER_ITCHNAME}:win64\
 		--userversion ${BUTLER_VERSION}
 	${BUTLER} push ${BUILD_DIR}/${BUILD_MACOS}.zip ${BUTLER_ITCHUSERNAME}/${BUTLER_ITCHNAME}:macosx\
+		--userversion ${BUTLER_VERSION}
+	${BUTLER} push ${BUILD_DIR}/${BUILD_LINUX}.zip ${BUTLER_ITCHUSERNAME}/${BUTLER_ITCHNAME}:linux64\
 		--userversion ${BUTLER_VERSION}
 	${BUTLER} status ${BUTLER_ITCHUSERNAME}/${BUTLER_ITCHNAME}
 
