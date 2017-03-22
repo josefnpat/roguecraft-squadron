@@ -594,7 +594,7 @@ function mission:enter()
 end
 
 function mission:hasNextLevel()
-  return love.filesystem.exists("levels/"..(self.level+1)..".lua")
+  return love.filesystem.exists("assets/levels/"..(self.level+1)..".lua")
 end
 
 function mission:nextLevel()
@@ -618,7 +618,7 @@ function mission:nextLevel()
 
   self.level = self.level + 1
 
-  local level_data = require("levels/"..self.level)
+  local level_data = require("assets/levels/"..self.level)
 
   self.jump = level_data.jump and (1-level_data.jump)*self.jump_max or self.jump_max
 

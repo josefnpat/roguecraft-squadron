@@ -59,12 +59,12 @@ difficulty = {
 }
 
 fonts = {
-  default = love.graphics.newFont("fonts/Yantramanav-Black.ttf",16),
-  title = love.graphics.newFont("fonts/ExpletusSans-Bold.ttf",64),
-  menu = love.graphics.newFont("fonts/Yantramanav-Black.ttf",32),
-  vn_name = love.graphics.newFont("fonts/Yantramanav-Black.ttf",48),
-  vn_text = love.graphics.newFont("fonts/Yantramanav-Black.ttf",24),
-  fallback = love.graphics.newFont("fonts/NovaMono.ttf",16),
+  default = love.graphics.newFont("assets/fonts/Yantramanav-Black.ttf",16),
+  title = love.graphics.newFont("assets/fonts/ExpletusSans-Bold.ttf",64),
+  menu = love.graphics.newFont("assets/fonts/Yantramanav-Black.ttf",32),
+  vn_name = love.graphics.newFont("assets/fonts/Yantramanav-Black.ttf",48),
+  vn_text = love.graphics.newFont("assets/fonts/Yantramanav-Black.ttf",24),
+  fallback = love.graphics.newFont("assets/fonts/NovaMono.ttf",16),
 }
 
 love.graphics.setFont(fonts.default)
