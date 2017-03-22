@@ -51,7 +51,7 @@ love: clean
 
 .PHONY: run
 run: love
-	exec ${LOVE} --fused ${LOVE_TARGET}
+	exec ${LOVE} --fused ${LOVE_TARGET} ${loveargs}
 
 .PHONY: debug
 debug: love
