@@ -32,4 +32,29 @@ level.enemy = nil
 level.jumpscrambler = nil
 level.jump = 0.9
 
+level.tutorial = libs.tutorial.new()
+
+level.tutorial:add(
+  "Confirm the navcom system functions by selecting your command ship.",
+  function()
+    local targets = {}
+    for i,v in pairs(states.mission:getObjectIntersectionQuery{type="command"}) do
+      local x,y = states.mission.camera:cameraCoords(v.position.x,v.position.y)
+      table.insert(targets,{x=x,y=y})
+    end
+    return targets
+  end,
+  function()
+    local selected = #states.mission:getObjectIntersectionQuery{selected=true}
+    local command = #states.mission:getObjectIntersectionQuery{type="command",selected=true}
+    return not (selected == 1 and command == 1)
+  end)
+
+level.tutorial:add(
+  "Click somewhere in space to confirm that you have control of the vessal.",
+  function() return {} end,
+  function()
+    local command = #states.mission:getObjectIntersectionQuery{type="command",target="not_nil"}
+    return not (command == 1)
+  end)
 return level

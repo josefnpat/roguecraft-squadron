@@ -1484,6 +1484,28 @@ function mission:getObjectWithModifierByOwner(mod,own)
   return ModifierObjects
 end
 
+function mission:getObjectIntersectionQuery(queries)
+  local foundObjects = {}
+  for _,object in pairs(self.objects) do
+    local valid = true
+    for query_index,query in pairs(queries) do
+      if query == "not_nil" then
+        if object[query_index] == nil then
+          valid = false
+        end
+      else
+        if object[query_index] ~= query then
+          valid = false
+        end
+      end
+    end
+    if valid then
+      table.insert(foundObjects,object)
+    end
+  end
+  return foundObjects
+end
+
 function mission:drawMinimap()
   local x,y,w,h = self:miniMapArea()
   love.graphics.draw(self.map_bg)
