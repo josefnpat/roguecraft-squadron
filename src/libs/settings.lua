@@ -16,7 +16,7 @@ function settings.new(init)
 end
 
 function settings:read(name,default)
-  return self._data[name] or default
+  return self._data[name] == nil and default or self._data[name]
 end
 
 function settings:write(name,value)
