@@ -622,6 +622,10 @@ function mission:nextLevel()
 
   local level_data = require("assets/levels/"..self.level)
 
+  if settings:read("tutorial",true) then
+    self.tutorial = level_data.tutorial
+  end
+
   self.jump = level_data.jump and (1-level_data.jump)*self.jump_max or self.jump_max
 
   self.vn = level_data:intro()
@@ -1267,7 +1271,7 @@ function mission:draw()
       self.resources_types_formatted[rindex]..": "..
       math.floor(self.resources[r]).."/"..self.resources[r.."_cargo"]..
       " ["..symbol..math.floor(self.resources[r.."_delta"]+0.5).."]",
-      32,128+64+18*rindex)
+      32,128+64+18*(rindex-1))
   end
   love.graphics.setColor(255,255,255)
 
@@ -1280,6 +1284,10 @@ function mission:draw()
     love.graphics.setColor(0,0,0,255-255*self.jump_active/self.sfx_data.jump:getDuration())
     love.graphics.rectangle("fill",0,0,love.graphics.getWidth(),love.graphics.getHeight())
     love.graphics.setColor(255,255,255)
+  end
+
+  if self.tutorial then
+    self.tutorial:draw()
   end
 
   if self.vn:getRun() then
@@ -1521,6 +1529,10 @@ function mission:update(dt)
     for _,resource in pairs(self.resources_types) do
       self.resources[resource] = math.huge
     end
+  end
+
+  if self.tutorial then
+    self.tutorial:update(dt)
   end
 
   if not self.vn:getRun() then

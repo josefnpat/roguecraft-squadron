@@ -77,6 +77,16 @@ function state:init()
       settings:write("fow_quality", fowq == "img_canvas" and "circle_canvas" or "img_canvas")
     end)
 
+  self.menu:add(
+    function()
+      return "Tutorial: "..
+        (settings:read("tutorial",true) == true and "Enabled" or "Disabled")
+    end,
+    function()
+      local tut = not settings:read("tutorial",true)
+      settings:write("tutorial",tut)
+    end)
+
   self.menu:add("Back",function()
     libs.hump.gamestate.switch(previousState)
   end)

@@ -82,6 +82,7 @@ libs = {
   score = require"libs.score",
   menu = require"libs.menu",
   pcb = require"libs.progresscirclebar",
+  tutorial = require"libs.tutorial",
 }
 
 states = {
