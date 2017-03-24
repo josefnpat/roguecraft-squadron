@@ -449,8 +449,7 @@ function mission:init()
         if self.upgrades_lock[upgrade_type] and self.upgrades_lock[upgrade_type] ~= object then
           return "Another ship is already upgrading "..upgrade.display_name
         elseif object.work then
-          local percent = math.floor((object.work.current/object.work.time)*1000)/10
-          return "Ship is currently busy: "..percent.."%"
+          return "Ship is currently upgrading "..upgrade.display_name
         elseif self.upgrades[upgrade_type] < upgrade.max then
           local newcost = self:multCost(upgrade.cost,upgrade.mult,self.upgrades[upgrade_type])
           return "Upgrade "..upgrade.display_name..
@@ -464,7 +463,7 @@ function mission:init()
         if self.upgrades_lock[upgrade_type] and self.upgrades_lock[upgrade_type] ~= object then
           return {127,127,127}
         elseif object.work then
-          return {255,0,255}
+          return {255,255,0}
         elseif self.upgrades[upgrade_type] < upgrade.max then
           local newcost = self:multCost(upgrade.cost,upgrade.mult,self.upgrades[upgrade_type])
           return self:canAffordObject({cost=newcost}) and {0,255,0} or {127,127,127}
@@ -511,12 +510,21 @@ function mission:init()
       type = objtype,
       icon = "build_"..objtype,
       color = function(object)
-        local tobject = self.build[objtype]()
-        return self:canAffordObject(tobject) and {0,255,0} or {127,127,127}
+        if object.work then
+          return {255,255,0}
+        else
+          local tobject = self.build[objtype]()
+          return self:canAffordObject(tobject) and {0,255,0} or {127,127,127}
+        end
       end,
       tooltip = function(object)
-        local tobject = self.build[objtype]()
-        return "Build "..tobject.display_name.." ["..self:makeCostString(tobject.cost).."]\n"..tobject.info
+        if object.work then
+          return "Ship is currently building "..object.work.build_type
+        else
+          local tobject = self.build[objtype]()
+          return "Build "..tobject.display_name.." ["..self:makeCostString(tobject.cost).."]\n"
+            ..tobject.info
+        end
       end,
       exe = function(object)
         if object.work == nil then
@@ -525,6 +533,7 @@ function mission:init()
             --TODO
             --playSFX(self.sfx.shipStarted)
             object.work = {
+              build_type = objtype,
               time = cheat_operation_cwal and 0.1 or tobject.build_time*(1-self.upgrades.build_time*0.1),
               callback = function(object)
                 local object = self:build_object(objtype,object)
@@ -945,8 +954,10 @@ function mission:mousepressed(x,y,b)
         if ai == pos then
           if cobject then
             a.exe(cobject)
+            a.pressed = 1
           else
             a.multi.exe(self.multi)
+            a.pressed = 1
           end
         end
       end
@@ -1344,6 +1355,15 @@ function mission:drawActions()
   local cobject = self:singleSelected()
   for ai,a in pairs(self:getActions()) do
     local x,y = love.graphics.getWidth()-64,32+(ai-1)*(32+self:iconPadding())
+
+    local alpha = 255
+    if a.pressed then
+      alpha = 191+math.cos(a.pressed*math.pi*2)*64
+    end
+
+    local r,g,b = love.graphics.getColor()
+    love.graphics.setColor(r,g,b,alpha)
+
     love.graphics.draw(self.icon_bg,x,y)
 
     --lol ternaries
@@ -1358,6 +1378,10 @@ function mission:drawActions()
       dropshadowf(cobject and a.tooltip(cobject) or a.multi.tooltip(self.multi),
         32,y+6,love.graphics.getWidth()-96-8,"right")
     end
+
+    local r,g,b = love.graphics.getColor()
+    love.graphics.setColor(r,g,b,alpha)
+
     love.graphics.draw(self.action_icons[a.icon],x,y)
     love.graphics.setColor(255,255,255)
   end
@@ -2014,6 +2038,12 @@ function mission:updateMission(dt)
 
   for _,action in pairs(self.actions) do
     action.hover = false
+    if action.pressed then
+      action.pressed = action.pressed - dt*4
+      if action.pressed <= 0 then
+        action.pressed = nil
+      end
+    end
   end
 
   if not self.select_start then
