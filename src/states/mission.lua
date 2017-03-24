@@ -521,18 +521,18 @@ function mission:init()
       exe = function(object)
         if object.work == nil then
           local tobject = self.build[objtype]()
-          object.work = {
-            time = cheat_operation_cwal and 0.1 or tobject.build_time*(1-self.upgrades.build_time*0.1),
-            callback = function(object)
-              --TODO
-              --playSFX(self.sfx.shipStarted)
-              if self:buyBuildObject(tobject.cost) then
+          if self:buyBuildObject(tobject.cost) then
+            --TODO
+            --playSFX(self.sfx.shipStarted)
+            object.work = {
+              time = cheat_operation_cwal and 0.1 or tobject.build_time*(1-self.upgrades.build_time*0.1),
+              callback = function(object)
                 local object = self:build_object(objtype,object)
                 table.insert(self.objects,object)
                 playSFX(self.sfx.buildShip)
-              end
-            end,
-          }
+              end,
+            }
+          end
         else
           -- TODO: add queue
           -- unit already being built
