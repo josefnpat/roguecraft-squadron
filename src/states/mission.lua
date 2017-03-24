@@ -1258,20 +1258,24 @@ function mission:draw()
   self:drawSelected()
   self:drawActions()
 
+  local sindex = 1
   for rindex,r in pairs(self.resources_types) do
-    local symbol
-    if self.resources[r.."_delta"] < 0 then
-      love.graphics.setColor(255,0,0)
-      symbol = "▼"
-    else
-      love.graphics.setColor(0,255,0)
-      symbol = "▲"
+    if self.resources[r.."_cargo"] > 0 then
+      local symbol
+      if self.resources[r.."_delta"] < 0 then
+        love.graphics.setColor(255,0,0)
+        symbol = "▼"
+      else
+        love.graphics.setColor(0,255,0)
+        symbol = "▲"
+      end
+      dropshadow(
+        self.resources_types_formatted[rindex]..": "..
+        math.floor(self.resources[r]).."/"..self.resources[r.."_cargo"]..
+        " ["..symbol..math.floor(self.resources[r.."_delta"]+0.5).."]",
+        32,128+64+18*(sindex-1))
+      sindex = sindex + 1
     end
-    dropshadow(
-      self.resources_types_formatted[rindex]..": "..
-      math.floor(self.resources[r]).."/"..self.resources[r.."_cargo"]..
-      " ["..symbol..math.floor(self.resources[r.."_delta"]+0.5).."]",
-      32,128+64+18*(rindex-1))
   end
   love.graphics.setColor(255,255,255)
 

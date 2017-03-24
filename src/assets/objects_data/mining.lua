@@ -9,7 +9,7 @@ return function()
     size = 32,
     speed = 75,
     health = {max = 10,},
-    ore = 25,
+    ore = 250,
     ore_gather = 25,
     repair = false,
     actions = {"salvage","repair","collect","upgrade_mining"},
