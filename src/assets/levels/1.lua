@@ -32,6 +32,7 @@ level.enemy = nil
 level.jumpscrambler = nil
 level.jump = 0.9
 
+--[[
 level.tutorial = libs.tutorial.new()
 
 level.tutorial:add(
@@ -57,4 +58,6 @@ level.tutorial:add(
     local command = #states.mission:getObjectIntersectionQuery{type="command",target="not_nil"}
     return not (command == 1)
   end)
+--]]
+
 return level
