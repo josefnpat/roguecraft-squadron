@@ -1085,6 +1085,10 @@ function mission:distance(a,b)
   return math.sqrt( (a.x-b.x)^2 + (a.y-b.y)^2 )
 end
 
+function mission:shortestAngle(c,t)
+  return (t-c+math.pi)%(math.pi*2)-math.pi
+end
+
 function mission:draw()
 
   libs.stars:draw(self.camera.x/2,self.camera.y/2)
@@ -1641,7 +1645,7 @@ function mission:updateMission(dt)
     if object.shown_angle == nil then
       object.shown_angle = object.angle
     else
-      local sa = getShortestAngle(object.shown_angle,object.angle)
+      local sa = self:shortestAngle(object.shown_angle,object.angle)
       object.shown_angle = object.shown_angle + sa*dt*4
     end
 
