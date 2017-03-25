@@ -1899,8 +1899,13 @@ function mission:updateMission(dt)
         for _,resource_type in pairs({"scrap","ore","crew"}) do
           if object[resource_type.."_gather"] then
             local modobjs = mission:getObjectWithModifier(resource_type.."_supply")
+            table.sort(modobjs,function(a,b)
+              return self:distance(object.position,a.position) <
+                self:distance(object.position,b.position)
+            end)
             if #modobjs > 0 then
-              object.target_object = modobjs[math.random(#modobjs)]
+              local index = math.random(1,math.floor(#modobjs/10)+1)
+              object.target_object = modobjs[index]
             else
               object.collect = false
             end
