@@ -1170,7 +1170,7 @@ function mission:draw()
     love.graphics.setColor(ship_color)
     love.graphics.draw(object_image,
       object.position.x,object.position.y,
-      object.angle or 0,1,1,object_image:getWidth()/2,object_image:getHeight()/2)
+      object.shown_angle or 0,1,1,object_image:getWidth()/2,object_image:getHeight()/2)
     love.graphics.setColor({255,255,255})
 
     if debug_mode then
@@ -1637,6 +1637,13 @@ function mission:updateMission(dt)
   local player_ships = self:getObjectsByOwner(0)
 
   for _,object in pairs(self.objects) do
+
+    if object.shown_angle == nil then
+      object.shown_angle = object.angle
+    else
+      local sa = getShortestAngle(object.shown_angle,object.angle)
+      object.shown_angle = object.shown_angle + sa*dt*4
+    end
 
     if object.work then
       if object.work.current == nil then

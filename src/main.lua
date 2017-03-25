@@ -179,3 +179,7 @@ function getFileName(i)
   local _,_,fname,extension = i:find("^(.+)%.(.*)")
   return fname
 end
+
+function getShortestAngle(c,t)
+  return (t-c+math.pi)%(math.pi*2)-math.pi
+end
