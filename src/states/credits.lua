@@ -66,6 +66,7 @@ end
 function credits:draw()
 
   libs.stars:draw()
+  libs.stars:drawPlanet()
 
   love.graphics.setFont(fonts.menu)
   dropshadowf(self.text,0,self.y,love.graphics:getWidth(),"center")

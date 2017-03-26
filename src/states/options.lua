@@ -105,6 +105,7 @@ function state:draw()
     love.graphics.setColor(255,255,255)
   else
     libs.stars:draw()
+    libs.stars:drawPlanet()
   end
   self.menu:draw()
 end

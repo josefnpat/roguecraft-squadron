@@ -1,5 +1,7 @@
 local stars = {}
 
+stars.planet = love.graphics.newImage("assets/planets/BubblegumPlanet.png")
+
 function stars:load()
 
   self.img = {
@@ -46,6 +48,17 @@ function stars:draw(x,y)
     -self.img.stars1:getWidth()+((x/2)%self.img.stars1:getWidth()),
     -self.img.stars1:getHeight()+((y/2)%self.img.stars1:getHeight()) )
   love.graphics.setBlendMode("alpha")
+end
+
+function stars:drawPlanet()
+
+  love.graphics.draw(stars.planet,
+    love.graphics:getWidth() * 0.1,
+    love.graphics:getHeight() * 0.75,
+    love.timer.getTime() * 0.01,1,1,
+    stars.planet:getWidth()/2,
+    stars.planet:getHeight()/2)
+
 end
 
 return stars

@@ -66,16 +66,6 @@ function mainmenu:enter()
 
   self.menu = self.menum
 
-  self.raw_planet_images = love.filesystem.getDirectoryItems("assets/planets/")
-  self.planet_images = {}
-  for i = 1, #self.raw_planet_images do
-    self.planet_images[i] = love.graphics.newImage("assets/planets/" .. self.raw_planet_images[i])
-  self.random_planet = math.random(#self.planet_images)
-  self.planet_rotation = 0.01
-
-
-  end
-
 end
 
 function mainmenu:update(dt)
@@ -91,12 +81,9 @@ function mainmenu:update(dt)
 end
 
 function mainmenu:draw()
-  libs.stars:draw()
 
-  love.graphics.draw(self.planet_images[self.random_planet],love.graphics:getWidth() * 0.1,love.graphics:getHeight() * 0.75,
-    love.timer.getTime() * self.planet_rotation,1,1,
-    self.planet_images[self.random_planet]:getWidth()/2,
-    self.planet_images[self.random_planet]:getHeight()/2)
+  libs.stars:draw()
+  libs.stars:drawPlanet()
 
   local logox = (love.graphics.getWidth()-self.logo:getWidth())/2
   local logoy = love.graphics.getHeight()/16
