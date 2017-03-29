@@ -77,6 +77,45 @@ function state:init()
       settings:write("fow_quality", fowq == "img_canvas" and "circle_canvas" or "img_canvas")
     end)
 
+  self.menu.bg_quality = {
+    {value="none",string="None"},
+    {value="low",string="Low (1024x1024)"},
+    {value="medium",string="Medium (2048x2048)"},
+    {value="high",string="High (4096x4096)"},
+  }
+
+  self.menu:add(
+    function()
+      local quality = settings:read("bg_quality","high")
+      local quality_string = "Star Quality: "
+      for _,v in pairs(self.menu.bg_quality) do
+        if v.value == quality then
+          return quality_string..v.string
+        end
+      end
+      return quality_string.."Unknown"
+    end,
+    function()
+      local quality = settings:read("bg_quality","high")
+      local first,use_next,next_quality
+      for _,v in pairs(self.menu.bg_quality) do
+        if first == nil then
+          first = v
+        end
+        if use_next then
+          use_next = nil
+          next_quality = v
+        elseif v.value == quality then
+          use_next = true
+        end
+      end
+      if use_next then
+        next_quality = first
+      end
+      settings:write("bg_quality",next_quality.value)
+      libs.stars:reload()
+    end)
+
   self.menu:add(
     function()
       return "Tutorial: "..
