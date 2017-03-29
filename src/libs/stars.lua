@@ -22,7 +22,7 @@ function stars:load()
     love.graphics.getHeight()+self.img.stars1:getHeight(),
     self.img.stars1:getWidth(), self.img.stars1:getHeight())
 
-  self.background_scroll_speed = 4
+  self.background_scroll_speed = 10
 
 end
 
@@ -40,14 +40,12 @@ function stars:draw(x,y)
     love.graphics.getWidth()/self.img.space:getWidth(),
     love.graphics.getHeight()/self.img.space:getHeight()
   )
-  love.graphics.setBlendMode("add")
   love.graphics.draw(self.img.stars0, self.stars0_quad,
     -self.img.stars0:getWidth()+((x)%self.img.stars0:getWidth()),
     -self.img.stars0:getHeight()+((y)%self.img.stars0:getHeight()) )
   love.graphics.draw(self.img.stars1, self.stars1_quad,
     -self.img.stars1:getWidth()+((x/2)%self.img.stars1:getWidth()),
     -self.img.stars1:getHeight()+((y/2)%self.img.stars1:getHeight()) )
-  love.graphics.setBlendMode("alpha")
 end
 
 function stars:drawPlanet()
