@@ -83,6 +83,7 @@ libs = {
   menu = require"libs.menu",
   pcb = require"libs.progresscirclebar",
   tutorial = require"libs.tutorial",
+  json = require"libs.json",
 }
 
 states = {
@@ -115,6 +116,13 @@ function love.load(arg)
       debug_mode = true
     end
   end
+
+  local http = require"socket.http"
+  local version_server_payload = libs.json.encode({count=git_count,hash=git_hash})
+  local version_server_url = "http://50.116.63.25/roguecraftsquadron.com/version.php?i="
+  local r,e = http.request(version_server_url..version_server_payload)
+  version_server = e == 200 and libs.json.decode(r) or nil
+
   libs.hump.gamestate.registerEvents()
   libs.hump.gamestate.switch(target_state or states.splash)
 end
