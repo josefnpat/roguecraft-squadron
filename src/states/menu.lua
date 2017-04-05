@@ -36,28 +36,28 @@ function mainmenu:enter()
 
   self.menud = libs.menu.new()
 
-  self.menud:add("Can I play, Daddy?",function()
+  self.menud:add("Ensign (Easy)",function()
     difficulty.mult.enemy = 1
     difficulty.mult.asteroid = 1
     difficulty.mult.scrap = 1
     libs.hump.gamestate.switch(states.disclaimer)
   end)
 
-  self.menud:add("Don't hurt me.",function()
+  self.menud:add("Captain (Medium)",function()
     difficulty.mult.enemy = 1.5
     difficulty.mult.asteroid = 0.75
     difficulty.mult.scrap = 0.5
     libs.hump.gamestate.switch(states.disclaimer)
   end)
 
-  self.menud:add("Bring 'em on!",function()
+  self.menud:add("Colonel (Hard)",function()
     difficulty.mult.enemy = 2
     difficulty.mult.asteroid = 0.5
     difficulty.mult.scrap = 0.25
     libs.hump.gamestate.switch(states.disclaimer)
   end)
 
-  self.menud:add("I am Death incarnate!",function()
+  self.menud:add("Admiral (Impossible)",function()
     difficulty.mult.enemy = 2.5
     difficulty.mult.asteroid = 0.25
     difficulty.mult.scrap = 0.125
