@@ -99,6 +99,9 @@ states = {
 }
 
 function love.load(arg)
+
+  local version_server_check = true
+
   for i,v in pairs(arg) do
     if v == "novn" then
       disable_vn = true
@@ -115,13 +118,18 @@ function love.load(arg)
     if v == "debug" then
       debug_mode = true
     end
+    if v == "nocheck" then
+      version_server_check = false
+    end
   end
 
-  local http = require"socket.http"
-  local version_server_payload = libs.json.encode({count=git_count,hash=git_hash})
-  local version_server_url = "http://50.116.63.25/roguecraftsquadron.com/version.php?i="
-  local r,e = http.request(version_server_url..version_server_payload)
-  version_server = e == 200 and libs.json.decode(r) or nil
+  if version_server_check then
+    local http = require"socket.http"
+    local version_server_payload = libs.json.encode({count=git_count,hash=git_hash})
+    local version_server_url = "http://50.116.63.25/roguecraftsquadron.com/version.php?i="
+    local r,e = http.request(version_server_url..version_server_payload)
+    version_server = e == 200 and libs.json.decode(r) or nil
+  end
 
   libs.hump.gamestate.registerEvents()
   libs.hump.gamestate.switch(target_state or states.splash)
