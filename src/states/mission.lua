@@ -928,6 +928,8 @@ function mission:mousepressed(x,y,b)
       local px,py = (x-mx)*32,(y-my)*32
       self:moveSelected(px,py)
     end
+  elseif self.tutorial and self.tutorial:inArea() then
+    --nop
   elseif self:mouseInSelected() then
     local posx = math.floor((love.mouse.getX()-32)/(32+self:iconPadding()))+1
     local posy = -math.floor((love.mouse.getY()-love.graphics.getHeight()+32)/(32+self:iconPadding()))
@@ -1273,6 +1275,8 @@ function mission:draw()
   self:drawSelected()
   self:drawActions()
 
+  dropshadow("Level "..self.level.."/8",32,128+64)
+
   local sindex = 1
   for rindex,r in pairs(self.resources_types) do
     if self.resources[r.."_cargo"] > 0 then
@@ -1288,16 +1292,13 @@ function mission:draw()
         self.resources_types_formatted[rindex]..": "..
         math.floor(self.resources[r]).."/"..self.resources[r.."_cargo"]..
         " ["..symbol..math.floor(self.resources[r.."_delta"]+0.5).."]",
-        32,128+64+18*(sindex-1))
+        32,128+64+18*(sindex))
       sindex = sindex + 1
     end
   end
   love.graphics.setColor(255,255,255)
 
   local font = love.graphics.getFont()
-  dropshadowf("Level "..self.level.."/8",
-    32,love.graphics.getHeight()-32-font:getHeight(),
-    love.graphics.getWidth()-64,"right")
 
   if self.jump_active then
     love.graphics.setColor(0,0,0,255-255*self.jump_active/self.sfx_data.jump:getDuration())
@@ -1305,13 +1306,8 @@ function mission:draw()
     love.graphics.setColor(255,255,255)
   end
 
-  if self.tutorial then
-    self.tutorial:draw()
-  end
-
-  if self.vn:getRun() then
-    self.vn:draw()
-  end
+  if self.tutorial then self.tutorial:draw() end
+  if self.vn:getRun() then self.vn:draw() end
 
 end
 
@@ -1585,11 +1581,8 @@ function mission:update(dt)
     end
   end
 
-  if self.tutorial then
-    self.tutorial:update(dt)
-  end
-
   if not self.vn:getRun() then
+    if self.tutorial then self.tutorial:update(dt) end
     self:updateMission(dt)
   else
     self.vn:update(dt)
@@ -2073,6 +2066,8 @@ function mission:updateMission(dt)
         self.camera:move(-self.camera.x + nx, -self.camera.y + ny)
         mission:clampCamera()
       end
+    elseif self.tutorial and self.tutorial:inArea() then
+      -- nop
     elseif self:mouseInSelected() then
       -- nop
     elseif self:mouseInActions() then

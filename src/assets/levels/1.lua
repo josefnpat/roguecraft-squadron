@@ -32,32 +32,47 @@ level.enemy = nil
 level.jumpscrambler = nil
 level.jump = 0.9
 
---[[
 level.tutorial = libs.tutorial.new()
 
-level.tutorial:add(
-  "Confirm the navcom system functions by selecting your command ship.",
-  function()
-    local targets = {}
-    for i,v in pairs(states.mission:getObjectIntersectionQuery{type="command"}) do
-      local x,y = states.mission.camera:cameraCoords(v.position.x,v.position.y)
-      table.insert(targets,{x=x,y=y})
-    end
-    return targets
-  end,
-  function()
-    local selected = #states.mission:getObjectIntersectionQuery{selected=true}
-    local command = #states.mission:getObjectIntersectionQuery{type="command",selected=true}
-    return not (selected == 1 and command == 1)
-  end)
+level.tutorial:add{
+  objtext = "Greetings commander. I would like to test our basic systems. If you prefer not to, you may jump to the next system right away.",
+  helptext = "If at any time you need help with an objective, you can get help here.",
+}
 
-level.tutorial:add(
-  "Click somewhere in space to confirm that you have control of the vessal.",
-  function() return {} end,
-  function()
-    local command = #states.mission:getObjectIntersectionQuery{type="command",target="not_nil"}
-    return not (command == 1)
-  end)
---]]
+level.tutorial:add{
+  objtext = "During stasis, many systems have deteriorated. Please confirm that the command ship is still operational.",
+  helptext = "Use the left mouse button to select the command ship",
+}
+
+level.tutorial:add{
+  objtext = "Our information systems seem to be operational. Please confirm that our command ship is under your control.",
+  helptext = "Use the right mouse button to move the ship anywhere.",
+}
+level.tutorial:add{
+  objtext = "Our command ship has been damaged from our long travel. I suggest we tell the crew to repair it.",
+  helptext = "Select the command ship, and toggle the \"Repair\" action.",
+}
+level.tutorial:add{
+  objtext = "In order to survive, we will need to collect resources. We should search this system for something to gather.",
+  helptext = "Move around the map with by moving your mouse to the edge of the screen, or using WASD/Arrow Keys. Find scrap.",
+}
+level.tutorial:add{
+  objtext = "Excellent. We found some scrap. We should use our command ship to build a salvager to gather it.",
+  helptext = "Select the command ship, and use the \"Build Salvager\" action in the upper right corner.",
+}
+level.tutorial:add{
+  objtext = "Now that we have a salvager under our command, have it collect material from the scrap.",
+  helptext = "Select the salvager, and have it target the scrap.",
+}
+
+level.tutorial:add{
+  objtext = "Now that we have materials, we should build some ships to protect our squadron.",
+  helptext = "Select the command ship, and build a Fighter.",
+}
+
+level.tutorial:add{
+  objtext = "When you believe our fleet is ready, inform the Jump Calibrator to jump to the next system.",
+  helptext = "Select the Jump Calibrator, and use the Jump action.",
+}
 
 return level
