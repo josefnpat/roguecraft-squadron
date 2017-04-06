@@ -117,6 +117,12 @@ function vn:draw()
     dropshadow(cframe.name,padding*2,voffset+padding*2)
     love.graphics.setFont(fonts.vn_text)
     dropshadowf(cframe.text,hoffset+padding*2,voffset+padding*2,width-padding*4,"left")
+    love.graphics.setFont(fonts.vn_info)
+    love.graphics.setColor(127,127,127)
+    dropshadowf("[Press escape at any time to skip this cutscene.]",
+      0,love.graphics.getHeight()-fonts.vn_info:getHeight(),
+      love.graphics.getWidth(),"center")
+    love.graphics.setColor(255,255,255)
     love.graphics.setFont(orig_font)
   end
 end

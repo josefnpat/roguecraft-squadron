@@ -65,6 +65,7 @@ fonts = {
   menu = love.graphics.newFont("assets/fonts/Yantramanav-Black.ttf",32),
   vn_name = love.graphics.newFont("assets/fonts/Yantramanav-Black.ttf",48),
   vn_text = love.graphics.newFont("assets/fonts/Yantramanav-Black.ttf",24),
+  vn_info = love.graphics.newFont("assets/fonts/Yantramanav-Black.ttf",16),
   fallback = love.graphics.newFont("assets/fonts/NovaMono.ttf",16),
 }
 
