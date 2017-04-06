@@ -566,10 +566,11 @@ function mission:init()
   table.insert(self.objects,abandoned_drydock)
   table.insert(self.objects,self:build_object("blackhole",{position={x=love.graphics.getWidth(),y=love.graphics.getHeight()}}))
   --]]
-  table.insert(self.objects,self:build_object("command",{position=self.start.position,owner=0}))
+  local start_command = self:build_object("command",{position=self.start.position,owner=0})
+  start_command.health.current = start_command.health.max/2
+  table.insert(self.objects,start_command)
   table.insert(self.objects,self:build_object("jump",{position=self.start.position,owner=0}))
   table.insert(self.objects,self:build_object("habitat",{position=self.start.position,owner=0}))
-  table.insert(self.objects,self:build_object("salvager",{position=self.start.position,owner=0}))
 
 end -- END OF INIT
 
