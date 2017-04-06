@@ -17,7 +17,10 @@ function window.new(init)
   init = init or {}
   local self = {}
 
+  self.dt = 0
+
   self.text = init.text or "N/A"
+  self.ptext = ""
   self.color = init.color or {0,255,0}
 
   self.guides = init.guides or {}
@@ -98,7 +101,7 @@ function window:draw()
 
   if self.text then
     --love.graphics.rectangle("line",self.x+32,self.y+coffset,self.w-64,self:_textHeight())
-    dropshadowf(self.text,
+    dropshadowf(self.ptext,
       self.x+32,self.y+coffset,
       self.w-64,"left")
     coffset = coffset + self:_textHeight()
@@ -138,6 +141,10 @@ function window:draw()
 end
 
 function window:update(dt)
+  self.dt = self.dt + dt
+
+  self.ptext = string.sub(self.text,1,math.min(self.dt,1)*string.len(self.text))
+
   if not love.mouse.isDown(1) then
     self._wait_mouse_release = false
   end
