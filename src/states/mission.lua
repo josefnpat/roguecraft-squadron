@@ -631,8 +631,9 @@ function mission:nextLevel()
 
   local level_data = require("assets/levels/"..self.level)
 
-  if settings:read("tutorial",true) then
-    self.tutorial = level_data.tutorial
+  self.tutorial = nil
+  if settings:read("tutorial",true) and level_data.make_tutorial then
+    self.tutorial = level_data.make_tutorial()
   end
 
   self.jump = level_data.jump and (1-level_data.jump)*self.jump_max or self.jump_max
@@ -1298,7 +1299,7 @@ function mission:draw()
   end
   love.graphics.setColor(255,255,255)
 
-  local font = love.graphics.getFont()
+  if self.tutorial then self.tutorial:draw() end
 
   if self.jump_active then
     love.graphics.setColor(0,0,0,255-255*self.jump_active/self.sfx_data.jump:getDuration())
@@ -1306,7 +1307,6 @@ function mission:draw()
     love.graphics.setColor(255,255,255)
   end
 
-  if self.tutorial then self.tutorial:draw() end
   if self.vn:getRun() then self.vn:draw() end
 
 end
