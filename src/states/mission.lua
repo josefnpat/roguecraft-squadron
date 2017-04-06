@@ -724,7 +724,7 @@ function mission:nextLevel()
           },
           owner = 1,
         }
-        local enemy = enemy_types[math.random(#enemy_types)]
+        local enemy = enemy_types[self.level == 2 and 1 or math.random(#enemy_types)]
         if enemy.q == 0.5 then
           skip = true
           local enemy_object = self:build_object(enemy.type,parent_object)
