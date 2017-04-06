@@ -6,7 +6,6 @@ function mission:init()
 
   -- defaults
   self.multi = {
-    refine = true,
     jump_process = true,
   }
 
@@ -698,11 +697,11 @@ function mission:nextLevel()
 
   if level_data.enemy then
     local enemy_types = {
-      {type="enemy_artillery",q=1},
+      {type="enemy_fighter",q=4},
       {type="enemy_combat",q=1},
+      {type="enemy_artillery",q=1},
       {type="enemy_tank",q=1},
       {type="enemy_miniboss",q=0.5},
-      {type="enemy_fighter",q=4},
     }
     local skip = false
     for i = 1,level_data.enemy*difficulty.mult.enemy do

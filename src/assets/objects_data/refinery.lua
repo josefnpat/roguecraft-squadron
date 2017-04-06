@@ -9,10 +9,10 @@ return function()
     size = 32,
     speed = 50,
     health = {max = 15,},
-    material = 50,
+    material = 100,
     material_gather = 5,
     repair = false,
-    refine = true,
+    refine = false,
     actions = {"salvage","repair","refine","upgrade_refine"},
     build_time = 5,
   }

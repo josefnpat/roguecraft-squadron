@@ -158,6 +158,16 @@ function tutorial.wait.object_is_target(t)
   end
 end
 
+function tutorial.wait.objects_find(t)
+  local objects = {}
+  for _,object in pairs(states.mission.objects) do
+    if object.type == t then
+      table.insert(objects,object)
+    end
+  end
+  return objects
+end
+
 tutorial.icons = {}
 
 tutorial.icons.object_command = {
@@ -193,6 +203,61 @@ tutorial.icons.object_jump = {
 tutorial.icons.action_jump = {
   icon = love.graphics.newImage("assets/actions/jump.png"),
   text = "Jump to next system",
+}
+
+tutorial.icons.object_enemy_fighter = {
+  icon = love.graphics.newImage("assets/objects/enemy_fighter0_icon.png"),
+  text = "Enemy Fighter",
+}
+
+tutorial.icons.object_drydock = {
+  icon = love.graphics.newImage("assets/objects/drydock0_icon.png"),
+  text = "Drydock",
+}
+
+tutorial.icons.object_combat = {
+  icon = love.graphics.newImage("assets/objects/combat0_icon.png"),
+  text = "Battlestar",
+}
+
+tutorial.icons.object_advdrydock = {
+  icon = love.graphics.newImage("assets/objects/advdrydock0_icon.png"),
+  text = "Advanced Drydock",
+}
+
+tutorial.icons.object_artillery = {
+  icon = love.graphics.newImage("assets/objects/artillery0_icon.png"),
+  text = "Artillery",
+}
+
+tutorial.icons.object_tank = {
+  icon = love.graphics.newImage("assets/objects/tank0_icon.png"),
+  text = "Tank",
+}
+
+tutorial.icons.object_mining = {
+  icon = love.graphics.newImage("assets/objects/mining0_icon.png"),
+  text = "Mining Rig",
+}
+
+tutorial.icons.object_asteroid = {
+  icon = love.graphics.newImage("assets/objects/asteroid0_icon.png"),
+  text = "Asteroid",
+}
+
+tutorial.icons.object_refinery = {
+  icon = love.graphics.newImage("assets/objects/refinery0_icon.png"),
+  text = "Refinery",
+}
+
+tutorial.icons.action_refine = {
+  icon = love.graphics.newImage("assets/actions/refine.png"),
+  text = "Refine Ore",
+}
+
+tutorial.icons.object_jumpscrambler = {
+  icon = love.graphics.newImage("assets/objects/jumpscrambler0_icon.png"),
+  text = "Jump Scrambler",
 }
 
 return tutorial
