@@ -415,7 +415,7 @@ function mission:init()
   }
 
   upgrades_data.crew = {
-    display_name = "Pregnancy Term Reduction",
+    display_name = "Clone Term Reduction",
     info = "Increase the crew gain from Habitats.",
     max = 3,
     cost = {material=100},
@@ -441,10 +441,16 @@ function mission:init()
     mult = 1.5,
   }
 
+
   for upgrade_type,upgrade in pairs(upgrades_data) do
+
+    local upgrade_string = "upgrade_"..upgrade_type
+
+    self.action_icons[upgrade_string] = love.graphics.newImage("assets/actions/"..upgrade_string..".png")
+
     self.upgrades[upgrade_type] = 0
-    self.actions["upgrade_"..upgrade_type] = {
-      icon = "upgrade",
+    self.actions[upgrade_string] = {
+      icon = upgrade_string,
       tooltip = function(object)
         if self.upgrades_lock[upgrade_type] and self.upgrades_lock[upgrade_type] ~= object then
           return "Another ship is already upgrading "..upgrade.display_name
