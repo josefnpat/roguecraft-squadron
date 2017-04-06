@@ -93,5 +93,36 @@ function tutorial:inArea()
     (self.help and self.help:inArea())
 end
 
+tutorial.wait = {}
+
+function tutorial.wait.select_single_object(t)
+  local found
+  local selected
+  for _,object in pairs(states.mission.objects) do
+    if object.selected then
+      if selected then
+        return nil
+      else
+        selected = object
+      end
+      if object.type == t then
+        if found then
+          return nil
+        else
+          found = object
+        end
+      end
+    end
+  end
+  return found
+end
+
+function tutorial.wait.object_exists(t)
+  for _,object in pairs(states.mission.objects) do
+    if object.type == t and object.owner == 0 then
+      return object
+    end
+  end
+end
 
 return tutorial

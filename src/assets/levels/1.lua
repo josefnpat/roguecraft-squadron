@@ -17,10 +17,10 @@ level.intro = function(self)
   tvn:addFrame(vn.adj.default,vn.adj.overlay,"Adjutant","Correct.",vn_audio.adj.correct)
   tvn:addFrame(vn.com.default,nil,"Commander","How many jumps away is earth?",vn_audio.com.line6)
   tvn:addFrame(vn.adj.default,vn.adj.overlay,"Adjutant","Using our isotope reserve, eight.",vn_audio.adj.line6)
-  tvn:addFrame(vn.adj.default,vn.adj.overlay,"Adjutant","Warning: Ship scanners detect hostile ships in the nearby systems.",vn_audio.adj.line7)
-  tvn:addFrame(vn.com.default,nil,"Commander","Suggestions?",vn_audio.com.line7)
-  tvn:addFrame(vn.adj.default,vn.adj.overlay,"Adjutant","Acquire resources to prepare for battle. Select the [Drydock] and Construct a [Mining Rig] to mine ore from a nearby [Asteroid]. Construct a [Refinery] to process ore into materials.",vn_audio.adj.line8)
-  tvn:addFrame(nil,nil,"[TIP]","Select your ship with the left mouse button. Right mouse click to move selected ships. Use the icons in the upper right to perform actions. Move your mouse to the edge of the screen, use the arrow keys, or left click on the minimap to move your camera.")
+  --tvn:addFrame(vn.adj.default,vn.adj.overlay,"Adjutant","Warning: Ship scanners detect hostile ships in the nearby systems.",vn_audio.adj.line7)
+  --tvn:addFrame(vn.com.default,nil,"Commander","Suggestions?",vn_audio.com.line7)
+  --tvn:addFrame(vn.adj.default,vn.adj.overlay,"Adjutant","Acquire resources to prepare for battle. Select the [Drydock] and Construct a [Mining Rig] to mine ore from a nearby [Asteroid]. Construct a [Refinery] to process ore into materials.",vn_audio.adj.line8)
+  --tvn:addFrame(nil,nil,"[TIP]","Select your ship with the left mouse button. Right mouse click to move selected ships. Use the icons in the upper right to perform actions. Move your mouse to the edge of the screen, use the arrow keys, or left click on the minimap to move your camera.")
   return tvn
 end
 
@@ -32,47 +32,68 @@ level.enemy = nil
 level.jumpscrambler = nil
 level.jump = 0.9
 
-level.tutorial = libs.tutorial.new()
+level.make_tutorial = function()
+  local t = libs.tutorial.new()
 
-level.tutorial:add{
-  objtext = "Greetings commander. I would like to test our basic systems. If you prefer not to, you may jump to the next system right away.",
-  helptext = "If at any time you need help with an objective, you can get help here.",
-}
+  t:add{
+    objtext = "Greetings commander. I would like to test our basic systems. If you prefer not to, you may jump to the next system right away.",
+    helptext = "If at any time you need help with an objective, you can get help here.",
+  }
 
-level.tutorial:add{
-  objtext = "During stasis, many systems have deteriorated. Please confirm that the command ship is still operational.",
-  helptext = "Use the left mouse button to select the command ship",
-}
+  t:add{
+    objtext = "During stasis, many systems have deteriorated. Please confirm that the command ship is still operational.",
+    helptext = "Use the left mouse button to select the command ship",
+    skip = function() return libs.tutorial.wait.select_single_object("command") end,
+  }
 
-level.tutorial:add{
-  objtext = "Our information systems seem to be operational. Please confirm that our command ship is under your control.",
-  helptext = "Use the right mouse button to move the ship anywhere.",
-}
-level.tutorial:add{
-  objtext = "Our command ship has been damaged from our long travel. I suggest we tell the crew to repair it.",
-  helptext = "Select the command ship, and toggle the \"Repair\" action.",
-}
-level.tutorial:add{
-  objtext = "In order to survive, we will need to collect resources. We should search this system for something to gather.",
-  helptext = "Move around the map with by moving your mouse to the edge of the screen, or using WASD/Arrow Keys. Find scrap.",
-}
-level.tutorial:add{
-  objtext = "Excellent. We found some scrap. We should use our command ship to build a salvager to gather it.",
-  helptext = "Select the command ship, and use the \"Build Salvager\" action in the upper right corner.",
-}
-level.tutorial:add{
-  objtext = "Now that we have a salvager under our command, have it collect material from the scrap.",
-  helptext = "Select the salvager, and have it target the scrap.",
-}
+  t:add{
+    objtext = "Our information systems seem to be operational. Please confirm that our command ship is under your control.",
+    helptext = "Use the right mouse button to move the ship anywhere.",
+    skip = function()
+      local ship = libs.tutorial.wait.select_single_object("command")
+      return ship and (ship.target or ship.target_object)
+    end,
+  }
+  t:add{
+    objtext = "Our command ship has been damaged from our long travel. I suggest we tell the crew to repair it.",
+    helptext = "Select the command ship, and toggle the \"Repair\" action.",
+    skip = function()
+      local ship = libs.tutorial.wait.select_single_object("command")
+      return ship and ship.repair
+    end,
+  }
+  t:add{
+    objtext = "In order to survive, we will need to collect resources. We should search this system for something to gather.",
+    helptext = "Move around the map with by moving your mouse to the edge of the screen, or using WASD/Arrow Keys. Find scrap.",
+    skip = function() return libs.tutorial.wait.select_single_object("scrap") end,
+  }
+  t:add{
+    objtext = "Excellent. We found some scrap. We should use our command ship to build a salvager to gather it.",
+    helptext = "Select the command ship, and use the \"Build Salvager\" action in the upper right corner.",
+    skip = function() return libs.tutorial.wait.object_exists("salvager") end,
+  }
+  t:add{
+    objtext = "Now that we have a salvager under our command, have it collect material from the scrap.",
+    helptext = "Select the salvager, and have it target the scrap.",
+    skip = function()
+      local ship = libs.tutorial.wait.select_single_object("salvager")
+      return ship and ship.target_object and ship.target_object.type == "scrap"
+    end,
+  }
 
-level.tutorial:add{
-  objtext = "Now that we have materials, we should build some ships to protect our squadron.",
-  helptext = "Select the command ship, and build a Fighter.",
-}
+  t:add{
+    objtext = "Now that we have materials, we should build some ships to protect our squadron.",
+    helptext = "Select the command ship, and build a Fighter.",
+    skip = function()
+      return libs.tutorial.wait.object_exists("fighter")
+    end,
+  }
 
-level.tutorial:add{
-  objtext = "When you believe our fleet is ready, inform the Jump Calibrator to jump to the next system.",
-  helptext = "Select the Jump Calibrator, and use the Jump action.",
-}
+  t:add{
+    objtext = "When you believe our fleet is ready, inform the Jump Calibrator to jump to the next system.",
+    helptext = "Select the Jump Calibrator, and use the Jump action.",
+  }
+  return t
+end
 
 return level
