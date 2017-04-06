@@ -150,6 +150,14 @@ function tutorial.wait.object_exists(t)
   end
 end
 
+function tutorial.wait.object_is_target(t)
+  for _,object in pairs(states.mission.objects) do
+    if object.target_object and object.target_object.type == t then
+      return object
+    end
+  end
+end
+
 tutorial.icons = {}
 
 tutorial.icons.object_command = {

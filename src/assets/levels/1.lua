@@ -69,7 +69,9 @@ level.make_tutorial = function()
   t:add{
     objtext = "In order to survive, we will need to collect resources. We should search this system for something to gather.",
     helptext = "Move around the map with by moving your mouse to the edge of the screen, or using WASD/Arrow Keys. Find scrap.",
-    skip = function() return libs.tutorial.wait.select_single_object("scrap") end,
+    skip = function()
+      return libs.tutorial.wait.select_single_object("scrap") or libs.tutorial.wait.object_is_target("scrap")
+    end,
     helpguides = {"object_scrap"},
   }
   t:add{
@@ -102,6 +104,7 @@ level.make_tutorial = function()
     helptext = "Select the Jumpgate Generator, and use the Jump action.",
     helpguides = {"object_jump","action_jump"},
     objguides = {"action_jump"},
+    skiptext = "DONE",
   }
   return t
 end
