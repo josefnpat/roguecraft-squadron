@@ -179,7 +179,7 @@ tutorial.icons.object_fighter = {
 
 tutorial.icons.object_jump = {
   icon = love.graphics.newImage("assets/objects/jump0_icon.png"),
-  text = "Jumpgate Calibrator",
+  text = "Jumpgate Generator",
 }
 
 tutorial.icons.action_jump = {
