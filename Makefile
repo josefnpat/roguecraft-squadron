@@ -49,7 +49,7 @@ love: clean
 	echo "git_hash,git_count = '${GIT_HASH}',${GIT_COUNT}" > ${GIT_TARGET}
 	#Make love file
 	cd ${SRC_DIR};\
-	zip --filesync -x "*.tmx" -x "*.swp" -r ../${LOVE_TARGET} *;\
+	zip --filesync -x "*.swp" -r ../${LOVE_TARGET} *;\
 	cd ..
 
 .PHONY: run
