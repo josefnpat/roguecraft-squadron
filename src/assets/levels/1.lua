@@ -97,8 +97,8 @@ level.make_tutorial = function()
   }
 
   t:add{
-    objtext = "When you believe our fleet is ready, inform the Jump Calibrator to jump to the next system.",
-    helptext = "Select the Jump Calibrator, and use the Jump action.",
+    objtext = "When you believe our fleet is ready, inform the Jumpgate Generator to jump to the next system.",
+    helptext = "Select the Jumpgate Generator, and use the Jump action.",
     helpguides = {"object_jump"},
     objguides = {"action_jump"},
   }

@@ -407,7 +407,7 @@ function mission:init()
 
   upgrades_data.jump = {
     display_name = "Advanced Jump Drive Calculation Algorithm",
-    info = "Increase the speed at which Jumpgate Calibrators calculate the jump coordinates.",
+    info = "Increase the speed at which Jumpgate Generators calculate the jump coordinates.",
     max = 3,
     cost = {material=100},
     time = 10,
