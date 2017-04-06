@@ -36,28 +36,28 @@ function mainmenu:enter()
 
   self.menud = libs.menu.new()
 
-  self.menud:add("Can I play, Daddy?",function()
+  self.menud:add("Ensign (Easy)",function()
     difficulty.mult.enemy = 1
     difficulty.mult.asteroid = 1
     difficulty.mult.scrap = 1
     libs.hump.gamestate.switch(states.disclaimer)
   end)
 
-  self.menud:add("Don't hurt me.",function()
+  self.menud:add("Captain (Medium)",function()
     difficulty.mult.enemy = 1.5
     difficulty.mult.asteroid = 0.75
     difficulty.mult.scrap = 0.5
     libs.hump.gamestate.switch(states.disclaimer)
   end)
 
-  self.menud:add("Bring 'em on!",function()
+  self.menud:add("Colonel (Hard)",function()
     difficulty.mult.enemy = 2
     difficulty.mult.asteroid = 0.5
     difficulty.mult.scrap = 0.25
     libs.hump.gamestate.switch(states.disclaimer)
   end)
 
-  self.menud:add("I am Death incarnate!",function()
+  self.menud:add("Admiral (Impossible)",function()
     difficulty.mult.enemy = 2.5
     difficulty.mult.asteroid = 0.25
     difficulty.mult.scrap = 0.125
@@ -92,7 +92,26 @@ function mainmenu:draw()
   self.menu:draw()
 
   love.graphics.setFont(fonts.default)
-  love.graphics.print("GIT v"..git_count.." ["..git_hash.."]",32,32)
+  local vs_info = "Client GIT v"..git_count.." ["..git_hash.."]\n"
+  if version_server then
+    if version_server.count and version_server.hash then
+      vs_info = vs_info .. "Server GIT v"..version_server.count.." ["..version_server.hash.."]\n"
+    end
+    if version_server.message then
+      vs_info = vs_info .. "Server Message: ".. tostring(version_server.message).."\n"
+    end
+    if version_server.error then
+      vs_info = vs_info .. "Server Error: ".. tostring(version_server.error).."\n"
+    end
+    if version_server.count > git_count then
+      vs_info = vs_info .. "Your game is *not* up to date."
+    elseif version_server.count < git_count then
+      vs_info = vs_info .. "Your game is *ahead* of release."
+    else -- ==
+      vs_info = vs_info .. "Your game is up to date."
+    end
+  end
+  love.graphics.print(vs_info,32,32)
 
   if self.demo and self.demo_dt > 30 then
     self.demo:play()
