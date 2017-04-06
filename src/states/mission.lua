@@ -628,7 +628,7 @@ function mission:nextLevel()
   for _,object in pairs(self.objects) do
     object.target = nil
     object.target_object = nil
-    if collect ~= nil then
+    if object.collect ~= nil then
       object.collect = false
     end
     if object.owner == 0  then
