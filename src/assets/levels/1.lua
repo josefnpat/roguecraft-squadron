@@ -44,6 +44,7 @@ level.make_tutorial = function()
     objtext = "During stasis, many systems have deteriorated. Please confirm that the command ship is still operational.",
     helptext = "Use the left mouse button to select the command ship",
     skip = function() return libs.tutorial.wait.select_single_object("command") end,
+    helpguides = {"object_command"},
   }
 
   t:add{
@@ -53,6 +54,7 @@ level.make_tutorial = function()
       local ship = libs.tutorial.wait.select_single_object("command")
       return ship and (ship.target or ship.target_object)
     end,
+    helpguides = {"object_command"},
   }
   t:add{
     objtext = "Our command ship has been damaged from our long travel. I suggest we tell the crew to repair it.",
@@ -61,16 +63,19 @@ level.make_tutorial = function()
       local ship = libs.tutorial.wait.select_single_object("command")
       return ship and ship.repair
     end,
+    helpguides = {"object_command","action_repair"},
   }
   t:add{
     objtext = "In order to survive, we will need to collect resources. We should search this system for something to gather.",
     helptext = "Move around the map with by moving your mouse to the edge of the screen, or using WASD/Arrow Keys. Find scrap.",
     skip = function() return libs.tutorial.wait.select_single_object("scrap") end,
+    helpguides = {"object_scrap"},
   }
   t:add{
     objtext = "Excellent. We found some scrap. We should use our command ship to build a salvager to gather it.",
     helptext = "Select the command ship, and use the \"Build Salvager\" action in the upper right corner.",
     skip = function() return libs.tutorial.wait.object_exists("salvager") end,
+    helpguides = {"object_command","object_salvager"},
   }
   t:add{
     objtext = "Now that we have a salvager under our command, have it collect material from the scrap.",
@@ -79,6 +84,7 @@ level.make_tutorial = function()
       local ship = libs.tutorial.wait.select_single_object("salvager")
       return ship and ship.target_object and ship.target_object.type == "scrap"
     end,
+    helpguides = {"object_salvager","object_scrap"},
   }
 
   t:add{
@@ -87,11 +93,14 @@ level.make_tutorial = function()
     skip = function()
       return libs.tutorial.wait.object_exists("fighter")
     end,
+    helpguides = {"object_command","object_fighter"},
   }
 
   t:add{
     objtext = "When you believe our fleet is ready, inform the Jump Calibrator to jump to the next system.",
     helptext = "Select the Jump Calibrator, and use the Jump action.",
+    helpguides = {"object_jump"},
+    objguides = {"action_jump"},
   }
   return t
 end

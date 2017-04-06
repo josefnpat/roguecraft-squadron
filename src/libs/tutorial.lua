@@ -60,6 +60,19 @@ function tutorial:add(init)
       },
     }
   }
+
+  if init.helpguides then
+    for _,icon_name in pairs(init.helpguides) do
+      if tutorial.icons[icon_name] then
+        help:addGuide(
+          tutorial.icons[icon_name].text,
+          tutorial.icons[icon_name].icon)
+      else
+        print("warning: tutorial icon `"..icon_name.."` does not exist. Skipping.")
+      end
+    end
+  end
+
   local objective = libs.window.new{
     text = init.objtext or "missing objtext",
     buttons = {
@@ -78,6 +91,18 @@ function tutorial:add(init)
       },
     }
   }
+
+  if init.objguides then
+    for _,icon_name in pairs(init.objguides) do
+      if tutorial.icons[icon_name] then
+        objective:addGuide(
+          tutorial.icons[icon_name].text,
+          tutorial.icons[icon_name].icon)
+      else
+        print("warning: tutorial icon `"..icon_name.."` does not exist. Skipping.")
+      end
+    end
+  end
 
   help.y = love.graphics.getHeight()-help.h-objective.h-32
 
@@ -124,5 +149,42 @@ function tutorial.wait.object_exists(t)
     end
   end
 end
+
+tutorial.icons = {}
+
+tutorial.icons.object_command = {
+  icon = love.graphics.newImage("assets/objects/command0_icon.png"),
+  text = "Command Ship",
+}
+
+tutorial.icons.action_repair = {
+  icon = love.graphics.newImage("assets/actions/repair.png"),
+  text = "Repair",
+}
+
+tutorial.icons.object_scrap = {
+  icon = love.graphics.newImage("assets/objects/scrap0_icon.png"),
+  text = "Scrap",
+}
+
+tutorial.icons.object_salvager = {
+  icon = love.graphics.newImage("assets/objects/salvager0_icon.png"),
+  text = "Salvager",
+}
+
+tutorial.icons.object_fighter = {
+  icon = love.graphics.newImage("assets/objects/fighter0_icon.png"),
+  text = "Fighter",
+}
+
+tutorial.icons.object_jump = {
+  icon = love.graphics.newImage("assets/objects/jump0_icon.png"),
+  text = "Jumpgate Calibrator",
+}
+
+tutorial.icons.action_jump = {
+  icon = love.graphics.newImage("assets/actions/jump.png"),
+  text = "Jump to next system",
+}
 
 return tutorial
