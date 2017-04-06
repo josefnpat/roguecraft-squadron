@@ -77,13 +77,13 @@ function tutorial:add(init)
     text = init.objtext or "missing objtext",
     buttons = {
       {
-        text = "HELP",
+        text = "HINT",
         callback = function()
           self.help = help
         end,
       },
       {
-        text = "CONTINUE",
+        text = init.skiptext or "SKIP",
         callback = function()
           self.objective = nil
           self.help = nil

@@ -38,6 +38,7 @@ level.make_tutorial = function()
   t:add{
     objtext = "Greetings commander. I would like to test our basic systems. If you prefer not to, you may jump to the next system right away.",
     helptext = "If at any time you need help with an objective, you can get help here.",
+    skiptext = "CONTINUE",
   }
 
   t:add{
