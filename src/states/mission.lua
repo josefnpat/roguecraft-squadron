@@ -74,6 +74,7 @@ function mission:init()
     },
     buildShip = love.audio.newSource("assets/sfx/build.ogg","static"),
     repairShip = love.audio.newSource("assets/sfx/repair.ogg","static"),
+    workingShip = love.audio.newSource("assets/sfx/working.ogg","static"),
     refine = love.audio.newSource("assets/sfx/refine.ogg","static"),
     moving = {
       love.audio.newSource("assets/sfx/moving on my way.ogg","static"),
@@ -1647,6 +1648,7 @@ function mission:updateMission(dt)
     end
 
     if object.work then
+      loopSFX(self.sfx.workingShip)
       if object.work.current == nil then
         object.work.current = 0
       end
