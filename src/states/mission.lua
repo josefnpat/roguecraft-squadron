@@ -518,7 +518,11 @@ function mission:init()
       end,
       tooltip = function(object)
         if object.work then
-          return "Ship is currently building "..object.work.build_type
+          if object.work.build_type == nil then
+            return "You fund Lou's bug."
+          else
+            return "Ship is currently building "..object.work.build_type
+          end
         else
           local tobject = self.build[objtype]()
           return "Build "..tobject.display_name.." ["..self:makeCostString(tobject.cost).."]\n"
