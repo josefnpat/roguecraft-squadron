@@ -24,11 +24,14 @@ function tutorial:draw()
 end
 
 function tutorial:update(dt)
-  if self.skip and self.skip() then
-    self.objective = nil
-    self.help = nil
-  end
   if self.objective then
+
+    if self.complete and self.complete() then
+      self.objective.color = {0,255,0}
+      self.objective.title = "Objective: Complete"
+      self.objective.buttons[2].text = "CONTINUE"
+    end
+
     self.objective.x = love.graphics.getWidth()-320-32
     self.objective.y = love.graphics.getHeight()-self.objective.h-32
     self.objective:update(dt)
@@ -36,7 +39,7 @@ function tutorial:update(dt)
     if #self.data > 0 then
       local data = table.remove(self.data,1)
       self.objective = data.objective
-      self.skip = data.skip
+      self.complete = data.complete
     end
   end
   if self.help then
@@ -74,7 +77,9 @@ function tutorial:add(init)
   end
 
   local objective = libs.window.new{
+    title = init.title or "Objective: In Progress",
     text = init.objtext or "missing objtext",
+    color = {127,127,255},
     buttons = {
       {
         text = "HINT",
@@ -83,7 +88,7 @@ function tutorial:add(init)
         end,
       },
       {
-        text = init.skiptext or "SKIP",
+        text = init.completetext or "SKIP",
         callback = function()
           self.objective = nil
           self.help = nil
@@ -108,7 +113,7 @@ function tutorial:add(init)
 
   table.insert(self.data,{
     objective=objective,
-    skip=init.skip,
+    complete=init.complete,
   })
 
 end
@@ -258,6 +263,16 @@ tutorial.icons.action_refine = {
 tutorial.icons.object_jumpscrambler = {
   icon = love.graphics.newImage("assets/objects/jumpscrambler0_icon.png"),
   text = "Jump Scrambler",
+}
+
+tutorial.icons.action_cta = {
+  icon = love.graphics.newImage("assets/actions/cta.png"),
+  text = "Call To Action All Ships",
+}
+
+tutorial.icons.action_collect = {
+  icon = love.graphics.newImage("assets/actions/collect.png"),
+  text = "Automatic Resource Collection",
 }
 
 return tutorial

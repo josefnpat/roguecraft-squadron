@@ -19,7 +19,10 @@ function window.new(init)
 
   self.dt = 0
 
+  self.title = init.title or nil
+  self.title_font = (fonts and fonts.window_title) or init.title_font or love.graphics.getFont()
   self.text = init.text or "N/A"
+  self.text_font = init.text_font or love.graphics.getFont()
   self.ptext = ""
   self.color = init.color or {0,255,0}
 
@@ -37,6 +40,7 @@ function window.new(init)
 
   self._buttonAreas = window._buttonAreas
   self._checkArea = window._checkArea
+  self._titleHeight = window._titleHeight
   self._textHeight = window._textHeight
   self._guideHeight = window._guideHeight
   self._imageHeight = window._imageHeight
@@ -58,6 +62,7 @@ end
 function window:draw()
 
   local old_color = {love.graphics.getColor()}
+  local old_font = love.graphics.getFont()
 
   love.graphics.setColor(self.color)
 
@@ -99,6 +104,17 @@ function window:draw()
   local coffset = 32
   local tfont = love.graphics.getFont()
 
+  if self.title then
+    love.graphics.setFont(self.title_font)
+    --love.graphics.rectangle("line",self.x+32,self.y+coffset,self.w-64,self:_titleHeight())
+    dropshadowf(self.title,
+      self.x+32,self.y+coffset,
+      self.w-64,"center")
+    coffset = coffset + self:_titleHeight()
+  end
+
+  love.graphics.setFont(self.text_font)
+
   if self.text then
     --love.graphics.rectangle("line",self.x+32,self.y+coffset,self.w-64,self:_textHeight())
     dropshadowf(self.ptext,
@@ -138,6 +154,8 @@ function window:draw()
     coffset = coffset + self:_buttonHeight()
   end
 
+  love.graphics.setFont(old_font)
+
 end
 
 function window:update(dt)
@@ -152,7 +170,7 @@ function window:update(dt)
     if self:inArea() then
       for _,obj in pairs(self:_buttonAreas()) do
         local mx,my = love.mouse.getPosition()
-        obj.area.y = obj.area.y + 32 + self:_textHeight() + self:_guideHeight() + self:_imageHeight()
+        obj.area.y = obj.area.y + 32 + self:_titleHeight() + self:_textHeight() + self:_guideHeight() + self:_imageHeight()
         obj.button.hover = self:_checkArea(mx,my,obj.area)
         if obj.button.callback and obj.button.hover and love.mouse.isDown(1) then
           obj.button.callback(self)
@@ -172,7 +190,16 @@ function window:addGuide(text,icon)
   self:recalculateHeight()
 end
 
+function window:_titleHeight()
+  if self.title == nil then return 0 end
+  local tfont = love.graphics.getFont()
+  local width, wrappedtext = tfont:getWrap( self.title, self.w-64 )
+  local height = tfont:getHeight()
+  return height*#wrappedtext + self._spad
+end
+
 function window:_textHeight()
+  if self.text == nil then return 0 end
   local tfont = love.graphics.getFont()
   local width, wrappedtext = tfont:getWrap( self.text, self.w-64 )
   local height = tfont:getHeight()
@@ -229,7 +256,7 @@ function window:recalculateHeight()
 end
 
 function window:_recalculateHeight()
-  local h = 64 + self:_textHeight() + self:_guideHeight() + self:_imageHeight() + self:_buttonHeight()
+  local h = 64 + self:_titleHeight() + self:_textHeight() + self:_guideHeight() + self:_imageHeight() + self:_buttonHeight()
   return h
 end
 

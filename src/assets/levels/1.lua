@@ -38,20 +38,21 @@ level.make_tutorial = function()
   t:add{
     objtext = "Greetings commander. I would like to test our basic systems. If you prefer not to, you may jump to the next system right away.",
     helptext = "If at any time you need help with an objective, you can get help here.",
-    skiptext = "CONTINUE",
+    title = "Tutorial",
+    completetext = "CONTINUE",
   }
 
   t:add{
     objtext = "During stasis, many systems have deteriorated. Please confirm that the command ship is still operational.",
     helptext = "Use the left mouse button to select the command ship",
-    skip = function() return libs.tutorial.wait.select_single_object("command") end,
+    complete = function() return libs.tutorial.wait.select_single_object("command") end,
     helpguides = {"object_command"},
   }
 
   t:add{
     objtext = "Our information systems seem to be operational. Please confirm that our command ship is under your control.",
     helptext = "Use the right mouse button to move the ship anywhere.",
-    skip = function()
+    complete = function()
       local ship = libs.tutorial.wait.select_single_object("command")
       return ship and (ship.target or ship.target_object)
     end,
@@ -60,7 +61,7 @@ level.make_tutorial = function()
   t:add{
     objtext = "Our command ship has been damaged from our long travel. I suggest we tell the crew to repair it.",
     helptext = "Select the command ship, and toggle the \"Repair\" action.",
-    skip = function()
+    complete = function()
       local ship = libs.tutorial.wait.select_single_object("command")
       return ship and ship.repair
     end,
@@ -69,7 +70,7 @@ level.make_tutorial = function()
   t:add{
     objtext = "In order to survive, we will need to collect resources. We should search this system for something to gather.",
     helptext = "Move around the map with by moving your mouse to the edge of the screen, or using WASD/Arrow Keys. Find scrap.",
-    skip = function()
+    complete = function()
       return libs.tutorial.wait.select_single_object("scrap") or libs.tutorial.wait.object_is_target("scrap")
     end,
     helpguides = {"object_scrap"},
@@ -77,13 +78,13 @@ level.make_tutorial = function()
   t:add{
     objtext = "Excellent. We found some scrap. We should use our command ship to build a salvager to gather it.",
     helptext = "Select the command ship, and use the \"Build Salvager\" action in the upper right corner.",
-    skip = function() return libs.tutorial.wait.object_exists("salvager") end,
+    complete = function() return libs.tutorial.wait.object_exists("salvager") end,
     helpguides = {"object_command","object_salvager"},
   }
   t:add{
     objtext = "Now that we have a salvager under our command, have it collect material from the scrap.",
     helptext = "Select the salvager, and have it target the scrap.",
-    skip = function()
+    complete = function()
       local ship = libs.tutorial.wait.select_single_object("salvager")
       return ship and ship.target_object and ship.target_object.type == "scrap"
     end,
@@ -93,7 +94,7 @@ level.make_tutorial = function()
   t:add{
     objtext = "Now that we have materials, we should build some ships to protect our squadron.",
     helptext = "Select the command ship, and build a Fighter.",
-    skip = function()
+    complete = function()
       return libs.tutorial.wait.object_exists("fighter")
     end,
     helpguides = {"object_command","object_fighter"},
@@ -104,7 +105,7 @@ level.make_tutorial = function()
     helptext = "Select the Jumpgate Generator, and use the Jump action.",
     helpguides = {"object_jump","action_jump"},
     objguides = {"action_jump"},
-    skiptext = "DONE",
+    completetext = "DONE",
   }
   return t
 end

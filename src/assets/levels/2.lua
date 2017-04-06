@@ -24,21 +24,21 @@ level.make_tutorial = function()
     helptext = "Build:\n* Fighters from your Command ship\n* Battlestars from the Drydock ship\n* Artillery and Armored Frontline Tanks from the Advanced Drydock",
     objguides = {"object_enemy_fighter","object_fighter"},
     helpguides = {"object_command","object_fighter","object_drydock","object_combat","object_advdrydock","object_artillery","object_tank"},
-    skip = function()
+    complete = function()
       return
         #libs.tutorial.wait.objects_find("enemy_fighter") == 0 and
         #libs.tutorial.wait.objects_find("enemy_combat") == 0 and
         #libs.tutorial.wait.objects_find("enemy_artillery") == 0 and
         #libs.tutorial.wait.objects_find("enemy_tank") == 0 and
         #libs.tutorial.wait.objects_find("enemy_miniboss") == 0
-    end
+    end,
   }
 
   t:add{
     objtext = "We have detected asteroids in this system. We should use the Drydock to build some Mining Rigs to mine them.",
     helptext = "Select the command ship, and use the Build Drydock action if you haven't already. Select the Drydock, and use the Build Mining Rig action. Select the Mining Rig, and right mouse click on an Asteroid.",
     helpguides = {"object_command","object_drydock","object_mining","object_asteroid"},
-    skip = function()
+    complete = function()
       local ship = libs.tutorial.wait.select_single_object("mining")
       return ship and ship.target_object and ship.target_object.type == "asteroid"
     end,
@@ -48,7 +48,7 @@ level.make_tutorial = function()
     objtext = "We have some ore now, but we can't refine it without a Refinery. Build one and inform it to to convert Ore to Material. ",
     helptext = "Select the command ship, and use the Build Drydock action if you haven't already. Select the Drydock ship, and use the Build Refinery action. Select the Refinery ship, toggle the \"Refine Ore\" action.",
     helpguides = {"object_command","object_drydock","object_refinery","action_refine"},
-    skip = function()
+    complete = function()
       local ship = libs.tutorial.wait.select_single_object("refinery")
       return ship and ship.refine
     end,
@@ -58,9 +58,17 @@ level.make_tutorial = function()
     objtext = "The enemy has set up a Jump Scrambler in this system, which prevents us from jumping to the next system.",
     helptext = "Find and destroy all of the Jump Scramblers in the system.",
     helpguides = {"object_jumpscrambler"},
-    skip = function()
+    complete = function()
       return #libs.tutorial.wait.objects_find("jumpscrambler") == 0
     end,
+  }
+
+  t:add{
+    objtext = "This concludes the tutorial. Your goal is to jump past level 8.",
+    helptext = "There is a lot more to RogueCraft Squadron. I guess you'll just have to figure it out yourself! Here are some tips, though:",
+    helpguides = {"action_cta","action_collect"},
+    title = "Tutorial Complete",
+    completetext = "DONE",
   }
 
   return t
