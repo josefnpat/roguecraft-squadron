@@ -1280,7 +1280,7 @@ function mission:draw()
   self:drawSelected()
   self:drawActions()
 
-  dropshadow("Level "..self.level.."/8",32,128+64)
+  dropshadow("Level "..self.level.."/8",32,128+96)
 
   local sindex = 1
   for rindex,r in pairs(self.resources_types) do
@@ -1297,7 +1297,7 @@ function mission:draw()
         self.resources_types_formatted[rindex]..": "..
         math.floor(self.resources[r]).."/"..self.resources[r.."_cargo"]..
         " ["..symbol..math.floor(self.resources[r.."_delta"]+0.5).."]",
-        32,128+64+18*(sindex))
+        32,128+96+18*(sindex))
       sindex = sindex + 1
     end
   end
@@ -1419,7 +1419,7 @@ function mission:drawSelected()
 end
 
 function mission:miniMapArea()
-  return 32,32,128,128
+  return 64,64,128,128
 end
 
 function mission:miniMapScale()
@@ -1540,7 +1540,7 @@ end
 
 function mission:drawMinimap()
   local x,y,w,h = self:miniMapArea()
-  love.graphics.draw(self.map_bg)
+  love.graphics.draw(self.map_bg,32,32)
   love.graphics.setScissor(x-4,y-4,w+8,h+8)
   local scale = self:miniMapScale()
   for _,object in pairs(self.objects) do
