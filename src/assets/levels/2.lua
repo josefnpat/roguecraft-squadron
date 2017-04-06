@@ -21,7 +21,7 @@ level.make_tutorial = function()
 
   t:add{
     objtext = "We have detected enemy ships. We will need a small squad of Fighters to take them out.",
-    helptext = "Build:\n* Fighters from your Command ship\n* Battlestars from they Drydock ship\n* Artillery and Armored Frontline Tanks from the Advanced Drydock",
+    helptext = "Build:\n* Fighters from your Command ship\n* Battlestars from the Drydock ship\n* Artillery and Armored Frontline Tanks from the Advanced Drydock",
     objguides = {"object_enemy_fighter","object_fighter"},
     helpguides = {"object_command","object_fighter","object_drydock","object_combat","object_advdrydock","object_artillery","object_tank"},
     skip = function()
