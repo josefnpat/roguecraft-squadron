@@ -1799,14 +1799,14 @@ function mission:updateMission(dt)
 
         object.shoot.reload = object.shoot.reload_t
         object.target_object.incoming_bullets = object.target_object.incoming_bullets or {}
-        loopSFX(self.sfx.shoot[object.shoot.sfx.construct])
+        loopSFX(self.sfx.shoot[object.shoot.sfx.construct],0.5)
         table.insert(object.target_object.incoming_bullets,{
-          speed = object.shoot.speed,
+          speed = object.shoot.speed+math.random(0,16),
           damage = object.shoot.damage,
           image = object.shoot.image or "laser",
           sfx = object.shoot.sfx,
-          x = object.position.x,
-          y = object.position.y,
+          x = object.position.x+math.random(-object.size,object.size),
+          y = object.position.y+math.random(-object.size,object.size),
           angle = object.angle,
         })
 

@@ -58,16 +58,19 @@ difficulty = {
   },
 }
 
-fonts = {
-  default = love.graphics.newFont("assets/fonts/Yantramanav-Black.ttf",16),
-  window_title = love.graphics.newFont("assets/fonts/ExpletusSans-Bold.ttf",20),
-  title = love.graphics.newFont("assets/fonts/ExpletusSans-Bold.ttf",64),
-  menu = love.graphics.newFont("assets/fonts/Yantramanav-Black.ttf",32),
-  vn_name = love.graphics.newFont("assets/fonts/Yantramanav-Black.ttf",48),
-  vn_text = love.graphics.newFont("assets/fonts/Yantramanav-Black.ttf",24),
-  vn_info = love.graphics.newFont("assets/fonts/Yantramanav-Black.ttf",16),
-  fallback = love.graphics.newFont("assets/fonts/NovaMono.ttf",16),
-}
+function makeFonts()
+  fonts = {
+    default = love.graphics.newFont("assets/fonts/Yantramanav-Black.ttf",16),
+    window_title = love.graphics.newFont("assets/fonts/ExpletusSans-Bold.ttf",20),
+    title = love.graphics.newFont("assets/fonts/ExpletusSans-Bold.ttf",64),
+    menu = love.graphics.newFont("assets/fonts/Yantramanav-Black.ttf",32),
+    vn_name = love.graphics.newFont("assets/fonts/Yantramanav-Black.ttf",48),
+    vn_text = love.graphics.newFont("assets/fonts/Yantramanav-Black.ttf",24),
+    vn_info = love.graphics.newFont("assets/fonts/Yantramanav-Black.ttf",16),
+    fallback = love.graphics.newFont("assets/fonts/NovaMono.ttf",16),
+  }
+end
+makeFonts()
 
 love.graphics.setFont(fonts.default)
 fonts.default:setFallbacks(fonts.fallback)
@@ -171,7 +174,7 @@ function dropshadowf(text,x,y,w,a)
   love.graphics.printf(text,x,y,w,a)
 end
 
-function playSFX(source)
+function playSFX(source,variation)
   local current_source
   if type(source) == "table" then
     for _,v in pairs(source) do
@@ -183,13 +186,19 @@ function playSFX(source)
     current_source = source
   end
   current_source:setVolume(settings:read("sfx_vol",1))
+  if variation then
+    current_source:setPitch( (1-variation)+math.random()*variation*2 )
+  end
   love.audio.play(current_source)
 end
 
-function loopSFX(source)
+function loopSFX(source,variation)
   local current_source = type(source) == "table" and source[math.random(#source)] or source
   current_source:setVolume(settings:read("sfx_vol",1))
   if not current_source:isPlaying( ) then
+    if variation then
+      current_source:setPitch( (1-variation)+math.random()*variation*2 )
+    end
     love.audio.play(current_source)
   end
 end
