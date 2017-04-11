@@ -43,7 +43,9 @@ function tutorial:update(dt)
     if self.complete and self.complete() then
       self.objective.color = {0,255,0}
       self.objective.title = "Objective: Complete"
-      self.objective.buttons[3].text = "CONTINUE"
+      if self.objective.buttons[3] then
+        self.objective.buttons[3].text = "CONTINUE"
+      end
     end
 
     self.objective.x = love.graphics.getWidth()-320-32
