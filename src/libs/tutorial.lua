@@ -30,7 +30,7 @@ function tutorial:update(dt)
 
   if self.data[self.data_index] then
     self._dt = self._dt + dt
-    if self._dt > 3 then
+    if self._dt > 30 then
       if self._auto_help == false then
         self.help = self.objective.__help
         self._auto_help = true
