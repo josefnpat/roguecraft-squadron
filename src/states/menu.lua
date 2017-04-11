@@ -31,7 +31,29 @@ function mainmenu:enter()
   end)
 
   self.menum:add("Exit",function()
-    love.event.quit()
+    local textstring = "Thank you for playing RogueCraft Squadron!\n\nWe're a very small team here at Missing Sentinel Software, and we appreciate any feedback we can get, good or bad!\n\nWould you be willing to take a short survey?"
+    self.feedback = libs.window.new{
+      x = (love.graphics.getWidth()-320)/2,
+      title = "Help us out!",
+      text = textstring,
+      color = {255,127,255},
+      buttons = {
+        {
+          text="NO THANKS",
+          callback=function()
+            love.event.quit()
+          end,
+        },
+        {
+          text="SURE!",
+          callback=function()
+            love.system.openURL("http://roguecraftsquadron.com/feedback")
+            love.event.quit()
+          end,
+        },
+      },
+    }
+    self.feedback.y = (love.graphics.getHeight()-self.feedback.h)/2
   end)
 
   self.menud = libs.menu.new()
@@ -69,7 +91,11 @@ function mainmenu:enter()
 end
 
 function mainmenu:update(dt)
-  self.menu:update(dt)
+  if self.feedback then
+    self.feedback:update(dt)
+  else
+    self.menu:update(dt)
+  end
   if self.demo then
     if not self.demo:isPlaying() then
       self.music:play()
@@ -120,6 +146,8 @@ function mainmenu:draw()
       love.graphics.getHeight()/self.demo:getHeight()
     )
   end
+
+  if self.feedback then self.feedback:draw() end
 end
 
 function mainmenu:mousemoved()
