@@ -11,6 +11,9 @@ function tutorial.new(init)
 
   self.data = {}
 
+  self._dt = 0
+  self._auto_help = false
+
   return self
 end
 
@@ -24,6 +27,17 @@ function tutorial:draw()
 end
 
 function tutorial:update(dt)
+
+  if self.data[self.data_index] then
+    self._dt = self._dt + dt
+    if self._dt > 3 then
+      if self._auto_help == false then
+        self.help = self.objective.__help
+        self._auto_help = true
+      end
+    end
+  end
+
   if self.objective then
 
     if self.complete and self.complete() then
@@ -89,6 +103,8 @@ function tutorial:add(init)
       self.data_index = self.data_index - 1
       self.objective = nil
       self.help = nil
+      self._dt = 0
+      self._auto_help = false
     end,
   }
 
@@ -105,6 +121,8 @@ function tutorial:add(init)
       self.data_index = self.data_index + 1
       self.objective = nil
       self.help = nil
+      self._dt = 0
+      self._auto_help = false
     end,
   }
 
@@ -114,6 +132,8 @@ function tutorial:add(init)
     color = {127,127,255},
     buttons = #self.data > 0 and {back,hint,skip} or {hint,skip}
   }
+
+  objective.__help = help
 
   if init.objguides then
     for _,icon_name in pairs(init.objguides) do
