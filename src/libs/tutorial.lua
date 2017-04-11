@@ -313,4 +313,14 @@ tutorial.icons.action_collect = {
   text = "Automatic Resource Collection",
 }
 
+tutorial.icons.action_lmb = {
+  icon = love.graphics.newImage("assets/actions/lmb.png"),
+  text = "Press Left Mouse Button",
+}
+
+tutorial.icons.action_rmb = {
+  icon = love.graphics.newImage("assets/actions/rmb.png"),
+  text = "Press Right Mouse Button",
+}
+
 return tutorial

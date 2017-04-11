@@ -46,7 +46,7 @@ level.make_tutorial = function()
     objtext = "During stasis, many systems have deteriorated. Please confirm that the command ship is still operational.",
     helptext = "Use the left mouse button to select the command ship",
     complete = function() return libs.tutorial.wait.select_single_object("command") end,
-    helpguides = {"object_command"},
+    helpguides = {"object_command","action_lmb"},
   }
 
   t:add{
@@ -56,7 +56,7 @@ level.make_tutorial = function()
       local ship = libs.tutorial.wait.select_single_object("command")
       return ship and (ship.target or ship.target_object)
     end,
-    helpguides = {"object_command"},
+    helpguides = {"object_command","action_rmb"},
   }
   t:add{
     objtext = "Our command ship has been damaged from our long travel. I suggest we tell the crew to repair it.",
