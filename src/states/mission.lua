@@ -1700,6 +1700,9 @@ function mission:updateMission(dt)
             if other.health then
               if other.health.current then
                 other.health.current = math.max(0,other.health.current - object.gravity_well.damage*dt)
+                if other.repair ~= nil then
+                  other.repair = false
+                end
               end
             else
               other.remove_from_game = true
@@ -1728,6 +1731,9 @@ function mission:updateMission(dt)
             (bullet.damage*(1+self.upgrades.damage*0.1))
 
           object.health.current = math.max(0,object.health.current-damage)
+          if object.repair ~= nil then
+            object.repair = false
+          end
           table.remove(object.incoming_bullets,bullet_index)
           loopSFX(self.sfx.shoot[bullet.sfx.destruct])
         end
