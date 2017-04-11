@@ -161,10 +161,10 @@ function mission:init()
 
   self.actions.repair = {
     icon = "repair",
-    tooltip = function(object) return "Auto Repair "..(object.repair and "Enabled" or "Disabled") end,
+    tooltip = function(object) return "Repair "..(object.repair and "Enabled" or "Disabled") end,
     color = function(object) return object.repair and {0,255,0} or {255,255,255} end,
     multi = {
-      tooltip = function(object) return "Auto Repair All Ships "..(object.repair and "Enabled" or "Disabled") end,
+      tooltip = function(object) return "Fleet Wide Repair "..(object.repair and "Enabled" or "Disabled") end,
       color = function(object) return object.repair and {0,255,0} or {255,255,255} end,
       exe = function(object)
         object.repair = not object.repair
@@ -182,10 +182,10 @@ function mission:init()
 
   self.actions.refine = {
     icon = "refine",
-    tooltip = function(object) return "Auto Refine "..(object.refine and "Enabled" or "Disabled") end,
+    tooltip = function(object) return "Refine "..(object.refine and "Enabled" or "Disabled") end,
     color = function(object) return object.refine and {0,255,0} or {255,255,255} end,
     multi = {
-      tooltip = function(object) return "Fleet Wide Auto Refine "..(object.refine and "Enabled" or "Disabled") end,
+      tooltip = function(object) return "Fleet Wide Refine "..(object.refine and "Enabled" or "Disabled") end,
       color = function(object) return object.refine and {0,255,0} or {255,255,255} end,
       exe = function(object)
         object.refine = not object.refine
@@ -271,14 +271,14 @@ function mission:init()
   self.actions.collect = {
     icon = "collect",
     tooltip = function(object)
-      return "Automatic Resource Collection "..(object.collect and "Enabled" or "Disabled")
+      return "Resource Collection "..(object.collect and "Enabled" or "Disabled")
     end,
     color = function(object)
       return object.collect and {0,255,0} or {255,255,255}
     end,
     multi = {
       tooltip = function(object)
-        return "Fleet Wide Automatic Resource Collection "..(object.collect and "Enabled" or "Disabled")
+        return "Fleet Wide Resource Collection "..(object.collect and "Enabled" or "Disabled")
       end,
       color = function(object) return object.collect and {0,255,0} or {255,255,255} end,
       exe = function(object)
