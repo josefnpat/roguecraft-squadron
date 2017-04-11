@@ -17,8 +17,6 @@ function window.new(init)
   init = init or {}
   local self = {}
 
-  self.dt = 0
-
   self.title = init.title or nil
   self.title_font = (fonts and fonts.window_title) or init.title_font or love.graphics.getFont()
   self.text = init.text or "N/A"
@@ -35,6 +33,7 @@ function window.new(init)
   self.inArea = window.inArea
   self.addButton = window.addButton
   self.addGuide = window.addGuide
+  self.reset = window.reset
 
   self.recalculateHeight = window.recalculateHeight
 
@@ -47,7 +46,6 @@ function window.new(init)
   self._imageScale = window._imageScale
   self._buttonHeight = window._buttonHeight
   self._recalculateHeight = window._recalculateHeight
-  self._wait_mouse_release = true
 
   self._spad = 8
 
@@ -56,7 +54,14 @@ function window.new(init)
   self.x = init.x or love.graphics.getWidth()-32-self.w
   self.y = init.y or love.graphics.getHeight()-32-self.h
 
+  self:reset()
+
   return self
+end
+
+function window:reset()
+  self._dt = 0
+  self._wait_mouse_release = true
 end
 
 function window:draw()
@@ -159,9 +164,9 @@ function window:draw()
 end
 
 function window:update(dt)
-  self.dt = self.dt + dt
+  self._dt = self._dt + dt
 
-  self.ptext = string.sub(self.text,1,math.min(self.dt,1)*string.len(self.text))
+  self.ptext = string.sub(self.text,1,math.min(self._dt,1)*string.len(self.text))
 
   if not love.mouse.isDown(1) then
     self._wait_mouse_release = false

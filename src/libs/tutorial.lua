@@ -29,16 +29,20 @@ function tutorial:update(dt)
     if self.complete and self.complete() then
       self.objective.color = {0,255,0}
       self.objective.title = "Objective: Complete"
-      self.objective.buttons[2].text = "CONTINUE"
+      self.objective.buttons[3].text = "CONTINUE"
     end
 
     self.objective.x = love.graphics.getWidth()-320-32
     self.objective.y = love.graphics.getHeight()-self.objective.h-32
     self.objective:update(dt)
   else
-    if #self.data > 0 then
-      local data = table.remove(self.data,1)
+    if self.data_index == nil then
+      --nop
+    elseif self.data[self.data_index] then--#self.data > 0 then
+      --local data = table.remove(self.data,1)
+      local data = self.data[self.data_index]
       self.objective = data.objective
+      self.objective:reset()
       self.complete = data.complete
     end
   end
@@ -51,6 +55,9 @@ end
 
 function tutorial:add(init)
   init = init or {}
+
+  self.data_index = self.data_index or 1
+
   local help = libs.window.new{
     text = init.helptext or "missing helptext",
     color = {255,255,0},
@@ -76,25 +83,36 @@ function tutorial:add(init)
     end
   end
 
+  local back = {
+    text = init.backtext or "BACK",
+    callback = function()
+      self.data_index = self.data_index - 1
+      self.objective = nil
+      self.help = nil
+    end,
+  }
+
+  local hint = {
+    text = "HINT",
+    callback = function()
+      self.help = help
+    end,
+  }
+
+  local skip = {
+    text = init.completetext or "SKIP",
+    callback = function()
+      self.data_index = self.data_index + 1
+      self.objective = nil
+      self.help = nil
+    end,
+  }
+
   local objective = libs.window.new{
     title = init.title or "Objective: In Progress",
     text = init.objtext or "missing objtext",
     color = {127,127,255},
-    buttons = {
-      {
-        text = "HINT",
-        callback = function()
-          self.help = help
-        end,
-      },
-      {
-        text = init.completetext or "SKIP",
-        callback = function()
-          self.objective = nil
-          self.help = nil
-        end,
-      },
-    }
+    buttons = #self.data > 0 and {back,hint,skip} or {hint,skip}
   }
 
   if init.objguides then
