@@ -1,5 +1,6 @@
 src/git.lua
 src/demo.ogv
+src/assets/objects_icon/
 *.swp
 builds/
 *.love

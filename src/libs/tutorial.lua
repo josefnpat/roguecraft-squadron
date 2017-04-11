@@ -176,7 +176,7 @@ end
 tutorial.icons = {}
 
 tutorial.icons.object_command = {
-  icon = love.graphics.newImage("assets/objects/command0_icon.png"),
+  icon = love.graphics.newImage("assets/objects_icon/command0.png"),
   text = "Command Ship",
 }
 
@@ -186,22 +186,22 @@ tutorial.icons.action_repair = {
 }
 
 tutorial.icons.object_scrap = {
-  icon = love.graphics.newImage("assets/objects/scrap0_icon.png"),
+  icon = love.graphics.newImage("assets/objects_icon/scrap0.png"),
   text = "Scrap",
 }
 
 tutorial.icons.object_salvager = {
-  icon = love.graphics.newImage("assets/objects/salvager0_icon.png"),
+  icon = love.graphics.newImage("assets/objects_icon/salvager0.png"),
   text = "Salvager",
 }
 
 tutorial.icons.object_fighter = {
-  icon = love.graphics.newImage("assets/objects/fighter0_icon.png"),
+  icon = love.graphics.newImage("assets/objects_icon/fighter0.png"),
   text = "Fighter",
 }
 
 tutorial.icons.object_jump = {
-  icon = love.graphics.newImage("assets/objects/jump0_icon.png"),
+  icon = love.graphics.newImage("assets/objects_icon/jump0.png"),
   text = "Jumpgate Generator",
 }
 
@@ -211,47 +211,47 @@ tutorial.icons.action_jump = {
 }
 
 tutorial.icons.object_enemy_fighter = {
-  icon = love.graphics.newImage("assets/objects/enemy_fighter0_icon.png"),
+  icon = love.graphics.newImage("assets/objects_icon/enemy_fighter0.png"),
   text = "Enemy Fighter",
 }
 
 tutorial.icons.object_drydock = {
-  icon = love.graphics.newImage("assets/objects/drydock0_icon.png"),
+  icon = love.graphics.newImage("assets/objects_icon/drydock0.png"),
   text = "Drydock",
 }
 
 tutorial.icons.object_combat = {
-  icon = love.graphics.newImage("assets/objects/combat0_icon.png"),
+  icon = love.graphics.newImage("assets/objects_icon/combat0.png"),
   text = "Battlestar",
 }
 
 tutorial.icons.object_advdrydock = {
-  icon = love.graphics.newImage("assets/objects/advdrydock0_icon.png"),
+  icon = love.graphics.newImage("assets/objects_icon/advdrydock0.png"),
   text = "Advanced Drydock",
 }
 
 tutorial.icons.object_artillery = {
-  icon = love.graphics.newImage("assets/objects/artillery0_icon.png"),
+  icon = love.graphics.newImage("assets/objects_icon/artillery0.png"),
   text = "Artillery",
 }
 
 tutorial.icons.object_tank = {
-  icon = love.graphics.newImage("assets/objects/tank0_icon.png"),
+  icon = love.graphics.newImage("assets/objects_icon/tank0.png"),
   text = "Tank",
 }
 
 tutorial.icons.object_mining = {
-  icon = love.graphics.newImage("assets/objects/mining0_icon.png"),
+  icon = love.graphics.newImage("assets/objects_icon/mining0.png"),
   text = "Mining Rig",
 }
 
 tutorial.icons.object_asteroid = {
-  icon = love.graphics.newImage("assets/objects/asteroid0_icon.png"),
+  icon = love.graphics.newImage("assets/objects_icon/asteroid0.png"),
   text = "Asteroid",
 }
 
 tutorial.icons.object_refinery = {
-  icon = love.graphics.newImage("assets/objects/refinery0_icon.png"),
+  icon = love.graphics.newImage("assets/objects_icon/refinery0.png"),
   text = "Refinery",
 }
 
@@ -261,7 +261,7 @@ tutorial.icons.action_refine = {
 }
 
 tutorial.icons.object_jumpscrambler = {
-  icon = love.graphics.newImage("assets/objects/jumpscrambler0_icon.png"),
+  icon = love.graphics.newImage("assets/objects_icon/jumpscrambler0.png"),
   text = "Jump Scrambler",
 }
 

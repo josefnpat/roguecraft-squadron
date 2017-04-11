@@ -34,10 +34,16 @@ BUTLER_ITCHUSERNAME=josefnpat
 
 DEMOVIDEO_URL=http://50.116.63.25/public/rcs/demo.ogv
 
+ICON_DIR=src/assets/objects_icon
+
+IMAGE_FILES := $(wildcard src/assets/objects/*.png)
+
 .PHONY: clean
 clean:
 	#Remove generated `${GIT_TARGET}`
 	rm -f ${GIT_TARGET}
+	#Remove ganerated icons
+	rm -rf ${ICON_DIR}
 
 .PHONY: cleanlove
 cleanlove:
@@ -47,6 +53,12 @@ cleanlove:
 love: clean
 	#Writing ${GIT_TARGET}
 	echo "git_hash,git_count = '${GIT_HASH}',${GIT_COUNT}" > ${GIT_TARGET}
+	#Make Icons
+	mkdir -p ${ICON_DIR}
+	$(foreach var,\
+		$(IMAGE_FILES),\
+		convert $(var) -modulate 300% -thumbnail 32x32 +dither -colors 8\
+			-colorspace gray -normalize $(subst objects,objects_icon,$(var));)
 	#Make love file
 	cd ${SRC_DIR};\
 	zip --filesync -x "*.swp" -r ../${LOVE_TARGET} *;\

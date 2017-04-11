@@ -116,7 +116,7 @@ function mission:init()
     jump = love.graphics.newImage("assets/actions/jump.png"),
     jump_process = love.graphics.newImage("assets/actions/jump_process.png"),
     collect = love.graphics.newImage("assets/actions/collect.png"),
-    egg = love.graphics.newImage("assets/objects/cat0_icon.png"),
+    egg = love.graphics.newImage("assets/objects_icon/cat0.png"),
     upgrade = love.graphics.newImage("assets/actions/upgrade.png"),
     cta = love.graphics.newImage("assets/actions/cta.png"),
   }
@@ -510,7 +510,7 @@ function mission:init()
 
   for objtype,objbuildfn in pairs(self.build) do
     self.action_icons["build_"..objtype] =
-      love.graphics.newImage("assets/objects/"..objtype.."0_icon.png")
+      love.graphics.newImage("assets/objects_icon/"..objtype.."0.png")
 
     self.actions["build_"..objtype] = {
       type = objtype,
@@ -1181,8 +1181,8 @@ function mission:draw()
         object.type..object_variation..".png")
       self.objects_image[object.type][object_variation] = object_image
 
-      local object_icon = love.graphics.newImage("assets/objects/"..
-        object.type..object_variation.."_icon.png")
+      local object_icon = love.graphics.newImage("assets/objects_icon/"..
+        object.type..object_variation..".png")
       self.objects_icon[object.type][object_variation] = object_icon
     end
     love.graphics.setColor(ship_color)
