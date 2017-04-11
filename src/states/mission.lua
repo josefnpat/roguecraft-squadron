@@ -38,6 +38,7 @@ function mission:init()
   end
 
   self.speed_mult = 2
+  self.fow_mult = 1.5
 
   self.resources_types = {"ore","material","crew"}
   self.resources_types_formatted = {"Ore","Material","Crew"}
@@ -1235,7 +1236,7 @@ function mission:draw()
         local y = object.position.y-self.camera.y+love.graphics.getHeight()/2
 
         -- don't forget minimap
-        local fow = (object.fow or 1)*(1+self.upgrades.fow*0.25)
+        local fow = self.fow_mult*(object.fow or 1)*(1+self.upgrades.fow*0.25)
 
         if settings:read("fow_quality","img_canvas") == "img_canvas" then
           love.graphics.draw(self.fow_img,x,y,
@@ -1555,7 +1556,7 @@ function mission:drawMinimap()
       love.graphics.setColor(255,255,255,63)
 
       -- don't forget canvas mask
-      local fow = (object.fow or 1)*(1+self.upgrades.fow*0.25)
+      local fow = self.fow_mult*(object.fow or 1)*(1+self.upgrades.fow*0.25)
 
       love.graphics.circle("fill",
         x+object.position.x/scale,y+object.position.y/scale,
