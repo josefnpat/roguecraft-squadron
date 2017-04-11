@@ -1422,7 +1422,12 @@ function mission:drawSelected()
   end
   local cobject = self:singleSelected()
   if cobject then
-    dropshadow((cobject.display_name or "").." — "..(cobject.info or ""),64+8,love.graphics.getHeight()-64)
+    self.camera:attach()
+    dropshadowf((cobject.display_name or "").." — "..(cobject.info or ""),
+      cobject.position.x+cobject.size,
+      cobject.position.y+cobject.size,
+      320,"left")
+    self.camera:detach()
   end
 end
 
@@ -1572,7 +1577,10 @@ function mission:drawMinimap()
     end
   end
   love.graphics.setColor(self.colors.ui.primary)
-  local cx,cy,cw,ch = (self.camera.x-love.graphics.getWidth()/2)/scale,(self.camera.y-love.graphics.getHeight()/2)/scale,love.graphics.getWidth()/scale,love.graphics.getHeight()/scale
+  local cx = (self.camera.x-love.graphics.getWidth()/2)/scale
+  local cy = (self.camera.y-love.graphics.getHeight()/2)/scale
+  local cw = love.graphics.getWidth()/scale
+  local ch = love.graphics.getHeight()/scale
   love.graphics.rectangle("line",x+cx,y+cy,cw,ch)
 
 
