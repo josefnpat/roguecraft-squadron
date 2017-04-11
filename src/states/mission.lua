@@ -1126,7 +1126,7 @@ function mission:draw()
     if object.work then
       love.graphics.setColor(self.colors.ui.secondary)
       local percent = (object.work.current or 0)/object.work.time
-      libs.pcb(object.position.x,object.position.y,object.size*1.2,0.9,percent)
+      libs.pcb(object.position.x,object.position.y,object.size*1.5,0.75,percent,self.time)
     end
 
     if object.selected then
