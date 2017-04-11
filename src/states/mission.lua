@@ -101,6 +101,7 @@ function mission:init()
     },
     jump = love.audio.newSource(self.sfx_data.jump,"static"),
     jumpReady = love.audio.newSource("assets/sfx/voice ready for jump.ogg","static"),
+    warning = love.audio.newSource("assets/sfx/warning.ogg","static"),
   }
 
   self.objects_death_sfx = {}
@@ -1575,6 +1576,13 @@ function mission:drawMinimap()
       love.graphics.rectangle("fill",
         x+object.position.x/scale,y+object.position.y/scale,2,2)
     end
+    if object.in_combat then
+      love.graphics.setColor(255,0,0)
+      love.graphics.circle("line",
+        x+object.position.x/scale,
+        y+object.position.y/scale,
+        6+math.sin(love.timer.getTime()*4))
+    end
   end
   love.graphics.setColor(self.colors.ui.primary)
   local cx = (self.camera.x-love.graphics.getWidth()/2)/scale
@@ -1655,6 +1663,17 @@ function mission:updateMission(dt)
 
   for _,object in pairs(self.objects) do
 
+    if object.in_combat then
+      if self.player_in_combat == nil then
+        playSFX(self.sfx.warning)
+      end
+      self.player_in_combat = 1
+      object.in_combat = object.in_combat - dt
+      if object.in_combat <= 0 then
+        object.in_combat = nil
+      end
+    end
+
     if object.shown_angle == nil then
       object.shown_angle = object.angle
     else
@@ -1709,6 +1728,7 @@ function mission:updateMission(dt)
             if other.health then
               if other.health.current then
                 other.health.current = math.max(0,other.health.current - object.gravity_well.damage*dt)
+                other.in_combat = 1
                 if other.repair ~= nil then
                   other.repair = false
                 end
@@ -1740,6 +1760,7 @@ function mission:updateMission(dt)
             (bullet.damage*(1+self.upgrades.damage*0.1))
 
           object.health.current = math.max(0,object.health.current-damage)
+          object.in_combat = 1
           if object.repair ~= nil then
             object.repair = false
           end
@@ -2014,6 +2035,13 @@ function mission:updateMission(dt)
   end -- end of object loop
 
   -- cleanup
+
+  if self.player_in_combat then
+    self.player_in_combat = self.player_in_combat - dt
+    if self.player_in_combat <= 0 then
+      self.player_in_combat = nil
+    end
+  end
 
   if #player_ships < 1 then
     libs.hump.gamestate.switch(states.lose)
