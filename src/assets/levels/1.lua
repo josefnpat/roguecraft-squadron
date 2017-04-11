@@ -103,8 +103,7 @@ level.make_tutorial = function()
   t:add{
     objtext = "When you believe our fleet is ready, inform the Jumpgate Generator to jump to the next system.",
     helptext = "Select the Jumpgate Generator, and use the Jump action.",
-    helpguides = {"object_jump","action_jump"},
-    objguides = {"action_jump"},
+    objguides = {"object_jump","action_jump"},
     completetext = "DONE",
   }
   return t
