@@ -77,6 +77,7 @@ function tutorial:add(init)
   local help = libs.window.new{
     text = init.helptext or "missing helptext",
     color = {255,255,0},
+    image = init.helpimage,
     buttons = {
       {
         text= "THANKS",
@@ -132,6 +133,7 @@ function tutorial:add(init)
     title = init.title or "Objective: In Progress",
     text = init.objtext or "missing objtext",
     color = {127,127,255},
+    image = init.objimage,
     buttons = #self.data > 0 and {back,hint,skip} or {hint,skip}
   }
 
