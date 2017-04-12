@@ -63,7 +63,7 @@ function makeFonts()
     default = love.graphics.newFont("assets/fonts/Yantramanav-Black.ttf",16),
     window_title = love.graphics.newFont("assets/fonts/ExpletusSans-Bold.ttf",20),
     title = love.graphics.newFont("assets/fonts/ExpletusSans-Bold.ttf",64),
-    menu = love.graphics.newFont("assets/fonts/Yantramanav-Black.ttf",32),
+    menu = love.graphics.newFont("assets/fonts/Yantramanav-Black.ttf",22),
     vn_name = love.graphics.newFont("assets/fonts/Yantramanav-Black.ttf",48),
     vn_text = love.graphics.newFont("assets/fonts/Yantramanav-Black.ttf",24),
     vn_info = love.graphics.newFont("assets/fonts/Yantramanav-Black.ttf",16),

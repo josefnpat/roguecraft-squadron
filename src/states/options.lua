@@ -18,7 +18,7 @@ function state:init()
 
   self.menu:add(
     function()
-      return "Multisample Anti-Aliasing (MSAA): "..settings:read("window_msaa",2).."×" end,
+      return "Multisample Anti-Aliasing: "..settings:read("window_msaa",2).."×" end,
     function()
     local msaa = settings:read("window_msaa",2)
     msaa = msaa + 1
@@ -79,15 +79,15 @@ function state:init()
 
   self.menu.bg_quality = {
     {value="none",string="None"},
-    {value="low",string="Low (1024x1024)"},
-    {value="medium",string="Medium (2048x2048)"},
-    {value="high",string="High (4096x4096)"},
+    {value="low",string="Low (1024×1024)"},
+    {value="medium",string="Medium (2048×2048)"},
+    {value="high",string="High (4096×4096)"},
   }
 
   self.menu:add(
     function()
       local quality = settings:read("bg_quality","high")
-      local quality_string = "Star Quality: "
+      local quality_string = "BG Quality: "
       for _,v in pairs(self.menu.bg_quality) do
         if v.value == quality then
           return quality_string..v.string

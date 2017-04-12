@@ -38,16 +38,24 @@ end
 
 function menu:getEntryArea(i)
   local p = 4
-  local x = love.graphics.getWidth()/4
-  local w = love.graphics.getWidth()/2
-  local y = love.graphics.getHeight()/2+(32+p)*(i-1)
-  local h = 32
+  local x = love.graphics.getWidth()/16
+  local w = love.graphics.getWidth()*2/8
+  local h = 18
+  local y = love.graphics.getHeight()/2+(h+p)*(i-1)
   return x,y,w,h
 end
 
 function menu:draw()
   local old_font = love.graphics.getFont()
   love.graphics.setFont(self._title_font)
+
+  local old_color = {love.graphics.getColor()}
+  love.graphics.setColor(0,0,0,127)
+  love.graphics.rectangle("fill",
+    love.graphics.getWidth()/16,0,
+    love.graphics.getWidth()*2/8,love.graphics.getHeight())
+  love.graphics.setColor(old_color)
+
   self._printf(self._title,
     0,
     love.graphics.getHeight()*(1/8+math.sin(love.timer.getTime())/32),

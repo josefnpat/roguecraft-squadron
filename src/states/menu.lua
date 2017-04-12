@@ -39,15 +39,15 @@ function mainmenu:enter()
       color = {255,127,255},
       buttons = {
         {
-          text="NO THANKS",
+          text="SURE!",
           callback=function()
+            love.system.openURL("http://roguecraftsquadron.com/feedback")
             love.event.quit()
           end,
         },
         {
-          text="SURE!",
+          text="NO THANKS",
           callback=function()
-            love.system.openURL("http://roguecraftsquadron.com/feedback")
             love.event.quit()
           end,
         },
@@ -112,7 +112,7 @@ function mainmenu:draw()
   libs.stars:drawPlanet()
 
   local logox = (love.graphics.getWidth()-self.logo:getWidth())/2
-  local logoy = love.graphics.getHeight()/16
+  local logoy = (love.graphics.getHeight()-self.logo:getHeight())/2
   love.graphics.draw(self.logo,logox,logoy)
 
   self.menu:draw()
