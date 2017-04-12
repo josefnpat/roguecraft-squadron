@@ -107,6 +107,12 @@ states = {
 
 function love.load(arg)
 
+  local cursor = love.graphics.newImage("assets/cursor.png")
+  love.mouse.setCursor(
+    love.mouse.newCursor("assets/cursor.png",
+    cursor:getWidth()/2,cursor:getHeight()/2))
+  cursor = nil
+
   local version_server_check = true
 
   for i,v in pairs(arg) do
