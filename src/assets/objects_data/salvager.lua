@@ -10,7 +10,7 @@ return function()
     speed = 50,
     health = {max = 5,},
     material = 10,
-    scrap_gather = 15,
+    material_gather = 15,
     repair = false,
     actions = {"salvage","repair","collect","upgrade_salvage"},
     collect = false,

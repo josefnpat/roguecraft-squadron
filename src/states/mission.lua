@@ -12,7 +12,7 @@ function mission:init()
   self.score = libs.score.new()
   self.score:define("kill","Killed","ship","ships",100)
   self.score:define("lost","Lost","ship","ships",100)
-  self.score:define("scrap","Collected","scrap")
+  self.score:define("material","Collected","scrap")
   self.score:define("ore","Collected","ore")
   self.score:define("crew","Saved","crew member","crew members")
   self.score:define("born","Raised","crew member","crew members",0)
@@ -1673,6 +1673,18 @@ function mission:updateMission(dt)
 
   local player_ships = self:getObjectsByOwner(0)
 
+  -- First Pass (value construction)
+  for _,object in pairs(self.objects) do
+    if object.owner and object.owner == 0 then
+      for _,resource in pairs(self.resources_types) do
+        if object[resource] then
+          self.resources[resource.."_cargo"] = self.resources[resource.."_cargo"] + object[resource]
+        end
+      end
+    end
+  end
+
+  -- Second Pass
   for _,object in pairs(self.objects) do
 
     if object.in_combat then
@@ -1827,6 +1839,10 @@ function mission:updateMission(dt)
 
     if object.refine and object.material_gather then
       local amount = object.material_gather*dt*(1+self.upgrades.refine*0.1)
+      local remain = self.resources.material_cargo - self.resources.material
+      if amount > remain then
+        amount = remain
+      end
       if amount > self.resources.ore then
         amount = self.resources.ore
       end
@@ -1888,50 +1904,43 @@ function mission:updateMission(dt)
           end
         end
 
-        -- mine ore from things with ore_supply
-        if object.ore_gather and object.target_object.ore_supply then
-
-          local amount = object.ore_gather*dt*(1+self.upgrades.mining*0.25)
-          self.score:add("ore",amount)
-          self.resources.ore_delta = self.resources.ore_delta + amount/dt
-          if object.target_object.ore_supply > amount then
-            object.target_object.ore_supply = object.target_object.ore_supply - amount
-            self.resources.ore = self.resources.ore + amount
-          else
-            self.resources.ore = self.resources.ore + object.target_object.ore_supply
-            object.target_object.ore_supply = 0
-          end
-          loopSFX(self.sfx.mining)
-        end
-
-        -- collect scrap from things with scrap_supply
-        if object.scrap_gather and object.target_object.scrap_supply then
-
-          local amount = object.scrap_gather*dt*(1+self.upgrades.salvage*0.25)
-          self.score:add("scrap")
-          self.resources.material_delta = self.resources.material_delta + amount/dt
-          if object.target_object.scrap_supply > amount then
-            object.target_object.scrap_supply = object.target_object.scrap_supply - amount
-            self.resources.material = self.resources.material + amount
-          else
-            self.resources.material = self.resources.material + object.target_object.scrap_supply
-            object.target_object.scrap_supply = 0
-          end
-          loopSFX(self.sfx.salvaging)
-        end
-
-        -- collect crew from things with crew_supply
-        if object.crew_gather and object.target_object.crew_supply then
-
-          local amount = object.crew_gather*dt
-          self.score:add("crew")
-          self.resources.crew_delta = self.resources.crew_delta + amount/dt
-          if object.target_object.crew_supply > amount then
-            object.target_object.crew_supply = object.target_object.crew_supply - amount
-            self.resources.crew = self.resources.crew + amount
-          else
-            self.resources.crew = self.resources.crew + object.target_object.crew_supply
-            object.target_object.crew_supply = 0
+        -- Resource collection
+        for resource_type,dat in pairs({
+          material = {
+            sfx=self.sfx.mining,
+            upgrade="mining",
+          },
+          ore = {
+            sfx=self.sfx.salvaging,
+            upgrade="salvage",
+          },
+          crew = {
+          },
+        }) do
+          local igather = resource_type .. "_gather"
+          local isupply = resource_type .. "_supply"
+          local idelta = resource_type .. "_delta"
+          local icargo = resource_type .. "_cargo"
+          if object[igather] and object.target_object[isupply] then
+            local upgrade = dat.upgrade and (self.upgrades[dat.upgrade]*0.25) or 0
+            local amount = object[igather]*dt*(1+upgrade)
+            if self.resources[resource_type] ~= self.resources[icargo] then
+              if amount + self.resources[resource_type] > self.resources[icargo] then
+                amount = self.resources[icargo] - self.resources[resource_type]
+              end
+              self.score:add(resource_type)
+              self.resources[idelta] = self.resources[idelta] + amount/dt
+              if object.target_object[isupply] > amount then
+                object.target_object[isupply] = object.target_object[isupply] - amount
+                self.resources[resource_type] = self.resources[resource_type] + amount
+              else
+                self.resources[resource_type] = self.resources[resource_type] + object.target_object[isupply]
+                object.target_object[isupply] = 0
+              end
+              if dat.sfx then
+                loopSFX(dat.sfx)
+              end
+            end
           end
         end
 
@@ -1960,7 +1969,7 @@ function mission:updateMission(dt)
 
       if object.collect then
 
-        for _,resource_type in pairs({"scrap","ore","crew"}) do
+        for _,resource_type in pairs({"material","ore","crew"}) do
           if object[resource_type.."_gather"] then
             local modobjs = mission:getObjectWithModifier(resource_type.."_supply")
             table.sort(modobjs,function(a,b)
@@ -1978,14 +1987,6 @@ function mission:updateMission(dt)
 
       end
 
-    end
-
-    if object.owner and object.owner == 0 then
-      for _,resource in pairs(self.resources_types) do
-        if object[resource] then
-          self.resources[resource.."_cargo"] = self.resources[resource.."_cargo"] + object[resource]
-        end
-      end
     end
 
     if object.target then
@@ -2061,14 +2062,14 @@ function mission:updateMission(dt)
 
   for object_index,object in pairs(self.objects) do
     if (object.health and object.health.current and object.health.current <= 0) or
-      (object.scrap_supply and object.scrap_supply <= 0) or
+      (object.material_supply and object.material_supply <= 0) or
       (object.crew_supply and object.crew_supply <= 0) or
       (object.ore_supply and object.ore_supply <= 0) or
       object.remove_from_game then
 
       if object.cost and object.cost.material and not object.no_scrap_drop then
         local scrap_object = self:build_object("scrap",object)
-        scrap_object.scrap_supply = object.cost.material*0.5
+        scrap_object.material_supply = object.cost.material*0.5
         scrap_object.owner = nil
         table.insert(self.objects,scrap_object)
       end
@@ -2095,7 +2096,7 @@ function mission:updateMission(dt)
 
     if object.target_object and (
       (object.target_object.health and object.target_object.health.current <= 0) or
-      (object.target_object.scrap_supply and object.target_object.scrap_supply <= 0 ) or
+      (object.target_object.material_supply and object.target_object.material_supply <= 0 ) or
       (object.target_object.crew_supply and object.target_object.crew_supply <= 0 ) or
       (object.target_object.ore_supply and object.target_object.ore_supply <= 0 )) then
 
