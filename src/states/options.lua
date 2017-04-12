@@ -5,41 +5,41 @@ function state:init()
   self.menu = libs.menu.new{title="[OPTIONS]"}
 
   self.menu:add("Fullscreen",function()
-    local fs = not settings:read("window_fullscreen",false)
+    local fs = not settings:read("window_fullscreen")
     settings:write("window_fullscreen",fs)
 
-    local msaa = settings:read("window_msaa",2)
+    local msaa = settings:read("window_msaa")
     love.window.setMode(
-      settings:read("window_width",1280),
-      settings:read("window_height",720),
+      settings:read("window_width"),
+      settings:read("window_height"),
       {fullscreen=fs,resizable=true,fullscreentype="desktop",msaa=msaa}
     )
   end)
 
   self.menu:add(
     function()
-      return "Multisample Anti-Aliasing: "..settings:read("window_msaa",2).."×" end,
+      return "Multisample Anti-Aliasing: "..settings:read("window_msaa").."×" end,
     function()
-    local msaa = settings:read("window_msaa",2)
+    local msaa = settings:read("window_msaa")
     msaa = msaa + 1
     if msaa > 4 then
       msaa = 0
     end
     settings:write("window_msaa",msaa)
 
-    local fs = settings:read("window_fullscreen",false)
+    local fs = settings:read("window_fullscreen")
     love.window.setMode(
-      settings:read("window_width",1280),
-      settings:read("window_height",720),
+      settings:read("window_width"),
+      settings:read("window_height"),
       {fullscreen=fs,resizable=true,fullscreentype="desktop",msaa=msaa}
     )
     end
   )
 
   self.menu:add(
-    function() return "Sound Effect Volume: "..math.floor(settings:read("sfx_vol",1)*100).."%" end,
+    function() return "Sound Effect Volume: "..math.floor(settings:read("sfx_vol")*100).."%" end,
     function()
-      local vol = settings:read("sfx_vol",1) - 0.1
+      local vol = settings:read("sfx_vol") - 0.1
       if vol <= 0 then
         vol = 1
       end
@@ -48,9 +48,9 @@ function state:init()
   )
 
   self.menu:add(
-    function() return "Music Volume: "..math.floor(settings:read("music_vol",1)*100).."%" end,
+    function() return "Music Volume: "..math.floor(settings:read("music_vol")*100).."%" end,
     function()
-      local vol = settings:read("music_vol",1) - 0.1
+      local vol = settings:read("music_vol") - 0.1
       if vol <= 0 then
         vol = 1
       end
@@ -59,9 +59,9 @@ function state:init()
     end)
 
   self.menu:add(
-    function() return "Voiceover Volume: "..math.floor(settings:read("voiceover_vol",1)*100).."%" end,
+    function() return "Voiceover Volume: "..math.floor(settings:read("voiceover_vol")*100).."%" end,
     function()
-      local vol = settings:read("voiceover_vol",1) - 0.1
+      local vol = settings:read("voiceover_vol") - 0.1
       if vol <= 0 then
         vol = 1
       end
@@ -70,10 +70,10 @@ function state:init()
 
   self.menu:add(
     function() return "Fog of War Quality: "..
-      (settings:read("fow_quality","img_canvas") == "img_canvas" and "High" or "Low")
+      (settings:read("fow_quality") == "img_canvas" and "High" or "Low")
     end,
     function()
-      local fowq = settings:read("fow_quality","img_canvas")
+      local fowq = settings:read("fow_quality")
       settings:write("fow_quality", fowq == "img_canvas" and "circle_canvas" or "img_canvas")
     end)
 
@@ -86,7 +86,7 @@ function state:init()
 
   self.menu:add(
     function()
-      local quality = settings:read("bg_quality","high")
+      local quality = settings:read("bg_quality")
       local quality_string = "BG Quality: "
       for _,v in pairs(self.menu.bg_quality) do
         if v.value == quality then
@@ -96,7 +96,7 @@ function state:init()
       return quality_string.."Unknown"
     end,
     function()
-      local quality = settings:read("bg_quality","high")
+      local quality = settings:read("bg_quality")
       local first,use_next,next_quality
       for _,v in pairs(self.menu.bg_quality) do
         if first == nil then
@@ -119,10 +119,10 @@ function state:init()
   self.menu:add(
     function()
       return "Tutorial: "..
-        (settings:read("tutorial",true) == true and "Enabled" or "Disabled")
+        (settings:read("tutorial") == true and "Enabled" or "Disabled")
     end,
     function()
-      local tut = not settings:read("tutorial",true)
+      local tut = not settings:read("tutorial")
       settings:write("tutorial",tut)
     end)
 

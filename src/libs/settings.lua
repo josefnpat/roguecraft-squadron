@@ -6,6 +6,7 @@ function settings.new(init)
   self._filename = init.filename or "settings.json"
   self._json = init.json or require"libs.json"
 
+  self.define = settings.define
   self.read = settings.read
   self.write = settings.write
   self.load = settings.load
@@ -15,8 +16,13 @@ function settings.new(init)
   return self
 end
 
+function settings:define(name,default)
+  self._data[name] = self._data[name] or default
+end
+
 function settings:read(name,default)
-  return self._data[name] == nil and default or self._data[name]
+  assert(self._data[name]~=nil,"index `"..name.."` does not exist")
+  return self._data[name]
 end
 
 function settings:write(name,value)

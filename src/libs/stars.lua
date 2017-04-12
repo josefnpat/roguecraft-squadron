@@ -4,7 +4,7 @@ stars.planet = love.graphics.newImage("assets/planets/BubblegumPlanet.png")
 
 function stars:load()
 
-  local quality = settings:read("bg_quality","high")
+  local quality = settings:read("bg_quality")
 
   if quality == "none" then
 

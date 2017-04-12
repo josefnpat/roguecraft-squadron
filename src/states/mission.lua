@@ -649,7 +649,7 @@ function mission:nextLevel()
   local level_data = require("assets/levels/"..self.level)
 
   self.tutorial = nil
-  if settings:read("tutorial",true) and level_data.make_tutorial then
+  if settings:read("tutorial") and level_data.make_tutorial then
     self.tutorial = level_data.make_tutorial()
   end
 
@@ -1254,7 +1254,7 @@ function mission:draw()
         -- don't forget minimap
         local fow = self.fow_mult*(object.fow or 1)*(1+self.upgrades.fow*0.25)
 
-        if settings:read("fow_quality","img_canvas") == "img_canvas" then
+        if settings:read("fow_quality") == "img_canvas" then
           love.graphics.draw(self.fow_img,x,y,
             object.fow_rot,fow,fow,
             self.fow_img:getWidth()/2,
@@ -1273,7 +1273,7 @@ function mission:draw()
       local x = explosion.x-self.camera.x+love.graphics.getWidth()/2
       local y = explosion.y-self.camera.y+love.graphics.getHeight()/2
 
-      if settings:read("fow_quality","img_canvas") == "img_canvas" then
+      if settings:read("fow_quality") == "img_canvas" then
         love.graphics.draw(self.fow_img,x,y,
           explosion.fow_rot,fow_scale,fow_scale,
           self.fow_img:getWidth()/2,
@@ -1636,7 +1636,7 @@ function mission:update(dt)
     game_music_vol = 0.25
   end
   if states.menu.music then
-    states.menu.music:setVolume(settings:read("music_vol",1)*game_music_vol)
+    states.menu.music:setVolume(settings:read("music_vol")*game_music_vol)
   end
 
   if not love.window.hasFocus() then
