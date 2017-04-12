@@ -41,7 +41,7 @@ function mainmenu:enter()
         {
           text="SURE!",
           callback=function()
-            love.system.openURL("http://roguecraftsquadron.com/feedback")
+            love.system.openURL("http://roguecraftsquadron.com/feedback?git="..git_count.." ["..git_hash.."]")
             love.event.quit()
           end,
         },
