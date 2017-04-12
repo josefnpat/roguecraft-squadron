@@ -843,7 +843,7 @@ function mission:buyBuildObject(costs)
   for resource_type,cost in pairs(costs) do
     if self.resources[resource_type] < cost then
       good = false
-      print("Insufficient "..resource_type.." [have: "..self.resources[resource_type].." need: "..cost.."]")
+      --print("Insufficient "..resource_type.." [have: "..self.resources[resource_type].." need: "..cost.."]")
       if self.sfx.insufficient[resource_type] then
         playSFX(self.sfx.insufficient[resource_type])
       else
@@ -982,7 +982,7 @@ function mission:mousepressed(x,y,b)
         end
       end
     end
-  else
+  else -- mouse in playing area
 
     local ox,oy = self:getCameraOffset()
     local closest_object, closest_object_distance = self:findClosestObject(x+ox,y+oy)
