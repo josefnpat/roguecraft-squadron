@@ -1619,6 +1619,7 @@ function mission:update(dt)
   if not self.vn:getRun() then
     if self.tutorial then self.tutorial:update(dt) end
     self:updateMission(dt)
+    self.notif:update(dt)
   else
     self.vn:update(dt)
     game_music_vol = 0.25
