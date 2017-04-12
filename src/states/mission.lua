@@ -996,13 +996,28 @@ function mission:mousepressed(x,y,b)
         end
         closest_object.selected = true
         closest_object.anim = 0.25
+        if self.last_selected == closest_object then
+          self.last_selected = nil
+          self.last_selected_timeout = nil
+
+          for _,object in pairs(self.objects) do
+            if not love.keyboard.isDown("lshift") then
+              object.selected = false
+            end
+            if object.owner == 0 and object.type == closest_object.type then
+              object.selected = true
+            end
+          end
+
+        else
+          self.last_selected = closest_object
+          self.last_selected_timeout = 0.5 -- default for windows
+        end
       else
         self.select_start = {x=x,y=y}
       end
     elseif b == 2 then
-
       if closest_object and closest_object_distance < 32 then
-
         for _,object in pairs(self.objects) do
           if object.selected and object.owner == 0 then
             object.target_object = closest_object
@@ -1010,16 +1025,12 @@ function mission:mousepressed(x,y,b)
             playSFX(self.sfx.moving)
           end
         end
-
       else
-
         local ox,oy = self:getCameraOffset()
         self:moveSelected(x,y,ox,oy)
-
       end
-
-    end
-  end
+    end -- end of b == 2
+  end -- end of mouse in playing area
 end
 
 function mission:keypressed(key)
@@ -1636,6 +1647,15 @@ function mission:update(dt)
 end
 
 function mission:updateMission(dt)
+
+
+  if self.last_selected_timeout then
+    self.last_selected_timeout = self.last_selected_timeout - dt
+    if self.last_selected_timeout <= 0 then
+      self.last_selected_timeout = nil
+      self.last_selected = nil
+    end
+  end
 
   if self.jump_active then
     if self.sfx.jump:isPlaying() then
