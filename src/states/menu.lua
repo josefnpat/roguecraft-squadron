@@ -117,28 +117,6 @@ function mainmenu:draw()
 
   self.menu:draw()
 
-  love.graphics.setFont(fonts.default)
-  local vs_info = "Client GIT v"..git_count.." ["..git_hash.."]\n"
-  if version_server then
-    if version_server.count and version_server.hash then
-      vs_info = vs_info .. "Server GIT v"..version_server.count.." ["..version_server.hash.."]\n"
-    end
-    if version_server.message then
-      vs_info = vs_info .. "Server Message: ".. tostring(version_server.message).."\n"
-    end
-    if version_server.error then
-      vs_info = vs_info .. "Server Error: ".. tostring(version_server.error).."\n"
-    end
-    if version_server.count > git_count then
-      vs_info = vs_info .. "Your game is *not* up to date."
-    elseif version_server.count < git_count then
-      vs_info = vs_info .. "Your game is *ahead* of release."
-    else -- ==
-      vs_info = vs_info .. "Your game is up to date."
-    end
-  end
-  love.graphics.print(vs_info,32,32)
-
   if self.demo and self.demo_dt > 30 then
     self.demo:play()
     love.graphics.draw(self.demo,x,y,0,
