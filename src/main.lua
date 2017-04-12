@@ -90,6 +90,7 @@ libs = {
   window = require"libs.window",
   tutorial = require"libs.tutorial",
   json = require"libs.json",
+  notif = require"libs.notif",
 }
 
 states = {

@@ -623,6 +623,8 @@ end
 
 function mission:nextLevel()
 
+  self.notif = libs.notif.new()
+
   self.jump_inform = false
 
   self.multi.collect = false
@@ -641,6 +643,8 @@ function mission:nextLevel()
   self.objects = tobjects
 
   self.level = self.level + 1
+
+  self.notif:add("Level "..self.level)
 
   local level_data = require("assets/levels/"..self.level)
 
@@ -1314,6 +1318,8 @@ function mission:draw()
 
   if self.tutorial then self.tutorial:draw() end
 
+  self.notif:draw()
+
   if self.jump_active then
     love.graphics.setColor(0,0,0,255-255*self.jump_active/self.sfx_data.jump:getDuration())
     love.graphics.rectangle("fill",0,0,love.graphics.getWidth(),love.graphics.getHeight())
@@ -1668,7 +1674,7 @@ function mission:updateMission(dt)
 
     if object.in_combat then
       if self.player_in_combat == nil then
-        playSFX(self.sfx.warning)
+        self.notif:add("You have engaged the enemy",self.sfx.warning)
       end
       self.player_in_combat = 1
       object.in_combat = object.in_combat - dt
