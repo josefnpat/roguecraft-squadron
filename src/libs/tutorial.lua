@@ -215,6 +215,11 @@ function tutorial.wait.objects_find(t)
   return objects
 end
 
+function tutorial.wait.camera_moved(t)
+  return states.mission.camera.x > love.graphics.getWidth()*1.5 or
+    states.mission.camera.y > love.graphics.getHeight()*1.5
+end
+
 tutorial.icons = {}
 
 tutorial.icons.object_command = {

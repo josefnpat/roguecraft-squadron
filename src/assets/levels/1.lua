@@ -58,6 +58,14 @@ level.make_tutorial = function()
     end,
     helpguides = {"object_command","action_rmb"},
   }
+
+  t:add{
+    objtext = "Your map can be used to quickly get an overview of the battlefield.\nConfirm camera movement by clicking on the map. Each dot on your map represents entities in the area.",
+    objimage = love.graphics.newImage("assets/tutorial/map.png"),
+    helptext = "You can also move the map with [WASD] or by moving your mouse to the edge of the screen.",
+    complete = libs.tutorial.wait.camera_moved,
+  }
+
   t:add{
     objtext = "Our command ship has been damaged from our long travel. I suggest we tell the crew to repair it.",
     helptext = "Select the command ship, and toggle the \"Repair\" action.",
