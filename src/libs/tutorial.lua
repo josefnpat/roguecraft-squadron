@@ -216,8 +216,8 @@ function tutorial.wait.objects_find(t)
 end
 
 function tutorial.wait.camera_moved(t)
-  return states.mission.camera.x > love.graphics.getWidth()*1.5 or
-    states.mission.camera.y > love.graphics.getHeight()*1.5
+  return states.mission.camera.x > love.graphics.getWidth() or
+    states.mission.camera.y > love.graphics.getHeight()
 end
 
 tutorial.icons = {}
