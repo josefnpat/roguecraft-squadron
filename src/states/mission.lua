@@ -1624,7 +1624,9 @@ function mission:update(dt)
     self.vn:update(dt)
     game_music_vol = 0.25
   end
-  states.menu.music:setVolume(settings:read("music_vol",1)*game_music_vol)
+  if states.menu.music then
+    states.menu.music:setVolume(settings:read("music_vol",1)*game_music_vol)
+  end
 
   if not love.window.hasFocus() then
     libs.hump.gamestate.switch(states.pause)
