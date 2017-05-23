@@ -6,10 +6,13 @@ function state:enter()
 
   self.escape_delay_timer = 0
   self.escape_delay_max = 0.5
+  self.fade_dt = 1
+  self.fade_t = 1
 end
 
 function state:update(dt)
   self.escape_delay_timer = self.escape_delay_timer + dt
+  self.fade_dt = math.max(0,self.fade_dt-dt)
 end
 
 function state:keypressed(key)
@@ -32,6 +35,12 @@ function state:draw()
   love.graphics.setFont(fonts.menu)
   dropshadowf(self.text,0,love.graphics:getHeight()/4,love.graphics:getWidth(),"center")
   love.graphics.setFont(fonts.default)
+
+  local percent = self.fade_dt / self.fade_t
+  love.graphics.setColor(0,0,0,255*percent)
+  love.graphics.rectangle("fill",0,0,love.graphics.getWidth(),love.graphics.getHeight())
+  love.graphics.setColor(255,255,255)
+
 end
 
 return state

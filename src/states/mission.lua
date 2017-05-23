@@ -2,6 +2,8 @@ local mission = {}
 
 function mission:init()
 
+  self.gameover_t = 4
+
   self.time = 0
 
   -- defaults
@@ -622,6 +624,8 @@ function mission:hasNextLevel()
 end
 
 function mission:nextLevel()
+
+  self.gameover_dt = nil
 
   self.notif = libs.notif.new()
 
@@ -1338,6 +1342,13 @@ function mission:draw()
   end
 
   if self.vn:getRun() then self.vn:draw() end
+
+  if self.gameover_dt then
+    local percent = self.gameover_dt / self.gameover_t
+    love.graphics.setColor(0,0,0,255*percent)
+    love.graphics.rectangle("fill",0,0,love.graphics.getWidth(),love.graphics.getHeight())
+    love.graphics.setColor(255,255,255)
+  end
 
 end
 
@@ -2077,7 +2088,11 @@ function mission:updateMission(dt)
   end
 
   if #player_ships < 1 then
-    libs.hump.gamestate.switch(states.lose)
+    self.gameover_dt = self.gameover_dt or 0
+    self.gameover_dt = self.gameover_dt + dt
+    if self.gameover_dt >= self.gameover_t then
+      libs.hump.gamestate.switch(states.lose)
+    end
   end
 
   for object_index,object in pairs(self.objects) do
