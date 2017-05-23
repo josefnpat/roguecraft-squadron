@@ -1637,6 +1637,23 @@ function mission:update(dt)
     end
   end
 
+  if love.keyboard.isDown("space") then
+    local avgx,avgy,avgc = 0,0,0
+    for _,object in pairs(self.objects) do
+      if object.selected then
+        avgx = avgx + object.position.x
+        avgy = avgy + object.position.y
+        avgc = avgc + 1
+      end
+    end
+    if avgc > 0 then
+      avgx,avgy = avgx/avgc,avgy/avgc
+      self.camera.x = love.graphics.getWidth()/2+avgx
+      self.camera.y = love.graphics.getHeight()/2+avgy
+      self.camera.x,self.camera.y = avgx,avgy
+    end
+  end
+
   local game_music_vol = 1
   if not self.vn:getRun() then
     if self.tutorial then self.tutorial:update(dt) end
