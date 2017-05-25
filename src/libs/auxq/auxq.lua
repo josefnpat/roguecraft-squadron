@@ -29,7 +29,7 @@ local auxq = {
 
 ---- Instansiate a new instance of auxq
 -- @param init - A table with keys that would provide initial data (data)
--- @retyrb a new instance of auxq
+-- @return a new instance of auxq
 function auxq.new(init)
   init = init or {}
   local self = {}
@@ -93,8 +93,9 @@ function auxq:removeQuery(n)
 end
 
 --- Set the data set
--- @param n (<i>Required</i>) - the name of the query
+-- @param d (<i>Required</i>) - the data set as a table
 function auxq:setData(d)
+  assert(type(d)=="table","Data is not a table.")
   self._data = d
   self:clear()
 end
