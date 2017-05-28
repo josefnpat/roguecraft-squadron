@@ -2099,10 +2099,12 @@ function mission:updateMission(dt)
         }
       else
         local target = player_ships[math.random(#player_ships)]
-        object.wander = {
-          x = target.position.x,
-          y = target.position.y,
-        }
+        if target then
+          object.wander = {
+            x = target.position.x,
+            y = target.position.y,
+          }
+        end
       end
     end
 
