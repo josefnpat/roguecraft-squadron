@@ -635,6 +635,9 @@ function mission:nextLevel()
 
   self.gameover_dt = nil
 
+  self.spawn_new_wave = 0
+  self.spawn_wave_t = 60
+
   self.notif = libs.notif.new()
 
   self.jump_inform = false
@@ -783,7 +786,7 @@ function mission:nextLevel()
   self:regroupByOwner(0,128)
 end
 
-function mission:spawnEnemy(q)
+function mission:spawnEnemy(q,overridex,overridey)
   local skip = false
   for i = 1,q do
     if skip then
@@ -795,8 +798,8 @@ function mission:spawnEnemy(q)
       end
       local parent_object = {
         position = {
-          x = unsafe_x,
-          y = unsafe_y,
+          x = overridex or unsafe_x,
+          y = overridey or unsafe_y,
         },
         owner = 1,
       }
@@ -1681,6 +1684,24 @@ function mission:update(dt)
 end
 
 function mission:updateMission(dt)
+
+  if self.jump == 0 and self.level > 1 then
+    self.spawn_new_wave = self.spawn_new_wave + dt
+    if self.spawn_new_wave > self.spawn_wave_t then
+      self.spawn_new_wave = self.spawn_new_wave - self.spawn_wave_t
+      self.spawn_wave = (self.spawn_wave or 0) + 1
+
+      -- TODO replace with trig omg wtf
+      unsafe_x,unsafe_y = 0,0
+      while unsafe_x >= 0 and unsafe_x <= 128*32 and
+        unsafe_y >= 0  and unsafe_y <= 128*32 do
+        unsafe_x = math.random(-32,128+32)*32
+        unsafe_y = math.random(-32,128+32)*32
+      end
+
+      self:spawnEnemy(self.spawn_wave*2,unsafe_x,unsafe_y)
+    end
+  end
 
 
   if self.last_selected_timeout then
