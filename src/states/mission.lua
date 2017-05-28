@@ -636,7 +636,7 @@ function mission:nextLevel()
   self.gameover_dt = nil
 
   self.spawn_new_wave = 0
-  self.spawn_wave_t = 60
+  self.spawn_wave_t = 120
 
   self.notif = libs.notif.new()
 
