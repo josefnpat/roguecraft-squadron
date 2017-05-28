@@ -1,5 +1,7 @@
 local menu = {}
 
+menu.bg = love.graphics.newImage("assets/menu-bg.png")
+
 menu.change_sound = love.audio.newSource("assets/sfx/hover.ogg")
 menu.callback_sound = love.audio.newSource("assets/sfx/select.ogg")
 
@@ -50,10 +52,13 @@ function menu:draw()
   love.graphics.setFont(self._title_font)
 
   local old_color = {love.graphics.getColor()}
-  love.graphics.setColor(0,0,0,127)
-  love.graphics.rectangle("fill",
-    love.graphics.getWidth()*11/16,0,
-    love.graphics.getWidth()*2/8,love.graphics.getHeight())
+  love.graphics.setColor(255,255,255,191)
+  love.graphics.draw(menu.bg,
+    love.graphics.getWidth()*11/16,
+    0,0,
+    love.graphics.getWidth()*2/8/menu.bg:getWidth(),
+    love.graphics.getHeight()/menu.bg:getHeight()
+  )
   love.graphics.setColor(old_color)
 
   self._printf(self._title,
