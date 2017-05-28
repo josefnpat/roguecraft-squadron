@@ -2,6 +2,14 @@ local mission = {}
 
 function mission:init()
 
+  self.enemy_types = {
+    {type="enemy_fighter",q=4},
+    {type="enemy_combat",q=1},
+    {type="enemy_artillery",q=1},
+    {type="enemy_tank",q=1},
+    {type="enemy_miniboss",q=0.5},
+  }
+
   self.gameover_t = 4
 
   self.time = 0
@@ -717,43 +725,7 @@ function mission:nextLevel()
   end
 
   if level_data.enemy then
-    local enemy_types = {
-      {type="enemy_fighter",q=4},
-      {type="enemy_combat",q=1},
-      {type="enemy_artillery",q=1},
-      {type="enemy_tank",q=1},
-      {type="enemy_miniboss",q=0.5},
-    }
-    local skip = false
-    for i = 1,level_data.enemy*difficulty.mult.enemy do
-      if skip then
-        skip = false
-      else
-        local unsafe_x,unsafe_y = 0,0
-        while unsafe_x < love.graphics.getWidth()+400 and unsafe_y < love.graphics.getHeight()+400 do
-          unsafe_x,unsafe_y = math.random(0,32*128),math.random(0,32*128)
-        end
-        local parent_object = {
-          position = {
-            x = unsafe_x,
-            y = unsafe_y,
-          },
-          owner = 1,
-        }
-        local enemy = enemy_types[self.level == 2 and 1 or math.random(#enemy_types)]
-        if enemy.q == 0.5 then
-          skip = true
-          local enemy_object = self:build_object(enemy.type,parent_object)
-          table.insert(self.objects,enemy_object)
-        else
-          for i = 1,enemy.q do
-            local enemy_object = self:build_object(enemy.type,parent_object)
-            table.insert(self.objects,enemy_object)
-          end
-        end
-
-      end
-    end
+    self:spawnEnemy(level_data.enemy*difficulty.mult.enemy)
   end
 
   if level_data.jumpscrambler then
@@ -809,6 +781,40 @@ function mission:nextLevel()
   table.insert(self.objects,cat_object)
 
   self:regroupByOwner(0,128)
+end
+
+function mission:spawnEnemy(q)
+  local skip = false
+  for i = 1,q do
+    if skip then
+      skip = false
+    else
+      local unsafe_x,unsafe_y = 0,0
+      while unsafe_x < love.graphics.getWidth()+400 and unsafe_y < love.graphics.getHeight()+400 do
+        unsafe_x,unsafe_y = math.random(0,32*128),math.random(0,32*128)
+      end
+      local parent_object = {
+        position = {
+          x = unsafe_x,
+          y = unsafe_y,
+        },
+        owner = 1,
+      }
+      local enemy = self.enemy_types[self.level == 2 and 1 or math.random(#self.enemy_types)]
+      if enemy.q == 0.5 then
+        skip = true
+        local enemy_object = self:build_object(enemy.type,parent_object)
+        table.insert(self.objects,enemy_object)
+      else
+        for i = 1,enemy.q do
+          local enemy_object = self:build_object(enemy.type,parent_object)
+          table.insert(self.objects,enemy_object)
+        end
+      end
+
+    end
+  end
+
 end
 
 function mission:regroupByOwner(owner,scatter)
