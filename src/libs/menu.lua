@@ -38,7 +38,7 @@ end
 
 function menu:getEntryArea(i)
   local p = 4
-  local x = love.graphics.getWidth()/16
+  local x = love.graphics.getWidth()*11/16
   local w = love.graphics.getWidth()*2/8
   local h = 18
   local y = love.graphics.getHeight()/2+(h+p)*(i-1)
@@ -52,7 +52,7 @@ function menu:draw()
   local old_color = {love.graphics.getColor()}
   love.graphics.setColor(0,0,0,127)
   love.graphics.rectangle("fill",
-    love.graphics.getWidth()/16,0,
+    love.graphics.getWidth()*11/16,0,
     love.graphics.getWidth()*2/8,love.graphics.getHeight())
   love.graphics.setColor(old_color)
 
