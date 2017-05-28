@@ -1691,6 +1691,9 @@ function mission:updateMission(dt)
       self.spawn_new_wave = self.spawn_new_wave - self.spawn_wave_t
       self.spawn_wave = (self.spawn_wave or 0) + 1
 
+
+      self.notif:add("Enemy reinforcements have arrived",self.sfx.warning)
+
       -- TODO replace with trig omg wtf
       unsafe_x,unsafe_y = 0,0
       while unsafe_x >= 0 and unsafe_x <= 128*32 and
