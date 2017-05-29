@@ -32,8 +32,6 @@ BUTLER_VERSION=${GIT_COUNT}[git:${GIT_HASH}]
 BUTLER_ITCHNAME=roguecraft-squadron
 BUTLER_ITCHUSERNAME=josefnpat
 
-DEMOVIDEO_URL=http://50.116.63.25/public/rcs/demo.ogv
-
 ICON_DIR=src/assets/objects_icon
 
 IMAGE_FILES := $(wildcard src/assets/objects/*.png)
@@ -143,11 +141,6 @@ build_linux64: love
 
 .PHONY: all
 all: build_love build_win32 build_win64 build_macos build_linux64
-
-.PHONY: demovideo
-demovideo:
-	cd ${SRC_DIR};\
-	wget -c ${DEMOVIDEO_URL}
 
 .PHONY: deploy
 deploy: all

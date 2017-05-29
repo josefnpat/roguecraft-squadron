@@ -7,13 +7,16 @@ function mainmenu:init()
   self.music:play()
   self.logo = love.graphics.newImage("assets/logo.png")
 
-  if love.filesystem.exists("demo.ogv") then
-    self.demo = love.graphics.newVideo("demo.ogv")
-  end
+  self.debug_menu = {"up","up","down","down","left","right","left","right","b","a"}
+  self.debug_menu_index = 1
 
 end
 
 function mainmenu:enter()
+
+  if love.filesystem.exists("demo.ogv") then
+    self.demo = love.graphics.newVideo("demo.ogv")
+  end
 
   self.menum = libs.menu.new()--{title=game_name}
 
@@ -25,6 +28,12 @@ function mainmenu:enter()
     libs.hump.gamestate.switch(states.options)
     previousState = states.menu
   end)
+
+  if self.debug_menu_enabled then
+    self.menum:add("Debug",function()
+      libs.hump.gamestate.switch(states.debug)
+    end)
+  end
 
   self.menum:add("Credits",function()
     libs.hump.gamestate.switch(states.credits)
@@ -136,7 +145,18 @@ function mainmenu:mousemoved()
   end
 end
 
-function mainmenu:keypressed()
+function mainmenu:keypressed(key)
+  if self.debug_menu[self.debug_menu_index] == key then
+    self.debug_menu_index = self.debug_menu_index + 1
+    if self.debug_menu_index == #self.debug_menu + 1 then
+      self.debug_menu_enabled = not self.debug_menu_enabled
+      self.debug_menu_index = 1
+      self:enter()
+      print("What is love? Baby don't hurt me.")
+    end
+  else
+    self.debug_menu_index = 1
+  end
   if self.demo then
     self:stopDemo()
   end
