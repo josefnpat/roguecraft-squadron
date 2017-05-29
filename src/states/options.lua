@@ -168,7 +168,7 @@ function state:draw()
     end
   end
   dropshadowf(vs_info,
-    32,32,love.graphics.getWidth()-64,"right")
+    32,32,love.graphics.getWidth()-64,"left")
 
 end
 
