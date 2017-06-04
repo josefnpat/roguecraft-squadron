@@ -31,6 +31,10 @@ function state:init()
     end
   )
 
+  self.menu:add("Tree",function()
+    libs.hump.gamestate.switch(states.tree)
+  end)
+
   self.menu:add("Back",function()
     libs.hump.gamestate.switch(states.menu)
   end)

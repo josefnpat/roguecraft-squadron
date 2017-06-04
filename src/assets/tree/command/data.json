@@ -1,0 +1,14 @@
+{
+  "name": "Command Ship",
+  "x": 0,
+  "y": 0,
+  "children": [
+    {
+      "name": "fighter",
+      "requiredlevel": 1
+    }
+  ],
+  "icon": "command0",
+  "cost": 4,
+  "maxlevel": 1
+}

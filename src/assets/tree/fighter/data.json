@@ -1,0 +1,9 @@
+{
+  "name": "Fighter",
+  "x": 128,
+  "y": 128,
+  "children": [],
+  "icon": "fighter0",
+  "cost": 4,
+  "maxlevel": 1
+}

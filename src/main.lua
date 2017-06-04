@@ -100,6 +100,7 @@ states = {
   options = require "states.options",
   lose = require "states.lose",
   win = require "states.win",
+  tree = require"states.tree",
   mission = require "states.mission",
   credits = require "states.credits",
   disclaimer = require "states.disclaimer",
