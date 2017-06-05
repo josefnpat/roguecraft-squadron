@@ -4,3 +4,4 @@ src/assets/objects_icon/
 *.swp
 builds/
 *.love
+Makefile.config

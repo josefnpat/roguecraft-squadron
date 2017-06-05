@@ -36,6 +36,8 @@ ICON_DIR=src/assets/objects_icon
 
 IMAGE_FILES := $(wildcard src/assets/objects/*.png)
 
+-include Makefile.config
+
 .PHONY: clean
 clean:
 	#Remove generated `${GIT_TARGET}`
