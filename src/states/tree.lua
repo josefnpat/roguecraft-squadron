@@ -3,16 +3,7 @@ local state = {}
 function state:init()
 
   self.tree = {}
-
-  for i,v in pairs(love.filesystem.getDirectoryItems("assets/tree/")) do
-    local raw = love.filesystem.read("assets/tree/"..v.."/data.json")
-    local data = libs.json.decode(raw)
-    self.tree[v] = {
-      data = data,
-      f = require("assets/tree/"..v),
-      icon = love.graphics.newImage("assets/objects_icon/"..data.icon..".png"),
-    }
-  end
+  self:load()
 
   self.icon_bg = love.graphics.newImage("assets/hud/icon_bg.png")
   self.tree_bg = love.graphics.newImage("assets/hud/tree_bg.png")
@@ -28,9 +19,30 @@ function state:init()
 
 end
 
+function state:load()
+  for i,v in pairs(love.filesystem.getDirectoryItems("assets/tree/")) do
+    local raw = love.filesystem.read("assets/tree/"..v.."/data.json")
+    local data = libs.json.decode(raw)
+    self.tree[v] = {
+      data = data,
+      f = require("assets/tree/"..v),
+      icon = love.graphics.newImage("assets/objects_icon/"..data.icon..".png"),
+    }
+  end
+end
+
+function state:save()
+  local data = {}
+  for i,v in pairs(self.tree) do
+    local raw = libs.json.encode(v.data)
+    local f = io.open("src/assets/tree/"..i.."/data.json","w")
+    f:write(raw)
+    f:close()
+  end
+end
+
 function state:getOffset()
   return love.graphics.getWidth()/2,love.graphics.getHeight()/2
-
 end
 
 function state:update(dt)
@@ -59,6 +71,9 @@ function state:draw()
 
   for i,v in pairs(self.tree) do
     local x,y = v.data.x+cx,v.data.y+cy
+    if i == self.move then
+      x,y = love.mouse.getPosition()
+    end
     if i == self.selected then
       love.graphics.setColor(self.colors.selected)
     else
@@ -80,13 +95,13 @@ function state:draw()
     local font = love.graphics.getFont()
 
     love.graphics.printf(v.data.name,
-      v.data.x+cx - self.tree_bg:getWidth()/2,
-      v.data.y+cy - self.icon_bg:getHeight()/2-font:getHeight(),
+      x - self.tree_bg:getWidth()/2,
+      y - self.icon_bg:getHeight()/2-font:getHeight(),
       self.tree_bg:getWidth(),"center")
 
     love.graphics.printf("[0/"..v.data.maxlevel.."]",
-      v.data.x+cx - self.tree_bg:getWidth()/2,
-      v.data.y+cy + self.icon_bg:getHeight()/2,
+      x - self.tree_bg:getWidth()/2,
+      y + self.icon_bg:getHeight()/2,
       self.tree_bg:getWidth(),"center")
 
     love.graphics.setColor(255,255,255)
@@ -94,21 +109,44 @@ function state:draw()
   end
 end
 
+function state:keypressed(key)
+  if debug_mode then
+    if key == "s" then
+      print('save')
+      self:save()
+    elseif key == "l" then
+      print('load')
+      self:load()
+    elseif key == "m" then
+      self.move = self.selected
+    elseif key == "escape" then
+      self.move = nil
+      self.selected = nil
+    end
+  end
+end
+
 function state:mousepressed(x,y,b)
   local cx,cy = self:getOffset()
 
-  local found = false
-  for i,v in pairs(self.tree) do
-    local ix,iy = v.data.x + cx,v.data.y + cy
-    if x > ix - self.tree_bg:getWidth()/2 and x < ix + self.tree_bg:getWidth()/2 and
-       y > iy - self.tree_bg:getHeight()/2 and y < iy + self.tree_bg:getHeight()/2 then
-      self.selected = i
-      found = true
-      break
+  if self.move then
+    self.tree[self.move].data.x = x - cx
+    self.tree[self.move].data.y = y - cy
+    self.move = nil
+  else
+    local found = false
+    for i,v in pairs(self.tree) do
+      local ix,iy = v.data.x + cx,v.data.y + cy
+      if x > ix - self.tree_bg:getWidth()/2 and x < ix + self.tree_bg:getWidth()/2 and
+         y > iy - self.tree_bg:getHeight()/2 and y < iy + self.tree_bg:getHeight()/2 then
+        self.selected = i
+        found = true
+        break
+      end
     end
-  end
-  if not found then
-    self.selected = nil
+    if not found then
+      self.selected = nil
+    end
   end
 
 end
