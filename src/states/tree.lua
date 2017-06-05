@@ -14,8 +14,8 @@ function state:init()
     }
   end
 
-  self.icon_bg = love.graphics.newImage("assets/icon_bg.png")
-  self.tree_bg = love.graphics.newImage("assets/tree_bg.png")
+  self.icon_bg = love.graphics.newImage("assets/hud/icon_bg.png")
+  self.tree_bg = love.graphics.newImage("assets/hud/tree_bg.png")
 
   self.colors = {
     prereq_missing = {127,127,127},

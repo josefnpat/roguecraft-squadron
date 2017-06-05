@@ -139,11 +139,11 @@ function mission:init()
     missile = love.graphics.newImage("assets/bullets/missile.png"),
   }
 
-  self.objects_chevron = love.graphics.newImage("assets/chevron.png")
-  self.target = love.graphics.newImage("assets/target.png")
+  self.objects_chevron = love.graphics.newImage("assets/hud/chevron.png")
+  self.target = love.graphics.newImage("assets/hud/target.png")
 
-  self.map_bg = love.graphics.newImage("assets/map_bg.png")
-  self.icon_bg = love.graphics.newImage("assets/icon_bg.png")
+  self.map_bg = love.graphics.newImage("assets/hud/map_bg.png")
+  self.icon_bg = love.graphics.newImage("assets/hud/icon_bg.png")
   self.camera = libs.hump.camera(love.graphics.getWidth()/2,love.graphics.getHeight()/2)
   self.camera_speed = 300
   self.camera.vertical_mouse_move = 1/16.875

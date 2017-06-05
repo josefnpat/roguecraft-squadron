@@ -109,9 +109,9 @@ states = {
 
 function love.load(arg)
 
-  local cursor = love.graphics.newImage("assets/cursor.png")
+  local cursor = love.graphics.newImage("assets/hud/cursor.png")
   love.mouse.setCursor(
-    love.mouse.newCursor("assets/cursor.png",
+    love.mouse.newCursor("assets/hud/cursor.png",
     cursor:getWidth()/2,cursor:getHeight()/2))
   cursor = nil
 

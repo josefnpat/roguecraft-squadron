@@ -1,6 +1,6 @@
 local menu = {}
 
-menu.bg = love.graphics.newImage("assets/menu-bg.png")
+menu.bg = love.graphics.newImage("assets/hud/menu_bg.png")
 
 menu.change_sound = love.audio.newSource("assets/sfx/hover.ogg")
 menu.callback_sound = love.audio.newSource("assets/sfx/select.ogg")

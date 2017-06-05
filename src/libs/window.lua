@@ -1,7 +1,7 @@
 local window = {}
 
-window.s = love.graphics.newImage("assets/window.png")
-window.icon_bg = love.graphics.newImage("assets/icon_bg.png")
+window.s = love.graphics.newImage("assets/hud/window.png")
+window.icon_bg = love.graphics.newImage("assets/hud/icon_bg.png")
 
 window.topleft =     love.graphics.newQuad(0,0,32,32,96,96)
 window.top =         love.graphics.newQuad(32,0,32,32,96,96)
