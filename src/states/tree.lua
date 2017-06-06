@@ -118,6 +118,7 @@ function state:draw()
 end
 
 function state:keypressed(key)
+  -- NO YOU'RE A SCREWY EDITOR
   if debug_mode then
     if key == "s" then
       self:saveData()
@@ -125,8 +126,22 @@ function state:keypressed(key)
       self:loadData()
     elseif key == "m" then
       self.move = self.selected
+    elseif key == "d" then
+      self.tree[self.selected] = nil
+    elseif key == "c" then
+      if self.to_connect then
+        if self.to_connect == self.selected then
+          self.tree[self.selected].data.children = {}
+        else
+          table.insert(self.tree[self.to_connect].data.children,{name=self.selected})
+          self.selected = nil
+          self.to_connect = nil
+        end
+      else
+        self.to_connect = self.selected
+        self.selected = nil
+      end
     elseif key == "g" then
-
       local makeobj = function(name,dir,post)
         self.tree[name] = {}
         self.tree[name].data = {
@@ -139,20 +154,16 @@ function state:keypressed(key)
           asset = {dir,name..post},
         }
       end
-
       for i,v in pairs(love.filesystem.getDirectoryItems("assets/objects_data")) do
         local name = string.sub(v,1,-5)
         makeobj(name,"objects_icon","0.png")
       end
-
       for i,v in pairs(love.filesystem.getDirectoryItems("assets/actions")) do
         local name = string.sub(v,1,-5)
         makeobj(name,"actions",".png")
       end
-
       self:saveData()
       self:loadData()
-
     elseif key == "escape" then
       self.move = nil
       self.selected = nil
