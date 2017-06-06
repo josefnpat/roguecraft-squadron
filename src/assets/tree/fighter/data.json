@@ -1,9 +1,1 @@
-{
-  "name": "Fighter",
-  "x": 128,
-  "y": 128,
-  "children": [],
-  "icon": "fighter0",
-  "cost": 4,
-  "maxlevel": 1
-}
+{"x":576.5,"asset":["objects_icon","fighter0.png"],"maxlevel":1,"y":-159,"children":[],"name":"fighter","cost":0}

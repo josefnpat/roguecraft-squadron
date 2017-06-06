@@ -3,7 +3,6 @@ local state = {}
 function state:init()
 
   self.tree = {}
-  self:load()
 
   self.icon_bg = love.graphics.newImage("assets/hud/icon_bg.png")
   self.tree_bg = love.graphics.newImage("assets/hud/tree_bg.png")
@@ -19,24 +18,33 @@ function state:init()
 
 end
 
-function state:load()
+function state:loadData()
+  self.tree = {}
   for i,v in pairs(love.filesystem.getDirectoryItems("assets/tree/")) do
     local raw = love.filesystem.read("assets/tree/"..v.."/data.json")
     local data = libs.json.decode(raw)
+    local icon_loc = "assets/"..table.concat(data.asset,"/")
     self.tree[v] = {
       data = data,
       f = require("assets/tree/"..v),
-      icon = love.graphics.newImage("assets/objects_icon/"..data.icon..".png"),
+      icon = love.graphics.newImage(icon_loc),
     }
   end
 end
 
-function state:save()
+function state:saveData()
   local data = {}
   for i,v in pairs(self.tree) do
     local raw = libs.json.encode(v.data)
-    local f = io.open("src/assets/tree/"..i.."/data.json","w")
+    local dir = "src/assets/tree/"..i.."/"
+    os.execute("mkdir -p "..dir)
+
+    local f,err = io.open(dir.."data.json","w+")
     f:write(raw)
+    f:close()
+
+    local f,err = io.open(dir.."init.lua","w+")
+    f:write("return function(level) end")
     f:close()
   end
 end
@@ -112,13 +120,39 @@ end
 function state:keypressed(key)
   if debug_mode then
     if key == "s" then
-      print('save')
-      self:save()
+      self:saveData()
     elseif key == "l" then
-      print('load')
-      self:load()
+      self:loadData()
     elseif key == "m" then
       self.move = self.selected
+    elseif key == "g" then
+
+      local makeobj = function(name,dir,post)
+        self.tree[name] = {}
+        self.tree[name].data = {
+          name = name,
+          x = 0,
+          y = 0,
+          children = {},
+          cost = 0,
+          maxlevel = 1,
+          asset = {dir,name..post},
+        }
+      end
+
+      for i,v in pairs(love.filesystem.getDirectoryItems("assets/objects_data")) do
+        local name = string.sub(v,1,-5)
+        makeobj(name,"objects_icon","0.png")
+      end
+
+      for i,v in pairs(love.filesystem.getDirectoryItems("assets/actions")) do
+        local name = string.sub(v,1,-5)
+        makeobj(name,"actions",".png")
+      end
+
+      self:saveData()
+      self:loadData()
+
     elseif key == "escape" then
       self.move = nil
       self.selected = nil
