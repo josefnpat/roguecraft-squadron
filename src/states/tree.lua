@@ -115,6 +115,15 @@ function state:draw()
     love.graphics.setColor(255,255,255)
 
   end
+
+  love.graphics.print(
+    "m .. move selected item\n"..
+    "s .. save\n"..
+    "l .. load\n"..
+    "d .. delete\n"..
+    "c .. create connection\n"..
+    "g .. generate\n",32,32)
+
 end
 
 function state:keypressed(key)
