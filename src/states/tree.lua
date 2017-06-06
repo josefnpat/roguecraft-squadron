@@ -119,7 +119,7 @@ end
 
 function state:keypressed(key)
   -- NO YOU'RE A SCREWY EDITOR
-  if debug_mode then
+  if true then --debug_mode then
     if key == "s" then
       self:saveData()
     elseif key == "l" then
