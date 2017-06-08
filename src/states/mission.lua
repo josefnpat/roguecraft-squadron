@@ -2090,7 +2090,10 @@ function mission:updateMission(dt)
       end
       if object.speed then
         if distance > range then
-          local speed = object.owner == 0  and object.speed*(1+self.upgrades.speed*0.1) or object.speed
+          local speed = object.owner == 0 and object.speed*(1+self.upgrades.speed*0.1) or object.speed
+          if object.target.speed_mult then
+            speed = speed * object.target.speed_mult
+          end
           local dx,dy = object.position.x-object.target.x,object.position.y-object.target.y
           object.angle = math.atan2(dy,dx)+math.pi
           object.position.x = object.position.x + math.cos(object.angle)*dt*speed*self.speed_mult
@@ -2134,11 +2137,13 @@ function mission:updateMission(dt)
           if dist < object.size*4 then
             -- I'm not sure how I feel about this ...
             object.target = {
-              x = object.position.x + math.random(-128,128),
-              y = object.position.y + math.random(-128,128),
+              x = object.position.x + math.random(-128*2,128*2),
+              y = object.position.y + math.random(-128*2,128*2),
+              speed_mult = 0.25,
             }
           else
             local dx,dy
+            local wander_speed = object.owner == 0 and 1 or 0.5
             if object.wander.target then
               dx = object.position.x-object.wander.target.position.x
               dy = object.position.y-object.wander.target.position.y
@@ -2146,7 +2151,6 @@ function mission:updateMission(dt)
               dx,dy = object.position.x-object.wander.x,object.position.y-object.wander.y
             end
             object.angle = math.atan2(dy,dx)+math.pi
-            local wander_speed = object.owner == 0 and 1 or 0.5
             object.position.x = object.position.x + math.cos(object.angle)*dt*object.speed*self.speed_mult*wander_speed
             object.position.y = object.position.y + math.sin(object.angle)*dt*object.speed*self.speed_mult*wander_speed
           end
