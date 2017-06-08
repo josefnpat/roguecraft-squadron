@@ -647,6 +647,7 @@ function mission:nextLevel()
   for _,object in pairs(self.objects) do
     object.target = nil
     object.target_object = nil
+    object.wander = nil
     if object.collect ~= nil then
       object.collect = false
     end
@@ -827,6 +828,7 @@ function mission:regroupByOwner(owner,scatter)
     object.position.y = self.start.position.y + math.random(-scatter,scatter)
     object.target = nil
     object.target_object = nil
+    object.wander = nil
   end
   self.camera.x = love.graphics.getWidth()/2
   self.camera.y = love.graphics.getHeight()/2
@@ -932,6 +934,7 @@ function mission:moveSelected(x,y,ox,oy)
           object.target = {x=tx,y=ty}
           object.anim = 0.25
           object.target_object = nil
+          object.wander = nil
           playSFX(self.sfx.moving)
           found = true
           self.target_show = {
@@ -1033,8 +1036,15 @@ function mission:mousepressed(x,y,b)
       if closest_object and closest_object_distance < 32 then
         for _,object in pairs(self.objects) do
           if object.selected and object.owner == 0 then
-            object.target_object = closest_object
-            object.target_object.anim = 0.25
+            if closest_object.owner == 0 then
+              object.wander = {target=closest_object}
+              object.target= nil
+              object.target_object = nil
+            else
+              object.target_object = closest_object
+              object.wander = nil
+            end
+            closest_object.anim = 0.25
             playSFX(self.sfx.moving)
           end
         end
@@ -1895,8 +1905,8 @@ function mission:updateMission(dt)
       object.shoot.reload = object.shoot.reload - dt
       -- don't forget the range for movement
       local newrange = object.owner == 0 and object.shoot.range*(1+self.upgrades.range*0.1) or object.shoot.range
-      if object.shoot.reload <= 0 and
-        object.target_object and object.target_object.owner ~= object.owner and object.target_object.health and
+      if object.shoot.reload <= 0 and object.target_object and
+        object.target_object.owner ~= object.owner and object.target_object.health and
         self:distance(object.position,object.target_object.position) < newrange then
 
         object.shoot.reload = object.shoot.reload_t
@@ -2114,13 +2124,33 @@ function mission:updateMission(dt)
     if object.speed then
       if object.wander then
         if not object.target and not object.target_object then
-          local dx,dy = object.position.x-object.wander.x,object.position.y-object.wander.y
-          object.angle = math.atan2(dy,dx)+math.pi
-          object.position.x = object.position.x + math.cos(object.angle)*dt*object.speed*self.speed_mult/2
-          object.position.y = object.position.y + math.sin(object.angle)*dt*object.speed*self.speed_mult/2
-        end
-        if self:distance(object.wander,object.position) < 32 then
-          object.wander = nil
+
+          local dist
+          if object.wander.target then
+            dist = self:distance(object.position,object.wander.target.position)
+          else
+            dist = self:distance(object.position,object.wander)
+          end
+          if dist < object.size*4 then
+            -- I'm not sure how I feel about this ...
+            object.target = {
+              x = object.position.x + math.random(-128,128),
+              y = object.position.y + math.random(-128,128),
+            }
+          else
+            local dx,dy
+            if object.wander.target then
+              dx = object.position.x-object.wander.target.position.x
+              dy = object.position.y-object.wander.target.position.y
+            else
+              dx,dy = object.position.x-object.wander.x,object.position.y-object.wander.y
+            end
+            object.angle = math.atan2(dy,dx)+math.pi
+            local wander_speed = object.owner == 0 and 1 or 0.5
+            object.position.x = object.position.x + math.cos(object.angle)*dt*object.speed*self.speed_mult*wander_speed
+            object.position.y = object.position.y + math.sin(object.angle)*dt*object.speed*self.speed_mult*wander_speed
+          end
+
         end
       end
     end
