@@ -2094,6 +2094,9 @@ function mission:updateMission(dt)
           if object.target.speed_mult then
             speed = speed * object.target.speed_mult
           end
+          if self:isTurning(object) then
+            speed = 0
+          end
           local dx,dy = object.position.x-object.target.x,object.position.y-object.target.y
           object.angle = math.atan2(dy,dx)+math.pi
           object.position.x = object.position.x + math.cos(object.angle)*dt*speed*self.speed_mult
@@ -2149,6 +2152,9 @@ function mission:updateMission(dt)
               dy = object.position.y-object.wander.target.position.y
             else
               dx,dy = object.position.x-object.wander.x,object.position.y-object.wander.y
+            end
+            if self:isTurning(object) then
+              wander_speed = 0
             end
             object.angle = math.atan2(dy,dx)+math.pi
             object.position.x = object.position.x + math.cos(object.angle)*dt*object.speed*self.speed_mult*wander_speed
@@ -2297,6 +2303,10 @@ function mission:updateMission(dt)
 
   end
 
+end
+
+function mission:isTurning(object)
+  return math.abs(object.angle%math.pi-object.shown_angle%math.pi) > 0.1
 end
 
 function mission:clampCamera()
