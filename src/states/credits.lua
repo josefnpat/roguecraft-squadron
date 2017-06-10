@@ -40,20 +40,29 @@ function credits:enter()
   self.text = self.text .. "\n\n\nThanks for playing!\n"
 
   self.y = love.graphics:getHeight()
-  self.scroll_speed = 32
-
+  
   self.escape_delay_timer = 0
   self.escape_delay_max = 0.5
 end
 
 function credits:update(dt)
+
+if not love.keyboard.isDown("space") then 
+    self.scroll_speed = 32
+  else
+    self.scroll_speed = 128
+end
+
   self.y = self.y - dt * self.scroll_speed
   self.escape_delay_timer = self.escape_delay_timer + dt
 end
 
 function credits:keypressed(key)
-  if self.escape_delay_timer > self.escape_delay_max then
-    libs.hump.gamestate.switch(states.menu)
+
+  if key == "escape" then
+    if self.escape_delay_timer > self.escape_delay_max then
+      libs.hump.gamestate.switch(states.menu)
+    end
   end
 end
 
