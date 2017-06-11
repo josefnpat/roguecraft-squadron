@@ -36,6 +36,17 @@ function state:init()
     end
   )
 
+   self.menu:add(
+    function() return "Camera Speed: "..settings:read("camera_speed").."×" end,
+    function()
+      local cam_speed = settings:read("camera_speed") + 0.25
+      if cam_speed > 3 then
+        cam_speed = 0.5
+      end
+      settings:write("camera_speed", cam_speed)
+    end
+  )
+
   self.menu:add(
     function() return "Sound Effect Volume: "..math.floor(settings:read("sfx_vol")*100).."%" end,
     function()

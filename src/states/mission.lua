@@ -2285,16 +2285,16 @@ function mission:updateMission(dt)
 
       local dx,dy = 0,0
       if left then
-        dx = -self.camera_speed*dt
+        dx = -self.camera_speed*dt*settings:read("camera_speed")
       end
       if right then
-        dx = self.camera_speed*dt
+        dx = self.camera_speed*dt*settings:read("camera_speed")
       end
       if up then
-        dy = -self.camera_speed*dt
+        dy = -self.camera_speed*dt*settings:read("camera_speed")
       end
       if down then
-        dy = self.camera_speed*dt
+        dy = self.camera_speed*dt*settings:read("camera_speed")
       end
 
       self.camera:move(dx,dy)
