@@ -21,7 +21,7 @@ function settings:define(name,default)
 end
 
 function settings:read(name,default)
-  assert(self._data[name]~=nil,"index `"..name.."` does not exist")
+  assert(self._data[name]~=nil,"index `"..name.."` does not exist; add settings:define("..tostring(name)..",value) in config.lua")
   return self._data[name]
 end
 
