@@ -4,6 +4,8 @@ function state:init()
 
   self.tree = {}
 
+  self.tree_class = libs.tree.new()
+
   self.icon_bg = love.graphics.newImage("assets/hud/icon_bg.png")
   self.tree_bg = love.graphics.newImage("assets/hud/tree_bg.png")
 
@@ -16,44 +18,25 @@ function state:init()
     unselected = {127,127,127},
   }
 
-end
+  self.tree_class:loadData()
+  self.tree = self.tree_class._data
 
-function state:loadData()
-  self.tree = {}
-  for i,v in pairs(love.filesystem.getDirectoryItems("assets/tree/")) do
-    local raw = love.filesystem.read("assets/tree/"..v.."/data.json")
-    local data = libs.json.decode(raw)
-    local icon_loc = "assets/"..table.concat(data.asset,"/")
-    self.tree[v] = {
-      data = data,
-      f = require("assets/tree/"..v),
-      icon = love.graphics.newImage(icon_loc),
-    }
-  end
-end
+  self._icon_cache = {}
 
-function state:saveData()
-  local data = {}
-  for i,v in pairs(self.tree) do
-    local raw = libs.json.encode(v.data)
-    local dir = "src/assets/tree/"..i.."/"
-    os.execute("mkdir -p "..dir)
-
-    local f,err = io.open(dir.."data.json","w+")
-    f:write(raw)
-    f:close()
-
-    local f,err = io.open(dir.."init.lua","w+")
-    f:write("return function(level) end")
-    f:close()
-  end
 end
 
 function state:getOffset()
   return love.graphics.getWidth()/2,love.graphics.getHeight()/2
 end
 
-function state:update(dt)
+function state:textinput(t)
+  if self._ignore_textinput_single then
+    self._ignore_textinput_single = nil
+  else
+    if self.chooser then
+      self.chooser:textinput(t)
+    end
+  end
 end
 
 function state:draw()
@@ -66,19 +49,25 @@ function state:draw()
   love.graphics.setLineWidth(8)
 
   for i,v in pairs(self.tree) do
-    for _,child in pairs(v.data.children) do
+    local children_string = "Children:\n"
+    for _,child in pairs(v.children) do
       local target = self.tree[child.name]
-      assert(target,"Target does not exist: "..child.name)
-      love.graphics.line(
-        v.data.x+cx,v.data.y+cy,
-        target.data.x+cx,target.data.y+cy)
+      if target then
+        love.graphics.line(
+          v.x+cx,v.y+cy,
+          target.x+cx,target.y+cy)
+        children_string = children_string .. child.name .. "\n"
+      elseif child.name then
+        self.tree[child.name] = nil
+      end
     end
+    love.graphics.print(children_string,v.x+cx,v.y+cy+self.tree_bg:getHeight()/2)
   end
 
   love.graphics.setLineWidth(old_line_width)
 
   for i,v in pairs(self.tree) do
-    local x,y = v.data.x+cx,v.data.y+cy
+    local x,y = v.x+cx,v.y+cy
     if i == self.move then
       x,y = love.mouse.getPosition()
     end
@@ -98,41 +87,113 @@ function state:draw()
       love.graphics.setColor(self.colors.notmax)
     end
     love.graphics.draw(self.icon_bg,x-self.icon_bg:getWidth()/2,y-self.icon_bg:getHeight()/2)
-    love.graphics.draw(v.icon,x-v.icon:getWidth()/2,y-v.icon:getWidth()/2)
+
+    if not self._icon_cache[v.name] then
+      self._icon_cache[v.name] = love.graphics.newImage(table.concat(v.asset,"/"))
+    end
+    local icon = self._icon_cache[v.name]
+
+    love.graphics.draw(icon,x-icon:getWidth()/2,y-icon:getWidth()/2)
 
     local font = love.graphics.getFont()
 
-    love.graphics.printf(v.data.name,
+    love.graphics.printf(v.name,
       x - self.tree_bg:getWidth()/2,
       y - self.icon_bg:getHeight()/2-font:getHeight(),
       self.tree_bg:getWidth(),"center")
 
-    love.graphics.printf("[0/"..v.data.maxlevel.."]",
+    love.graphics.printf("["..v.level.."/"..v.maxlevel.."]",
       x - self.tree_bg:getWidth()/2,
       y + self.icon_bg:getHeight()/2,
       self.tree_bg:getWidth(),"center")
+
+    love.graphics.print("x:"..v.x.." y:"..v.y,x,y-self.tree_bg:getHeight()/2)
 
     love.graphics.setColor(255,255,255)
 
   end
 
   love.graphics.print(
-    "m .. move selected item\n"..
     "s .. save\n"..
     "l .. load\n"..
-    "d .. delete\n"..
-    "c .. create connection\n"..
-    "g .. generate\n",32,32)
+    "n .. new node\n"..
+    "m .. move selected node\n"..
+    "↑→↓← .. nudge selected node\n"..
+    "[lshift+] +|- .. change [max]level\n"..
+    "c .. connect selected node\n"..
+    "e .. edit selected node\n"..
+    "d .. delete node\n",32,32)
+
+  if self.chooser then
+    self.chooser:draw()
+  end
 
 end
 
 function state:keypressed(key)
   -- NO YOU'RE A SCREWY EDITOR
-  if true then --debug_mode then
+  if key == "escape" then
+    self.chooser = nil
+  end
+  if self.chooser then
+    self.chooser:keypressed(key)
+  else
+    if self.tree[self.selected] then
+      if key == "up" then
+        self.tree[self.selected].y = self.tree[self.selected].y - 1
+      elseif key == "down" then
+        self.tree[self.selected].y = self.tree[self.selected].y + 1
+      elseif key == "left" then
+        self.tree[self.selected].x = self.tree[self.selected].x - 1
+      elseif key == "right" then
+        self.tree[self.selected].x = self.tree[self.selected].x + 1
+      end
+      if love.keyboard.isDown("lshift") then
+        if key == "-" then
+          self.tree[self.selected].maxlevel = self.tree[self.selected].maxlevel - 1
+        elseif key == "=" then
+          self.tree[self.selected].maxlevel = self.tree[self.selected].maxlevel + 1
+        end
+      else
+        if key == "-" then
+          self.tree[self.selected].level = self.tree[self.selected].level - 1
+        elseif key == "=" then
+          self.tree[self.selected].level = self.tree[self.selected].level + 1
+        end
+      end
+    end
     if key == "s" then
-      self:saveData()
+      self.tree_class:saveData()
     elseif key == "l" then
-      self:loadData()
+      self.tree_class:loadData()
+      self.tree = self.tree_class._data
+    elseif key == "n" then
+      self.chooser = libs.assetchooser.new{
+        prompt = "icon:",
+        callback = function(asset)
+          --code
+          self.chooser = libs.stringchooser.new{
+            prompt = "internal:",
+            callback = function(name)
+              --code
+              self.chooser = nil
+              local node = {
+                name = name,
+                x = 0,
+                y = 0,
+                children = {
+                },
+                cost = 0,
+                level = 0,
+                maxlevel = 1,
+                asset = asset:split("/"),
+              }
+              self.tree[name] = node
+            end
+          }
+        end,
+      }
+      self._ignore_textinput_single = true
     elseif key == "m" then
       self.move = self.selected
     elseif key == "d" then
@@ -140,9 +201,9 @@ function state:keypressed(key)
     elseif key == "c" then
       if self.to_connect then
         if self.to_connect == self.selected then
-          self.tree[self.selected].data.children = {}
+          self.tree[self.selected].children = {}
         else
-          table.insert(self.tree[self.to_connect].data.children,{name=self.selected})
+          table.insert(self.tree[self.to_connect].children,{name=self.selected})
           self.selected = nil
           self.to_connect = nil
         end
@@ -150,29 +211,6 @@ function state:keypressed(key)
         self.to_connect = self.selected
         self.selected = nil
       end
-    elseif key == "g" then
-      local makeobj = function(name,dir,post)
-        self.tree[name] = {}
-        self.tree[name].data = {
-          name = name,
-          x = 0,
-          y = 0,
-          children = {},
-          cost = 0,
-          maxlevel = 1,
-          asset = {dir,name..post},
-        }
-      end
-      for i,v in pairs(love.filesystem.getDirectoryItems("assets/objects_data")) do
-        local name = string.sub(v,1,-5)
-        makeobj(name,"objects_icon","0.png")
-      end
-      for i,v in pairs(love.filesystem.getDirectoryItems("assets/actions")) do
-        local name = string.sub(v,1,-5)
-        makeobj(name,"actions",".png")
-      end
-      self:saveData()
-      self:loadData()
     elseif key == "escape" then
       self.move = nil
       self.selected = nil
@@ -181,28 +219,30 @@ function state:keypressed(key)
 end
 
 function state:mousepressed(x,y,b)
-  local cx,cy = self:getOffset()
-
-  if self.move then
-    self.tree[self.move].data.x = x - cx
-    self.tree[self.move].data.y = y - cy
-    self.move = nil
+  if self.chooser then
   else
-    local found = false
-    for i,v in pairs(self.tree) do
-      local ix,iy = v.data.x + cx,v.data.y + cy
-      if x > ix - self.tree_bg:getWidth()/2 and x < ix + self.tree_bg:getWidth()/2 and
-         y > iy - self.tree_bg:getHeight()/2 and y < iy + self.tree_bg:getHeight()/2 then
-        self.selected = i
-        found = true
-        break
+    local cx,cy = self:getOffset()
+
+    if self.move then
+      self.tree[self.move].x = x - cx
+      self.tree[self.move].y = y - cy
+      self.move = nil
+    else
+      local found = false
+      for i,v in pairs(self.tree) do
+        local ix,iy = v.x + cx,v.y + cy
+        if x > ix - self.tree_bg:getWidth()/2 and x < ix + self.tree_bg:getWidth()/2 and
+           y > iy - self.tree_bg:getHeight()/2 and y < iy + self.tree_bg:getHeight()/2 then
+          self.selected = i
+          found = true
+          break
+        end
+      end
+      if not found then
+        self.selected = nil
       end
     end
-    if not found then
-      self.selected = nil
-    end
   end
-
 end
 
 return state

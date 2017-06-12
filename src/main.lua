@@ -91,6 +91,9 @@ libs = {
   tutorial = require"libs.tutorial",
   json = require"libs.json",
   notif = require"libs.notif",
+  tree = require"libs.tree",
+  assetchooser = require"libs.assetchooser",
+  stringchooser = require"libs.stringchooser",
 }
 
 states = {
@@ -215,4 +218,11 @@ end
 function getFileName(i)
   local _,_,fname,extension = i:find("^(.+)%.(.*)")
   return fname
+end
+
+function string:split(sep)
+   local sep, fields = sep or ":", {}
+   local pattern = string.format("([^%s]+)", sep)
+   self:gsub(pattern, function(c) fields[#fields+1] = c end)
+   return fields
 end
