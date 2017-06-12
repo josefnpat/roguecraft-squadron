@@ -37,12 +37,12 @@ end
 
 function tree:getLevelData(name)
   if self._game[name] and self._game[name].level then
-    return self._game[name].level,self.data[name].maxlevel
+    return self._game[name].level,self._data[name].maxlevel
   elseif self._data[name] then
-    return self._data[name].level,self.data[name].maxlevel
+    return self._data[name].level,self._data[name].maxlevel
   else
     print("Warning: tree does not contain `"..tostring(name).."`")
-    return 1,1
+    return debug_mode and 1 or 0,1
   end
 end
 
