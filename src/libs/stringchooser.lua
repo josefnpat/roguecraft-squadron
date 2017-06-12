@@ -14,7 +14,7 @@ function stringchooser.new(init)
   self.textinput = stringchooser.textinput
   self.keypressed = stringchooser.keypressed
 
-  self._asset = ""
+  self._asset = init.string or ""
 
   return self
 

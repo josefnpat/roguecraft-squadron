@@ -2,6 +2,25 @@ local mission = {}
 
 function mission:init()
 
+  self._ignoreBuild = {
+    "build_asteroid",
+    "build_blackhole",
+    "build_cat",
+    "build_scrap",
+    "build_station",
+    "build_enemy_fighter",
+    "build_enemy_combat",
+    "build_enemy_artillery",
+    "build_enemy_tank",
+    "build_enemy_boss",
+    "build_enemy_miniboss",
+    "build_jumpscrambler",
+  }
+
+  self.tree = libs.tree.new()
+  self.tree:loadData()
+  self.tree:loadGame()
+
   self.enemy_types = {
     {type="enemy_fighter",q=4},
     {type="enemy_combat",q=1},
@@ -171,62 +190,68 @@ function mission:init()
 
   self.actions = {}
 
-  self.actions.repair = {
-    icon = "repair",
-    tooltip = function(object) return "Repair "..(object.repair and "Enabled" or "Disabled") end,
-    color = function(object) return object.repair and {0,255,0} or {255,255,255} end,
-    multi = {
-      tooltip = function(object) return "Fleet Wide Repair "..(object.repair and "Enabled" or "Disabled") end,
+  if self.tree:getLevelData("action_repair") > 0 then
+    self.actions.repair = {
+      icon = "repair",
+      tooltip = function(object) return "Repair "..(object.repair and "Enabled" or "Disabled") end,
       color = function(object) return object.repair and {0,255,0} or {255,255,255} end,
+      multi = {
+        tooltip = function(object) return "Fleet Wide Repair "..(object.repair and "Enabled" or "Disabled") end,
+        color = function(object) return object.repair and {0,255,0} or {255,255,255} end,
+        exe = function(object)
+          object.repair = not object.repair
+          for _,tobject in pairs(self:getObjectsByOwner(0)) do
+            if tobject.repair ~= nil then
+              tobject.repair = object.repair
+            end
+          end
+        end,
+      },
       exe = function(object)
         object.repair = not object.repair
-        for _,tobject in pairs(self:getObjectsByOwner(0)) do
-          if tobject.repair ~= nil then
-            tobject.repair = object.repair
-          end
-        end
       end,
-    },
-    exe = function(object)
-      object.repair = not object.repair
-    end,
-  }
+    }
+  end
 
-  self.actions.refine = {
-    icon = "refine",
-    tooltip = function(object) return "Refine "..(object.refine and "Enabled" or "Disabled") end,
-    color = function(object) return object.refine and {0,255,0} or {255,255,255} end,
-    multi = {
-      tooltip = function(object) return "Fleet Wide Refine "..(object.refine and "Enabled" or "Disabled") end,
+  if self.tree:getLevelData("action_refine") > 0 then
+    self.actions.refine = {
+      icon = "refine",
+      tooltip = function(object) return "Refine "..(object.refine and "Enabled" or "Disabled") end,
       color = function(object) return object.refine and {0,255,0} or {255,255,255} end,
+      multi = {
+        tooltip = function(object) return "Fleet Wide Refine "..(object.refine and "Enabled" or "Disabled") end,
+        color = function(object) return object.refine and {0,255,0} or {255,255,255} end,
+        exe = function(object)
+          object.refine = not object.refine
+          for _,tobject in pairs(self:getObjectsByOwner(0)) do
+            if tobject.refine ~= nil then
+              tobject.refine = object.refine
+            end
+          end
+        end,
+      },
       exe = function(object)
         object.refine = not object.refine
-        for _,tobject in pairs(self:getObjectsByOwner(0)) do
-          if tobject.refine ~= nil then
-            tobject.refine = object.refine
-          end
-        end
       end,
-    },
-    exe = function(object)
-      object.refine = not object.refine
-    end,
-  }
+    }
+  end
 
-  self.actions.salvage = {
-    icon = "salvage",
-    tooltip = function(object) return "Salvage ship for 90% value" end,
-    color = function(object) return {255,0,0} end,
-    exe = function(object)
-      local percent = object.health.current/object.health.max * 0.9
-      for resource_type,cost in pairs( object.cost ) do
-        self.resources[resource_type] = self.resources[resource_type] + cost*percent
-      end
-      object.health.current = 0
-      object.repair = false
-      object.no_scrap_drop = true
-    end,
-  }
+  if self.tree:getLevelData("action_salvage") > 0 then
+    self.actions.salvage = {
+      icon = "salvage",
+      tooltip = function(object) return "Salvage ship for 90% value" end,
+      color = function(object) return {255,0,0} end,
+      exe = function(object)
+        local percent = object.health.current/object.health.max * 0.9
+        for resource_type,cost in pairs( object.cost ) do
+          self.resources[resource_type] = self.resources[resource_type] + cost*percent
+        end
+        object.health.current = 0
+        object.repair = false
+        object.no_scrap_drop = true
+      end,
+    }
+  end
 
   self.actions.jump = {
     icon = "jump",
@@ -280,54 +305,58 @@ function mission:init()
     end,
   }
 
-  self.actions.collect = {
-    icon = "collect",
-    tooltip = function(object)
-      return "Resource Collection "..(object.collect and "Enabled" or "Disabled")
-    end,
-    color = function(object)
-      return object.collect and {0,255,0} or {255,255,255}
-    end,
-    multi = {
+  if self.tree:getLevelData("action_collect") > 0 then
+    self.actions.collect = {
+      icon = "collect",
       tooltip = function(object)
-        return "Fleet Wide Resource Collection "..(object.collect and "Enabled" or "Disabled")
-      end,
-      color = function(object) return object.collect and {0,255,0} or {255,255,255} end,
-      exe = function(object)
-        object.collect = not object.collect
-        for _,tobject in pairs(self:getObjectsByOwner(0)) do
-          if tobject.collect ~= nil then
-            tobject.collect = object.collect
-            if object.collect == false then
-              tobject.target_object = nil
-              tobject.target = nil
-            end
-          end
-        end
-      end,
-    },
-    exe = function(object)
-      object.collect = not object.collect
-    end,
-  }
-
-  self.actions.cta = {
-    icon = "cta",
-    color = function(object) return {255,255,255} end,
-    multi = {
-      tooltip = function(object)
-        return "Call to Arms - Select all ships with weapons."
+        return "Resource Collection "..(object.collect and "Enabled" or "Disabled")
       end,
       color = function(object)
-        return #self:getObjectWithModifierByOwner("shoot",0) > 0 and {0,255,0} or {127,127,127}
+        return object.collect and {0,255,0} or {255,255,255}
       end,
-      exe = function(data_object)
-        for _,object in pairs(self.objects) do
-          object.selected = object.owner == 0 and object.shoot
-        end
+      multi = {
+        tooltip = function(object)
+          return "Fleet Wide Resource Collection "..(object.collect and "Enabled" or "Disabled")
+        end,
+        color = function(object) return object.collect and {0,255,0} or {255,255,255} end,
+        exe = function(object)
+          object.collect = not object.collect
+          for _,tobject in pairs(self:getObjectsByOwner(0)) do
+            if tobject.collect ~= nil then
+              tobject.collect = object.collect
+              if object.collect == false then
+                tobject.target_object = nil
+                tobject.target = nil
+              end
+            end
+          end
+        end,
+      },
+      exe = function(object)
+        object.collect = not object.collect
       end,
-    },
-  }
+    }
+  end
+
+  if self.tree:getLevelData("action_cta") > 0 then
+    self.actions.cta = {
+      icon = "cta",
+      color = function(object) return {255,255,255} end,
+      multi = {
+        tooltip = function(object)
+          return "Call to Arms - Select all ships with weapons."
+        end,
+        color = function(object)
+          return #self:getObjectWithModifierByOwner("shoot",0) > 0 and {0,255,0} or {127,127,127}
+        end,
+        exe = function(data_object)
+          for _,object in pairs(self.objects) do
+            object.selected = object.owner == 0 and object.shoot
+          end
+        end,
+      },
+    }
+  end
 
   self.actions.egg = {
     icon = "egg",
@@ -458,62 +487,65 @@ function mission:init()
 
     local upgrade_string = "upgrade_"..upgrade_type
 
-    self.action_icons[upgrade_string] = love.graphics.newImage("assets/actions/"..upgrade_string..".png")
+    local level,levelmax = self.tree:getLevelData(upgrade_string)
+    if level > 0 then
 
-    self.upgrades[upgrade_type] = 0
-    self.actions[upgrade_string] = {
-      icon = upgrade_string,
-      tooltip = function(object)
-        if self.upgrades_lock[upgrade_type] and self.upgrades_lock[upgrade_type] ~= object then
-          return "Another ship is already upgrading "..upgrade.display_name
-        elseif object.work then
-          return "Ship is currently upgrading "..upgrade.display_name
-        elseif self.upgrades[upgrade_type] < upgrade.max then
-          local newcost = self:multCost(upgrade.cost,upgrade.mult,self.upgrades[upgrade_type])
-          return "Upgrade "..upgrade.display_name..
-            " "..self.upgrades[upgrade_type].."/"..upgrade.max..
-            " ["..self:makeCostString(newcost).."]\n"..upgrade.info
-        else
-          return "Upgrade "..upgrade.display_name.." Maxed"
-        end
-      end,
-      color = function(object)
-        if self.upgrades_lock[upgrade_type] and self.upgrades_lock[upgrade_type] ~= object then
-          return {127,127,127}
-        elseif object.work then
-          return {255,255,0}
-        elseif self.upgrades[upgrade_type] < upgrade.max then
-          local newcost = self:multCost(upgrade.cost,upgrade.mult,self.upgrades[upgrade_type])
-          return self:canAffordObject({cost=newcost}) and {0,255,0} or {127,127,127}
-        else
-          return {127,127,127}
-        end
-      end,
-      exe = function(object)
-        if object.work or self.upgrades_lock[upgrade_type] then
-          -- TODO: add queue
-          -- research already being upgraded
-        else
-          self.upgrades_lock[upgrade_type] = object
-          local newcost = self:multCost(upgrade.cost,upgrade.mult,self.upgrades[upgrade_type])
-          if self.upgrades[upgrade_type] < upgrade.max and self:buyBuildObject(newcost) then
-            --TODO
-            --playSFX(self.sfx.researchStarted)
-            object.work = {
-              time = cheat_operation_cwal and 0.1 or upgrade.time*(1+(self.upgrades[upgrade_type]*upgrade.mult)),
-              callback = function(object)
-                self.upgrades[upgrade_type] = self.upgrades[upgrade_type] + 1
-                self.upgrades_lock[upgrade_type] = nil
-                --TODO
-                --playSFX(self.sfx.researchComplete)
-              end,
-            }
+      self.action_icons[upgrade_string] = love.graphics.newImage("assets/actions/"..upgrade_string..".png")
+
+      self.upgrades[upgrade_type] = 0
+      self.actions[upgrade_string] = {
+        icon = upgrade_string,
+        tooltip = function(object)
+          if self.upgrades_lock[upgrade_type] and self.upgrades_lock[upgrade_type] ~= object then
+            return "Another ship is already upgrading "..upgrade.display_name
+          elseif object.work then
+            return "Ship is currently upgrading "..upgrade.display_name
+          elseif self.upgrades[upgrade_type] < upgrade.max then
+            local newcost = self:multCost(upgrade.cost,upgrade.mult,self.upgrades[upgrade_type])
+            return "Upgrade "..upgrade.display_name..
+              " "..self.upgrades[upgrade_type].."/"..upgrade.max..
+              " ["..self:makeCostString(newcost).."]\n"..upgrade.info
+          else
+            return "Upgrade "..upgrade.display_name.." Maxed"
           end
-        end
-      end,
-    }
+        end,
+        color = function(object)
+          if self.upgrades_lock[upgrade_type] and self.upgrades_lock[upgrade_type] ~= object then
+            return {127,127,127}
+          elseif object.work then
+            return {255,255,0}
+          elseif self.upgrades[upgrade_type] < upgrade.max then
+            local newcost = self:multCost(upgrade.cost,upgrade.mult,self.upgrades[upgrade_type])
+            return self:canAffordObject({cost=newcost}) and {0,255,0} or {127,127,127}
+          else
+            return {127,127,127}
+          end
+        end,
+        exe = function(object)
+          if object.work or self.upgrades_lock[upgrade_type] then
+            -- TODO: add queue
+            -- research already being upgraded
+          else
+            self.upgrades_lock[upgrade_type] = object
+            local newcost = self:multCost(upgrade.cost,upgrade.mult,self.upgrades[upgrade_type])
+            if self.upgrades[upgrade_type] < upgrade.max and self:buyBuildObject(newcost) then
+              --TODO
+              --playSFX(self.sfx.researchStarted)
+              object.work = {
+                time = cheat_operation_cwal and 0.1 or upgrade.time*(1+(self.upgrades[upgrade_type]*upgrade.mult)),
+                callback = function(object)
+                  self.upgrades[upgrade_type] = self.upgrades[upgrade_type] + 1
+                  self.upgrades_lock[upgrade_type] = nil
+                  --TODO
+                  --playSFX(self.sfx.researchComplete)
+                end,
+              }
+            end
+          end
+        end,
+      }
+    end
   end
-
 
   self.build = {}
   for i,v in pairs(self.object_types) do
@@ -521,55 +553,60 @@ function mission:init()
   end
 
   for objtype,objbuildfn in pairs(self.build) do
-    self.action_icons["build_"..objtype] =
-      love.graphics.newImage("assets/objects_icon/"..objtype.."0.png")
 
-    self.actions["build_"..objtype] = {
-      type = objtype,
-      icon = "build_"..objtype,
-      color = function(object)
-        if object.work then
-          return {255,255,0}
-        else
-          local tobject = self.build[objtype]()
-          return self:canAffordObject(tobject) and {0,255,0} or {127,127,127}
-        end
-      end,
-      tooltip = function(object)
-        if object.work then
-          if object.work.build_type == nil then
-            return "You fund Lou's bug."
+    local build_name = "build_"..objtype
+
+    local level,levelmax = 0,0
+    if not self:ignoreBuild(build_name) then
+      level,levelmax = self.tree:getLevelData(build_name)
+    end
+
+    if level > 0 then
+      self.action_icons[build_name] =
+        love.graphics.newImage("assets/objects_icon/"..objtype.."0.png")
+      self.actions[build_name] = {
+        type = objtype,
+        icon = "build_"..objtype,
+        color = function(object)
+          if object.work then
+            return {255,255,0}
           else
+            local tobject = self.build[objtype]()
+            return self:canAffordObject(tobject) and {0,255,0} or {127,127,127}
+          end
+        end,
+        tooltip = function(object)
+          if object.work then
             return "Ship is currently building "..object.work.build_type
+          else
+            local tobject = self.build[objtype]()
+            return "Build "..tobject.display_name.." ["..self:makeCostString(tobject.cost).."]\n"
+              ..tobject.info
           end
-        else
-          local tobject = self.build[objtype]()
-          return "Build "..tobject.display_name.." ["..self:makeCostString(tobject.cost).."]\n"
-            ..tobject.info
-        end
-      end,
-      exe = function(object)
-        if object.work == nil then
-          local tobject = self.build[objtype]()
-          if self:buyBuildObject(tobject.cost) then
-            --TODO
-            --playSFX(self.sfx.shipStarted)
-            object.work = {
-              build_type = objtype,
-              time = cheat_operation_cwal and 0.1 or tobject.build_time*(1-self.upgrades.build_time*0.1),
-              callback = function(object)
-                local object = self:build_object(objtype,object)
-                table.insert(self.objects,object)
-                playSFX(self.sfx.buildShip)
-              end,
-            }
+        end,
+        exe = function(object)
+          if object.work == nil then
+            local tobject = self.build[objtype]()
+            if self:buyBuildObject(tobject.cost) then
+              --TODO
+              --playSFX(self.sfx.shipStarted)
+              object.work = {
+                build_type = objtype,
+                time = cheat_operation_cwal and 0.1 or tobject.build_time*(1-(self.upgrades.build_time or 0)*0.1),
+                callback = function(object)
+                  local object = self:build_object(objtype,object)
+                  table.insert(self.objects,object)
+                  playSFX(self.sfx.buildShip)
+                end,
+              }
+            end
+          else
+            -- TODO: add queue
+            -- unit already being built
           end
-        else
-          -- TODO: add queue
-          -- unit already being built
-        end
-      end,
-    }
+        end,
+      }
+    end
   end
 
   self.objects = {}
@@ -595,6 +632,15 @@ function mission:init()
   table.insert(self.objects,self:build_object("habitat",{position=self.start.position,owner=0}))
 
 end -- END OF INIT
+
+function mission:ignoreBuild(name)
+  for i,v in pairs(self._ignoreBuild) do
+    if v == name then
+      return true
+    end
+  end
+  return false
+end
 
 function mission:multCost(cost,mult,level)
   local newcost = {}
@@ -1275,7 +1321,7 @@ function mission:draw()
         local y = object.position.y-self.camera.y+love.graphics.getHeight()/2
 
         -- don't forget minimap
-        local fow = self.fow_mult*(object.fow or 1)*(1+self.upgrades.fow*0.25)
+        local fow = self.fow_mult*(object.fow or 1)*(1+(self.upgrades.fow or 0)*0.25)
 
         if settings:read("fow_quality") == "img_canvas" then
           love.graphics.draw(self.fow_img,x,y,
@@ -1609,7 +1655,7 @@ function mission:drawMinimap()
       love.graphics.setColor(255,255,255,63)
 
       -- don't forget canvas mask
-      local fow = self.fow_mult*(object.fow or 1)*(1+self.upgrades.fow*0.25)
+      local fow = self.fow_mult*(object.fow or 1)*(1+(self.upgrades.fow or 0)*0.25)
 
       love.graphics.circle("fill",
         x+object.position.x/scale,y+object.position.y/scale,
@@ -1810,7 +1856,7 @@ function mission:updateMission(dt)
     end
 
     if object.crew_generate then
-      local amount = object.crew_generate*dt*(1+self.upgrades.crew*0.25)
+      local amount = object.crew_generate*dt*(1+(self.upgrades.crew or 0)*0.25)
       self.score:add("born",amount)
       self.resources.crew = self.resources.crew + amount
       self.resources.crew_delta = self.resources.crew_delta + amount/dt
@@ -1819,7 +1865,7 @@ function mission:updateMission(dt)
     if object.jump and object.jump_process then
       self.jump = math.min(self.jump_max,
         math.max(0,
-          self.jump - dt*object.jump*(1+self.upgrades.jump*0.1)))
+          self.jump - dt*object.jump*(1+(self.upgrades.jump or 0)*0.1)))
       if self.jump <= 0 and self.jump_inform ~= true then
         self.jump_inform = true
         playSFX(self.sfx.jumpReady)
@@ -1868,8 +1914,8 @@ function mission:updateMission(dt)
         else
           -- yo momma is a ternary
           local damage = object.owner == 0 and
-            (bullet.damage*(1-self.upgrades.armor*0.1)) or
-            (bullet.damage*(1+self.upgrades.damage*0.1))
+            (bullet.damage*(1-(self.upgrades.armor or 0)*0.1)) or
+            (bullet.damage*(1+(self.upgrades.damage or 0)*0.1))
 
           object.health.current = math.max(0,object.health.current-damage)
           object.in_combat = 1
@@ -1904,7 +1950,7 @@ function mission:updateMission(dt)
       end
       object.shoot.reload = object.shoot.reload - dt
       -- don't forget the range for movement
-      local newrange = object.owner == 0 and object.shoot.range*(1+self.upgrades.range*0.1) or object.shoot.range
+      local newrange = object.owner == 0 and object.shoot.range*(1+(self.upgrades.range or 0)*0.1) or object.shoot.range
       if object.shoot.reload <= 0 and object.target_object and
         object.target_object.owner ~= object.owner and object.target_object.health and
         self:distance(object.position,object.target_object.position) < newrange then
@@ -1926,7 +1972,7 @@ function mission:updateMission(dt)
     end
 
     if object.refine and object.material_gather then
-      local amount = object.material_gather*dt*(1+self.upgrades.refine*0.1)
+      local amount = object.material_gather*dt*(1+(self.upgrades.refine or 0)*0.1)
       local remain = self.resources.material_cargo - self.resources.material
       if amount > remain then
         amount = remain
@@ -1947,7 +1993,7 @@ function mission:updateMission(dt)
 
       local amount_to_repair = math.min(
         (object.health.max - object.health.current),
-        object.health.max/10*(1+self.upgrades.repair*0.25)
+        object.health.max/10*(1+(self.upgrades.repair or 0)*0.25)
       )*dt
 
       if amount_to_repair < self.resources.material then
@@ -2010,7 +2056,7 @@ function mission:updateMission(dt)
           local idelta = resource_type .. "_delta"
           local icargo = resource_type .. "_cargo"
           if object[igather] and object.target_object[isupply] then
-            local upgrade = dat.upgrade and (self.upgrades[dat.upgrade]*0.25) or 0
+            local upgrade = dat.upgrade and ((self.upgrades[dat.upgrade] or 0)*0.25) or 0
             local amount = object[igather]*dt*(1+upgrade)
             if self.resources[resource_type] ~= self.resources[icargo] then
               if amount + self.resources[resource_type] > self.resources[icargo] then
@@ -2083,14 +2129,14 @@ function mission:updateMission(dt)
       if object.target_object then
         if object.shoot and object.target_object.owner ~= object.owner then
           -- don't forget the range for shooting
-          range = object.owner == 0 and object.shoot.range*(1+self.upgrades.range*0.1) or object.shoot.range
+          range = object.owner == 0 and object.shoot.range*(1+(self.upgrades.range or 0)*0.1) or object.shoot.range
         else
           range = 48
         end
       end
       if object.speed then
         if distance > range then
-          local speed = object.owner == 0 and object.speed*(1+self.upgrades.speed*0.1) or object.speed
+          local speed = object.owner == 0 and object.speed*(1+(self.upgrades.speed or 0)*0.1) or object.speed
           if object.target.speed_mult then
             speed = speed * object.target.speed_mult
           end

@@ -126,6 +126,7 @@ function state:draw()
     "[lshift+] +|- .. change [max]level\n"..
     "c .. connect selected node\n"..
     "e .. edit selected node\n"..
+    "r .. rename selected node interal\n"..
     "d .. delete node\n",32,32)
 
   if self.chooser then
@@ -151,6 +152,19 @@ function state:keypressed(key)
         self.tree[self.selected].x = self.tree[self.selected].x - 1
       elseif key == "right" then
         self.tree[self.selected].x = self.tree[self.selected].x + 1
+      elseif key == "r" then
+        self._ignore_textinput_single = true
+        self.chooser = libs.stringchooser.new{
+          prompt = "internal:",
+          string = self.tree[self.selected].name,
+          callback = function(string)
+            self.chooser = nil
+            local obj = self.tree[self.selected]
+            self.tree[self.selected] = nil
+            obj.name = string
+            self.tree[string] = obj
+          end,
+        }
       end
       if love.keyboard.isDown("lshift") then
         if key == "-" then
@@ -176,7 +190,9 @@ function state:keypressed(key)
         prompt = "icon:",
         callback = function(asset)
           --code
+          local asset_tab = asset:split("/")
           self.chooser = libs.stringchooser.new{
+            string = asset_tab[#asset_tab]:sub(1,-5) or "",
             prompt = "internal:",
             callback = function(name)
               --code
@@ -190,9 +206,10 @@ function state:keypressed(key)
                 cost = 0,
                 level = 0,
                 maxlevel = 1,
-                asset = asset:split("/"),
+                asset = asset_tab,
               }
               self.tree[name] = node
+              self.selected = name
             end
           }
         end,

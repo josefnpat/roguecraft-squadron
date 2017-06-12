@@ -14,7 +14,7 @@ function assetchooser.new(init)
   self.textinput = assetchooser.textinput
   self.keypressed = assetchooser.keypressed
 
-  self._asset = ""
+  self._asset = "assets/"
 
   return self
 
