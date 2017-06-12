@@ -49,6 +49,7 @@ function state:draw()
   love.graphics.setLineWidth(8)
 
   for i,v in pairs(self.tree) do
+    local found_child = false
     local children_string = "Children:\n"
     for _,child in pairs(v.children) do
       local target = self.tree[child.name]
@@ -57,11 +58,14 @@ function state:draw()
           v.x+cx,v.y+cy,
           target.x+cx,target.y+cy)
         children_string = children_string .. child.name .. "\n"
+        found_child = true
       elseif child.name then
         self.tree[child.name] = nil
       end
     end
-    love.graphics.print(children_string,v.x+cx,v.y+cy+self.tree_bg:getHeight()/2)
+    if found_child then
+      love.graphics.print(children_string,v.x+cx,v.y+cy+self.tree_bg:getHeight()/2)
+    end
   end
 
   love.graphics.setLineWidth(old_line_width)
