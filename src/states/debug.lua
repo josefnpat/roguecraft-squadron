@@ -6,6 +6,15 @@ function state:init()
 
   self.menu:add(
     function()
+      return "Debug mode ["..(debug_mode and "Enabled" or "Disabled").."]"
+    end,
+    function()
+      debug_mode = not debug_mode
+    end
+  )
+
+  self.menu:add(
+    function()
       if love.filesystem.exists("demo.ogv") then
         return "Demo video [Delete]"
       else
