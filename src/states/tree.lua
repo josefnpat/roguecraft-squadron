@@ -116,12 +116,12 @@ function state:draw()
 
     local font = love.graphics.getFont()
 
-    love.graphics.printf(v.name,
+    dropshadowf(v.name,
       x - self.tree_bg:getWidth()/2,
       y - self.icon_bg:getHeight()/2-font:getHeight(),
       self.tree_bg:getWidth(),"center")
 
-    love.graphics.printf("["..v.level.."/"..v.maxlevel.."]",
+    dropshadowf("["..v.level.."/"..v.maxlevel.."]",
       x - self.tree_bg:getWidth()/2,
       y + self.icon_bg:getHeight()/2,
       self.tree_bg:getWidth(),"center")
@@ -161,6 +161,7 @@ function state:draw()
       "c .. connect selected node\n"..
       "e .. edit selected node\n"..
       "r .. rename selected node interal\n"..
+      "t .. change title\n"..
       "d .. delete node\n",32,32)
 
     if self.chooser then
@@ -219,10 +220,6 @@ end
 
 function state:keypressed(key)
 
-  if key == "return" then
-    libs.hump.gamestate.switch(previousState)
-  end
-
   if debug_mode then
     -- NO YOU'RE A SCREWY EDITOR
     if key == "escape" then
@@ -252,6 +249,16 @@ function state:keypressed(key)
               self.tree[self.selected] = nil
               obj.name = string
               self.tree[string] = obj
+            end,
+          }
+        elseif key == "t" then
+          self._ignore_textinput_single = true
+          self.chooser = libs.stringchooser.new{
+            prompt = "title:",
+            string = self.tree[self.selected].title,
+            callback = function(string)
+              self.chooser = nil
+              self.tree[self.selected].title = string
             end,
           }
         end
@@ -330,6 +337,10 @@ function state:keypressed(key)
         self.move = nil
         self.selected = nil
       end
+    end
+  else
+    if key == "return" then
+      libs.hump.gamestate.switch(previousState)
     end
   end
 end
