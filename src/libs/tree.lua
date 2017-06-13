@@ -32,9 +32,6 @@ function tree:saveData()
   local f,err = io.open("src/assets/tree.json","w+")
   f:write(raw)
   f:close()
-  os.execute("cat src/assets/tree.json | python -mjson.tool > /tmp/tree.json")
-  os.execute("cat /tmp/tree.json > src/assets/tree.json")
-
 end
 
 function tree:loadGame()
