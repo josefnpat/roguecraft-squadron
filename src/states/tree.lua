@@ -304,10 +304,10 @@ function state:mousepressed(x,y,b)
   end
   if not self.window and self.selected then
     self.window = libs.window.new{
+      w=32*20,
       title=self.tree[self.selected].title or "Research",
       text=self.tree[self.selected].desc,
       color=self:getColorByNode(self.tree[self.selected]),
-      image = self._icon_cache[self.selected],
       buttons = {
         {
           text=function()
@@ -340,9 +340,11 @@ function state:mousepressed(x,y,b)
         }
       },
     }
+
     self.window.x = (love.graphics.getWidth()-self.window.w)/2
     self.window.y = (love.graphics.getHeight()-self.window.h)/2
 
+    self.window:addGuide(self.tree[self.selected].info,self._icon_cache[self.selected])
 
   end
 end
