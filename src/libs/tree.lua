@@ -18,6 +18,12 @@ end
 function tree:loadData()
   local raw = love.filesystem.read("assets/tree.json")
   self._data = libs.json.decode(raw)
+  for i,v in pairs(self._data) do
+    assert(v.desc)
+    assert(v.name)
+    assert(v.info)
+    assert(v.title)
+  end
 end
 
 function tree:saveData()
