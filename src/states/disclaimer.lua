@@ -51,7 +51,6 @@ end
 function disclaimer:getouttahere()
   libs.hump.gamestate.switch(settings:read("tree_points") > 0 and states.tree or states.mission)
   previousState = states.mission
-  states.mission:init()
 end
 
 return disclaimer

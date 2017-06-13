@@ -12,6 +12,9 @@ function tree.new(init)
 
   self.getLevelData = tree.getLevelData
 
+  self:loadData()
+  self:loadGame()
+
   return self
 end
 

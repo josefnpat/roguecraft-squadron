@@ -4,7 +4,9 @@ function state:init()
 
   self.tree = {}
 
-  self.tree_class = libs.tree.new()
+  --TODO: NOT HACK
+  g_tree = g_tree or libs.tree.new()
+  self.tree_class = g_tree
 
   self.icon_bg = love.graphics.newImage("assets/hud/icon_bg.png")
   self.tree_bg = love.graphics.newImage("assets/hud/tree_bg.png")

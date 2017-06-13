@@ -1,6 +1,7 @@
 local mission = {}
 
-function mission:init()
+--TODO: LOL HACK USE INIT YOU BASTARD!
+function mission:enter()
 
   self._ignoreBuild = {
     "build_asteroid",
@@ -17,9 +18,12 @@ function mission:init()
     "build_jumpscrambler",
   }
 
-  self.tree = libs.tree.new()
-  self.tree:loadData()
-  self.tree:loadGame()
+  --TODO: NOT HACK
+  g_tree = g_tree or libs.tree.new()
+  self.tree = g_tree
+
+  --self.tree:loadData()
+  --self.tree:loadGame()
 
   self.enemy_types = {
     {type="enemy_fighter",q=4},
@@ -667,10 +671,6 @@ function mission:build_object(object_name,parent)
   end
   obj.actions = tactions
   return obj
-end
-
-function mission:enter()
-
 end
 
 function mission:hasNextLevel()
