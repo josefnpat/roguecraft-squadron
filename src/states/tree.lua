@@ -11,7 +11,7 @@ function state:init()
 
   self.colors = {
 
-    prereq_missing = {127,0,0},
+    prereq_missing = {191,0,0},
     cant_afford = {255,0,0},
     max = {0,255,0},
     not_researched = {127,127,127},
@@ -75,6 +75,7 @@ function state:draw()
     for _,child in pairs(v.children) do
       local target = self.tree[child.name]
       if target then
+        love.graphics.setColor(self:getColorByNode(target))
         love.graphics.line(
           v.x+cx,v.y+cy,
           target.x+cx,target.y+cy)
@@ -84,6 +85,7 @@ function state:draw()
         self.tree[child.name] = nil
       end
     end
+    love.graphics.setColor(255,255,255)
     if found_child and debug_mode then
       love.graphics.print(children_string,v.x+cx,v.y+cy+self.tree_bg:getHeight()/2)
     end
@@ -116,12 +118,12 @@ function state:draw()
 
     local font = love.graphics.getFont()
 
-    dropshadowf(v.name,
+    dropshadowf(v.title,
       x - self.tree_bg:getWidth()/2,
       y - self.icon_bg:getHeight()/2-font:getHeight(),
       self.tree_bg:getWidth(),"center")
 
-    dropshadowf("["..v.level.."/"..v.maxlevel.."]",
+    dropshadowf(v.cost.." Resarch Points ["..v.level.."/"..v.maxlevel.."]",
       x - self.tree_bg:getWidth()/2,
       y + self.icon_bg:getHeight()/2,
       self.tree_bg:getWidth(),"center")
@@ -351,8 +353,8 @@ function state:mousepressed(x,y,b)
     local cx,cy = self:getOffset()
 
     if self.move then
-      self.tree[self.move].x = math.floor((x - cx)/32)*32
-      self.tree[self.move].y = math.floor((y - cy)/32)*32
+      self.tree[self.move].x = math.floor((x - cx + 16)/32)*32
+      self.tree[self.move].y = math.floor((y - cy + 16)/32)*32
       self.move = nil
     else
       local found = false
