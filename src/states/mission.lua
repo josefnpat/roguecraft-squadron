@@ -164,7 +164,7 @@ function mission:init()
   self.map_bg = love.graphics.newImage("assets/hud/map_bg.png")
   self.icon_bg = love.graphics.newImage("assets/hud/icon_bg.png")
   self.camera = libs.hump.camera(love.graphics.getWidth()/2,love.graphics.getHeight()/2)
-  self.camera_speed = 300
+  self.camera_speed = 500
   self.camera.vertical_mouse_move = 1/16.875
   self.camera.horizontal_mouse_move = 1/30
 
