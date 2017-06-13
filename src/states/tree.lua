@@ -10,10 +10,12 @@ function state:init()
   self.tree_bg = love.graphics.newImage("assets/hud/tree_bg.png")
 
   self.colors = {
-    prereq_missing = {255,0,0},
-    prereq_satisfied = {127,255,127},
-    notmax = {0,255,0},
-    max = {0,127,0},
+
+    prereq_missing = {127,0,0},
+    cant_afford = {255,0,0},
+    max = {0,255,0},
+    not_researched = {127,127,127},
+    partially_researched = {127,255,127},
     selected = {255,255,255},
     unselected = {127,127,127},
   }
@@ -21,12 +23,14 @@ function state:init()
   self.tree_class:loadData()
   self.tree = self.tree_class._data
 
+  self._x,self._y = 0,0
+
   self._icon_cache = {}
 
 end
 
 function state:getOffset()
-  return love.graphics.getWidth()/2,love.graphics.getHeight()/2
+  return love.graphics.getWidth()/2+self._x,love.graphics.getHeight()/2+self._y
 end
 
 function state:textinput(t)
@@ -105,11 +109,12 @@ function state:draw()
       y + self.icon_bg:getHeight()/2,
       self.tree_bg:getWidth(),"center")
 
-    if debug_mode then
-      love.graphics.print("x:"..v.x.." y:"..v.y,x,y-self.tree_bg:getHeight()/2)
-    end
-
     love.graphics.setColor(255,255,255)
+    if debug_mode then
+      love.graphics.print("x:"..v.x.." y:"..v.y.." cost:"..v.cost,
+        x-self.tree_bg:getWidth()/2,
+        y-self.tree_bg:getHeight()/2)
+    end
     dropshadowf("Spend your research points to continue.",0,32,love.graphics.getWidth(),"center")
 
     if self.window then
@@ -135,6 +140,7 @@ function state:draw()
       "m .. move selected node\n"..
       "↑→↓← .. nudge selected node\n"..
       "[lshift+] +|- .. change [max]level\n"..
+      "page[up|down] .. change cost\n"..
       "c .. connect selected node\n"..
       "e .. edit selected node\n"..
       "r .. rename selected node interal\n"..
@@ -148,22 +154,49 @@ function state:draw()
 end
 
 function state:getColorByNode(v)
-  if v.level == v.maxlevel then
-    return self.colors.max
-  elseif settings:read("tree_points") >= v.cost then
-    if v.level == 0 then
-      return self.colors.prereq_satisfied
-    else
-      return self.colors.notmax
-    end
-  else
+  if not self:havePrereq(v) then
     return self.colors.prereq_missing
   end
+  if settings:read("tree_points") < v.cost then
+    return self.colors.cant_afford
+  end
+  if v.level == v.maxlevel then
+    return self.colors.max
+  end
+  if v.level == 0 then
+    return self.colors.not_researched
+  end
+  return self.colors.partially_researched
+end
+
+function state:havePrereq(node)
+  for i,v in pairs(self.tree) do
+    for j,w in pairs(v.children) do
+      if node.name == w.name then
+        return v.level > 0
+      end
+    end
+  end
+  return true
 end
 
 function state:update(dt)
   if self.window then
     self.window:update(dt)
+  else
+    if love.keyboard.isDown("left") then
+      self._x = self._x + 500*dt
+    end
+    if love.keyboard.isDown("right") then
+      self._x = self._x - 500*dt
+    end
+    if love.keyboard.isDown("up") then
+      self._y = self._y + 500*dt
+    end
+    if love.keyboard.isDown("down") then
+      self._y = self._y - 500*dt
+    end
+
   end
   if settings:read("tree_points") <= 0 then
     libs.hump.gamestate.switch(states.mission)
@@ -202,6 +235,11 @@ function state:keypressed(key)
               self.tree[string] = obj
             end,
           }
+        end
+        if key == "pageup" then
+          self.tree[self.selected].cost = self.tree[self.selected].cost + 1
+        elseif key == "pagedown" then
+          self.tree[self.selected].cost = self.tree[self.selected].cost - 1
         end
         if love.keyboard.isDown("lshift") then
           if key == "-" then
@@ -283,8 +321,8 @@ function state:mousepressed(x,y,b)
     local cx,cy = self:getOffset()
 
     if self.move then
-      self.tree[self.move].x = x - cx
-      self.tree[self.move].y = y - cy
+      self.tree[self.move].x = math.floor((x - cx)/32)*32
+      self.tree[self.move].y = math.floor((y - cy)/32)*32
       self.move = nil
     else
       local found = false
@@ -302,7 +340,7 @@ function state:mousepressed(x,y,b)
       end
     end
   end
-  if not self.window and self.selected then
+  if not self.window and self.selected and not debug_mode then
     self.window = libs.window.new{
       w=32*20,
       title=self.tree[self.selected].title or "Research",
@@ -312,7 +350,9 @@ function state:mousepressed(x,y,b)
         {
           text=function()
             if self.tree[self.selected].level < self.tree[self.selected].maxlevel then
-              if settings:read("tree_points") >= self.tree[self.selected].cost then
+              if not self:havePrereq(self.tree[self.selected]) then
+                return "MISSING PREREQ ["..(self.tree[self.selected].cost).."]"
+              elseif settings:read("tree_points") >= self.tree[self.selected].cost then
                 return "RESEARCH ["..(self.tree[self.selected].cost).."]"
               else
                 return "NOT ENOUGH RP ["..(self.tree[self.selected].cost).."]"
@@ -323,9 +363,12 @@ function state:mousepressed(x,y,b)
           end,
           callback = function()
             if settings:read("tree_points") >= self.tree[self.selected].cost and
-              self.tree[self.selected].level < self.tree[self.selected].maxlevel then
+              self.tree[self.selected].level < self.tree[self.selected].maxlevel and
+              self:havePrereq(self.tree[self.selected]) then
+
               self.tree[self.selected].level = self.tree[self.selected].level + 1
               settings:write("tree_points",settings:read("tree_points")-self.tree[self.selected].cost)
+
             end
             self.window = nil
             self.selected = nil
