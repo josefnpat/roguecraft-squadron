@@ -11,6 +11,7 @@ settings:define("sfx_vol",1)
 settings:define("music_vol",1)
 settings:define("tutorial",true)
 settings:define("fow_quality","img_canvas")
+settings:define("tree_points",0)
 
 game_name = "RogueCraft Squadron"
 git_hash,git_count = "missing git.lua",-1

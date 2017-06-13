@@ -154,7 +154,10 @@ function window:draw()
       love.graphics.setColor(obj.button.hover and {255,255,255,127} or {127,127,127,127})
       love.graphics.rectangle("fill",obj.area.x,obj.area.y+coffset,obj.area.w,obj.area.h)
       love.graphics.setColor(255,255,255)
-      dropshadow(obj.button.text,obj.area.x+8,obj.area.y+coffset+(obj.area.h-tfont:getHeight())/2)
+
+      local btext = type(obj.button.text)=="function" and obj.button.text() or tostring(obj.button.text)
+
+      dropshadow(btext,obj.area.x+8,obj.area.y+coffset+(obj.area.h-tfont:getHeight())/2)
     end
     coffset = coffset + self:_buttonHeight()
   end
@@ -232,9 +235,12 @@ function window:_buttonAreas()
   local areas = {}
   local button_offset = 0
   for ibutton,button in pairs(self.buttons) do
+
+    local btext = type(button.text)=="function" and button.text() or tostring(button.text)
+
     local tx = self.x+32 + button_offset
     local ty = self.y
-    local tw = tfont:getWidth(button.text)+16
+    local tw = tfont:getWidth(btext)+16
     local th = 32
     table.insert(areas,{area={x=tx,y=ty,w=tw,h=th},button=button})
     button_offset = button_offset + tw + 8

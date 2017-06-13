@@ -49,7 +49,7 @@ function disclaimer:keypressed(key)
 end
 
 function disclaimer:getouttahere()
-  libs.hump.gamestate.switch(states.mission) states.mission:init()
+  libs.hump.gamestate.switch(states.tree) states.mission:init()
 end
 
 return disclaimer

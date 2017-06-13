@@ -8,6 +8,10 @@ function state:enter()
   self.escape_delay_max = 0.5
   self.fade_dt = 1
   self.fade_t = 1
+
+  -- TODO, SCALE THIS TO SCORE
+  local tree_points = settings:read("tree_points")
+  settings:write("tree_points",tree_points+5)
 end
 
 function state:update(dt)
