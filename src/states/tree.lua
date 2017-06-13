@@ -27,10 +27,27 @@ function state:init()
 
   self._icon_cache = {}
 
+  self.clamp = {xmin=0,ymin=0,xmax=0,ymax=0}
+
+  for i,v in pairs(self.tree) do
+    self.clamp.xmax = v.x > self.clamp.xmax and v.x or self.clamp.xmax
+    self.clamp.xmin = v.x < self.clamp.xmin and v.x or self.clamp.xmin
+    self.clamp.ymax = v.y > self.clamp.ymax and v.y or self.clamp.ymax
+    self.clamp.ymin = v.y < self.clamp.ymin and v.y or self.clamp.ymin
+  end
+  -- lol don't ask ffs inverted camera i hate you
+  self.clamp.ymin,self.clamp.ymax = -self.clamp.ymax,-self.clamp.ymin
+
 end
 
 function state:getOffset()
-  return love.graphics.getWidth()/2+self._x,love.graphics.getHeight()/2+self._y
+  if self._x > self.clamp.xmax then self._x = self.clamp.xmax end
+  if self._x < self.clamp.xmin then self._x = self.clamp.xmin end
+  if self._y > self.clamp.ymax then self._y = self.clamp.ymax end
+  if self._y < self.clamp.ymin then self._y = self.clamp.ymin end
+  return
+    love.graphics.getWidth()/2+self._x,
+    love.graphics.getHeight()/2+self._y
 end
 
 function state:textinput(t)
