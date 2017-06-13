@@ -34,6 +34,7 @@ level.make_tutorial = function()
     end,
   }
 
+  --[[
   t:add{
     objtext = "We have detected asteroids in this system. We should use the Drydock to build some Mining Rigs to mine them.",
     helptext = "Select the command ship, and use the Build Drydock action if you haven't already. Select the Drydock, and use the Build Mining Rig action. Select the Mining Rig, and right mouse click on an Asteroid.",
@@ -53,6 +54,7 @@ level.make_tutorial = function()
       return ship and ship.refine
     end,
   }
+  --]]
 
   t:add{
     objtext = "The enemy has set up a Jump Scrambler in this system, which prevents us from jumping to the next system.",

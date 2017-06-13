@@ -66,6 +66,7 @@ level.make_tutorial = function()
     complete = libs.tutorial.wait.camera_moved,
   }
 
+  --[[
   t:add{
     objtext = "Our command ship has been damaged from our long travel. I suggest we tell the crew to repair it.",
     helptext = "Select the command ship, and toggle the \"Repair\" action.",
@@ -75,6 +76,8 @@ level.make_tutorial = function()
     end,
     helpguides = {"object_command","action_repair"},
   }
+  --]]
+
   t:add{
     objtext = "In order to survive, we will need to collect resources. We should search this system for something to gather.",
     helptext = "Move around the map with by moving your mouse to the edge of the screen, or using WASD/Arrow Keys. Find scrap.",
@@ -83,6 +86,7 @@ level.make_tutorial = function()
     end,
     helpguides = {"object_scrap"},
   }
+
   t:add{
     objtext = "Excellent. We found some scrap. We should use our command ship to build a salvager to gather it.",
     helptext = "Select the command ship, and use the \"Build Salvager\" action in the upper right corner.",
