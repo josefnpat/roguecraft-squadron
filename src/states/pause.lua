@@ -13,7 +13,8 @@ function state:init()
   end)
 
   self.menu:add("Surrender",function()
-    libs.hump.gamestate.switch(states.lose)
+    states.gameover.win = false
+    libs.hump.gamestate.switch(states.gameover)
   end)
 
 end

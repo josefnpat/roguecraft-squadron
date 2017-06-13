@@ -1781,7 +1781,8 @@ function mission:updateMission(dt)
         self.time = 0
         self:nextLevel()
       else
-        libs.hump.gamestate.switch(states.win)
+        states.gameover.win = true
+        libs.hump.gamestate.switch(states.gameover)
       end
     end
   end
@@ -2226,7 +2227,8 @@ function mission:updateMission(dt)
     self.gameover_dt = self.gameover_dt or 0
     self.gameover_dt = self.gameover_dt + dt
     if self.gameover_dt >= self.gameover_t then
-      libs.hump.gamestate.switch(states.lose)
+      states.gameover.win = false
+      libs.hump.gamestate.switch(states.gameover)
     end
   end
 

@@ -1,7 +1,12 @@
 local state = {}
 
+function state:init()
+  self.text_win = "You have defeated the alien invasion!\nYou win!\n\n"
+  self.text_lose = "You and your crew have been lost to the void of space.\nYou Lose.\n\n"
+end
+
 function state:enter()
-  self.text = "You and your crew have been lost to the void of space.\nYou Lose.\n\n"..
+  self.text = (self.win and self.text_win or self.text_lose)..
     states.mission.score:render()
 
   self.escape_delay_timer = 0
@@ -21,14 +26,18 @@ end
 
 function state:keypressed(key)
   if self.escape_delay_timer > self.escape_delay_max then
-    libs.hump.gamestate.switch(states.menu)
+    state:getoutofhere()
   end
 end
 
 function state:mousereleased(x,y,b)
   if self.escape_delay_timer > self.escape_delay_max then
-    libs.hump.gamestate.switch(states.menu)
+    state:getoutofhere()
   end
+end
+
+function state:getoutofhere()
+  libs.hump.gamestate.switch(self.win and states.credits or states.menu)
 end
 
 function state:draw()
