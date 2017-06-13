@@ -29,6 +29,16 @@ function mainmenu:enter()
     previousState = states.menu
   end)
 
+  self.menum:add(
+    function()
+      return "Tech Tree ["..settings:read("tree_points").."]"
+    end,
+    function()
+      libs.hump.gamestate.switch(states.tree)
+      previousState = states.menu
+    end
+  )
+
   if self.debug_menu_enabled then
     self.menum:add("Debug",function()
       libs.hump.gamestate.switch(states.debug)

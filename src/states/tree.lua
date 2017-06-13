@@ -220,7 +220,7 @@ end
 function state:keypressed(key)
 
   if key == "return" then
-    libs.hump.gamestate.switch(states.mission)
+    libs.hump.gamestate.switch(previousState)
   end
 
   if debug_mode then
