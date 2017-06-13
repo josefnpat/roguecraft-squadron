@@ -132,7 +132,7 @@ function state:draw()
         x-self.tree_bg:getWidth()/2,
         y-self.tree_bg:getHeight()/2)
     end
-    dropshadowf("Spend your research points to continue.",0,32,love.graphics.getWidth(),"center")
+    dropshadowf("Spend your research points and press `return` to continue.",0,32,love.graphics.getWidth(),"center")
 
     if self.window then
       love.graphics.setColor(0,0,0,127)
@@ -215,12 +215,14 @@ function state:update(dt)
     end
 
   end
-  if settings:read("tree_points") <= 0 then
-    libs.hump.gamestate.switch(states.mission)
-  end
 end
 
 function state:keypressed(key)
+
+  if key == "return" then
+    libs.hump.gamestate.switch(states.mission)
+  end
+
   if debug_mode then
     -- NO YOU'RE A SCREWY EDITOR
     if key == "escape" then
