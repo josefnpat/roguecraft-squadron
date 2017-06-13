@@ -2352,7 +2352,7 @@ function mission:updateMission(dt)
 end
 
 function mission:isTurning(object)
-  return math.abs(object.angle%math.pi-object.shown_angle%math.pi) > 0.1
+  return math.abs(object.angle%math.pi-object.shown_angle%math.pi) > 0.2
 end
 
 function mission:clampCamera()
