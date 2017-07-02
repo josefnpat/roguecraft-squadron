@@ -1,0 +1,810 @@
+msgid "menu.new_game"
+msgstr "New Game"
+
+msgid "menu.options"
+msgstr "Options"
+
+msgid "menu.tech_tree"
+msgstr "Tech Tree [%{tree_points}]"
+
+msgid "menu.debug"
+msgstr "Debug"
+
+msgid "menu.credits"
+msgstr "Credits"
+
+msgid "menu.exit"
+msgstr "Exit"
+
+msgid "menu.survey.title"
+msgstr "Help us out!"
+
+msgid "menu.survey.body"
+msgstr "Thank you for playing RogueCraft Squadron!\n\nWe're a very small team here at Missing Sentinel Software, and we appreciate any feedback we can get, good or bad!\n\nWould you be willing to take a short survey?"
+
+msgid "menu.survey.yes"
+msgstr "SURE!"
+
+msgid "menu.survey.no"
+msgstr "NO THANKS"
+
+msgid "menu.difficulty.easy"
+msgstr "Ensign (Easy)"
+
+msgid "menu.difficulty.medium"
+msgstr "Captain (Medium)"
+
+msgid "menu.difficulty.hard"
+msgstr "Colonel (Hard)"
+
+msgid "menu.difficulty.impossible"
+msgstr "Admiral (Impossible)"
+
+msgid "menu.debug_enabled"
+msgstr "What is love? Baby don't hurt me."
+
+msgid "credits.title"
+msgstr "CREDITS"
+
+msgid "credits.playtesters"
+msgstr "Playtesters"
+
+msgid "credits.ibtwitch"
+msgstr "Twitch Internet Buck Millionaires"
+
+msgid "credits.twitch"
+msgstr "Twitch peeps"
+
+msgid "credits.thanks"
+msgstr "Thanks for playing!"
+
+msgid "disclaimer.pre"
+msgstr "DISCLAIMER:\nRogueCraft Squadron is still in active development and may not represent the final product."
+
+msgid "disclaimer.1"
+msgstr "In the event you are mauled by bears, I am very sorry. Please avoid that if you can."
+
+msgid "disclaimer.2"
+msgstr "Please do not try to control the universe with your mind. We've tried that, and it didn't seem to work."
+
+msgid "disclaimer.3"
+msgstr "By playing this game we will suggest that you will be \"that person\" who \"thought it was cool before anyone else,\" but we cannot promise that it will bring fame or fortune."
+
+msgid "disclaimer.4"
+msgstr "I must not fear. Fear is the mind-killer. Fear is the little-death that brings total obliteration. I will face my fear. I will permit it to pass over me and through me. And when my fear is gone I will turn and face fear's path, and only I will remain."
+
+msgid "disclaimer.5"
+msgstr "In case you listen to the new Blank Banshee album please tell @eternalnightpro how much you love it. He is a huge fan of Vaporwave."
+
+msgid "disclaimer.6"
+msgstr "If you ever confused Dutch with a drunk version of German, please do not hesitate to contact us. We can help you."
+
+msgid "disclaimer.7"
+msgstr "Prolonged exposure to premature assets may cause an irreversible quantity of birthdays for those afflicted."
+
+msgid "disclaimer.8"
+msgstr "I have been informed on many occasions that \"this is why you shouldn't be allowed to make decisions.\" Ignore the voices; do the right thing."
+
+msgid "disclaimer.9"
+msgstr "In case your artist is exposed to technical details, keep calm. The attackers can be stopped by removing the head, or destroying the brain."
+
+msgid "disclaimer.10"
+msgstr "In the event a programmer attempts to substitute art for programmer art in a demonstration or release, proceed to persuade them to seek professional help."
+
+msgid "disclaimer.11"
+msgstr "At any point, at our own prerogative, we may decide to replace all of the content in this game with obnoxious pictures of ice cream."
+
+msgid "disclaimer.12"
+msgstr "You may find that eating ice cream while playing this game will improve your experience. If the replimat is out of ice cream, on behalf of the owner of the replimat, we are sorry."
+
+msgid "disclaimer.13"
+msgstr "01010100 01101000 01101001 01110011 00100000 01101001 01110011 00100000 01101110 01101111 01110100 00100000 01100010 01101001 01101110 01100001 01110010 01111001 00101110"
+
+msgid "options.title"
+msgstr "OPTIONS"
+
+msgid "options.fullscreen"
+msgstr "Fullscreen"
+
+msgid "options.window_msaa"
+msgstr "Multisample Anti-Aliasing: %{window_msaa}×"
+
+msgid "options.camera_speed"
+msgstr "Camera Speed: %{camera_speed}×"
+
+msgid "options.sfx_vol"
+msgstr "Sound Effect Volume: %{sfx_vol} percent"
+
+msgid "options.music_vol"
+msgstr "Music Volume: %{music_vol} percent"
+
+msgid "options.voiceover_vol"
+msgstr "Voiceover Volume: %{voiceover_vol} percent"
+
+msgid "options.fow_quality"
+msgstr "Fog of War Quality: %{fow_quality}"
+
+msgid "options.bg_quality.pre"
+msgstr "BG Quality: "
+
+msgid "options.bg_quality.none"
+msgstr "None"
+
+msgid "options.bg_quality.low"
+msgstr "Low (1024×1024)"
+
+msgid "options.bg_quality.medium"
+msgstr "Medium (2048×2048)"
+
+msgid "options.bg_quality.high"
+msgstr "High (4096×4096)"
+
+msgid "options.bg_quality.unknown"
+msgstr "Unknown"
+
+msgid "options.tutorial.pre"
+msgstr "Tutorial"
+
+msgid "options.tutorial.enabled"
+msgstr "Enabled"
+
+msgid "options.tutorial.disabled"
+msgstr "Disabled"
+
+msgid "options.back"
+msgstr "Back"
+
+msgid "git.client.info"
+msgstr "Client GIT v%{git_count} [%{git_hash}]"
+
+msgid "git.server.info"
+msgstr "Server GIT v%{git_count} [%{git_hash}]"
+
+msgid "git.server.message"
+msgstr "Server Message"
+
+msgid "git.server.error"
+msgstr "Server Error"
+
+msgid "git.behind"
+msgstr "Your game is behind release."
+
+msgid "git.ahead"
+msgstr "Your game is ahead of release."
+
+msgid "git.equal"
+msgstr "Your game is up to date."
+
+msgid "gameover.win"
+msgstr "You have defeated the alien invasion!\nYou win!"
+
+msgid "gameover.lose"
+msgstr "You and your crew have been lost to the void of space.\nYou Lose."
+
+msgid "mission.action.repair.basic"
+msgstr "Repair"
+
+msgid "mission.action.repair.pre"
+msgstr "Repair [%{repair_status}]"
+
+msgid "mission.action.repair.multi"
+msgstr "Fleet Wide Repair [%{repair_status}]"
+
+msgid "mission.action.repair.enabled"
+msgstr "Enabled"
+
+msgid "mission.action.repair.disabled"
+msgstr "Disabled"
+
+msgid "mission.action.refine.info"
+msgstr "Refine Ore"
+
+msgid "mission.action.refine.pre"
+msgstr "Refine [%{refine_status}]"
+
+msgid "mission.action.refine.multi"
+msgstr "Fleet Wide Refine"
+
+msgid "mission.action.refine.enabled"
+msgstr "Enabled"
+
+msgid "mission.action.refine.disabled"
+msgstr "Disabled"
+
+msgid "mission.action.salvage.base"
+msgstr "Salvage"
+
+msgid "mission.action.salvage.pre"
+msgstr "Salvage ship for %{salvage_value} percent value"
+
+msgid "mission.action.jump.base"
+msgstr "Jump to next system"
+
+msgid "mission.action.jump.pre"
+msgstr "Jump to the next sector (%{jump_status})"
+
+msgid "mission.action.jump.disabled"
+msgstr "Disabled by Enemy"
+
+msgid "mission.action.jump.ready"
+msgstr "Ready"
+
+msgid "mission.action.jump.not_ready"
+msgstr "Calculating: %{jump_percent} percent"
+
+msgid "mission.action.jump_process.pre"
+msgstr "Calculate Jump Coordinates %{jump_process_status}"
+
+msgid "mission.action.jump_process.multi"
+msgstr "Fleet Wide Calculate Jump Coordinates %{jump_process_status}"
+
+msgid "mission.action.jump_process.enabled"
+msgstr "Enabled"
+
+msgid "mission.action.jump_process.disabled"
+msgstr "Disabled"
+
+msgid "mission.action.collect.base"
+msgstr "Automatic Resource Collection"
+
+msgid "mission.action.collect.pre"
+msgstr "Resource Collection %{collect_status}"
+
+msgid "mission.action.collect.multi"
+msgstr "Fleet Wide Resource Collection %{collect_status}"
+
+msgid "mission.action.collect.enabled"
+msgstr "Enabled"
+
+msgid "mission.action.collect.disabled"
+msgstr "Disabled"
+
+msgid "mission.action.cta.base"
+msgstr "Call to Arms"
+
+msgid "mission.action.cta.pre"
+msgstr "Call to Arms - Select all ships with weapons"
+
+msgid "mission.action.egg.base"
+msgstr "Open"
+
+msgid "mission.action.egg.pre"
+msgstr "Fortune smiles upon you. Redeem for %{egg_value} materials"
+
+msgid "mission.upgrade.speed.name"
+msgstr "Ship Speed"
+
+msgid "mission.upgrade.speed.info"
+msgstr "Increase the speed of all your ships."
+
+msgid "mission.upgrade.armor.name"
+msgstr "Ship Armor"
+
+msgid "mission.upgrade.armor.info"
+msgstr "Reduce the amount of damage your ships take."
+
+msgid "mission.upgrade.damage.name"
+msgstr "Ship Damage"
+
+msgid "mission.upgrade.damage.info"
+msgstr "Increase the amount of damage your ships deal."
+
+msgid "mission.upgrade.refine.name"
+msgstr "Refinery Efficiency"
+
+msgid "mission.upgrade.refine.info"
+msgstr "Increase the efficiency of your ore refining process."
+
+msgid "mission.upgrade.repair.name"
+msgstr "Repair Efficiency"
+
+msgid "mission.upgrade.repair.info"
+msgstr "Increase the efficiency of your repair process."
+
+msgid "mission.upgrade.range.name"
+msgstr "Ship Projectile Calculation"
+
+msgid "mission.upgrade.range.info"
+msgstr "Increase the range of your ships weapons"
+
+msgid "mission.upgrade.build_time.name"
+msgstr "Construction Efficiency"
+
+msgid "mission.upgrade.build_time.info"
+msgstr "Reduce the amount of time it takes to build new ships."
+
+msgid "mission.upgrade.fow.name"
+msgstr "Sensor Boost"
+
+msgid "mission.upgrade.fow.info"
+msgstr "Increase the range of your ships sensors."
+
+msgid "mission.upgrade.jump.info"
+msgstr "Advanced Jump Drive Calculation Algorithm"
+
+msgid "mission.upgrade.jump.name"
+msgstr "Increase the speed at which Jumpgate Generators calculate the jump coordinates."
+
+msgid "mission.upgrade.crew.name"
+msgstr "Clone Term Reduction"
+
+msgid "mission.upgrade.crew.info"
+msgstr "Increase the crew gain from Habitats."
+
+msgid "mission.upgrade.salvage.name"
+msgstr "Salvager Scrap Detector"
+
+msgid "mission.upgrade.salvage.info"
+msgstr "Increase the speed at which Salvagers collect material from scrap."
+
+msgid "mission.upgrade.mining.name"
+msgstr "Mining Asteroid Detector"
+
+msgid "mission.upgrade.mining.info"
+msgstr "Increase the speed at which Mining Rigs collect ore from asteroids."
+
+msgid "mission.upgrade_status.blocked_by_other"
+msgstr "Another ship is already upgrading %{upgrade_current}"
+
+msgid "mission.upgrade_status.blocked"
+msgstr "Ship is currently upgrading %{upgrade_current}"
+
+msgid "mission.upgrade_status.ready"
+msgstr "Upgrade %{upgrade_name} %{upgrade_level_current}/%{upgrade_level_max} [%{upgrade_cost}]"
+
+msgid "mission.upgrade_status.max"
+msgstr "Upgrade %{upgrade_name} Maxed"
+
+msgid "mission.build_status.blocked"
+msgstr "Ship is currently building %{build_current}"
+
+msgid "mission.build_status.ready"
+msgstr "Build %{build_name} [%{build_cost}]"
+
+msgid "mission.level"
+msgstr "Level %{level}/%{max_level}"
+
+msgid "mission.notification.enemy_reinforcements"
+msgstr "Enemy reinforcements have arrived"
+
+msgid "mission.notification.enemy_engage"
+msgstr "You have engaged the enemy"
+
+msgid "pause.continue"
+msgstr "Continue"
+
+msgid "pause.options"
+msgstr "Options"
+
+msgid "pause.gameover"
+msgstr "Surrender"
+
+msgid "tree.node.info"
+msgstr "%{cost} Research Points [%{level}/%{level_max}]"
+
+msgid "tree.info"
+msgstr "Spend your research points and press `return` to continue."
+
+msgid "tree.research_points"
+msgstr "Research Points: %{research_points}"
+
+msgid "tree.node.status.missing_prereq"
+msgstr "MISSING PREREQ [%{cost}]"
+
+msgid "tree.node.status.ready"
+msgstr "RESEARCH [%{cost}]"
+
+msgid "tree.node.status.need_points"
+msgstr "NOT ENOUGH RP [%{cost}]"
+
+msgid "tree.node.status.max"
+msgstr "RESEARCH [MAX]"
+
+msgid "tree.node.cancel"
+msgstr "CANCEL"
+
+msgid "score.total"
+msgstr "Total Score: %{score}"
+
+msgid "tutorial.title.complete"
+msgstr "Objective: Complete"
+
+msgid "tutorial.title.in_progress"
+msgstr "Objective: In Progress"
+
+msgid "tutorial.buttons.continue"
+msgstr "CONTINUE"
+
+msgid "mission.object.advdrydock.name"
+msgstr "Advanced Drydock"
+
+msgid "mission.object.advdrydock.info"
+msgstr "A construction ship that can build advanced ships."
+
+msgid "mission.object.artillery.name"
+msgstr "Artillery Vessel"
+
+msgid "mission.object.artillery.info"
+msgstr "A long ranged combat ship to defend your squadron with."
+
+msgid "mission.object.asteroid.name"
+msgstr "Asteroid"
+
+msgid "mission.object.asteroid.info"
+msgstr "This asteroid contains [Ore] which can be mined by a [Mining Rig] and then the [Ore] can be refined by a [Refinery]."
+
+msgid "mission.object.blackhole.name"
+msgstr "Black Hole"
+
+msgid "mission.object.blackhole.info"
+msgstr "A region of spacetime exhibiting such strong gravitational effects that nothing can escape from inside it."
+
+msgid "mission.object.cargo.name"
+msgstr "Freighter"
+
+msgid "mission.object.cargo.info"
+msgstr "A cargo ship that stores ore and material."
+
+msgid "mission.object.combat.name"
+msgstr "Battlestar"
+
+msgid "mission.object.combat.info"
+msgstr "A combat ship to defend your squadron with."
+
+msgid "mission.object.command.name"
+msgstr "Command Ship"
+
+msgid "mission.object.command.info"
+msgstr "A combat ship to defend your squadron with."
+
+msgid "mission.object.drydock.name"
+msgstr "Dry Dock"
+
+msgid "mission.object.drydock.name"
+msgstr "Drydock"
+
+msgid "mission.object.drydock.info"
+msgstr "A construction ship that can build basic ships."
+
+msgid "mission.object.enemy_artillery.name"
+msgstr "Enemy Artillery Vessel"
+
+msgid "mission.object.enemy_artillery.info"
+msgstr "A long ranged combat ship."
+
+msgid "mission.object.enemy_boss.name"
+msgstr "Gigantic Enemy Battleship"
+
+msgid "mission.object.enemy_boss.info"
+msgstr "A truly fearsome enemy. Handle with extreme caution."
+
+msgid "mission.object.enemy_combat.name"
+msgstr "Enemy Battlestar"
+
+msgid "mission.object.enemy_combat.info"
+msgstr "A combat ship."
+
+msgid "mission.object.enemy_fighter.name"
+msgstr "Enemy Fighter"
+
+msgid "mission.object.enemy_fighter.info"
+msgstr "A small combat ship."
+
+msgid "mission.object.enemy_jumpscrambler.name"
+msgstr "Jump Scrambler"
+
+msgid "mission.object.enemy_jumpscrambler.info"
+msgstr "This enemy platform prevents your fleet from jumping."
+
+msgid "mission.object.enemy_miniboss.name"
+msgstr "Large Enemy Battlestar"
+
+msgid "mission.object.enemy_miniboss.info"
+msgstr "A larger combat ship."
+
+msgid "mission.object.enemy_tank.name"
+msgstr "Enemy Armored Frontline Tank"
+
+msgid "mission.object.enemy_tank.info"
+msgstr "A combat ship with a lot of health."
+
+msgid "mission.object.fighter.name"
+msgstr "Fighter"
+
+msgid "mission.object.fighter.info"
+msgstr "A small combat ship to defend your squadron with."
+
+msgid "mission.object.habitat.name"
+msgstr "Habitat"
+
+msgid "mission.object.habitat.info"
+msgstr "A bio-dome that produces crew and can pick up crew from stations."
+
+msgid "mission.object.jump.name"
+msgstr "Jumpgate Generator"
+
+msgid "mission.object.jump.info"
+msgstr "A jump ship that will allow your fleet to jump to the next system faster."
+
+msgid "mission.object.mining.name"
+msgstr "Mining Rig"
+
+msgid "mission.object.mining.info"
+msgstr "An ore mining ship with some ore storage."
+
+msgid "mission.object.radar.name"
+msgstr "Radar Array"
+
+msgid "mission.object.radar.info"
+msgstr "A scanning ship with a large visual range."
+
+msgid "mission.object.refinery.name"
+msgstr "Refinery"
+
+msgid "mission.object.refinery.info"
+msgstr "A material refining ship with some material storage."
+
+msgid "mission.object.research.name"
+msgstr "Research Facility"
+
+msgid "mission.object.research.info"
+msgstr "A research ship used to advance your fleet."
+
+msgid "mission.object.salvager.name"
+msgstr "Salvager"
+
+msgid "mission.object.salvager.info"
+msgstr "A ship used to gather salvage from destroyed ships."
+
+msgid "mission.object.scrap.name"
+msgstr "Scrap"
+
+msgid "mission.object.scrap.info"
+msgstr "This scrap contains [Material] which can be collected by a [Salvager]."
+
+msgid "mission.object.station.name"
+msgstr "Station"
+
+msgid "mission.object.station.name"
+msgstr "This station contains [Crew] which can be collected by a [Habitat]."
+
+msgid "mission.object.tank.name"
+msgstr "Armored Frontline Tank"
+
+msgid "mission.object.tank.info"
+msgstr "A combat ship with a lot of health to defend your squadron with."
+
+msgid "mission.object.troopship.name"
+msgstr "Troopship"
+
+msgid "mission.object.troopship.info"
+msgstr "A vessal used to take over neutral ships or damaged enemy ships."
+
+msgid "mission.action.lmb"
+msgstr "Press Left Mouse Button"
+
+msgid "mission.action.rmb"
+msgstr "Press Right Mouse Button"
+
+msgid "vn.adj.base"
+msgstr "Adjutant"
+
+msgid "vn.com.base"
+msgstr "Commander"
+
+msgid "vn.tip.base"
+msgstr "[TIP]"
+
+msgid "vn.adj.0"
+msgstr "I'm six foot three, and maintain a very consistent panda bear shape."
+
+msgid "vn.adj.1"
+msgstr "Greetings commander. You have been awakened from stasis. The current date is September 21st, 2687."
+
+msgid "vn.com.1"
+msgstr "What? I thought we were only going to be under for a few months. This wasn’t supposed to happen at all."
+
+msgid "vn.adj.2"
+msgstr "Invalid query. Please try again."
+
+msgid "vn.com.2"
+msgstr "What happened? Why have I been in stasis for over a hundred years?"
+
+msgid "vn.adj.3"
+msgstr "Security protocol dictates that persons in stasis should be kept in stasis until either the destination has been reached, or the ship reaches problematic thresholds."
+
+msgid "vn.adj.4"
+msgstr "Currently the food replimat is out of ice cream, putting the ship above protocol threshold seven. There are 1523 prior protocol issues of which 1512 have been corrected."
+
+msgid "vn.com.3"
+msgstr "Adjutant, why aren’t we at our destination?"
+
+msgid "vn.adj.5"
+msgstr "Destination no longer exists."
+
+msgid "vn.com.4"
+msgstr "Wasn’t our destination a planet?"
+
+msgid "vn.adj.correct"
+msgstr "Correct."
+
+msgid "vn.com.5"
+msgstr "Well, that’s not good."
+
+msgid "vn.com.6"
+msgstr "How many jumps away is earth?"
+
+msgid "vn.adj.6"
+msgstr "Using our isotope reserve, eight."
+
+msgid "vn.adj.7"
+msgstr "Warning: Ship scanners detect hostile ships in the nearby systems."
+
+msgid "vn.com.7"
+msgstr "Suggestions?"
+
+msgid "vn.adj.8"
+msgstr "Acquire resources to prepare for battle. Select the [Drydock] and Construct a [Mining Rig] to mine ore from a nearby [Asteroid]. Construct a [Refinery] to process ore into materials."
+
+msgid "vn.tip.1"
+msgstr "Select your ship with the left mouse button. Right mouse click to move selected ships. Use the icons in the upper right to perform actions. Move your mouse to the edge of the screen, use the arrow keys, or left click on the minimap to move your camera."
+
+msgid "vn.adj.warning"
+msgstr "Warning: Hostiles detected."
+
+msgid "vn.adj.9"
+msgstr "We will be unable to leave this system until the threat has been neutralized."
+
+msgid "vn.com.8"
+msgstr "Well, that’s just dandy. I guess I better use some of those materials I processed to make a [Battlestar] or two, and get rid of them."
+
+msgid "vn.tip.2"
+msgstr "Objects with green chevrons are under your control. Objects with yellow chevrons are neutral. Objects with Red chevrons are hostile."
+
+msgid "vn.com.9"
+msgstr "Looks like they’re catching on. I’m glad there are some more [Asteroids] in this system to take advantage of."
+
+msgid "vn.tip.3"
+msgstr "Every ship has a [Salvage] and [Repair] action."
+
+msgid "vn.com.10"
+msgstr "Are you going to say that every time we jump into a system?"
+
+msgid "vn.tip.4"
+msgstr "Your resources show you <amount>/<max> [d<change over time>]"
+
+msgid "vn.com.11"
+msgstr "Damn, this is getting stickier and sticker."
+
+msgid "vn.tip.5"
+msgstr "Click on a ship icon in the lower left to select a specific ship."
+
+msgid "vn.com.12"
+msgstr "This is not good."
+
+msgid "vn.tip.6"
+msgstr "Hold left-alt to view all the health bars."
+
+msgid "vn.com.13"
+msgstr "Warning: hostiles detected..."
+
+msgid "vn.adj.incorrect"
+msgstr "That is incorrect."
+
+msgid "vn.com.14"
+msgstr "Woah, no enemies? That’s new ... better stockpile while I can!"
+
+msgid "vn.tip.7"
+msgstr "Press left-ctrl + <number> to assign a control group. Use <number> to select that control group."
+
+msgid "vn.adj.warning"
+msgstr "Warning: hostiles detected."
+
+msgid "vn.com.15"
+msgstr "We’re only one jump away from home! We’ve got to make it! Everyone is counting on us!"
+
+msgid "vn.tip.8"
+msgstr "Losing is fun! Either way, it keeps you busy."
+
+msgid "tutorial.title.base"
+msgstr "Tutorial"
+
+msgid "tutorial.continue"
+msgstr "CONTINUE"
+
+msgid "tutorial.done"
+msgstr "DONE"
+
+msgid "tutorial.title.complete"
+msgstr "Tutorial Complete"
+
+msgid "tutorial.obj.1"
+msgstr "Greetings commander. I would like to test our basic systems. If you prefer not to, you may jump to the next system right away."
+
+msgid "tutorial.help.1"
+msgstr "If at any time you need help with an objective, you can get help here."
+
+msgid "tutorial.obj.2"
+msgstr "During stasis, many systems have deteriorated. Please confirm that the command ship is still operational."
+
+msgid "tutorial.help.2"
+msgstr "Use the left mouse button to select the command ship"
+
+msgid "tutorial.obj.3"
+msgstr "Our information systems seem to be operational. Please confirm that our command ship is under your control."
+
+msgid "tutorial.help.3"
+msgstr "Use the right mouse button to move the ship anywhere."
+
+msgid "tutorial.obj.4"
+msgstr "Your map can be used to quickly get an overview of the battlefield.\nConfirm camera movement by clicking on the map. Each dot on your map represents entities in the area."
+
+msgid "tutorial.help.4"
+msgstr "You can also move the map with [WASD] or by moving your mouse to the edge of the screen."
+
+msgid "tutorial.obj.5"
+msgstr "Our command ship has been damaged from our long travel. I suggest we tell the crew to repair it."
+
+msgid "tutorial.help.5"
+msgstr "Select the command ship, and toggle the \"Repair\" action."
+
+msgid "tutorial.obj.6"
+msgstr "In order to survive, we will need to collect resources. We should search this system for something to gather."
+
+msgid "tutorial.help.6"
+msgstr "Move around the map with by moving your mouse to the edge of the screen, or using WASD/Arrow Keys. Find scrap."
+
+msgid "tutorial.obj.7"
+msgstr "Excellent. We found some scrap. We should use our command ship to build a salvager to gather it."
+
+msgid "tutorial.help.7"
+msgstr "Select the command ship, and use the \"Build Salvager\" action in the upper right corner."
+
+msgid "tutorial.obj.8"
+msgstr "Now that we have a salvager under our command, have it collect material from the scrap."
+
+msgid "tutorial.help.8"
+msgstr "Select the salvager, and have it target the scrap."
+
+msgid "tutorial.obj.9"
+msgstr "Now that we have materials, we should build some ships to protect our squadron."
+
+msgid "tutorial.help.9"
+msgstr "Select the command ship, and build a Fighter."
+
+msgid "tutorial.obj.10"
+msgstr "When you believe our fleet is ready, inform the Jumpgate Generator to jump to the next system."
+
+msgid "tutorial.help.10"
+msgstr "Select the Jumpgate Generator, and use the Jump action."
+
+msgid "tutorial.obj.11"
+msgstr "We have detected enemy ships. We will need a small squad of Fighters to take them out."
+
+msgid "tutorial.help.11"
+msgstr "Build:\n* Fighters from your Command ship\n* Battlestars from the Drydock ship\n* Artillery and Armored Frontline Tanks from the Advanced Drydock"
+
+msgid "tutorial.obj.12"
+msgstr "We have detected asteroids in this system. We should use the Drydock to build some Mining Rigs to mine them."
+
+msgid "tutorial.help.12"
+msgstr "Select the command ship, and use the Build Drydock action if you haven't already. Select the Drydock, and use the Build Mining Rig action. Select the Mining Rig, and right mouse click on an Asteroid."
+
+msgid "tutorial.obj.13"
+msgstr "We have some ore now, but we can't refine it without a Refinery. Build one and inform it to to convert Ore to Material."
+
+msgid "tutorial.help.13"
+msgstr "Select the command ship, and use the Build Drydock action if you haven't already. Select the Drydock ship, and use the Build Refinery action. Select the Refinery ship, toggle the \"Refine Ore\" action."
+
+msgid "tutorial.obj.14"
+msgstr "The enemy has set up a Jump Scrambler in this system, which prevents us from jumping to the next system."
+
+msgid "tutorial.help.14"
+msgstr "Find and destroy all of the Jump Scramblers in the system."
+
+msgid "tutorial.obj.15"
+msgstr "This concludes the tutorial. Your goal is to jump past level 8."
+
+msgid "tutorial.help.15"
+msgstr "There is a lot more to RogueCraft Squadron. I guess you'll just have to figure it out yourself! Here are some tips, though:"
+

@@ -113,8 +113,10 @@ function vn:draw()
     love.graphics.rectangle("fill",padding,voffset+padding,
     love.graphics.getWidth()-padding*2,height-padding*2)
     love.graphics.setColor(255,255,255)
-    love.graphics.setFont(fonts.vn_name)
-    dropshadow(cframe.name,padding*2,voffset+padding*2)
+    if cframe.name then
+      love.graphics.setFont(fonts.vn_name)
+      dropshadow(cframe.name,padding*2,voffset+padding*2)
+    end
     love.graphics.setFont(fonts.vn_text)
     dropshadowf(cframe.text,hoffset+padding*2,voffset+padding*2,width-padding*4,"left")
     love.graphics.setFont(fonts.vn_info)

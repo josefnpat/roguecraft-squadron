@@ -1,8 +1,6 @@
 return function()
   return {
     type = "advdrydock",
-    display_name = "Advanced Dry Dock",
-    info =  "A construction ship that can build advanced ships.",
     cost = {
       material=400,
       crew=100,

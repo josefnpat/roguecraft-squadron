@@ -1,12 +1,12 @@
 local state = {}
 
 function state:init()
-  self.text_win = "You have defeated the alien invasion!\nYou win!\n\n"
-  self.text_lose = "You and your crew have been lost to the void of space.\nYou Lose.\n\n"
+  self.text_win = libs.i18n('gameover.win')
+  self.text_lose = libs.i18n('gameover.lose')
 end
 
 function state:enter()
-  self.text = (self.win and self.text_win or self.text_lose)..
+  self.text = (self.win and self.text_win or self.text_lose).."\n\n"..
     states.mission.score:render()
 
   self.escape_delay_timer = 0

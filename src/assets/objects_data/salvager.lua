@@ -1,8 +1,6 @@
 return function()
   return {
     type = "salvager",
-    display_name = "Salvager",
-    info = "A ship used to gather salvage from destroyed ships.",
     cost = {material=25,crew=5},
     fow = 0.5,
     crew = 5,

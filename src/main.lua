@@ -94,6 +94,8 @@ libs = {
   tree = require"libs.tree",
   assetchooser = require"libs.assetchooser",
   stringchooser = require"libs.stringchooser",
+  i18n = require"libs.i18n",
+  gettext = require"libs.gettextlib",
 }
 
 states = {
@@ -110,6 +112,16 @@ states = {
 }
 
 function love.load(arg)
+
+  local loc_data = libs.gettext._decode(function()
+    return love.filesystem.lines("assets/loc/en.po")
+  end)
+
+  --local loc_i18n = {}
+  for i,v in pairs(loc_data) do
+    local newstr = v.str:gsub([[\n]],"\n"):gsub([[\"]],"\"")
+    libs.i18n.set('en.'..v.id,newstr)
+  end
 
   local cursor = love.graphics.newImage("assets/hud/cursor.png")
   love.mouse.setCursor(
@@ -131,6 +143,7 @@ function love.load(arg)
     end
     if v == "cheat" then
       cheat = true
+      settings:write("tree_points",9000)
     end
     if v == "debug" then
       debug_mode = true

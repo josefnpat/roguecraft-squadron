@@ -1,8 +1,6 @@
 return function()
   return {
     type = "scrap",
-    display_name = "Scrap",
-    info = "This scrap contains [Material] which can be collected by a [Salvager].",
     variation = math.random(0,5),
     size = 32,
     material_supply = math.random(10,30),

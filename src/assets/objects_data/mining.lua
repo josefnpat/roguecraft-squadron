@@ -1,8 +1,6 @@
 return function()
   return {
     type = "mining",
-    display_name = "Mining Rig",
-    info = "An ore mining ship with some ore storage.",
     cost = {material=75,crew=10},
     fow = 0.5,
     crew = 10,

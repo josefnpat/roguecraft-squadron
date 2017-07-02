@@ -2,10 +2,10 @@ credits = {}
 
 function credits:enter()
   self.text =
-  "CREDITS:\n" ..
+  libs.i18n('credits.title')..":\n" ..
   "\n" ..
   "Josef Patoprsty (@josefnpat) — Code, Art, Design, Voice Talent\n" ..
-  "Ashley Hooper (@ByteDesigning) — Art\n" ..
+  "Ashley Hooper (@ByteDesigning) — Code, Art\n" ..
   "Mauricyo Furtado (@eternalnightpro) — Music, SFX\n" ..
   "Laura Vk (Solsforest) — Art, Voice Talent\n" ..
   "Arjan Vk (Vivid) — Code, SFX, Voice Talent\n" ..
@@ -24,23 +24,23 @@ function credits:enter()
     "raxe88","bytedesigning",
   }
 
-  self.text = self.text .. "Playtesters:\n\n"
+  self.text = self.text .. libs.i18n('credits.playtesters') .. ":\n\n"
   for i,v in pairs(self.testers) do
     self.text = self.text .. v .. "\n"
   end
 
-  self.text = self.text .. "\nTwitch Internet Buck Millionaires:\n\n"
+  self.text = self.text .. "\n"..libs.i18n('credits.ibtwitch')..":\n\n"
   for i,v in pairs(self.ibtwitch) do
     self.text = self.text .. v .. "\n"
   end
 
-  self.text = self.text .. "\nTwitch Peeps:\n\n"
+  self.text = self.text .. "\n"..libs.i18n('credits.twitch')..":\n\n"
   self.text = self.text .. table.concat(self.twitch," - ")
 
-  self.text = self.text .. "\n\n\nThanks for playing!\n"
+  self.text = self.text .. "\n\n\n"..libs.i18n('credits.thanks').."\n"
 
   self.y = love.graphics:getHeight()
-  
+
   self.escape_delay_timer = 0
   self.escape_delay_max = 0.5
 end

@@ -1,8 +1,6 @@
 return function()
   return {
     type = "enemy_tank",
-    display_name = "Enemy Armored Frontline Tank",
-    info = "A combat ship with a lot of health.",
     cost = {material=125,crew=25},
     crew = 25,
     size = 32,

@@ -16,8 +16,7 @@ local stations = {
 return function()
   return {
     type = "station",
-    display_name = stations[math.random(#stations)],
-    info = "This station contains [Crew] which can be collected by a [Habitat].",
+    display_name = stations[math.random(#stations)] .. " — " .. libs.i18n('mission.object.station.name'),
     size = 64,
     crew_supply = math.random(25,50),
     rotate = (math.random(0,1)*2-1)/10,

@@ -15,7 +15,7 @@ function mission:enter()
     "build_enemy_tank",
     "build_enemy_boss",
     "build_enemy_miniboss",
-    "build_jumpscrambler",
+    "build_enemy_jumpscrambler",
   }
 
   --TODO: NOT HACK
@@ -197,10 +197,20 @@ function mission:enter()
   if self.tree:getLevelData("action_repair") > 0 then
     self.actions.repair = {
       icon = "repair",
-      tooltip = function(object) return "Repair "..(object.repair and "Enabled" or "Disabled") end,
+      tooltip = function(object)
+        return libs.i18n('mission.action.repair.pre',{
+          repair_status=libs.i18n(object.repair and
+            'mission.action.repair.enabled' or 'mission.action.repair.disabled')
+        })
+      end,
       color = function(object) return object.repair and {0,255,0} or {255,255,255} end,
       multi = {
-        tooltip = function(object) return "Fleet Wide Repair "..(object.repair and "Enabled" or "Disabled") end,
+        tooltip = function(object)
+          return libs.i18n('mission.action.repair.multi',{
+            repair_status=libs.i18n(object.repair and
+              'mission.action.repair.enabled' or 'mission.action.repair.disabled')
+          })
+        end,
         color = function(object) return object.repair and {0,255,0} or {255,255,255} end,
         exe = function(object)
           object.repair = not object.repair
@@ -220,10 +230,20 @@ function mission:enter()
   if self.tree:getLevelData("action_refine") > 0 then
     self.actions.refine = {
       icon = "refine",
-      tooltip = function(object) return "Refine "..(object.refine and "Enabled" or "Disabled") end,
+      tooltip = function(object)
+        return libs.i18n('mission.action.refine.pre',{
+          refine_status=libs.i18n(object.repair and
+            'mission.action.refine.enabled' or 'mission.action.refine.disabled')
+        })
+      end,
       color = function(object) return object.refine and {0,255,0} or {255,255,255} end,
       multi = {
-        tooltip = function(object) return "Fleet Wide Refine "..(object.refine and "Enabled" or "Disabled") end,
+        tooltip = function(object)
+          return libs.i18n('mission.action.refine.multi',{
+            refine_status=libs.i18n(object.repair and
+              'mission.action.refine.enabled' or 'mission.action.refine.disabled')
+          })
+        end,
         color = function(object) return object.refine and {0,255,0} or {255,255,255} end,
         exe = function(object)
           object.refine = not object.refine
@@ -243,7 +263,9 @@ function mission:enter()
   if self.tree:getLevelData("action_salvage") > 0 then
     self.actions.salvage = {
       icon = "salvage",
-      tooltip = function(object) return "Salvage ship for 90% value" end,
+      tooltip = function(object)
+        return libs.i18n('mission.action.salvage.pre',{salvage_value=90})
+      end,
       color = function(object) return {255,0,0} end,
       exe = function(object)
         local percent = object.health.current/object.health.max * 0.9
@@ -261,12 +283,22 @@ function mission:enter()
     icon = "jump",
     tooltip = function(object)
       if #self:getObjectWithModifier("jump_disable") > 0 then
-        return "Jump to the next sector (Disabled by Enemy)"
+        return libs.i18n('mission.action.jump.pre',{
+          jump_status=libs.i18n('mission.action.jump.disabled')
+        })
       end
       local percent = math.floor((1 - self.jump/self.jump_max)*1000)/10
-      return self.jump <= 0 and
-        "Jump to the next sector (Ready)" or
-        ("Jump to the next sector (Calculating: "..percent.."%)")
+      if self.jump <= 0 then
+        return libs.i18n('mission.action.jump.pre',{
+          jump_status=libs.i18n('mission.action.jump.ready')
+        })
+      else
+        return libs.i18n('mission.action.jump.pre',{
+          jump_status=libs.i18n('mission.action.jump.not_ready',{
+            jump_percent=percent,
+          })
+        })
+      end
     end,
     color = function(object)
       return (self.jump <= 0 and #self:getObjectWithModifier("jump_disable") == 0) and
@@ -285,14 +317,22 @@ function mission:enter()
   self.actions.jump_process = {
     icon = "jump_process",
     tooltip = function(object)
-      return "Calculate Jump Coordinates "..(object.jump_process and "Enabled" or "Disabled")
+      return libs.i18n('mission.action.jump_process.pre',{
+        jump_process_status = libs.i18n(object.jump_process and
+          'mission.action.jump_process.enabled' or
+          'mission.action.jump_process.disabled')
+      })
     end,
     color = function(object)
       return object.jump_process and {0,255,0} or {255,255,255}
     end,
     multi = {
       tooltip = function(object)
-        return "Fleet Wide Calculate Jump Coordinates "..(object.jump_process and "Enabled" or "Disabled")
+        return libs.i18n('mission.action.jump_process.pre',{
+          jump_process_status = libs.i18n(object.jump_process and
+            'mission.action.jump_process.enabled' or
+            'mission.action.jump_process.disabled')
+        })
       end,
       color = function(object) return object.jump_process and {0,255,0} or {255,255,255} end,
       exe = function(object)
@@ -313,14 +353,24 @@ function mission:enter()
     self.actions.collect = {
       icon = "collect",
       tooltip = function(object)
-        return "Resource Collection "..(object.collect and "Enabled" or "Disabled")
+        return libs.i18n('mission.action.collect.pre',{
+          collect_status=libs.i18n(object.collect and
+            'mission.action.collect.enabled' or
+            'mission.action.collect.disabled'
+          )
+        })
       end,
       color = function(object)
         return object.collect and {0,255,0} or {255,255,255}
       end,
       multi = {
         tooltip = function(object)
-          return "Fleet Wide Resource Collection "..(object.collect and "Enabled" or "Disabled")
+          return libs.i18n('mission.action.collect.multi',{
+            collect_status=libs.i18n(object.collect and
+              'mission.action.collect.enabled' or
+              'mission.action.collect.disabled'
+            )
+          })
         end,
         color = function(object) return object.collect and {0,255,0} or {255,255,255} end,
         exe = function(object)
@@ -348,7 +398,7 @@ function mission:enter()
       color = function(object) return {255,255,255} end,
       multi = {
         tooltip = function(object)
-          return "Call to Arms - Select all ships with weapons."
+          return libs.i18n('mission.action.cta.pre')
         end,
         color = function(object)
           return #self:getObjectWithModifierByOwner("shoot",0) > 0 and {0,255,0} or {127,127,127}
@@ -364,7 +414,9 @@ function mission:enter()
 
   self.actions.egg = {
     icon = "egg",
-    tooltip = function(object) return "Fortune smiles upon you. Redeem for 100 materials" end,
+    tooltip = function(object)
+      return libs.i18n('mission.action.egg.pre',{egg_value=100})
+    end,
     color = function(object) return object.owner == 0 and {0,255,0} or {255,0,0} end,
     exe = function(object)
       if object.owner == 0 then
@@ -379,8 +431,8 @@ function mission:enter()
   local upgrades_data = {}
 
   upgrades_data.speed = {
-    display_name = "Ship Speed",
-    info = "Increase the speed of all your ships.",
+    display_name = libs.i18n('mission.upgrade.armor.name'),
+    info = libs.i18n('mission.upgrade.armor.info'),
     max = 3,
     cost = {material=100},
     time = 10,
@@ -388,8 +440,8 @@ function mission:enter()
   }
 
   upgrades_data.armor = {
-    display_name = "Ship Armor",
-    info = "Reduce the amount of damage your ships take.",
+    display_name = libs.i18n('mission.upgrade.armor.name'),
+    info = libs.i18n('mission.upgrade.armor.info'),
     max = 3,
     cost = {material=100},
     time = 10,
@@ -397,8 +449,8 @@ function mission:enter()
   }
 
   upgrades_data.damage = {
-    display_name = "Ship Damage",
-    info = "Increase the amount of damage your ships deal.",
+    display_name = libs.i18n('mission.upgrade.damage.name'),
+    info = libs.i18n('mission.upgrade.damage.info'),
     max = 3,
     cost = {material=100},
     time = 10,
@@ -406,8 +458,8 @@ function mission:enter()
   }
 
   upgrades_data.refine = {
-    display_name = "Refinery Efficiency",
-    info = "Increase the efficiency of your ore refining process.",
+    display_name = libs.i18n('mission.upgrade.refine.name'),
+    info = libs.i18n('mission.upgrade.refine.info'),
     max = 3,
     cost = {ore=100},
     time = 10,
@@ -415,8 +467,8 @@ function mission:enter()
   }
 
   upgrades_data.repair = {
-    display_name = "Repair Efficiency",
-    info = "Increase the efficiency of your repair process.",
+    display_name = libs.i18n('mission.upgrade.refine.name'),
+    info = libs.i18n('mission.upgrade.repair.info'),
     max = 3,
     cost = {material=100},
     time = 10,
@@ -424,8 +476,8 @@ function mission:enter()
   }
 
   upgrades_data.range = {
-    display_name = "Ship Projectile Calculation",
-    info = "Increase the range of your ships weapons",
+    display_name = libs.i18n('mission.upgrade.range.name'),
+    info = libs.i18n('mission.upgrade.range.info'),
     max = 3,
     cost = {material=100},
     time = 10,
@@ -433,8 +485,8 @@ function mission:enter()
   }
 
   upgrades_data.build_time = {
-    display_name = "Construction Efficiency",
-    info = "Reduce the amount of time it takes to build new ships.",
+    display_name = libs.i18n('mission.upgrade.build_time.name'),
+    info = libs.i18n('mission.upgrade.build_time.info'),
     max = 3,
     cost = {material=100},
     time = 10,
@@ -442,8 +494,8 @@ function mission:enter()
   }
 
   upgrades_data.fow = {
-    display_name = "Sensor Boost",
-    info = "Increase the range of your ships sensors.",
+    display_name = libs.i18n('mission.upgrade.fow.name'),
+    info = libs.i18n('mission.upgrade.fow.info'),
     max = 3,
     cost = {material=100},
     time = 10,
@@ -451,8 +503,8 @@ function mission:enter()
   }
 
   upgrades_data.jump = {
-    display_name = "Advanced Jump Drive Calculation Algorithm",
-    info = "Increase the speed at which Jumpgate Generators calculate the jump coordinates.",
+    display_name = libs.i18n('mission.upgrade.jump.name'),
+    info = libs.i18n('mission.upgrade.jump.info'),
     max = 3,
     cost = {material=100},
     time = 10,
@@ -460,8 +512,8 @@ function mission:enter()
   }
 
   upgrades_data.crew = {
-    display_name = "Clone Term Reduction",
-    info = "Increase the crew gain from Habitats.",
+    display_name = libs.i18n('mission.upgrade.crew.name'),
+    info = libs.i18n('mission.upgrade.crew.info'),
     max = 3,
     cost = {material=100},
     time = 10,
@@ -469,8 +521,8 @@ function mission:enter()
   }
 
   upgrades_data.salvage = {
-    display_name = "Salvager Scrap Detector",
-    info = "Increase the speed at which Salvagers collect material from scrap.",
+    display_name = libs.i18n('mission.upgrade.salvage.name'),
+    info = libs.i18n('mission.upgrade.salvage.info'),
     max = 3,
     cost = {material=100},
     time = 10,
@@ -478,8 +530,8 @@ function mission:enter()
   }
 
   upgrades_data.mining = {
-    display_name = "Mining Asteroid Detector",
-    info = "Increase the speed at which Mining Rigs collect ore from asteroids.",
+    display_name = libs.i18n('mission.upgrade.mining.name'),
+    info = libs.i18n('mission.upgrade.mining.info'),
     max = 3,
     cost = {material=100},
     time = 10,
@@ -501,16 +553,25 @@ function mission:enter()
         icon = upgrade_string,
         tooltip = function(object)
           if self.upgrades_lock[upgrade_type] and self.upgrades_lock[upgrade_type] ~= object then
-            return "Another ship is already upgrading "..upgrade.display_name
+            return libs.i18n('mission.upgrade_status.blocked_by_other',{
+              upgrade_current=upgrade.display_name
+            })
           elseif object.work then
-            return "Ship is currently upgrading "..upgrade.display_name
+            return libs.i18n('mission.upgrade_status.blocked',{
+              upgrade_current=upgrade.display_name
+            })
           elseif self.upgrades[upgrade_type] < upgrade.max then
             local newcost = self:multCost(upgrade.cost,upgrade.mult,self.upgrades[upgrade_type])
-            return "Upgrade "..upgrade.display_name..
-              " "..self.upgrades[upgrade_type].."/"..upgrade.max..
-              " ["..self:makeCostString(newcost).."]\n"..upgrade.info
+            return libs.i18n('mission.upgrade_status.ready',{
+              upgrade_name = upgrade.display_name,
+              upgrade_level_current = self.upgrades[upgrade_type],
+              upgrade_level_max = upgrade.max,
+              upgrade_cost = self:makeCostString(newcost),
+            }) .."\n" .. upgrade.info
           else
-            return "Upgrade "..upgrade.display_name.." Maxed"
+            return libs.i18n('mission.upgrade_status.max',{
+              upgrade_name=upgrade.display_name
+            })
           end
         end,
         color = function(object)
@@ -581,11 +642,15 @@ function mission:enter()
         end,
         tooltip = function(object)
           if object.work then
-            return "Ship is currently building "..object.work.build_type
+            return libs.i18n('mission.build_status.blocked',{
+              build_current = object.work.build_type
+            })
           else
             local tobject = self.build[objtype]()
-            return "Build "..tobject.display_name.." ["..self:makeCostString(tobject.cost).."]\n"
-              ..tobject.info
+            return libs.i18n('mission.build_status.ready',{
+              build_name = libs.i18n('mission.object.'..tobject.type..'.name'),--tobject.display_name,
+              build_cost = self:makeCostString(tobject.cost),
+            }) .. "\n" .. libs.i18n('mission.object.'..tobject.type..'.info')
           end
         end,
         exe = function(object)
@@ -656,6 +721,8 @@ end
 
 function mission:build_object(object_name,parent)
   local obj = self.build[object_name]()
+  obj.display_name = obj.display_name or libs.i18n('mission.object.'..obj.type..'.name')
+  obj.info = obj.info or libs.i18n('mission.object.'..obj.type..'.info')
   obj.position = {x = parent.position.x,y=parent.position.y}
   obj.target = self:nearbyPosition(parent.position)
   obj.owner = parent.owner
@@ -787,7 +854,7 @@ function mission:nextLevel()
         },
         owner = 1,
       }
-      local station_object = self:build_object("jumpscrambler",parent_object)
+      local station_object = self:build_object("enemy_jumpscrambler",parent_object)
       table.insert(self.objects,station_object)
     end
   end
@@ -1373,7 +1440,10 @@ function mission:draw()
   self:drawSelected()
   self:drawActions()
 
-  dropshadow("Level "..self.level.."/8",32,128+96)
+  dropshadow(libs.i18n('mission.level',{
+    level=self.level,
+    max_level=8,
+  }),32,128+96)
 
   local sindex = 1
   for rindex,r in pairs(self.resources_types) do
@@ -1748,7 +1818,7 @@ function mission:updateMission(dt)
       self.spawn_wave = (self.spawn_wave or 0) + 1
 
 
-      self.notif:add("Enemy reinforcements have arrived",self.sfx.warning)
+      self.notif:add(libs.i18n('mission.notification.enemy_reinforcements'),self.sfx.warning)
 
       -- TODO replace with trig omg wtf
       unsafe_x,unsafe_y = 0,0
@@ -1824,7 +1894,7 @@ function mission:updateMission(dt)
 
     if object.in_combat then
       if self.player_in_combat == nil then
-        self.notif:add("You have engaged the enemy",self.sfx.warning)
+        self.notif:add(libs.i18n('mission.notification.enemy_engage'),self.sfx.warning)
       end
       self.player_in_combat = 1
       object.in_combat = object.in_combat - dt

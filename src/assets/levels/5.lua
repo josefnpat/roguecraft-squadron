@@ -2,9 +2,9 @@ local level = {}
 
 level.intro = function(self)
   local tvn = libs.vn.new()
-  tvn:addFrame(vn.adj.default,vn.adj.overlay,"Adjutant","Warning: hostiles detected.",vn_audio.adj.warning)
-  tvn:addFrame(vn.com.default,nil,"Commander","Damn, this is getting stickier and sticker.",vn_audio.com.line11)
-  tvn:addFrame(nil,nil,"[TIP]","Click on a ship icon in the lower left to select a specific ship.")
+  tvn:addFrame(vn.adj.default,vn.adj.overlay,libs.i18n('vn.adj.base'),libs.i18n('vn.adj.warning'),vn_audio.adj.warning)
+  tvn:addFrame(vn.com.default,nil,libs.i18n('vn.com.base'),libs.i18n('vn.com.11'),vn_audio.com.line11)
+  tvn:addFrame(nil,nil,libs.i18n('vn.tip.base'),libs.i18n('vn.tip.5'))
   return tvn
 end
 

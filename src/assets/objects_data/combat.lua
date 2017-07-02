@@ -1,8 +1,6 @@
 return function()
   return {
     type = "combat",
-    display_name = "Battlestar",
-    info = "A combat ship to defend your squadron with.",
     cost = {material=250,crew=50},
     crew = 50,
     size = 32,

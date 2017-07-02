@@ -20,18 +20,18 @@ function mainmenu:enter()
 
   self.menum = libs.menu.new()--{title=game_name}
 
-  self.menum:add("New Game",function()
+  self.menum:add(libs.i18n('menu.new_game'),function()
     self.menu = self.menud
   end)
 
-  self.menum:add("Options",function()
+  self.menum:add(libs.i18n('menu.options'),function()
     libs.hump.gamestate.switch(states.options)
     previousState = states.menu
   end)
 
   self.menum:add(
     function()
-      return "Tech Tree ["..settings:read("tree_points").."]"
+      return libs.i18n('menu.tech_tree',{tree_points=settings:read("tree_points")})
     end,
     function()
       libs.hump.gamestate.switch(states.tree)
@@ -40,32 +40,31 @@ function mainmenu:enter()
   )
 
   if self.debug_menu_enabled then
-    self.menum:add("Debug",function()
+    self.menum:add(libs.i18n('menu.debug'),function()
       libs.hump.gamestate.switch(states.debug)
     end)
   end
 
-  self.menum:add("Credits",function()
+  self.menum:add(libs.i18n('menu.credits'),function()
     libs.hump.gamestate.switch(states.credits)
   end)
 
-  self.menum:add("Exit",function()
-    local textstring = "Thank you for playing RogueCraft Squadron!\n\nWe're a very small team here at Missing Sentinel Software, and we appreciate any feedback we can get, good or bad!\n\nWould you be willing to take a short survey?"
+  self.menum:add(libs.i18n('menu.exit'),function()
     self.feedback = libs.window.new{
       x = (love.graphics.getWidth()-320)/2,
-      title = "Help us out!",
-      text = textstring,
+      title = libs.i18n('menu.survey.title'),
+      text = libs.i18n('menu.survey.body'),
       color = {255,127,255},
       buttons = {
         {
-          text="SURE!",
+          text=libs.i18n('menu.survey.yes'),
           callback=function()
             love.system.openURL("http://roguecraftsquadron.com/feedback?git="..git_count.." ["..git_hash.."]")
             love.event.quit()
           end,
         },
         {
-          text="NO THANKS",
+          text=libs.i18n('menu.survey.no'),
           callback=function()
             love.event.quit()
           end,
@@ -162,7 +161,7 @@ function mainmenu:keypressed(key)
       self.debug_menu_enabled = not self.debug_menu_enabled
       self.debug_menu_index = 1
       self:enter()
-      print("What is love? Baby don't hurt me.")
+      print(libs.i18n('menu.debug_enabled'))
     end
   else
     self.debug_menu_index = 1

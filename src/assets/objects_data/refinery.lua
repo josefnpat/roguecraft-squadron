@@ -1,8 +1,6 @@
 return function()
   return {
     type = "refinery",
-    display_name = "Refinery",
-    info ="A material refining ship with some material storage.",
     cost = {material=125,crew=10},
     fow = 0.5,
     crew = 10,

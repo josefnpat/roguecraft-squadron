@@ -11,6 +11,8 @@ function tutorial.new(init)
 
   self.data = {}
 
+  tutorial.load_icons()
+
   self._dt = 0
   self._auto_help = false
 
@@ -42,9 +44,9 @@ function tutorial:update(dt)
 
     if self.complete and self.complete() then
       self.objective.color = {0,255,0}
-      self.objective.title = "Objective: Complete"
+      self.objective.title = libs.i18n('tutorial.title.complete')
       if self.objective.buttons[3] then
-        self.objective.buttons[3].text = "CONTINUE"
+        self.objective.buttons[3].text = libs.i18n('tutorial.buttons.continue')
       end
     end
 
@@ -130,7 +132,7 @@ function tutorial:add(init)
   }
 
   local objective = libs.window.new{
-    title = init.title or "Objective: In Progress",
+    title = init.title or libs.i18n('tutorial.title.in_progress'),
     text = init.objtext or "missing objtext",
     color = {127,127,255},
     image = init.objimage,
@@ -220,116 +222,120 @@ function tutorial.wait.camera_moved(t)
     states.mission.camera.y > love.graphics.getHeight()
 end
 
-tutorial.icons = {}
+function tutorial.load_icons()
 
-tutorial.icons.object_command = {
-  icon = love.graphics.newImage("assets/objects_icon/command0.png"),
-  text = "Command Ship",
-}
+  tutorial.icons = {}
 
-tutorial.icons.action_repair = {
-  icon = love.graphics.newImage("assets/actions/repair.png"),
-  text = "Repair",
-}
+  tutorial.icons.object_command = {
+    icon = love.graphics.newImage("assets/objects_icon/command0.png"),
+    text = libs.i18n('mission.object.command.name'),
+  }
 
-tutorial.icons.object_scrap = {
-  icon = love.graphics.newImage("assets/objects_icon/scrap0.png"),
-  text = "Scrap",
-}
+  tutorial.icons.action_repair = {
+    icon = love.graphics.newImage("assets/actions/repair.png"),
+    text = libs.i18n('mission.action.repair.base'),
+  }
 
-tutorial.icons.object_salvager = {
-  icon = love.graphics.newImage("assets/objects_icon/salvager0.png"),
-  text = "Salvager",
-}
+  tutorial.icons.object_scrap = {
+    icon = love.graphics.newImage("assets/objects_icon/scrap0.png"),
+    text = libs.i18n('mission.object.scrap.name'),
+  }
 
-tutorial.icons.object_fighter = {
-  icon = love.graphics.newImage("assets/objects_icon/fighter0.png"),
-  text = "Fighter",
-}
+  tutorial.icons.object_salvager = {
+    icon = love.graphics.newImage("assets/objects_icon/salvager0.png"),
+    text = libs.i18n('mission.object.salvager.name'),
+  }
 
-tutorial.icons.object_jump = {
-  icon = love.graphics.newImage("assets/objects_icon/jump0.png"),
-  text = "Jumpgate Generator",
-}
+  tutorial.icons.object_fighter = {
+    icon = love.graphics.newImage("assets/objects_icon/fighter0.png"),
+    text = libs.i18n('mission.object.fighter.name'),
+  }
 
-tutorial.icons.action_jump = {
-  icon = love.graphics.newImage("assets/actions/jump.png"),
-  text = "Jump to next system",
-}
+  tutorial.icons.object_jump = {
+    icon = love.graphics.newImage("assets/objects_icon/jump0.png"),
+    text = libs.i18n('mission.object.jump.name'),
+  }
 
-tutorial.icons.object_enemy_fighter = {
-  icon = love.graphics.newImage("assets/objects_icon/enemy_fighter0.png"),
-  text = "Enemy Fighter",
-}
+  tutorial.icons.object_enemy_jumpscrambler = {
+    icon = love.graphics.newImage("assets/objects_icon/enemy_jumpscrambler0.png"),
+    text = libs.i18n('mission.object.enemy_jumpscrambler'),
+  }
 
-tutorial.icons.object_drydock = {
-  icon = love.graphics.newImage("assets/objects_icon/drydock0.png"),
-  text = "Drydock",
-}
+  tutorial.icons.action_jump = {
+    icon = love.graphics.newImage("assets/actions/jump.png"),
+    text = libs.i18n('mission.action.jump.name'),
+  }
 
-tutorial.icons.object_combat = {
-  icon = love.graphics.newImage("assets/objects_icon/combat0.png"),
-  text = "Battlestar",
-}
+  tutorial.icons.object_enemy_fighter = {
+    icon = love.graphics.newImage("assets/objects_icon/enemy_fighter0.png"),
+    text = libs.i18n('mission.object.enemy_fighter.name'),
+  }
 
-tutorial.icons.object_advdrydock = {
-  icon = love.graphics.newImage("assets/objects_icon/advdrydock0.png"),
-  text = "Advanced Drydock",
-}
+  tutorial.icons.object_drydock = {
+    icon = love.graphics.newImage("assets/objects_icon/drydock0.png"),
+    text = libs.i18n('mission.object.drydock.name'),
+  }
 
-tutorial.icons.object_artillery = {
-  icon = love.graphics.newImage("assets/objects_icon/artillery0.png"),
-  text = "Artillery",
-}
+  tutorial.icons.object_combat = {
+    icon = love.graphics.newImage("assets/objects_icon/combat0.png"),
+    text = libs.i18n('mission.object.combat.name'),
+  }
 
-tutorial.icons.object_tank = {
-  icon = love.graphics.newImage("assets/objects_icon/tank0.png"),
-  text = "Tank",
-}
+  tutorial.icons.object_advdrydock = {
+    icon = love.graphics.newImage("assets/objects_icon/advdrydock0.png"),
+    text = libs.i18n('mission.object.advdrydock.name'),
+  }
 
-tutorial.icons.object_mining = {
-  icon = love.graphics.newImage("assets/objects_icon/mining0.png"),
-  text = "Mining Rig",
-}
+  tutorial.icons.object_artillery = {
+    icon = love.graphics.newImage("assets/objects_icon/artillery0.png"),
+    text = libs.i18n('mission.object.artillery.name'),
+  }
 
-tutorial.icons.object_asteroid = {
-  icon = love.graphics.newImage("assets/objects_icon/asteroid0.png"),
-  text = "Asteroid",
-}
+  tutorial.icons.object_tank = {
+    icon = love.graphics.newImage("assets/objects_icon/tank0.png"),
+    text = libs.i18n('mission.object.tank.name'),
+  }
 
-tutorial.icons.object_refinery = {
-  icon = love.graphics.newImage("assets/objects_icon/refinery0.png"),
-  text = "Refinery",
-}
+  tutorial.icons.object_mining = {
+    icon = love.graphics.newImage("assets/objects_icon/mining0.png"),
+    text = libs.i18n('mission.object.mining.name'),
+  }
 
-tutorial.icons.action_refine = {
-  icon = love.graphics.newImage("assets/actions/refine.png"),
-  text = "Refine Ore",
-}
+  tutorial.icons.object_asteroid = {
+    icon = love.graphics.newImage("assets/objects_icon/asteroid0.png"),
+    text = libs.i18n('mission.object.asteroid.name'),
+  }
 
-tutorial.icons.object_jumpscrambler = {
-  icon = love.graphics.newImage("assets/objects_icon/jumpscrambler0.png"),
-  text = "Jump Scrambler",
-}
+  tutorial.icons.object_refinery = {
+    icon = love.graphics.newImage("assets/objects_icon/refinery0.png"),
+    text = libs.i18n('mission.object.refinery.name'),
+  }
 
-tutorial.icons.action_cta = {
-  icon = love.graphics.newImage("assets/actions/cta.png"),
-  text = "Call To Action All Ships",
-}
+  tutorial.icons.action_refine = {
+    icon = love.graphics.newImage("assets/actions/refine.png"),
+    text = libs.i18n('mission.action.refine.base'),
+  }
 
-tutorial.icons.action_collect = {
-  icon = love.graphics.newImage("assets/actions/collect.png"),
-  text = "Automatic Resource Collection",
-}
+  tutorial.icons.action_cta = {
+    icon = love.graphics.newImage("assets/actions/cta.png"),
+    text = libs.i18n('mission.action.cta.base'),
+  }
 
-tutorial.icons.action_lmb = {
-  icon = love.graphics.newImage("assets/actions/lmb.png"),
-  text = "Press Left Mouse Button",
-}
+  tutorial.icons.action_collect = {
+    icon = love.graphics.newImage("assets/actions/collect.png"),
+    text = libs.i18n('mission.action.collect.base'),
+  }
 
-tutorial.icons.action_rmb = {
-  icon = love.graphics.newImage("assets/actions/rmb.png"),
-  text = "Press Right Mouse Button",
-}
+  tutorial.icons.action_lmb = {
+    icon = love.graphics.newImage("assets/actions/lmb.png"),
+    text = libs.i18n('mission.action.lmb'),
+  }
+
+  tutorial.icons.action_rmb = {
+    icon = love.graphics.newImage("assets/actions/rmb.png"),
+    text = libs.i18n('mission.action.rmb'),
+  }
+
+end
 
 return tutorial

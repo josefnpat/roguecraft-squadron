@@ -4,7 +4,7 @@ function splash:enter()
   self._splashes = {}
 
   splashclass = libs.splash
-  
+
   local lovelogo = splashclass.new()
   lovelogo:setImage(love.graphics.newImage("assets/splash/love.png"))
   local lovelogo_sound = love.sound.newSoundData("assets/splash/love.ogg")
@@ -28,14 +28,14 @@ function splash:enter()
   local bd = splashclass.new()
   bd:setImage(love.graphics.newImage("assets/splash/bd.png"))
   table.insert(self._splashes,bd)
-  
+
   local vivid = splashclass.new()
   vivid:setImages({
-	love.graphics.newImage("assets/splash/vivid1.png"),
-	love.graphics.newImage("assets/splash/vivid2.png"),
-	love.graphics.newImage("assets/splash/vivid1.png"),
-	love.graphics.newImage("assets/splash/vivid3.png")}
-  ,(170 / 60) * 2) --animationspeed is based on BPM (170)
+    love.graphics.newImage("assets/splash/vivid1.png"),
+    love.graphics.newImage("assets/splash/vivid2.png"),
+    love.graphics.newImage("assets/splash/vivid1.png"),
+    love.graphics.newImage("assets/splash/vivid3.png")
+  },(170 / 60) * 2) --animationspeed is based on BPM (170)
   local vivid_sound = love.sound.newSoundData("assets/splash/vivid.mp3")
   local vivid_audio = love.audio.newSource(vivid_sound)
   vivid:setSound( vivid_audio )

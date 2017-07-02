@@ -2,8 +2,6 @@ return function()
   return {
     type = "enemy_combat",
     variation = math.random(0,1),
-    display_name = "Enemy Battlestar",
-    info = "A combat ship.",
     cost = {material=250,crew=50},
     crew = 50,
     size = 32,

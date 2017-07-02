@@ -1,1 +1,678 @@
-{"build_radar":{"level":0,"x":-288,"info":"A scanning ship with a large visual range.","asset":["assets","objects_icon","radar0.png"],"y":640,"desc":"The XS-45 was originally commissioned as a low cost civilian reconnaissance ship, but after a few years of crowdsourced development, it became an incredibly popular vessel. The military originally opened up bids for the creation of an advanced reconnaissance ship. The project met the specifications and won the research and development bid with a $0 budget. Hence renamed the XS-45, this vessel is now a staple in fleets and is in practical military use.","title":"Build Radar","maxlevel":1,"children":[{"name":"upgrade_fow"}],"name":"build_radar","cost":5},"upgrade_build_time":{"level":0,"x":-1,"info":"Build ships faster.","asset":["assets","actions","upgrade_build_time.png"],"y":640,"desc":"Nanotechnology is practically a necessity in space, and it has shown to be well suited for ship development. The only available codebase is an older version, but it works for the most part. Sometimes it bugs out and confuses people with material. I'm sure if we put some developers onto the task, we can fix those bugs and increase the efficiency of the algorithm. Or maybe add more bugs.","title":"Upgrade Build Speed","maxlevel":1,"children":[],"name":"upgrade_build_time","cost":5},"upgrade_damage":{"level":0,"x":864,"info":"Deal more damage in battle","asset":["assets","actions","upgrade_damage.png"],"y":576,"desc":"Based on the distant relative IRIS-T Air to Air missile, the FSIS-J (Full Spectrum Imaging System - Jet controlled vector) this battle-proven missile has shown to be nearly 100% effective in vacuum. On top of being easy to make, the weapon's payload is difficult to modify as the AI simulation has to be re-calculated and tested.","title":"Upgrade Ship Damage","maxlevel":3,"children":[],"name":"upgrade_damage","cost":5},"upgrade_refine":{"level":0,"x":-576,"info":"Speed up refining.","asset":["assets","actions","upgrade_refine.png"],"y":384,"desc":"Since most materials in space tend to be a variety of types of metal, it's important to refine and reduce these materials into a common material of some sort. Akin to alchemy, the process alters atoms at an subatomic level to create the materials required. With some scientific \"trial and error\" we are confident we can improve the efficiency of the refining process. We believe we can streamline this process to make it faster.","title":"Upgrade Refining Speed","maxlevel":3,"children":[],"name":"upgrade_refine","cost":5},"upgrade_fow":{"level":0,"x":-288,"info":"Increase visual range.","asset":["assets","actions","upgrade_fow.png"],"y":800,"desc":"Thanks to it's open and modular design, upgrading hardware systems on the XS-45 has never been easier. With a small investment we can easily reconfigure our more advanced military scanners into the design. Operating these scanners in parallel should provide an enormous scanning range.","title":"Upgrade Radar Range","maxlevel":3,"children":[],"name":"upgrade_fow","cost":7},"action_refine":{"level":0,"x":-291,"info":"A material refining ship with some material storage.","asset":["assets","actions","refine.png"],"y":194,"desc":"While highly experimental, subatomic particle reconfiguration could prove to be incredibly valuable. Especially with the number of asteroids we've encountered. We are confident that we can create a working prototype, but the it will require a very specific type of ship.","title":"Refining","maxlevel":1,"children":[{"name":"build_refinery"}],"name":"action_refine","cost":5},"action_cta":{"level":0,"x":573,"info":"Allows you to select all combat ships","asset":["assets","actions","cta.png"],"y":4,"desc":"Communication systems on board the ships are fully holographic and provide instant communication. Our captains have been studying up, and we believe that we can provide you with a faster way to muster our forces. Using newer and simpler protocols should allow us to rally our military ships much faster.","title":"Call To Action","maxlevel":1,"children":[[]],"name":"action_cta","cost":3},"upgrade_armor":{"level":0,"x":1150,"info":"Improve your defense","asset":["assets","actions","upgrade_armor.png"],"y":576,"desc":"Our armor uses a tight mesh system that maintains an incredible strength and is also lightweight. We have been studying the enemy, and have been able to come up with an adaptive armor plating system that should help deflect damage from foes. While it will not stop damage, it should be effective against their weapon systems.","title":"Upgrade Ship Armor","maxlevel":3,"children":[],"name":"upgrade_armor","cost":5},"build_command":{"level":1,"x":3,"info":"The main construction ship with some material storage.","asset":["assets","objects_icon","command0.png"],"y":2,"desc":"The pride and joy of any exploratory fleet, this vessel contains everything one needs to survive in the depths of space. As well as providing basic construction, freight storage and housing facilities, this vessel is a closed ecological system. Assuming major functions aren't disrupted, this ship can last forever. Ships like this, will be with you 'til the day you die.","title":"Build Command Ship","maxlevel":1,"children":[{"name":"build_habitat"},{"name":"build_drydock"},{"name":"build_fighter"},{"name":"build_salvager"}],"name":"build_command","cost":0},"build_salvager":{"level":1,"x":-289,"info":"A ship used to gather salvage from destroyed ships.","asset":["assets","objects_icon","salvager0.png"],"y":1,"desc":"Salvagers are quite common nowadays, as space is a dangerous place to venture. This is a basic vulture ship designed to pick up scrap from destroyed enemies. It is a simple design, gets the job done and it's cheap to build. We should probably avoid putting claustrophobic folks in these guys.","title":"Build Salvager","maxlevel":1,"children":[{"name":"upgrade_salvage"},{"name":"action_collect"}],"name":"build_salvager","cost":0},"build_drydock":{"level":0,"x":0,"info":"A construction ship that can build basic ships.","asset":["assets","objects_icon","drydock0.png"],"y":192,"desc":"In classic warfare, military depended on supply lines. By removing this obstacle, humans were able to wage war on a whole new level. Right now we can only build basic ships. If we could build a drydock larger than the one in the command hanger, we should be able to step up our game.","title":"Build Drydock","maxlevel":1,"children":[{"name":"build_advdrydock"},{"name":"build_troopship"},{"name":"action_refine"},{"name":"build_combat"}],"name":"build_drydock","cost":1},"action_salvage":{"level":0,"x":575,"info":"Salvage your own ships by recycling them to build new ships","asset":["assets","actions","salvage.png"],"y":-192,"desc":"Most space salvage consists of destroyed or broken components. That being said, we're really good at making ships and we're good at blowing them up. What we're not so good at is taking ships apart and salvaging them. I think we can reverse the nanotech process to take apart ships without much waste.","title":"Salvage Ships","maxlevel":1,"children":[],"name":"action_salvage","cost":1},"action_collect":{"level":0,"x":-572,"info":"Have collection ships automate the collection system using new AI","asset":["assets","actions","collect.png"],"y":-2,"desc":"Humans discovered they could augment earth's resources by collecting materials from outer space. Life became much better on earth when we automated the collection system for earth resources. Our ship captains think we can come up with some sort of protocol to automatically collect resources in space. Automating this process could be dangerous, but also rewarding.","title":"Automatic Resource Collection","maxlevel":1,"children":[],"name":"action_collect","cost":1},"upgrade_mining":{"level":0,"x":-859,"info":"Increase mining speed on all mining ships.","asset":["assets","actions","upgrade_mining.png"],"y":385,"desc":"By using Ablation V6 lasers, we can easily harvest precious metals from nearby asteroids. We are experiencing a few bottlenecks in our mining rigs. We believe we can fix them by introducing redundant backup systems. No more coffee breaks!","title":"Upgrade Mining Speed","maxlevel":3,"children":[],"name":"upgrade_mining","cost":5},"build_tank":{"level":0,"x":287,"info":"A combat ship with a lot of health to defend your squadron with.","asset":["assets","objects_icon","tank0.png"],"y":640,"desc":"Our current vehicles have many layers of armor to prevent folks from getting sucked out into space the second we take a bit of damage, but we can do better. So I had the boys down in research figure out how we can keep our ships up and running longer, faster and harder. A lot of good ideas came up, but the best was to build a wall around the fleet. We did the math, and it was cost prohibitive, so we think we can just build a wall around one of the ships, a wall of extra armor that is.","title":"Build Armored Frontline Tank","maxlevel":1,"children":[],"name":"build_tank","cost":5},"build_troopship":{"level":0,"x":-286,"info":"A vessal used to take over neutral ships or damaged enemy ships.","asset":["assets","objects_icon","troopship0.png"],"y":385,"desc":"Some ships are designed to penetrate an enemy hull, and provide an opening so we can have a small group of folks take a ship by force. Some of the troops are just climbing up the walls, and that's not even with the artificial gravity disabled. I think we can build a ship that would basically provide a one way trip into neutral or enemy vessels. Don't worry, we'll give them big guns. The ship? Not at all.","title":"Build Troopship","maxlevel":1,"children":[],"name":"build_troopship","cost":3},"build_combat":{"level":0,"x":288,"info":"A combat ship to defend your squadron with.","asset":["assets","objects_icon","combat0.png"],"y":192,"desc":"One of the largest warship classes is the Galactica class warship. A sturdy design that has lasted the trials of time. We realize that the small fighter doesn't really have staying power in combat, so we made a bigger one. Bigger is better, right?","title":"Build Battlestar","maxlevel":1,"children":[{"name":"action_repair"}],"name":"build_combat","cost":3},"upgrade_repair":{"level":0,"x":1152,"info":"Increase speed of ship repair.","asset":["assets","actions","upgrade_repair.png"],"y":384,"desc":"Nanites are tiny little robots that can create highly complex objects from ordinary matter. Our nanites repair our ships, but I think by applying some AI rerouting, we can improve the efficiency of the algorithms.","title":"Upgrade Ship Repair","maxlevel":3,"children":[],"name":"upgrade_repair","cost":5},"build_habitat":{"level":1,"x":0,"info":"A bio-dome that produces crew and can pick up crew from stations.","asset":["assets","objects_icon","habitat0.png"],"y":-192,"desc":"Habitats are essential, not only for moral, but to serve as living quarters for civilians. People have been living in space for so long, they have begun to associate habitats with home. If we optimize the layouts on the habitat, we should be able to sustain a faster growth rate.","title":"Build Habitat","maxlevel":1,"children":[[],{"name":"upgrade_crew"}],"name":"build_habitat","cost":0},"upgrade_crew":{"level":0,"x":286,"info":"Modify crew clones to grow faster.","asset":["assets","actions","upgrade_crew.png"],"y":-192,"desc":"The human race has been cloning humans for centuries now, but it is still common to make children \"the old fashioned way\". While highly unethical, we've found we can increase the maturity rate of the cloning process. If you need more crew, we can research this. The ends justify the means, I suppose.","title":"Upgrade Habitat Crew","maxlevel":3,"children":[[]],"name":"upgrade_crew","cost":1},"build_advdrydock":{"level":0,"x":1,"info":"A construction ship that can build advanced ships.","asset":["assets","objects_icon","advdrydock0.png"],"y":383,"desc":"At one point in history, humans created a self-replicating drydock. They ran out of materials rather quickly. Regardless, if you want bigger ships, you're going to have to build bigger drydocks.","title":"Build Advanced Drydock","maxlevel":1,"children":[{"name":"build_research"},{"name":"build_artillery"},{"name":"build_tank"},{"name":"upgrade_build_time"},{"name":"build_radar"},{"name":"build_jump"},{"name":"build_cargo"}],"name":"build_advdrydock","cost":3},"build_mining":{"level":0,"x":-864,"info":"An ore mining ship with some ore storage.","asset":["assets","objects_icon","mining0.png"],"y":192,"desc":"Mining has been a respected occupation for many generations. If you want to collect ore to refine into minerals, you're going to need some kind of ship to mine it. It's pretty basic, but it will get the job done! Keep in mind that this ship will not refine the ore; you'll need a refinery for that.","title":"Build Mining Rig","maxlevel":1,"children":[[],{"name":"upgrade_mining"}],"name":"build_mining","cost":0},"upgrade_speed":{"level":0,"x":864,"info":"Increase all speed on ships.","asset":["assets","actions","upgrade_speed.png"],"y":192,"desc":"Modern propulsion uses a recyclable jet fuel to propel the ship through space. Sometimes winning isn't just about how hard you can hit, but how quickly you can avoid the enemy. We think we can increase the compression rate on our jet engines. If we can figure out an optimal rate, I think we can boost the entire fleet's speed.","title":"Upgrade Ship Speed","maxlevel":3,"children":[],"name":"upgrade_speed","cost":5},"build_research":{"level":0,"x":864,"info":"A research ship used to advance your fleet.","asset":["assets","objects_icon","research0.png"],"y":385,"desc":"If you are looking to gain the edge against the enemies, you're going to want some advanced upgrades. Of course for complicated science stuff you're going to need complex science ships. Between you and me, I don't want those scientists on board my ship. They keep going on about science collaboration points.","title":"Build a Research Facility","maxlevel":1,"children":[{"name":"upgrade_armor"},{"name":"upgrade_repair"},{"name":"upgrade_damage"},{"name":"upgrade_range"},{"name":"upgrade_speed"}],"name":"build_research","cost":5},"build_artillery":{"level":0,"x":575,"info":"A long ranged combat ship to defend your squadron with.","asset":["assets","objects_icon","artillery0.png"],"y":640,"desc":"We can create an artillery class ship designed for long range. This way we can keep the heavy armored ships in the front, and blast them from a distance. I'm told that this ship is basically just a modified howitzer.","title":"Build a Artillery Vessel","maxlevel":1,"children":[],"name":"build_artillery","cost":5},"upgrade_salvage":{"level":0,"x":-288,"info":"Increase speed of salvaging.","asset":["assets","actions","upgrade_salvage.png"],"y":-192,"desc":"Salvagers use concentrated magnets to grab and sort debris. By altering the design of the salvager's claws, I think we can increase the speed at which the salvager can collect debris. There is still nothing I can do to help out the claustrophobic drivers.","title":"Upgrade Salvage Speed","maxlevel":3,"children":[],"name":"upgrade_salvage","cost":1},"build_fighter":{"level":1,"x":288,"info":"A small combat ship to defend your squadron with.","asset":["assets","objects_icon","fighter0.png"],"y":-1,"desc":"I think we can make a venerable one man space superior fighter based on the stiletto and viper class fighters. While they may be outdated at this point, in large numbers, they can be effective. In all technicality, we're pretty much strapping our young men and women to a combination of rockets, bathtubs and guns. That's ok, I never liked them anyway.","title":"Build Fighter","maxlevel":1,"children":[{"name":"action_salvage"},{"name":"action_cta"}],"name":"build_fighter","cost":0},"build_refinery":{"level":0,"x":-575,"info":"A material refining ship with some material storage.","asset":["assets","objects_icon","refinery0.png"],"y":193,"desc":"Subatomic particle reconfiguration may be pretty awesome, as it allows us to process any ore, but it's really dangerous as well. I've reviewed the currently available ships in our fleet, and none of them will be capable of running such a system. We need to design a ship that can process ore, and is safe enough for common use, a member of the research team has a blueprint we can try","title":"Build Refinery","maxlevel":1,"children":[{"name":"build_mining"},{"name":"upgrade_refine"}],"name":"build_refinery","cost":0},"upgrade_range":{"level":0,"x":1152,"info":"Increase all combat ships range.","asset":["assets","actions","upgrade_range.png"],"y":193,"desc":"Our sensors are based on quantum entanglement scanners, using the \"ghosting\" phenomenon to track almost invisible enemies. We have been scanning the enemies we have encountered, and it seems like they emit a very weak electromagnetic signature. We should be able to update the targeting systems on our missiles to better hone in on them, thus increasing our range.","title":"Upgrade Ship Attack Range","maxlevel":3,"children":[],"name":"upgrade_range","cost":5},"upgrade_jump":{"level":0,"x":-576,"info":"Increase speed ofjump speed calculation.","asset":["assets","actions","upgrade_jump.png"],"y":800,"desc":"Jump computers inside jump ships calculate the position in space that needs to be folded to transport mass. Our jump computers are out of date, but I think we can upgrade them. If we can manage to get some more flops out of it, we should be able to traverse sectors quicker.","title":"Upgrade Jump Calculation Speed","maxlevel":3,"children":[],"name":"upgrade_jump","cost":7},"build_jump":{"level":0,"x":-571,"info":"A jump ship that will allow your fleet to jump to the next system faster.","asset":["assets","objects_icon","jump0.png"],"y":641,"desc":"The jumpship operates by creating a wormhole that allows mass to move through folded space. The jump ship is a very advanced piece of technology, but by carefully looking into how ours is designed, I think we can recreate a blueprint. The more we have, the quicker we can calculate our jump as they all will fold space together, creating a faster larger wormhole.","title":"Build Jumpgate Generator","maxlevel":1,"children":[{"name":"upgrade_jump"}],"name":"build_jump","cost":5},"action_repair":{"level":0,"x":577,"info":"Have ships automatically start repairing with a Nanites AI upgrade.","asset":["assets","actions","repair.png"],"y":192,"desc":"Nanites actually store the blueprint of the entire ship, much like DNA stores how a human should be built. Programming nanotech to build ships is one thing, but with a blueprint diff process, we should be able to get the nanites to repair our ships as well.","title":"Ship Repair","maxlevel":1,"children":[],"name":"action_repair","cost":5},"build_cargo":{"level":0,"x":575,"info":"A cargo ship that stores ore and material.","asset":["assets","objects_icon","cargo0.png"],"y":481,"desc":"After humans began colonizing other planets, cargo vessels became a necessity. If we're running out of room, I guess we could just build a giant hangar, and attach some engines to it. Should provide a good way to stockpile materials, assuming it doesn't get blown up.","title":"Build a Freighter","maxlevel":1,"children":[],"name":"build_cargo","cost":0}}
+{
+    "action_collect": {
+        "asset": [
+            "assets",
+            "actions",
+            "collect.png"
+        ],
+        "children": [],
+        "cost": 1,
+        "desc": "Humans discovered they could augment earth's resources by collecting materials from outer space. Life became much better on earth when we automated the collection system for earth resources. Our ship captains think we can come up with some sort of protocol to automatically collect resources in space. Automating this process could be dangerous, but also rewarding.",
+        "info": "Have collection ships automate the collection system using new AI",
+        "level": 0,
+        "maxlevel": 1,
+        "name": "action_collect",
+        "title": "Automatic Resource Collection",
+        "x": -572,
+        "y": -2
+    },
+    "action_cta": {
+        "asset": [
+            "assets",
+            "actions",
+            "cta.png"
+        ],
+        "children": [
+            []
+        ],
+        "cost": 3,
+        "desc": "Communication systems on board the ships are fully holographic and provide instant communication. Our captains have been studying up, and we believe that we can provide you with a faster way to muster our forces. Using newer and simpler protocols should allow us to rally our military ships much faster.",
+        "info": "Allows you to select all combat ships",
+        "level": 0,
+        "maxlevel": 1,
+        "name": "action_cta",
+        "title": "Call To Action",
+        "x": 573,
+        "y": 4
+    },
+    "action_refine": {
+        "asset": [
+            "assets",
+            "actions",
+            "refine.png"
+        ],
+        "children": [
+            {
+                "name": "build_refinery"
+            }
+        ],
+        "cost": 5,
+        "desc": "While highly experimental, subatomic particle reconfiguration could prove to be incredibly valuable. Especially with the number of asteroids we've encountered. We are confident that we can create a working prototype, but the it will require a very specific type of ship.",
+        "info": "A material refining ship with some material storage.",
+        "level": 0,
+        "maxlevel": 1,
+        "name": "action_refine",
+        "title": "Refining",
+        "x": -291,
+        "y": 194
+    },
+    "action_repair": {
+        "asset": [
+            "assets",
+            "actions",
+            "repair.png"
+        ],
+        "children": [],
+        "cost": 5,
+        "desc": "Nanites actually store the blueprint of the entire ship, much like DNA stores how a human should be built. Programming nanotech to build ships is one thing, but with a blueprint diff process, we should be able to get the nanites to repair our ships as well.",
+        "info": "Have ships automatically start repairing with a Nanites AI upgrade.",
+        "level": 0,
+        "maxlevel": 1,
+        "name": "action_repair",
+        "title": "Ship Repair",
+        "x": 577,
+        "y": 192
+    },
+    "action_salvage": {
+        "asset": [
+            "assets",
+            "actions",
+            "salvage.png"
+        ],
+        "children": [],
+        "cost": 1,
+        "desc": "Most space salvage consists of destroyed or broken components. That being said, we're really good at making ships and we're good at blowing them up. What we're not so good at is taking ships apart and salvaging them. I think we can reverse the nanotech process to take apart ships without much waste.",
+        "info": "Salvage your own ships by recycling them to build new ships",
+        "level": 0,
+        "maxlevel": 1,
+        "name": "action_salvage",
+        "title": "Salvage Ships",
+        "x": 575,
+        "y": -192
+    },
+    "build_advdrydock": {
+        "asset": [
+            "assets",
+            "objects_icon",
+            "advdrydock0.png"
+        ],
+        "children": [
+            {
+                "name": "build_research"
+            },
+            {
+                "name": "build_artillery"
+            },
+            {
+                "name": "build_tank"
+            },
+            {
+                "name": "upgrade_build_time"
+            },
+            {
+                "name": "build_radar"
+            },
+            {
+                "name": "build_jump"
+            },
+            {
+                "name": "build_cargo"
+            }
+        ],
+        "cost": 3,
+        "desc": "At one point in history, humans created a self-replicating drydock. They ran out of materials rather quickly. Regardless, if you want bigger ships, you're going to have to build bigger drydocks.",
+        "info": "A construction ship that can build advanced ships.",
+        "level": 0,
+        "maxlevel": 1,
+        "name": "build_advdrydock",
+        "title": "Build Advanced Drydock",
+        "x": 1,
+        "y": 383
+    },
+    "build_artillery": {
+        "asset": [
+            "assets",
+            "objects_icon",
+            "artillery0.png"
+        ],
+        "children": [],
+        "cost": 5,
+        "desc": "We can create an artillery class ship designed for long range. This way we can keep the heavy armored ships in the front, and blast them from a distance. I'm told that this ship is basically just a modified howitzer.",
+        "info": "A long ranged combat ship to defend your squadron with.",
+        "level": 0,
+        "maxlevel": 1,
+        "name": "build_artillery",
+        "title": "Build a Artillery Vessel",
+        "x": 575,
+        "y": 640
+    },
+    "build_cargo": {
+        "asset": [
+            "assets",
+            "objects_icon",
+            "cargo0.png"
+        ],
+        "children": [],
+        "cost": 0,
+        "desc": "After humans began colonizing other planets, cargo vessels became a necessity. If we're running out of room, I guess we could just build a giant hangar, and attach some engines to it. Should provide a good way to stockpile materials, assuming it doesn't get blown up.",
+        "info": "A cargo ship that stores ore and material.",
+        "level": 0,
+        "maxlevel": 1,
+        "name": "build_cargo",
+        "title": "Build a Freighter",
+        "x": 575,
+        "y": 481
+    },
+    "build_combat": {
+        "asset": [
+            "assets",
+            "objects_icon",
+            "combat0.png"
+        ],
+        "children": [
+            {
+                "name": "action_repair"
+            }
+        ],
+        "cost": 3,
+        "desc": "One of the largest warship classes is the Galactica class warship. A sturdy design that has lasted the trials of time. We realize that the small fighter doesn't really have staying power in combat, so we made a bigger one. Bigger is better, right?",
+        "info": "A combat ship to defend your squadron with.",
+        "level": 0,
+        "maxlevel": 1,
+        "name": "build_combat",
+        "title": "Build Battlestar",
+        "x": 288,
+        "y": 192
+    },
+    "build_command": {
+        "asset": [
+            "assets",
+            "objects_icon",
+            "command0.png"
+        ],
+        "children": [
+            {
+                "name": "build_habitat"
+            },
+            {
+                "name": "build_drydock"
+            },
+            {
+                "name": "build_fighter"
+            },
+            {
+                "name": "build_salvager"
+            }
+        ],
+        "cost": 0,
+        "desc": "The pride and joy of any exploratory fleet, this vessel contains everything one needs to survive in the depths of space. As well as providing basic construction, freight storage and housing facilities, this vessel is a closed ecological system. Assuming major functions aren't disrupted, this ship can last forever. Ships like this, will be with you 'til the day you die.",
+        "info": "The main construction ship with some material storage.",
+        "level": 1,
+        "maxlevel": 1,
+        "name": "build_command",
+        "title": "Build Command Ship",
+        "x": 3,
+        "y": 2
+    },
+    "build_drydock": {
+        "asset": [
+            "assets",
+            "objects_icon",
+            "drydock0.png"
+        ],
+        "children": [
+            {
+                "name": "build_advdrydock"
+            },
+            {
+                "name": "build_troopship"
+            },
+            {
+                "name": "action_refine"
+            },
+            {
+                "name": "build_combat"
+            }
+        ],
+        "cost": 1,
+        "desc": "In classic warfare, military depended on supply lines. By removing this obstacle, humans were able to wage war on a whole new level. Right now we can only build basic ships. If we could build a drydock larger than the one in the command hanger, we should be able to step up our game.",
+        "info": "A construction ship that can build basic ships.",
+        "level": 0,
+        "maxlevel": 1,
+        "name": "build_drydock",
+        "title": "Build Drydock",
+        "x": 0,
+        "y": 192
+    },
+    "build_fighter": {
+        "asset": [
+            "assets",
+            "objects_icon",
+            "fighter0.png"
+        ],
+        "children": [
+            {
+                "name": "action_salvage"
+            },
+            {
+                "name": "action_cta"
+            }
+        ],
+        "cost": 0,
+        "desc": "I think we can make a venerable one man space superior fighter based on the stiletto and viper class fighters. While they may be outdated at this point, in large numbers, they can be effective. In all technicality, we're pretty much strapping our young men and women to a combination of rockets, bathtubs and guns. That's ok, I never liked them anyway.",
+        "info": "A small combat ship to defend your squadron with.",
+        "level": 1,
+        "maxlevel": 1,
+        "name": "build_fighter",
+        "title": "Build Fighter",
+        "x": 288,
+        "y": -1
+    },
+    "build_habitat": {
+        "asset": [
+            "assets",
+            "objects_icon",
+            "habitat0.png"
+        ],
+        "children": [
+            [],
+            {
+                "name": "upgrade_crew"
+            }
+        ],
+        "cost": 0,
+        "desc": "Habitats are essential, not only for moral, but to serve as living quarters for civilians. People have been living in space for so long, they have begun to associate habitats with home. If we optimize the layouts on the habitat, we should be able to sustain a faster growth rate.",
+        "info": "A bio-dome that produces crew and can pick up crew from stations.",
+        "level": 1,
+        "maxlevel": 1,
+        "name": "build_habitat",
+        "title": "Build Habitat",
+        "x": 0,
+        "y": -192
+    },
+    "build_jump": {
+        "asset": [
+            "assets",
+            "objects_icon",
+            "jump0.png"
+        ],
+        "children": [
+            {
+                "name": "upgrade_jump"
+            }
+        ],
+        "cost": 5,
+        "desc": "The jumpship operates by creating a wormhole that allows mass to move through folded space. The jump ship is a very advanced piece of technology, but by carefully looking into how ours is designed, I think we can recreate a blueprint. The more we have, the quicker we can calculate our jump as they all will fold space together, creating a faster larger wormhole.",
+        "info": "A jump ship that will allow your fleet to jump to the next system faster.",
+        "level": 0,
+        "maxlevel": 1,
+        "name": "build_jump",
+        "title": "Build Jumpgate Generator",
+        "x": -571,
+        "y": 641
+    },
+    "build_mining": {
+        "asset": [
+            "assets",
+            "objects_icon",
+            "mining0.png"
+        ],
+        "children": [
+            [],
+            {
+                "name": "upgrade_mining"
+            }
+        ],
+        "cost": 0,
+        "desc": "Mining has been a respected occupation for many generations. If you want to collect ore to refine into minerals, you're going to need some kind of ship to mine it. It's pretty basic, but it will get the job done! Keep in mind that this ship will not refine the ore; you'll need a refinery for that.",
+        "info": "An ore mining ship with some ore storage.",
+        "level": 0,
+        "maxlevel": 1,
+        "name": "build_mining",
+        "title": "Build Mining Rig",
+        "x": -864,
+        "y": 192
+    },
+    "build_radar": {
+        "asset": [
+            "assets",
+            "objects_icon",
+            "radar0.png"
+        ],
+        "children": [
+            {
+                "name": "upgrade_fow"
+            }
+        ],
+        "cost": 5,
+        "desc": "The XS-45 was originally commissioned as a low cost civilian reconnaissance ship, but after a few years of crowdsourced development, it became an incredibly popular vessel. The military originally opened up bids for the creation of an advanced reconnaissance ship. The project met the specifications and won the research and development bid with a $0 budget. Hence renamed the XS-45, this vessel is now a staple in fleets and is in practical military use.",
+        "info": "A scanning ship with a large visual range.",
+        "level": 0,
+        "maxlevel": 1,
+        "name": "build_radar",
+        "title": "Build Radar",
+        "x": -288,
+        "y": 640
+    },
+    "build_refinery": {
+        "asset": [
+            "assets",
+            "objects_icon",
+            "refinery0.png"
+        ],
+        "children": [
+            {
+                "name": "build_mining"
+            },
+            {
+                "name": "upgrade_refine"
+            }
+        ],
+        "cost": 0,
+        "desc": "Subatomic particle reconfiguration may be pretty awesome, as it allows us to process any ore, but it's really dangerous as well. I've reviewed the currently available ships in our fleet, and none of them will be capable of running such a system. We need to design a ship that can process ore, and is safe enough for common use, a member of the research team has a blueprint we can try",
+        "info": "A material refining ship with some material storage.",
+        "level": 0,
+        "maxlevel": 1,
+        "name": "build_refinery",
+        "title": "Build Refinery",
+        "x": -575,
+        "y": 193
+    },
+    "build_research": {
+        "asset": [
+            "assets",
+            "objects_icon",
+            "research0.png"
+        ],
+        "children": [
+            {
+                "name": "upgrade_armor"
+            },
+            {
+                "name": "upgrade_repair"
+            },
+            {
+                "name": "upgrade_damage"
+            },
+            {
+                "name": "upgrade_range"
+            },
+            {
+                "name": "upgrade_speed"
+            }
+        ],
+        "cost": 5,
+        "desc": "If you are looking to gain the edge against the enemies, you're going to want some advanced upgrades. Of course for complicated science stuff you're going to need complex science ships. Between you and me, I don't want those scientists on board my ship. They keep going on about science collaboration points.",
+        "info": "A research ship used to advance your fleet.",
+        "level": 0,
+        "maxlevel": 1,
+        "name": "build_research",
+        "title": "Build a Research Facility",
+        "x": 864,
+        "y": 385
+    },
+    "build_salvager": {
+        "asset": [
+            "assets",
+            "objects_icon",
+            "salvager0.png"
+        ],
+        "children": [
+            {
+                "name": "upgrade_salvage"
+            },
+            {
+                "name": "action_collect"
+            }
+        ],
+        "cost": 0,
+        "desc": "Salvagers are quite common nowadays, as space is a dangerous place to venture. This is a basic vulture ship designed to pick up scrap from destroyed enemies. It is a simple design, gets the job done and it's cheap to build. We should probably avoid putting claustrophobic folks in these guys.",
+        "info": "A ship used to gather salvage from destroyed ships.",
+        "level": 1,
+        "maxlevel": 1,
+        "name": "build_salvager",
+        "title": "Build Salvager",
+        "x": -289,
+        "y": 1
+    },
+    "build_tank": {
+        "asset": [
+            "assets",
+            "objects_icon",
+            "tank0.png"
+        ],
+        "children": [],
+        "cost": 5,
+        "desc": "Our current vehicles have many layers of armor to prevent folks from getting sucked out into space the second we take a bit of damage, but we can do better. So I had the boys down in research figure out how we can keep our ships up and running longer, faster and harder. A lot of good ideas came up, but the best was to build a wall around the fleet. We did the math, and it was cost prohibitive, so we think we can just build a wall around one of the ships, a wall of extra armor that is.",
+        "info": "A combat ship with a lot of health to defend your squadron with.",
+        "level": 0,
+        "maxlevel": 1,
+        "name": "build_tank",
+        "title": "Build Armored Frontline Tank",
+        "x": 287,
+        "y": 640
+    },
+    "build_troopship": {
+        "asset": [
+            "assets",
+            "objects_icon",
+            "troopship0.png"
+        ],
+        "children": [],
+        "cost": 3,
+        "desc": "Some ships are designed to penetrate an enemy hull, and provide an opening so we can have a small group of folks take a ship by force. Some of the troops are just climbing up the walls, and that's not even with the artificial gravity disabled. I think we can build a ship that would basically provide a one way trip into neutral or enemy vessels. Don't worry, we'll give them big guns. The ship? Not at all.",
+        "info": "A vessal used to take over neutral ships or damaged enemy ships.",
+        "level": 0,
+        "maxlevel": 1,
+        "name": "build_troopship",
+        "title": "Build Troopship",
+        "x": -286,
+        "y": 385
+    },
+    "upgrade_armor": {
+        "asset": [
+            "assets",
+            "actions",
+            "upgrade_armor.png"
+        ],
+        "children": [],
+        "cost": 5,
+        "desc": "Our armor uses a tight mesh system that maintains an incredible strength and is also lightweight. We have been studying the enemy, and have been able to come up with an adaptive armor plating system that should help deflect damage from foes. While it will not stop damage, it should be effective against their weapon systems.",
+        "info": "Improve your defense",
+        "level": 0,
+        "maxlevel": 3,
+        "name": "upgrade_armor",
+        "title": "Upgrade Ship Armor",
+        "x": 1150,
+        "y": 576
+    },
+    "upgrade_build_time": {
+        "asset": [
+            "assets",
+            "actions",
+            "upgrade_build_time.png"
+        ],
+        "children": [],
+        "cost": 5,
+        "desc": "Nanotechnology is practically a necessity in space, and it has shown to be well suited for ship development. The only available codebase is an older version, but it works for the most part. Sometimes it bugs out and confuses people with material. I'm sure if we put some developers onto the task, we can fix those bugs and increase the efficiency of the algorithm. Or maybe add more bugs.",
+        "info": "Build ships faster.",
+        "level": 0,
+        "maxlevel": 1,
+        "name": "upgrade_build_time",
+        "title": "Upgrade Build Speed",
+        "x": -1,
+        "y": 640
+    },
+    "upgrade_crew": {
+        "asset": [
+            "assets",
+            "actions",
+            "upgrade_crew.png"
+        ],
+        "children": [
+            []
+        ],
+        "cost": 1,
+        "desc": "The human race has been cloning humans for centuries now, but it is still common to make children \"the old fashioned way\". While highly unethical, we've found we can increase the maturity rate of the cloning process. If you need more crew, we can research this. The ends justify the means, I suppose.",
+        "info": "Modify crew clones to grow faster.",
+        "level": 0,
+        "maxlevel": 3,
+        "name": "upgrade_crew",
+        "title": "Upgrade Habitat Crew",
+        "x": 286,
+        "y": -192
+    },
+    "upgrade_damage": {
+        "asset": [
+            "assets",
+            "actions",
+            "upgrade_damage.png"
+        ],
+        "children": [],
+        "cost": 5,
+        "desc": "Based on the distant relative IRIS-T Air to Air missile, the FSIS-J (Full Spectrum Imaging System - Jet controlled vector) this battle-proven missile has shown to be nearly 100% effective in vacuum. On top of being easy to make, the weapon's payload is difficult to modify as the AI simulation has to be re-calculated and tested.",
+        "info": "Deal more damage in battle",
+        "level": 0,
+        "maxlevel": 3,
+        "name": "upgrade_damage",
+        "title": "Upgrade Ship Damage",
+        "x": 864,
+        "y": 576
+    },
+    "upgrade_fow": {
+        "asset": [
+            "assets",
+            "actions",
+            "upgrade_fow.png"
+        ],
+        "children": [],
+        "cost": 7,
+        "desc": "Thanks to it's open and modular design, upgrading hardware systems on the XS-45 has never been easier. With a small investment we can easily reconfigure our more advanced military scanners into the design. Operating these scanners in parallel should provide an enormous scanning range.",
+        "info": "Increase visual range.",
+        "level": 0,
+        "maxlevel": 3,
+        "name": "upgrade_fow",
+        "title": "Upgrade Radar Range",
+        "x": -288,
+        "y": 800
+    },
+    "upgrade_jump": {
+        "asset": [
+            "assets",
+            "actions",
+            "upgrade_jump.png"
+        ],
+        "children": [],
+        "cost": 7,
+        "desc": "Jump computers inside jump ships calculate the position in space that needs to be folded to transport mass. Our jump computers are out of date, but I think we can upgrade them. If we can manage to get some more flops out of it, we should be able to traverse sectors quicker.",
+        "info": "Increase speed ofjump speed calculation.",
+        "level": 0,
+        "maxlevel": 3,
+        "name": "upgrade_jump",
+        "title": "Upgrade Jump Calculation Speed",
+        "x": -576,
+        "y": 800
+    },
+    "upgrade_mining": {
+        "asset": [
+            "assets",
+            "actions",
+            "upgrade_mining.png"
+        ],
+        "children": [],
+        "cost": 5,
+        "desc": "By using Ablation V6 lasers, we can easily harvest precious metals from nearby asteroids. We are experiencing a few bottlenecks in our mining rigs. We believe we can fix them by introducing redundant backup systems. No more coffee breaks!",
+        "info": "Increase mining speed on all mining ships.",
+        "level": 0,
+        "maxlevel": 3,
+        "name": "upgrade_mining",
+        "title": "Upgrade Mining Speed",
+        "x": -859,
+        "y": 385
+    },
+    "upgrade_range": {
+        "asset": [
+            "assets",
+            "actions",
+            "upgrade_range.png"
+        ],
+        "children": [],
+        "cost": 5,
+        "desc": "Our sensors are based on quantum entanglement scanners, using the \"ghosting\" phenomenon to track almost invisible enemies. We have been scanning the enemies we have encountered, and it seems like they emit a very weak electromagnetic signature. We should be able to update the targeting systems on our missiles to better hone in on them, thus increasing our range.",
+        "info": "Increase all combat ships range.",
+        "level": 0,
+        "maxlevel": 3,
+        "name": "upgrade_range",
+        "title": "Upgrade Ship Attack Range",
+        "x": 1152,
+        "y": 193
+    },
+    "upgrade_refine": {
+        "asset": [
+            "assets",
+            "actions",
+            "upgrade_refine.png"
+        ],
+        "children": [],
+        "cost": 5,
+        "desc": "Since most materials in space tend to be a variety of types of metal, it's important to refine and reduce these materials into a common material of some sort. Akin to alchemy, the process alters atoms at an subatomic level to create the materials required. With some scientific \"trial and error\" we are confident we can improve the efficiency of the refining process. We believe we can streamline this process to make it faster.",
+        "info": "Speed up refining.",
+        "level": 0,
+        "maxlevel": 3,
+        "name": "upgrade_refine",
+        "title": "Upgrade Refining Speed",
+        "x": -576,
+        "y": 384
+    },
+    "upgrade_repair": {
+        "asset": [
+            "assets",
+            "actions",
+            "upgrade_repair.png"
+        ],
+        "children": [],
+        "cost": 5,
+        "desc": "Nanites are tiny little robots that can create highly complex objects from ordinary matter. Our nanites repair our ships, but I think by applying some AI rerouting, we can improve the efficiency of the algorithms.",
+        "info": "Increase speed of ship repair.",
+        "level": 0,
+        "maxlevel": 3,
+        "name": "upgrade_repair",
+        "title": "Upgrade Ship Repair",
+        "x": 1152,
+        "y": 384
+    },
+    "upgrade_salvage": {
+        "asset": [
+            "assets",
+            "actions",
+            "upgrade_salvage.png"
+        ],
+        "children": [],
+        "cost": 1,
+        "desc": "Salvagers use concentrated magnets to grab and sort debris. By altering the design of the salvager's claws, I think we can increase the speed at which the salvager can collect debris. There is still nothing I can do to help out the claustrophobic drivers.",
+        "info": "Increase speed of salvaging.",
+        "level": 0,
+        "maxlevel": 3,
+        "name": "upgrade_salvage",
+        "title": "Upgrade Salvage Speed",
+        "x": -288,
+        "y": -192
+    },
+    "upgrade_speed": {
+        "asset": [
+            "assets",
+            "actions",
+            "upgrade_speed.png"
+        ],
+        "children": [],
+        "cost": 5,
+        "desc": "Modern propulsion uses a recyclable jet fuel to propel the ship through space. Sometimes winning isn't just about how hard you can hit, but how quickly you can avoid the enemy. We think we can increase the compression rate on our jet engines. If we can figure out an optimal rate, I think we can boost the entire fleet's speed.",
+        "info": "Increase all speed on ships.",
+        "level": 0,
+        "maxlevel": 3,
+        "name": "upgrade_speed",
+        "title": "Upgrade Ship Speed",
+        "x": 864,
+        "y": 192
+    }
+}

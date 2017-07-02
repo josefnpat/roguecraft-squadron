@@ -72,8 +72,8 @@ function state:draw()
   love.graphics.setLineWidth(8)
 
   for i,v in pairs(self.tree) do
-    local found_child = false
-    local children_string = "Children:\n"
+    local found_child = false -- debug
+    local children_string = "Children:\n" -- debug
     for _,child in pairs(v.children) do
       local target = self.tree[child.name]
       if target then
@@ -81,8 +81,8 @@ function state:draw()
         love.graphics.line(
           v.x+cx,v.y+cy,
           target.x+cx,target.y+cy)
-        children_string = children_string .. child.name .. "\n"
-        found_child = true
+        children_string = children_string .. child.name .. "\n" --debug
+        found_child = true -- debug
       elseif child.name then
         self.tree[child.name] = nil
       end
@@ -125,10 +125,16 @@ function state:draw()
       y - self.icon_bg:getHeight()/2-font:getHeight(),
       self.tree_bg:getWidth(),"center")
 
-    dropshadowf(v.cost.." Resarch Points ["..v.level.."/"..v.maxlevel.."]",
+    dropshadowf(libs.i18n('tree.node.info',{
+        cost = v.cost,
+        level = v.level,
+        level_max = v.maxlevel,
+      }),
       x - self.tree_bg:getWidth()/2,
       y + self.icon_bg:getHeight()/2,
-      self.tree_bg:getWidth(),"center")
+      self.tree_bg:getWidth(),
+      "center"
+    )
 
     love.graphics.setColor(255,255,255)
     if debug_mode then
@@ -136,7 +142,7 @@ function state:draw()
         x-self.tree_bg:getWidth()/2,
         y-self.tree_bg:getHeight()/2)
     end
-    dropshadowf("Spend your research points and press `return` to continue.",0,32,love.graphics.getWidth(),"center")
+    dropshadowf(libs.i18n('tree.info'),0,32,love.graphics.getWidth(),"center")
 
     if self.window then
       love.graphics.setColor(0,0,0,127)
@@ -147,9 +153,10 @@ function state:draw()
 
     love.graphics.setColor(255,255,255)
     love.graphics.setFont(fonts.menu)
-    dropshadow("Research Points: "..settings:read("tree_points"),32,32)
+    dropshadow(libs.i18n('tree.research_points',{
+      research_points=settings:read("tree_points"),
+    }),32,32)
     love.graphics.setFont(fonts.default)
-
 
   end
 
@@ -385,14 +392,20 @@ function state:mousepressed(x,y,b)
           text=function()
             if self.tree[self.selected].level < self.tree[self.selected].maxlevel then
               if not self:havePrereq(self.tree[self.selected]) then
-                return "MISSING PREREQ ["..(self.tree[self.selected].cost).."]"
+                return libs.i18n('tree.node.status.missing_prereq',{
+                  cost = self.tree[self.selected].cost
+                })
               elseif settings:read("tree_points") >= self.tree[self.selected].cost then
-                return "RESEARCH ["..(self.tree[self.selected].cost).."]"
+                return libs.i18n('tree.node.status.ready',{
+                  cost = self.tree[self.selected].cost
+                })
               else
-                return "NOT ENOUGH RP ["..(self.tree[self.selected].cost).."]"
+                return libs.i18n('tree.node.status.need_points',{
+                  cost = self.tree[self.selected].cost
+                })
               end
             else
-              return "RESEARCH [MAX]"
+              return libs.i18n('tree.node.status.max')
             end
           end,
           callback = function()
@@ -409,7 +422,7 @@ function state:mousepressed(x,y,b)
           end
         },
         {
-          text="CANCEL",
+          text=libs.i18n('tree.node.cancel'),
           callback = function()
             self.window = nil
             self.selected = nil

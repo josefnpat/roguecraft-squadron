@@ -2,10 +2,10 @@ local level = {}
 
 level.intro = function(self)
   local tvn = libs.vn.new()
-  tvn:addFrame(vn.adj.default,vn.adj.overlay,"Adjutant","Warning: Hostiles detected.",vn_audio.adj.warning)
-  tvn:addFrame(vn.adj.default,vn.adj.overlay,"Adjutant","We will be unable to leave this system until the threat has been neutralized.",vn_audio.adj.line9)
-  tvn:addFrame(vn.com.default,nil,"Commander","Well, that’s just dandy. I guess I better use some of those materials I processed to make a [Battlestar] or two, and get rid of them.",vn_audio.com.line8)
-  tvn:addFrame(nil,nil,"[TIP]","Objects with green chevrons are under your control. Objects with yellow chevrons are neutral. Objects with Red chevrons are hostile.")
+  tvn:addFrame(vn.adj.default,vn.adj.overlay,libs.i18n('vn.adj.base'),libs.i18n('vn.adj.warning'),vn_audio.adj.warning)
+  tvn:addFrame(vn.adj.default,vn.adj.overlay,libs.i18n('vn.adj.base'),libs.i18n('vn.adj.9'),vn_audio.adj.line9)
+  tvn:addFrame(vn.com.default,nil,libs.i18n('vn.com.base'),libs.i18n('vn.com.8'),vn_audio.com.line8)
+  tvn:addFrame(nil,nil,libs.i18n('vn.tip.base'),libs.i18n('vn.tip.2'))
   return tvn
 end
 
@@ -20,8 +20,8 @@ level.make_tutorial = function()
   local t = libs.tutorial.new()
 
   t:add{
-    objtext = "We have detected enemy ships. We will need a small squad of Fighters to take them out.",
-    helptext = "Build:\n* Fighters from your Command ship\n* Battlestars from the Drydock ship\n* Artillery and Armored Frontline Tanks from the Advanced Drydock",
+    objtext = libs.i18n('tutorial.obj.11'),
+    helptext = libs.i18n('tutorial.help.11'),
     objguides = {"object_enemy_fighter","object_fighter"},
     helpguides = {"object_fighter","object_combat","object_artillery","object_tank"},
     complete = function()
@@ -36,8 +36,8 @@ level.make_tutorial = function()
 
   --[[
   t:add{
-    objtext = "We have detected asteroids in this system. We should use the Drydock to build some Mining Rigs to mine them.",
-    helptext = "Select the command ship, and use the Build Drydock action if you haven't already. Select the Drydock, and use the Build Mining Rig action. Select the Mining Rig, and right mouse click on an Asteroid.",
+    objtext = libs.i18n('tutorial.obj.12'),
+    helptext = libs.i18n('tutorial.help.12'),
     helpguides = {"object_command","object_drydock","object_mining","object_asteroid"},
     complete = function()
       local ship = libs.tutorial.wait.select_single_object("mining")
@@ -46,8 +46,8 @@ level.make_tutorial = function()
   }
 
   t:add{
-    objtext = "We have some ore now, but we can't refine it without a Refinery. Build one and inform it to to convert Ore to Material. ",
-    helptext = "Select the command ship, and use the Build Drydock action if you haven't already. Select the Drydock ship, and use the Build Refinery action. Select the Refinery ship, toggle the \"Refine Ore\" action.",
+    objtext = libs.i18n('tutorial.obj.13'),
+    helptext = libs.i18n('tutorial.help.13'),
     helpguides = {"object_command","object_drydock","object_refinery","action_refine"},
     complete = function()
       local ship = libs.tutorial.wait.select_single_object("refinery")
@@ -57,20 +57,20 @@ level.make_tutorial = function()
   --]]
 
   t:add{
-    objtext = "The enemy has set up a Jump Scrambler in this system, which prevents us from jumping to the next system.",
-    helptext = "Find and destroy all of the Jump Scramblers in the system.",
-    helpguides = {"object_jumpscrambler"},
+    objtext = libs.i18n('tutorial.obj.14'),
+    helptext = libs.i18n('tutorial.help.14'),
+    helpguides = {"object_enemy_jumpscrambler"},
     complete = function()
-      return #libs.tutorial.wait.objects_find("jumpscrambler") == 0
+      return #libs.tutorial.wait.objects_find("enemy_jumpscrambler") == 0
     end,
   }
 
   t:add{
-    objtext = "This concludes the tutorial. Your goal is to jump past level 8.",
-    helptext = "There is a lot more to RogueCraft Squadron. I guess you'll just have to figure it out yourself! Here are some tips, though:",
+    objtext = libs.i18n('tutorial.obj.15'),
+    helptext = libs.i18n('tutorial.help.15'),
     helpguides = {"action_cta","action_collect"},
-    title = "Tutorial Complete",
-    completetext = "DONE",
+    title = libs.i18n('tutorial.title.complete'),
+    completetext = libs.i18n('tutorial.done'),
   }
 
   return t

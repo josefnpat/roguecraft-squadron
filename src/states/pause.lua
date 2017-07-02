@@ -3,16 +3,16 @@ local state = {}
 function state:init()
   self.menu = libs.menu.new{title="[PAUSED]"}
 
-  self.menu:add("Continue",function()
+  self.menu:add(libs.i18n('pause.continue'),function()
     libs.hump.gamestate.switch(states.mission)
   end)
 
-  self.menu:add("Options",function()
+  self.menu:add(libs.i18n('pause.options'),function()
     libs.hump.gamestate.switch(states.options)
     previousState = states.pause
   end)
 
-  self.menu:add("Surrender",function()
+  self.menu:add(libs.i18n('pause.gameover'),function()
     states.gameover.win = false
     libs.hump.gamestate.switch(states.gameover)
   end)

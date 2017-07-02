@@ -1,8 +1,6 @@
 return function()
   return {
     type = "cargo",
-    display_name = "Freighter",
-    info = "A cargo ship that stores ore and material.",
     cost = {material=200,crew=10},
     fow = 0.5,
     crew = 10,

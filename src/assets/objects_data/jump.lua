@@ -1,8 +1,6 @@
 return function()
   return {
     type = "jump",
-    display_name = "Jumpgate Generator",
-    info = "A jump ship that will allow your fleet to jump to the next system faster.",
     cost = {material=200,crew=10},
     fow = 0.5,
     crew = 10,

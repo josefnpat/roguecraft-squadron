@@ -1,8 +1,6 @@
 return function()
   return {
     type = "enemy_miniboss",
-    display_name = "Enemy Battlestar",
-    info = "A combat ship.",
     cost = {material=500,crew=100},
     crew = 100,
     size = 48,

@@ -1,8 +1,6 @@
 return function()
   return {
     type = "command",
-    display_name = "Command Ship",
-    info =  "The main construction ship with some material storage.",
     cost = {material=1000,crew=100},
     fow = cheat and 32 or 0.5,
     crew = 100,

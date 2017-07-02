@@ -1,8 +1,6 @@
 return function()
   return {
-    type = "jumpscrambler",
-    display_name = "Jump Scrambler",
-    info = "This platform prevents your fleet from jumping.",
+    type = "enemy_jumpscrambler",
     size = 32,
     rotate = (math.random(0,1)*2-1)/10,
     cost = {material=100,crew=10},
