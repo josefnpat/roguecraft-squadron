@@ -263,7 +263,7 @@ function tutorial.load_icons()
 
   tutorial.icons.action_jump = {
     icon = love.graphics.newImage("assets/actions/jump.png"),
-    text = libs.i18n('mission.action.jump.name'),
+    text = libs.i18n('mission.action.jump.base'),
   }
 
   tutorial.icons.object_enemy_fighter = {
