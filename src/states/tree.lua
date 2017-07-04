@@ -16,10 +16,10 @@ function state:init()
     prereq_missing = {191,0,0},
     cant_afford = {255,0,0},
     max = {0,255,0},
-    not_researched = {127,127,127},
+    not_researched = {255,255,255},
     partially_researched = {127,255,127},
     selected = {255,255,255},
-    unselected = {127,127,127},
+    unselected = {255,255,255},
   }
 
   self.tree_class:loadData()
