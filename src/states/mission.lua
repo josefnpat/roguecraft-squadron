@@ -1824,7 +1824,6 @@ function mission:updateMission(dt)
       self.spawn_new_wave = self.spawn_new_wave - self.spawn_wave_t
       self.spawn_wave = (self.spawn_wave or 0) + 1
 
-
       self.notif:add(libs.i18n('mission.notification.enemy_reinforcements'),self.sfx.warning)
 
       -- TODO replace with trig omg wtf
@@ -1835,7 +1834,7 @@ function mission:updateMission(dt)
         unsafe_y = math.random(-32,128+32)*32
       end
 
-      self:spawnEnemy(self.spawn_wave*2,unsafe_x,unsafe_y)
+      self:spawnEnemy(self.spawn_wave,unsafe_x,unsafe_y)
     end
   end
 
