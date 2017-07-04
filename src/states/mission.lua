@@ -1519,7 +1519,7 @@ function mission:getActions()
   local cobject = self:singleSelected()
   local actions
   if cobject and cobject.actions then
-    actions = cobject.actions
+    actions = cobject.owner == 0 and cobject.actions or {}
   else
     actions = {}
     for _,action in pairs(self.actions) do
