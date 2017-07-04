@@ -50,8 +50,8 @@ function tutorial:update(dt)
       end
     end
 
-    self.objective.x = love.graphics.getWidth()-320-32
-    self.objective.y = love.graphics.getHeight()-self.objective.h-32
+    self.objective.x = love.graphics.getWidth()-320-self.padding
+    self.objective.y = love.graphics.getHeight()-self.objective.h-self.padding
     self.objective:update(dt)
   else
     if self.data_index == nil then
@@ -65,14 +65,16 @@ function tutorial:update(dt)
     end
   end
   if self.help then
-    self.help.x = love.graphics.getWidth()-320-32
-    self.help.y = love.graphics.getHeight()-self.help.h-self.objective.h-32
+    self.help.x = love.graphics.getWidth()-320-self.padding
+    self.help.y = love.graphics.getHeight()-self.help.h-self.objective.h-self.padding
     self.help:update(dt)
   end
 end
 
 function tutorial:add(init)
   init = init or {}
+
+  self.padding = init.padding or 64
 
   self.data_index = self.data_index or 1
 
@@ -153,7 +155,7 @@ function tutorial:add(init)
     end
   end
 
-  help.y = love.graphics.getHeight()-help.h-objective.h-32
+  help.y = love.graphics.getHeight()-help.h-objective.h-self.padding
 
   table.insert(self.data,{
     objective=objective,
