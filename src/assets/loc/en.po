@@ -782,7 +782,7 @@ msgid "tutorial.obj.11"
 msgstr "We have detected enemy ships. We will need a small squad of Fighters to take them out."
 
 msgid "tutorial.help.11"
-msgstr "Build:\n* Fighters from your Command ship\n* Battlestars from the Drydock ship\n* Artillery and Armored Frontline Tanks from the Advanced Drydock"
+msgstr "Build fighters from your Command ship"
 
 msgid "tutorial.obj.12"
 msgstr "We have detected asteroids in this system. We should use the Drydock to build some Mining Rigs to mine them."
