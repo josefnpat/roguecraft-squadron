@@ -370,6 +370,9 @@ msgstr "Enemy reinforcements have arrived"
 msgid "mission.notification.enemy_engage"
 msgstr "You have engaged the enemy"
 
+msgid "mission.notification.cargo_full"
+msgstr "Your cargo bays are full"
+
 msgid "pause.continue"
 msgstr "Continue"
 

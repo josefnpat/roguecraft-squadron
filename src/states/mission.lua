@@ -2151,20 +2151,28 @@ function mission:updateMission(dt)
               if dat.sfx then
                 loopSFX(dat.sfx)
               end
+            else
+              self.notif:add(libs.i18n('mission.notification.cargo_full'))
+              object.target_object = nil
+              object.collect = false
             end
           end
         end
 
       end --end of distance check
 
-      if object.target_object.health and object.target_object.health.current <= 0 then
-        object.target_object = nil
-        object.target = nil
-      else
-        object.target = {
-          x=object.target_object.position.x,
-          y=object.target_object.position.y,
-        }
+      if object.target_object then
+
+        if object.target_object.health and object.target_object.health.current <= 0 then
+          object.target_object = nil
+          object.target = nil
+        else
+          object.target = {
+            x=object.target_object.position.x,
+            y=object.target_object.position.y,
+          }
+        end
+
       end
 
     else
