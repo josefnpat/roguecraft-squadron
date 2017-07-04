@@ -142,7 +142,7 @@ function state:draw()
         x-self.tree_bg:getWidth()/2,
         y-self.tree_bg:getHeight()/2)
     end
-    dropshadowf(libs.i18n('tree.info'),0,32,love.graphics.getWidth(),"center")
+    dropshadowf(libs.i18n('tree.info'),0,icon:getHeight(),love.graphics.getWidth(),"center")
 
     if self.window then
       love.graphics.setColor(0,0,0,127)
@@ -155,7 +155,7 @@ function state:draw()
     love.graphics.setFont(fonts.menu)
     dropshadow(libs.i18n('tree.research_points',{
       research_points=settings:read("tree_points"),
-    }),32,32)
+    }),icon:getHeight(),icon:getHeight())
     love.graphics.setFont(fonts.default)
 
   end

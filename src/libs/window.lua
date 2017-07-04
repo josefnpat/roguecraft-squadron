@@ -17,6 +17,8 @@ function window.new(init)
   init = init or {}
   local self = {}
 
+  self.icon_size = init.icon_size or 32
+
   self.title = init.title or nil
   self.title_font = (fonts and fonts.window_title) or init.title_font or love.graphics.getFont()
   self.text = init.text or "N/A"
@@ -131,11 +133,11 @@ function window:draw()
   if #self.guides > 0 then
     --love.graphics.rectangle("line",self.x+32,self.y+coffset,self.w-64,self:_guideHeight())
     for iguide,guide in pairs(self.guides) do
-      love.graphics.draw(window.icon_bg,self.x+32,self.y+coffset+32*(iguide-1))
-      love.graphics.draw(guide.icon,self.x+32,self.y+coffset+32*(iguide-1))
+      love.graphics.draw(window.icon_bg,self.x+32,self.y+coffset+self.icon_size*(iguide-1))
+      love.graphics.draw(guide.icon,self.x+32,self.y+coffset+self.icon_size*(iguide-1))
       dropshadow(guide.text,
-        self.x+64+8,
-        self.y+coffset+32*(iguide-1)+(32-tfont:getHeight())/2
+        self.x+32+self.icon_size+8,
+        self.y+coffset+self.icon_size*(iguide-1)+(32-tfont:getHeight())/2
       )
     end
     coffset = coffset + self:_guideHeight()
@@ -215,7 +217,7 @@ function window:_textHeight()
 end
 
 function window:_guideHeight()
-  return #self.guides > 0 and #self.guides*32+self._spad or 0
+  return #self.guides > 0 and #self.guides*self.icon_size+self._spad or 0
 end
 
 function window:_imageHeight()
