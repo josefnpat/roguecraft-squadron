@@ -15,6 +15,24 @@ function state:init()
 
   self.menu:add(
     function()
+      return "Cheat mode ["..(cheat and "Enabled" or "Disabled").."]"
+    end,
+    function()
+      cheat = not cheat
+    end
+  )
+
+  self.menu:add(
+    function()
+      return "CWAL mode ["..(cheat_operation_cwal and "Enabled" or "Disabled").."]"
+    end,
+    function()
+      cheat_operation_cwal = not cheat_operation_cwal
+    end
+  )
+
+  self.menu:add(
+    function()
       if love.filesystem.exists("demo.ogv") then
         return "Demo video [Delete]"
       else
