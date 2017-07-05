@@ -350,8 +350,12 @@ function state:keypressed(key)
       end
     end
   else
-    if key == "return" then
-      libs.hump.gamestate.switch(previousState)
+    if key == "escape" or key == "return" then
+      if self.window then
+        self.window = nil
+      else
+        libs.hump.gamestate.switch(previousState)
+      end
     end
   end
 end
