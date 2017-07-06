@@ -6,6 +6,10 @@ function state:init()
 end
 
 function state:enter()
+
+  states.menu.music.title:play()
+  states.menu.music.game:stop()
+
   self.text = (self.win and self.text_win or self.text_lose).."\n\n"..
     states.mission.score:render()
 

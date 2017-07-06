@@ -73,7 +73,8 @@ function state:init()
         vol = 1
       end
       settings:write("music_vol",vol)
-      states.menu.music:setVolume(vol)
+      states.menu.music.title:setVolume(vol)
+      states.menu.music.game:setVolume(vol)
     end)
 
   self.menu:add(

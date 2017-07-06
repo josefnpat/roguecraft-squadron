@@ -1,10 +1,19 @@
 local mainmenu = {}
 
 function mainmenu:init()
-  self.music = love.audio.newSource("assets/music/Terran4.1.ogg","stream")
-  self.music:setVolume(settings:read("music_vol"))
-  self.music:setLooping(true)
-  self.music:play()
+
+  self.music = {}
+
+  self.music.title = love.audio.newSource("assets/music/Terran4.1.ogg","stream")
+  self.music.title:setVolume(settings:read("music_vol"))
+  self.music.title:setLooping(true)
+
+  self.music.game = love.audio.newSource("assets/music/Terran4.1.ogg","stream")
+  self.music.game:setVolume(settings:read("music_vol"))
+  self.music.game:setLooping(true)
+
+  self.music.title:play()
+
   self.logo = love.graphics.newImage("assets/logo.png")
 
   self.debug_menu = {"up","up","down","down","left","right","left","right","b","a"}
@@ -150,9 +159,9 @@ function mainmenu:update(dt)
   end
   if self.demo then
     if not self.demo:isPlaying() then
-      self.music:play()
+      self.music.game:play()
     else
-      self.music:pause()
+      self.music.game:pause()
     end
     self.demo_dt = (self.demo_dt or 0) + dt
   end
