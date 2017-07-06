@@ -23,6 +23,12 @@ function state:update(dt)
   self.menu:update(dt)
 end
 
+function state:keypressed(key)
+  if key == "escape" then
+    libs.hump.gamestate.switch(states.mission)
+  end
+end
+
 function state:draw()
   states.mission:draw()
   love.graphics.setColor(0,0,0,100)
