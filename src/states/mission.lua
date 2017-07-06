@@ -23,7 +23,7 @@ function mission:enter()
   self.tree = g_tree
 
   --self.tree:loadData()
-  --self.tree:loadGame()
+  self.tree:loadGame()
 
   self.enemy_types = {
     {type="enemy_fighter",q=4},

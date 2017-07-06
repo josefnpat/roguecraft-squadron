@@ -57,6 +57,7 @@ function mainmenu:enter()
 
   self.menum:add(libs.i18n('menu.new_game'),function()
     settings:write("tree_points",0)
+    settings:write("tree_levels",{})
     self.menu = self.menud
   end)
 
