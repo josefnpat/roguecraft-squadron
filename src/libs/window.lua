@@ -53,8 +53,8 @@ function window.new(init)
 
   self.w = init.w or 320
   self.h = init.h or self:_recalculateHeight()
-  self.x = init.x or love.graphics.getWidth()-32-self.w
-  self.y = init.y or love.graphics.getHeight()-32-self.h
+  self.x = init.x or love.graphics.getWidth()-64-self.w
+  self.y = init.y or love.graphics.getHeight()-64-self.h
 
   self:reset()
 
