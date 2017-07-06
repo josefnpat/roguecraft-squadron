@@ -39,6 +39,18 @@ function state:init()
   -- lol don't ask ffs inverted camera i hate you
   self.clamp.ymin,self.clamp.ymax = -self.clamp.ymax,-self.clamp.ymin
 
+  self.done = libs.window.new{
+    text = libs.i18n('tree.info'),
+    buttons = {
+      {
+        text = libs.i18n('tree.ready'),
+        callback = function()
+          libs.hump.gamestate.switch(previousState)
+        end,
+      },
+    }
+  }
+
 end
 
 function state:getOffset()
@@ -62,7 +74,12 @@ function state:textinput(t)
 end
 
 function state:enter()
+  self.window = nil
   self.tree_class:loadGame()
+end
+
+function state:leave()
+  self.tree_class:saveGame()
 end
 
 function state:draw()
@@ -145,7 +162,6 @@ function state:draw()
         x-self.tree_bg:getWidth()/2,
         y-self.tree_bg:getHeight()/2)
     end
-    dropshadowf(libs.i18n('tree.info'),0,icon:getHeight(),love.graphics.getWidth(),"center")
 
     if self.window then
       love.graphics.setColor(0,0,0,127)
@@ -183,22 +199,24 @@ function state:draw()
     end
   end
 
+  self.done:draw()
+
 end
 
 function state:getColorByNode(v)
+  if self.tree_class:getLevelData(v.name) == v.maxlevel then
+    return self.colors.max
+  end
+  if self.tree_class:getLevelData(v.name) > 0 then
+    return self.colors.partially_researched
+  end
   if not self:havePrereq(v) then
     return self.colors.prereq_missing
   end
   if settings:read("tree_points") < v.cost then
     return self.colors.cant_afford
   end
-  if self.tree_class:getLevelData(v.name) == v.maxlevel then
-    return self.colors.max
-  end
-  if self.tree_class:getLevelData(v.name)  == 0 then
-    return self.colors.not_researched
-  end
-  return self.colors.partially_researched
+  return self.colors.not_researched
 end
 
 function state:havePrereq(node)
@@ -229,8 +247,10 @@ function state:update(dt)
     if love.keyboard.isDown("down") then
       self._y = self._y - 500*dt
     end
-
   end
+
+  self.done:update(dt)
+
 end
 
 function state:keypressed(key)
@@ -354,11 +374,10 @@ function state:keypressed(key)
       end
     end
   else
-    if key == "escape" or key == "return" then
+    if key == "escape" then
       if self.window then
         self.window = nil
       else
-        self.tree_class:saveGame()
         libs.hump.gamestate.switch(previousState)
       end
     end
@@ -446,6 +465,7 @@ function state:mousepressed(x,y,b)
     self.window:addGuide(self.tree[self.selected].info,self._icon_cache[self.selected])
 
   end
+
 end
 
 return state
