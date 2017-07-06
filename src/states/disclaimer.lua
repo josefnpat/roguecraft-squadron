@@ -32,6 +32,9 @@ function disclaimer:keypressed(key)
 end
 
 function disclaimer:getouttahere()
+  -- TODO: clean up this hack
+  states.tree:init()
+  states.tree:enter()
   libs.hump.gamestate.switch(settings:read("tree_points") > 0 and states.tree or states.mission)
   previousState = states.mission
 end

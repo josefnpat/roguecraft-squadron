@@ -80,6 +80,7 @@ end
 
 function state:leave()
   self.tree_class:saveGame()
+  states.mission:init()
 end
 
 function state:draw()

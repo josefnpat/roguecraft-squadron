@@ -1,7 +1,7 @@
 local mission = {}
 
---TODO: LOL HACK USE INIT YOU BASTARD!
-function mission:enter()
+--TODO: use init/enter correctly and refactor with newgame
+function mission:init()
 
   self._ignoreBuild = {
     "build_asteroid",
@@ -19,10 +19,9 @@ function mission:enter()
   }
 
   --TODO: NOT HACK
-  g_tree = g_tree or libs.tree.new()
   self.tree = g_tree
 
-  --self.tree:loadData()
+  self.tree:loadData()
   self.tree:loadGame()
 
   self.enemy_types = {
