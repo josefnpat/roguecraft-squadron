@@ -186,19 +186,19 @@ function state:draw()
 end
 
 function state:getColorByNode(v)
+  if self.tree_class:getLevelData(v.name) == v.maxlevel then
+    return self.colors.max
+  end
+  if self.tree_class:getLevelData(v.name) > 0 then
+    return self.colors.partially_researched
+  end
   if not self:havePrereq(v) then
     return self.colors.prereq_missing
   end
   if settings:read("tree_points") < v.cost then
     return self.colors.cant_afford
   end
-  if self.tree_class:getLevelData(v.name) == v.maxlevel then
-    return self.colors.max
-  end
-  if self.tree_class:getLevelData(v.name)  == 0 then
-    return self.colors.not_researched
-  end
-  return self.colors.partially_researched
+  return self.colors.not_researched
 end
 
 function state:havePrereq(node)
