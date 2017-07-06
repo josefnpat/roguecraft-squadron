@@ -16,5 +16,6 @@ return function()
       "build_fighter",
       "build_drydock",
     },
+    build_time = 60,
   }
 end

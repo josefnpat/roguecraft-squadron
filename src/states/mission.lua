@@ -23,7 +23,7 @@ function mission:enter()
   self.tree = g_tree
 
   --self.tree:loadData()
-  --self.tree:loadGame()
+  self.tree:loadGame()
 
   self.enemy_types = {
     {type="enemy_fighter",q=4},
@@ -1078,8 +1078,15 @@ function mission:mousepressed(x,y,b)
   elseif self.tutorial and self.tutorial:inArea() then
     --nop
   elseif self:mouseInSelected() then
-    local posx = math.floor((love.mouse.getX()-32)/(32+self:iconPadding()))+1
-    local posy = -math.floor((love.mouse.getY()-love.graphics.getHeight()+32)/(32+self:iconPadding()))
+
+    local posx = math.floor(
+      (love.mouse.getX()-self:windowPadding())/
+        (self:iconSize()+self:iconPadding())
+      )+1
+    local posy = -math.floor(
+      (love.mouse.getY()-love.graphics.getHeight()+self:windowPadding())/
+        (self:iconSize()+self:iconPadding())
+      )
     local row,col = 0,0
     for _,object in pairs(self.objects) do
       if object.selected then
@@ -1098,7 +1105,10 @@ function mission:mousepressed(x,y,b)
     local actions = self:getActions()
     local cobject = self:singleSelected()
     if actions then
-      local pos = math.floor((love.mouse.getY()-32)/(32+self:iconPadding()))+1
+      local pos = math.floor(
+        (love.mouse.getY()-self:windowPadding())/
+          (self:iconSize()+self:iconPadding())
+        )+1
       for ai,a in pairs(actions) do
         if ai == pos then
           if cobject then
@@ -1443,7 +1453,7 @@ function mission:draw()
   dropshadow(libs.i18n('mission.level',{
     level=self.level,
     max_level=8,
-  }),32,128+96)
+  }),self:windowPadding(),128+32+32+self:windowPadding())
 
   local sindex = 1
   for rindex,r in pairs(self.resources_types) do
@@ -1460,7 +1470,7 @@ function mission:draw()
         self.resources_types_formatted[rindex]..": "..
         math.floor(self.resources[r]).."/"..self.resources[r.."_cargo"]..
         " ["..symbol..math.floor(self.resources[r.."_delta"]+0.5).."]",
-        32,128+96+18*(sindex))
+        self:windowPadding(),128+32+32+self:windowPadding()+18*(sindex))
       sindex = sindex + 1
     end
   end
@@ -1491,6 +1501,14 @@ function mission:iconPadding()
   return 4
 end
 
+function mission:iconSize()
+  return 32
+end
+
+function mission:windowPadding()
+  return 64
+end
+
 function mission:resize()
   self.fow = love.graphics.newCanvas(love.graphics.getWidth(),love.graphics.getHeight())
 end
@@ -1514,7 +1532,7 @@ function mission:getActions()
   local cobject = self:singleSelected()
   local actions
   if cobject and cobject.actions then
-    actions = cobject.actions
+    actions = cobject.owner == 0 and cobject.actions or {}
   else
     actions = {}
     for _,action in pairs(self.actions) do
@@ -1530,7 +1548,8 @@ function mission:drawActions()
 
   local cobject = self:singleSelected()
   for ai,a in pairs(self:getActions()) do
-    local x,y = love.graphics.getWidth()-64,32+(ai-1)*(32+self:iconPadding())
+    local x = love.graphics.getWidth()-self:iconSize()-self:windowPadding()
+    local y = self:windowPadding()+(ai-1)*(self:iconSize()+self:iconPadding())
 
     local alpha = 255
     if a.pressed then
@@ -1552,7 +1571,8 @@ function mission:drawActions()
       love.graphics.setColor(r,g,b)
       local tobject = a.type and self.build[a.type]() or ""
       dropshadowf(cobject and a.tooltip(cobject) or a.multi.tooltip(self.multi),
-        32,y+6,love.graphics.getWidth()-96-8,"right")
+        self:iconSize(),y+6,
+        love.graphics.getWidth()-self:iconSize()*2-self:windowPadding()-8,"right")
     end
 
     local r,g,b = love.graphics.getColor()
@@ -1569,7 +1589,9 @@ function mission:drawSelected()
   local row,col = 0,0
   for _,object in pairs(self.objects) do
     if object.selected then
-      local x,y = col*(32+self:iconPadding())+32,love.graphics.getHeight()-32-32-row*(32+self:iconPadding())
+      local x = col*(self:iconSize()+self:iconPadding())+self:windowPadding()
+      local y = love.graphics.getHeight()-self:windowPadding()-self:iconSize()-
+        row*(self:iconSize()+self:iconPadding())
       love.graphics.draw(self.icon_bg,x,y)
       index = index + 1
       local object_icon = self.objects_icon[object.type][object.variation or 0]
@@ -1596,7 +1618,7 @@ function mission:drawSelected()
 end
 
 function mission:miniMapArea()
-  return 64,64,128,128
+  return 32+self:windowPadding(),32+self:windowPadding(),128,128
 end
 
 function mission:miniMapScale()
@@ -1629,9 +1651,10 @@ function mission:selectedArea()
   -- NO UR A HACK
   local mrow = col == 0 and row or row+1
   local mcol = row>0 and self.selected_row_max or col
-  return 32,love.graphics.getHeight()-32-mrow*(32+self:iconPadding()),
-    mcol*(32+self:iconPadding()),
-    mrow*(32+self:iconPadding())
+  return self:windowPadding(),
+    love.graphics.getHeight()-self:windowPadding()-mrow*(self:iconSize()+self:iconPadding()),
+    mcol*(self:iconSize()+self:iconPadding()),
+    mrow*(self:iconSize()+self:iconPadding())
 end
 
 function mission:mouseInActions()
@@ -1647,7 +1670,10 @@ function mission:actionArea()
     for ia,a in pairs(actions) do
       count = count + 1
     end
-    return love.graphics.getWidth()-64,32,32,32+count*(32+self:iconPadding())
+    return love.graphics.getWidth()-self:iconSize()-self:windowPadding(),
+      self:windowPadding(),
+      self:iconSize(),
+      self:iconSize()+count*(self:iconSize()+self:iconPadding())
   else
     return 0,0,0,0
   end
@@ -1717,7 +1743,7 @@ end
 
 function mission:drawMinimap()
   local x,y,w,h = self:miniMapArea()
-  love.graphics.draw(self.map_bg,32,32)
+  love.graphics.draw(self.map_bg,self:windowPadding(),self:windowPadding())
   love.graphics.setScissor(x-4,y-4,w+8,h+8)
   local scale = self:miniMapScale()
   for _,object in pairs(self.objects) do
@@ -1817,7 +1843,6 @@ function mission:updateMission(dt)
       self.spawn_new_wave = self.spawn_new_wave - self.spawn_wave_t
       self.spawn_wave = (self.spawn_wave or 0) + 1
 
-
       self.notif:add(libs.i18n('mission.notification.enemy_reinforcements'),self.sfx.warning)
 
       -- TODO replace with trig omg wtf
@@ -1828,7 +1853,7 @@ function mission:updateMission(dt)
         unsafe_y = math.random(-32,128+32)*32
       end
 
-      self:spawnEnemy(self.spawn_wave*2,unsafe_x,unsafe_y)
+      self:spawnEnemy(self.spawn_wave,unsafe_x,unsafe_y)
     end
   end
 
@@ -2145,20 +2170,28 @@ function mission:updateMission(dt)
               if dat.sfx then
                 loopSFX(dat.sfx)
               end
+            else
+              self.notif:add(libs.i18n('mission.notification.cargo_full'))
+              object.target_object = nil
+              object.collect = false
             end
           end
         end
 
       end --end of distance check
 
-      if object.target_object.health and object.target_object.health.current <= 0 then
-        object.target_object = nil
-        object.target = nil
-      else
-        object.target = {
-          x=object.target_object.position.x,
-          y=object.target_object.position.y,
-        }
+      if object.target_object then
+
+        if object.target_object.health and object.target_object.health.current <= 0 then
+          object.target_object = nil
+          object.target = nil
+        else
+          object.target = {
+            x=object.target_object.position.x,
+            y=object.target_object.position.y,
+          }
+        end
+
       end
 
     else
@@ -2383,7 +2416,10 @@ function mission:updateMission(dt)
     elseif self:mouseInActions() then
       local actions = self:getActions()
       if actions then
-        local pos = math.floor((love.mouse.getY()-32)/(32+self:iconPadding()))+1
+        local pos = math.floor(
+          (love.mouse.getY()-self:windowPadding())/
+            (self:iconSize()+self:iconPadding())
+          )+1
         for ai,a in pairs(actions) do
           if ai == pos then
             a.hover = true

@@ -11,6 +11,7 @@ function tree.new(init)
   self.saveGame = tree.saveGame
 
   self.getLevelData = tree.getLevelData
+  self.incrementLevel = tree.incrementLevel
 
   self:loadData()
   self:loadGame()
@@ -38,22 +39,26 @@ function tree:saveData()
 end
 
 function tree:loadGame()
-  --TODO: lolol no saving for you
-  self._game = {}
+  self._levels = settings:read("tree_levels")
 end
 
 function tree:saveGame()
+  settings:write("tree_levels",self._levels)
 end
 
 function tree:getLevelData(name)
-  if self._game[name] and self._game[name].level then
-    return self._game[name].level,self._data[name].maxlevel
-  elseif self._data[name] then
+  if self._levels[name] then
+    return self._levels[name],self._data[name].maxlevel
+  elseif self._data[name] and self._data[name].level then
     return self._data[name].level,self._data[name].maxlevel
   else
     print("Warning: tree does not contain `"..tostring(name).."`")
-    return debug_mode and 1 or 0,1
+    return debug_mode and 1,1 or 0,1
   end
+end
+
+function tree:incrementLevel(name)
+  self._levels[name] = (self._levels[name] or 0) + 1
 end
 
 return tree

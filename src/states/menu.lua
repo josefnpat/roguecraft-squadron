@@ -12,6 +12,30 @@ function mainmenu:init()
 
 end
 
+function mainmenu:setDifficulty(diff)
+
+  if diff == "easy" then
+    difficulty.mult.enemy = 1
+    difficulty.mult.asteroid = 1
+    difficulty.mult.scrap = 1
+  elseif diff == "medium" then
+    difficulty.mult.enemy = 1.5
+    difficulty.mult.asteroid = 0.75
+    difficulty.mult.scrap = 0.5
+  elseif diff== "hard" then
+    difficulty.mult.enemy = 2
+    difficulty.mult.asteroid = 0.5
+    difficulty.mult.scrap = 0.25
+  else -- if diff == insane
+   -- hide yo children, hide yo wife, hope your settings ain't fucked
+    difficulty.mult.enemy = 2.5
+    difficulty.mult.asteroid = 0.25
+    difficulty.mult.scrap = 0.125
+  end
+
+end
+
+
 function mainmenu:enter()
 
   if love.filesystem.exists("demo.ogv") then
@@ -20,7 +44,20 @@ function mainmenu:enter()
 
   self.menum = libs.menu.new()--{title=game_name}
 
+  if settings:read("diff") ~= "new" then
+    --TODO: i18n
+    self.menum:add(
+      libs.i18n('menu.continue_game').." ("..settings:read("diff")..")",
+      function()
+        mainmenu:setDifficulty(settings:read("diff"))
+        libs.hump.gamestate.switch(states.disclaimer)
+      end
+    )
+  end
+
   self.menum:add(libs.i18n('menu.new_game'),function()
+    settings:write("tree_points",0)
+    settings:write("tree_levels",{})
     self.menu = self.menud
   end)
 
@@ -76,31 +113,28 @@ function mainmenu:enter()
 
   self.menud = libs.menu.new()
 
+  -- TODO: i18n
   self.menud:add("Ensign (Easy)",function()
-    difficulty.mult.enemy = 1
-    difficulty.mult.asteroid = 1
-    difficulty.mult.scrap = 1
+    mainmenu:setDifficulty("easy")
+    settings:write("diff","easy")
     libs.hump.gamestate.switch(states.disclaimer)
   end)
 
   self.menud:add("Captain (Medium)",function()
-    difficulty.mult.enemy = 1.5
-    difficulty.mult.asteroid = 0.75
-    difficulty.mult.scrap = 0.5
+    mainmenu:setDifficulty("medium")
+    settings:write("diff","medium")
     libs.hump.gamestate.switch(states.disclaimer)
   end)
 
   self.menud:add("Colonel (Hard)",function()
-    difficulty.mult.enemy = 2
-    difficulty.mult.asteroid = 0.5
-    difficulty.mult.scrap = 0.25
+    mainmenu:setDifficulty("hard")
+    settings:write("diff","hard")
     libs.hump.gamestate.switch(states.disclaimer)
   end)
 
   self.menud:add("Admiral (Impossible)",function()
-    difficulty.mult.enemy = 2.5
-    difficulty.mult.asteroid = 0.25
-    difficulty.mult.scrap = 0.125
+    mainmenu:setDifficulty("impossible")
+    settings:write("diff","immpossible")
     libs.hump.gamestate.switch(states.disclaimer)
   end)
 

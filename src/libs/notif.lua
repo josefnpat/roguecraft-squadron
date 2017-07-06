@@ -1,5 +1,7 @@
 local notif = {}
 
+notif.img = love.graphics.newImage("assets/hud/notification.png")
+
 function notif.new(init)
   init = init or {}
   local self = {}
@@ -18,17 +20,10 @@ function notif:draw()
   if self._current then
     local tfont = love.graphics.getFont()
     local old_color = {love.graphics.getColor()}
-    local p = 8
-    love.graphics.setColor(0,0,0,127)
-    love.graphics.rectangle("fill",
-      (love.graphics.getWidth()-tfont:getWidth(self._current.text))/2-p,
-      love.graphics.getHeight()*3/4-p,
-      tfont:getWidth(self._current.text)+p*2,
-      tfont:getHeight()+p*2)
-    love.graphics.setColor(old_color)
+    love.graphics.draw(notif.img,love.graphics.getWidth()/2,love.graphics.getHeight()*3/4,
+      0,1,1,notif.img:getWidth()/2,notif.img:getHeight()/2)
     dropshadowf(self._current.text,
-      0,love.graphics.getHeight()*3/4,love.graphics.getWidth(),"center")
-    love.graphics.setColor(old_color)
+      0,love.graphics.getHeight()*3/4-tfont:getHeight()/2,love.graphics.getWidth(),"center")
   end
 end
 

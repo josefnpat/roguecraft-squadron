@@ -1,7 +1,7 @@
 return function()
   return {
     type = "habitat",
-    cost = {material=100,crew=5},
+    cost = {material=100},
     fow = 0.5,
     crew = 5,
     crew_gather = 10,

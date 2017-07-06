@@ -1,6 +1,9 @@
 msgid "menu.new_game"
 msgstr "New Game"
 
+msgid "menu.continue_game"
+msgstr "Continue Game"
+
 msgid "menu.options"
 msgstr "Options"
 
@@ -369,6 +372,9 @@ msgstr "Enemy reinforcements have arrived"
 
 msgid "mission.notification.enemy_engage"
 msgstr "You have engaged the enemy"
+
+msgid "mission.notification.cargo_full"
+msgstr "Your cargo bays are full"
 
 msgid "pause.continue"
 msgstr "Continue"
@@ -782,7 +788,7 @@ msgid "tutorial.obj.11"
 msgstr "We have detected enemy ships. We will need a small squad of Fighters to take them out."
 
 msgid "tutorial.help.11"
-msgstr "Build:\n* Fighters from your Command ship\n* Battlestars from the Drydock ship\n* Artillery and Armored Frontline Tanks from the Advanced Drydock"
+msgstr "Build fighters from your Command ship"
 
 msgid "tutorial.obj.12"
 msgstr "We have detected asteroids in this system. We should use the Drydock to build some Mining Rigs to mine them."

@@ -12,14 +12,13 @@ function state:init()
   self.tree_bg = love.graphics.newImage("assets/hud/tree_bg.png")
 
   self.colors = {
-
     prereq_missing = {191,0,0},
     cant_afford = {255,0,0},
     max = {0,255,0},
-    not_researched = {127,127,127},
+    not_researched = {255,255,255},
     partially_researched = {127,255,127},
     selected = {255,255,255},
-    unselected = {127,127,127},
+    unselected = {255,255,255},
   }
 
   self.tree_class:loadData()
@@ -60,6 +59,10 @@ function state:textinput(t)
       self.chooser:textinput(t)
     end
   end
+end
+
+function state:enter()
+  self.tree_class:loadGame()
 end
 
 function state:draw()
@@ -127,7 +130,7 @@ function state:draw()
 
     dropshadowf(libs.i18n('tree.node.info',{
         cost = v.cost,
-        level = v.level,
+        level = self.tree_class:getLevelData(v.name),
         level_max = v.maxlevel,
       }),
       x - self.tree_bg:getWidth()/2,
@@ -142,7 +145,7 @@ function state:draw()
         x-self.tree_bg:getWidth()/2,
         y-self.tree_bg:getHeight()/2)
     end
-    dropshadowf(libs.i18n('tree.info'),0,32,love.graphics.getWidth(),"center")
+    dropshadowf(libs.i18n('tree.info'),0,icon:getHeight(),love.graphics.getWidth(),"center")
 
     if self.window then
       love.graphics.setColor(0,0,0,127)
@@ -155,7 +158,7 @@ function state:draw()
     love.graphics.setFont(fonts.menu)
     dropshadow(libs.i18n('tree.research_points',{
       research_points=settings:read("tree_points"),
-    }),32,32)
+    }),icon:getHeight(),icon:getHeight())
     love.graphics.setFont(fonts.default)
 
   end
@@ -189,10 +192,10 @@ function state:getColorByNode(v)
   if settings:read("tree_points") < v.cost then
     return self.colors.cant_afford
   end
-  if v.level == v.maxlevel then
+  if self.tree_class:getLevelData(v.name) == v.maxlevel then
     return self.colors.max
   end
-  if v.level == 0 then
+  if self.tree_class:getLevelData(v.name)  == 0 then
     return self.colors.not_researched
   end
   return self.colors.partially_researched
@@ -202,7 +205,7 @@ function state:havePrereq(node)
   for i,v in pairs(self.tree) do
     for j,w in pairs(v.children) do
       if node.name == w.name then
-        return v.level > 0
+        return self.tree_class:getLevelData(v.name) > 0
       end
     end
   end
@@ -210,6 +213,7 @@ function state:havePrereq(node)
 end
 
 function state:update(dt)
+
   if self.window then
     self.window:update(dt)
   else
@@ -350,8 +354,13 @@ function state:keypressed(key)
       end
     end
   else
-    if key == "return" then
-      libs.hump.gamestate.switch(previousState)
+    if key == "escape" or key == "return" then
+      if self.window then
+        self.window = nil
+      else
+        self.tree_class:saveGame()
+        libs.hump.gamestate.switch(previousState)
+      end
     end
   end
 end
@@ -390,7 +399,7 @@ function state:mousepressed(x,y,b)
       buttons = {
         {
           text=function()
-            if self.tree[self.selected].level < self.tree[self.selected].maxlevel then
+            if self.tree_class:getLevelData(self.selected) < self.tree[self.selected].maxlevel then
               if not self:havePrereq(self.tree[self.selected]) then
                 return libs.i18n('tree.node.status.missing_prereq',{
                   cost = self.tree[self.selected].cost
@@ -409,13 +418,13 @@ function state:mousepressed(x,y,b)
             end
           end,
           callback = function()
+            local node = self.tree[self.selected]
+
             if settings:read("tree_points") >= self.tree[self.selected].cost and
-              self.tree[self.selected].level < self.tree[self.selected].maxlevel and
+              self.tree_class:getLevelData(self.selected) < self.tree[self.selected].maxlevel and
               self:havePrereq(self.tree[self.selected]) then
-
-              self.tree[self.selected].level = self.tree[self.selected].level + 1
+              self.tree_class:incrementLevel(self.selected)
               settings:write("tree_points",settings:read("tree_points")-self.tree[self.selected].cost)
-
             end
             self.window = nil
             self.selected = nil

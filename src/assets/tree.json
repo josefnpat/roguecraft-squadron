@@ -497,7 +497,7 @@
         "desc": "Nanotechnology is practically a necessity in space, and it has shown to be well suited for ship development. The only available codebase is an older version, but it works for the most part. Sometimes it bugs out and confuses people with material. I'm sure if we put some developers onto the task, we can fix those bugs and increase the efficiency of the algorithm. Or maybe add more bugs.",
         "info": "Build ships faster.",
         "level": 0,
-        "maxlevel": 1,
+        "maxlevel": 3,
         "name": "upgrade_build_time",
         "title": "Upgrade Build Speed",
         "x": -1,

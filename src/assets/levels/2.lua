@@ -22,8 +22,8 @@ level.make_tutorial = function()
   t:add{
     objtext = libs.i18n('tutorial.obj.11'),
     helptext = libs.i18n('tutorial.help.11'),
-    objguides = {"object_enemy_fighter","object_fighter"},
-    helpguides = {"object_fighter","object_combat","object_artillery","object_tank"},
+    objguides = {"object_enemy_fighter"},--,"object_fighter"},
+    helpguides = {"object_command","object_fighter"},--,"object_combat","object_artillery","object_tank"},
     complete = function()
       return
         #libs.tutorial.wait.objects_find("enemy_fighter") == 0 and
