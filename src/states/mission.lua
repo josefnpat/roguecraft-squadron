@@ -1912,7 +1912,7 @@ function mission:updateMission(dt)
   -- First Pass (value construction)
   for _,object in pairs(self.objects) do
 
-    if object.wander then
+    if object.wander and object.wander.x then
       object.wander.x = math.max(4,math.min(128*32-4,object.wander.x))
       object.wander.y = math.max(4,math.min(128*32-4,object.wander.y))
     end
