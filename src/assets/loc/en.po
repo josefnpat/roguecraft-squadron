@@ -505,6 +505,12 @@ msgstr "Jump Scrambler"
 msgid "mission.object.enemy_jumpscrambler.info"
 msgstr "This enemy platform prevents your fleet from jumping."
 
+msgid "mission.object.enemy_mine.name"
+msgstr "Mine"
+
+msgid "mission.object.enemy_mine.info"
+msgstr "This explosive device will destroy anything it comes in contact with."
+
 msgid "mission.object.enemy_miniboss.name"
 msgstr "Large Enemy Battlestar"
 

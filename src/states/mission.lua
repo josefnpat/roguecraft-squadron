@@ -22,6 +22,7 @@ function mission:init()
     "build_enemy_boss",
     "build_enemy_miniboss",
     "build_enemy_jumpscrambler",
+    "build_enemy_mine",
   }
 
   --TODO: NOT HACK
@@ -36,6 +37,10 @@ function mission:init()
     {type="enemy_artillery",q=1},
     {type="enemy_tank",q=1},
     {type="enemy_miniboss",q=0.5},
+  }
+
+  self.hazard_types = {
+    {type="enemy_mine",q=8},
   }
 
   self.gameover_t = 4
@@ -631,7 +636,7 @@ function mission:init()
       level,levelmax = self.tree:getLevelData(build_name)
     end
 
-    if level > 0 then
+    if level and level > 0 then
       self.action_icons[build_name] =
         love.graphics.newImage("assets/objects_icon/"..objtype.."0.png")
       self.actions[build_name] = {
@@ -848,6 +853,7 @@ function mission:nextLevel()
 
   if level_data.enemy then
     self:spawnEnemy(level_data.enemy*difficulty.mult.enemy)
+    self:spawnHazard(level_data.enemy*difficulty.mult.enemy)
   end
 
   if level_data.jumpscrambler then
@@ -936,7 +942,25 @@ function mission:spawnEnemy(q,overridex,overridey)
 
     end
   end
+end
 
+function mission:spawnHazard(q,overridex,overridey)
+  for i = 1,q do
+    local unsafe_x,unsafe_y = 0,0
+    while unsafe_x < love.graphics.getWidth()+400 and unsafe_y < love.graphics.getHeight()+400 do
+      unsafe_x,unsafe_y = math.random(0,32*128),math.random(0,32*128)
+    end
+    local parent_object = {
+      position = {
+        x = overridex or unsafe_x,
+        y = overridey or unsafe_y,
+      },
+      owner = 1,
+    }
+    local hazard = self.hazard_types[self.level == 2 and 1 or math.random(#self.hazard_types)]
+    local hazard_object = self:build_object(hazard.type,parent_object)
+    table.insert(self.objects,hazard_object)
+  end
 end
 
 function mission:regroupByOwner(owner,scatter)
@@ -2022,6 +2046,18 @@ function mission:updateMission(dt)
             else
               other.remove_from_game = true
             end
+          end
+        end
+      end
+    end
+
+    if object.detonate then
+      for _,other in pairs(self.objects) do
+        if object ~= other and other.health and object.owner ~= other.owner then
+          local distance = self:distance(object.position,other.position)
+          if distance < object.detonate.range then
+            other.health.current = math.max(0,other.health.current-object.detonate.damage)
+            object.remove_from_game = true
           end
         end
       end
