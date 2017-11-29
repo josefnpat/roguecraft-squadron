@@ -96,6 +96,7 @@ libs = {
   stringchooser = require"libs.stringchooser",
   i18n = require"libs.i18n",
   gettext = require"libs.gettextlib",
+  cursor = require"libs.cursor",
 }
 
 states = {
@@ -123,10 +124,11 @@ function love.load(arg)
     libs.i18n.set('en.'..v.id,newstr)
   end
 
-  local cursor = love.graphics.newImage("assets/hud/cursor.png")
-  love.mouse.setCursor(
-    love.mouse.newCursor("assets/hud/cursor.png",
-    cursor:getWidth()/2,cursor:getHeight()/2))
+  libs.cursor.add("default","assets/hud/cursors/default.png")
+  libs.cursor.add("player","assets/hud/cursors/player.png")
+  libs.cursor.add("enemy","assets/hud/cursors/enemy.png")
+  libs.cursor.add("neutral","assets/hud/cursors/neutral.png")
+  libs.cursor.change("default")
   cursor = nil
 
   local version_server_check = true
@@ -151,6 +153,25 @@ function love.load(arg)
     if v == "nocheck" then
       version_server_check = false
     end
+    if v == "nodraw" then
+      function love.graphics.draw(...)
+        local arg={...}
+        if arg[2] and type(arg[2]) == "userdata" then
+          --love.graphics.drawq(unpack(arg))
+        else
+          love.graphics.drawd(unpack(arg))
+        end
+      end
+      function love.graphics.drawd(drawable, x, y, r, sx, sy, ox, oy, kx, ky )
+        local nx,ny = (x or 0)-(ox or 0),(y or 0)-(oy or 0)
+        local nw,nh = drawable:getWidth()*(sx or 1),drawable:getHeight()*(sy or 1)
+        if r and r ~= 0 then
+          love.graphics.circle("line",nx+nw/2,ny+nh/2,math.min(nw,nh)/2)
+        else
+          love.graphics.rectangle("line",nx,ny,nw,nh)
+        end
+      end
+    end
   end
 
   if version_server_check then
@@ -171,6 +192,7 @@ function love.resize()
 end
 
 function love.update(dt)
+  libs.cursor.update(dt)
   love.mouse.setGrabbed(
     libs.hump.gamestate.current() == states.mission and
     not states.mission.vn:getRun() and

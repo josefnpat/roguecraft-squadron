@@ -1839,6 +1839,21 @@ function mission:update(dt)
     self.select_start = nil
   end
 
+  local ox,oy = self:getCameraOffset()
+  local mx,my = love.mouse.getPosition()
+  local c, cod = self:findClosestObject(mx+ox,my+oy)
+  if cod < 32 then
+    if c.owner == 0 then
+      libs.cursor.change("player")
+    elseif c.owner == 1 then
+      libs.cursor.change("enemy")
+    else
+      libs.cursor.change("neutral")
+    end
+  else
+    libs.cursor.change("default")
+  end
+
 end
 
 function mission:updateMission(dt)
