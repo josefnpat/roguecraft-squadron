@@ -902,6 +902,17 @@ function mission:nextLevel()
     end
   end
 
+  for i = 1,15 do
+    local parent_object = {
+      position = {
+        x = math.random(0,32*128),
+        y = math.random(0,32*128),
+      },
+    }
+    local cloud_object = self:build_object("cloud",parent_object)
+    table.insert(self.objects,cloud_object)
+  end
+
   -- easter egg cat
   local cat_object = self:build_object("cat",{position={
     x = math.random(0,32*128),
@@ -2063,6 +2074,24 @@ function mission:updateMission(dt)
       end
     end
 
+    if object.slow then
+      for _,other in pairs(self.objects) do
+        if object ~= other and other.speed then
+          local distance = self:distance(object.position,other.position)
+          if distance < object.size then
+            other.apply_slow = object.slow
+          end
+        end
+      end
+    end
+
+    if object.apply_slow then
+      object.apply_slow = object.apply_slow + dt
+      if object.apply_slow >= 1 then
+        object.apply_slow = nil
+      end
+    end
+
     if object.owner == 0 then
       object.fow_rot = object.fow_rot and object.fow_rot + dt/60 or math.random()*math.pi*2
     end
@@ -2309,6 +2338,7 @@ function mission:updateMission(dt)
       if object.speed then
         if distance > range then
           local speed = object.owner == 0 and object.speed*(1+(self.upgrades.speed or 0)*0.1) or object.speed
+          speed = speed * (object.apply_slow or 1)
           if object.target.speed_mult then
             speed = speed * object.target.speed_mult
           end
