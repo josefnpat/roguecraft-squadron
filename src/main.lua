@@ -129,7 +129,6 @@ function love.load(arg)
   libs.cursor.add("enemy","assets/hud/cursors/enemy.png")
   libs.cursor.add("neutral","assets/hud/cursors/neutral.png")
   libs.cursor.change("default")
-  cursor = nil
 
   local version_server_check = true
 
