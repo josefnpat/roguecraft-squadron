@@ -23,6 +23,7 @@ function mission:init()
     "build_enemy_miniboss",
     "build_enemy_jumpscrambler",
     "build_enemy_mine",
+    "build_cloud",
   }
 
   --TODO: NOT HACK
