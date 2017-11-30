@@ -1879,12 +1879,38 @@ function mission:update(dt)
   local mx,my = love.mouse.getPosition()
   local c, cod = self:findClosestObject(mx+ox,my+oy)
   if cod < 32 then
-    if c.owner == 0 then
-      libs.cursor.change("player")
-    elseif c.owner == 1 then
-      libs.cursor.change("enemy")
+    local props = {}
+    local selected = {}
+    for _,v in pairs(self.objects) do
+      if v.selected then
+        for prop,_ in pairs(v) do
+          props[prop] = true
+        end
+      end
+      table.insert(selected,v)
+    end
+    if c and #selected > 0 and c.owner ~= 0 then
+      if c.health and props.shoot and c.owner == 1 then
+        libs.cursor.change("shoot")
+      elseif c.health and c.pc ~= false and props.takeover then
+        libs.cursor.change("takeover")
+      elseif c.crew_supply and props.crew_gather then
+        libs.cursor.change("crew")
+      elseif c.ore_supply and props.ore_gather then
+        libs.cursor.change("ore")
+      elseif c.material_supply and props.material_gather then
+        libs.cursor.change("material")
+      else
+        libs.cursor.change("follow")
+      end
     else
-      libs.cursor.change("neutral")
+      if c.owner == 0 then
+        libs.cursor.change("player")
+      elseif c.owner == 1 then
+        libs.cursor.change("enemy")
+      else
+        libs.cursor.change("neutral")
+      end
     end
   else
     libs.cursor.change("default")

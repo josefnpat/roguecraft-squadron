@@ -128,6 +128,15 @@ function love.load(arg)
   libs.cursor.add("player","assets/hud/cursors/player.png")
   libs.cursor.add("enemy","assets/hud/cursors/enemy.png")
   libs.cursor.add("neutral","assets/hud/cursors/neutral.png")
+
+  libs.cursor.add("crew","assets/hud/cursors/crew.png")
+  libs.cursor.add("material","assets/hud/cursors/material.png")
+  libs.cursor.add("ore","assets/hud/cursors/ore.png")
+
+  libs.cursor.add("follow","assets/hud/cursors/follow.png")
+  libs.cursor.add("shoot","assets/hud/cursors/shoot.png")
+  libs.cursor.add("takeover","assets/hud/cursors/takeover.png")
+
   libs.cursor.change("default")
 
   local version_server_check = true
