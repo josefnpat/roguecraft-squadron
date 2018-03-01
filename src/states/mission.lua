@@ -1611,9 +1611,9 @@ function mission:drawActions()
       local r,g,b = love.graphics.getColor()
       love.graphics.setColor(r,g,b)
       local tobject = a.type and self.build[a.type]() or ""
-      dropshadowf(cobject and a.tooltip(cobject) or a.multi.tooltip(self.multi),
+      tooltipf(cobject and a.tooltip(cobject) or a.multi.tooltip(self.multi),
         self:iconSize(),y+6,
-        love.graphics.getWidth()-self:iconSize()*2-self:windowPadding()-8,"right")
+        love.graphics.getWidth()-self:iconSize()*2-self:windowPadding()-8)
     end
 
     local r,g,b = love.graphics.getColor()
@@ -1650,7 +1650,7 @@ function mission:drawSelected()
   local cobject = self:singleSelected()
   if cobject then
     self.camera:attach()
-    dropshadowf((cobject.display_name or "").." — "..(cobject.info or ""),
+    tooltipf((cobject.display_name or "").." — "..(cobject.info or ""),
       cobject.position.x+cobject.size,
       cobject.position.y+cobject.size,
       320,"left")

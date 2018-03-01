@@ -228,6 +228,39 @@ function dropshadowf(text,x,y,w,a)
   love.graphics.printf(text,x,y,w,a)
 end
 
+local tooltipf_edge = love.graphics.newImage("assets/hud/tooltip_edge.png")
+function tooltipf(text,ox,oy,ow)
+  local padding = 8
+
+  local x = ox + padding
+  local y = oy + padding
+  local w = ow - padding*2
+  local color = {love.graphics.getColor()}
+  local font = love.graphics.getFont()
+  local width,wrappedtext = font:getWrap(text,w)
+  local h = #wrappedtext*font:getHeight()
+  local oh = h + padding*2
+
+  local offsetx = 0
+  if width < w then
+    offsetx = w - width
+  end
+
+  love.graphics.setColor(0,63,0,191)
+  love.graphics.rectangle("fill",ox+offsetx,oy,width+padding*2,oh)
+
+  love.graphics.setColor(0,255,0)
+  love.graphics.draw(tooltipf_edge,ox+offsetx,oy)
+  love.graphics.draw(tooltipf_edge,ox+offsetx+width+padding*2,oy,math.pi/2)
+  love.graphics.draw(tooltipf_edge,ox+offsetx+width+padding*2,oy+oh,math.pi)
+  love.graphics.draw(tooltipf_edge,ox+offsetx,oy+oh,-math.pi/2)
+
+  love.graphics.setColor(0,0,0,191)
+  love.graphics.printf(text,x+offsetx+2,y+2,w)
+  love.graphics.setColor(color)
+  love.graphics.printf(text,x+offsetx,y,w)
+end
+
 function playSFX(source,variation)
   local current_source
   if type(source) == "table" then
