@@ -97,6 +97,7 @@ libs = {
   i18n = require"libs.i18n",
   gettext = require"libs.gettextlib",
   cursor = require"libs.cursor",
+  version = require"libs.version",
 }
 
 states = {

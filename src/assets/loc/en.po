@@ -158,10 +158,10 @@ msgid "options.back"
 msgstr "Back"
 
 msgid "git.client.info"
-msgstr "Client GIT v%{git_count} [%{git_hash}]"
+msgstr "Client: v%{git_count} [%{git_hash}]"
 
 msgid "git.server.info"
-msgstr "Server GIT v%{git_count} [%{git_hash}]"
+msgstr "Server: v%{git_count} [%{git_hash}]"
 
 msgid "git.server.message"
 msgstr "Server Message"

@@ -189,6 +189,9 @@ function mainmenu:draw()
   end
 
   if self.feedback then self.feedback:draw() end
+
+  libs.version.draw()
+
 end
 
 function mainmenu:mousemoved()
