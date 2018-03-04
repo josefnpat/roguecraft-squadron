@@ -147,6 +147,10 @@ function mainmenu:enter()
     libs.hump.gamestate.switch(states.disclaimer)
   end)
 
+  self.menud:add(libs.i18n('menu.back'),function()
+    self.menu = self.menum
+  end)
+
   self.menu = self.menum
 
 end
