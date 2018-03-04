@@ -1,7 +1,5 @@
 local menu = {}
 
-menu.bg = love.graphics.newImage("assets/hud/menu_bg.png")
-
 menu.change_sound = love.audio.newSource("assets/sfx/hover.ogg")
 menu.callback_sound = love.audio.newSource("assets/sfx/select.ogg")
 
@@ -42,40 +40,40 @@ function menu:getEntryArea(i)
   local p = 4
   local x = love.graphics.getWidth()*11/16
   local w = love.graphics.getWidth()*2/8
-  local h = 18
-  local y = love.graphics.getHeight()/2+(h+p)*(i-1)
+  local h = 40
+  local y = (love.graphics.getHeight()-(h+p)*#self._data)/2+(h+p)*(i-1)
   return x,y,w,h
 end
 
 function menu:draw()
   local old_font = love.graphics.getFont()
-  love.graphics.setFont(self._title_font)
-
   local old_color = {love.graphics.getColor()}
-  love.graphics.setColor(255,255,255,191)
-  love.graphics.draw(menu.bg,
-    love.graphics.getWidth()*11/16,
-    0,0,
-    love.graphics.getWidth()*2/8/menu.bg:getWidth(),
-    love.graphics.getHeight()/menu.bg:getHeight()
-  )
-  love.graphics.setColor(old_color)
+
+  love.graphics.setFont(self._title_font)
 
   self._printf(self._title,
     0,
-    love.graphics.getHeight()*(1/8+math.sin(love.timer.getTime())/32),
-    love.graphics.getWidth(),"center")
+    (love.graphics.getHeight()-self._title_font:getHeight())/2,
+    love.graphics.getWidth()*3/4,"center")
+
   love.graphics.setFont(self._entry_font)
+
   for i,v in pairs(self._data) do
     local x,y,w,h = self:getEntryArea(i)
     --love.graphics.rectangle(self._selected == i  and "fill" or "line",x,y,w,h)
+    if self._selected == i then
+      tooltipbg(x,y,w,h,{127,127,127,256*7/8},{255,255,255})
+    else
+      tooltipbg(x,y,w,h)
+    end
     local font = love.graphics.getFont()
     local text_y_offset = (h-font:getHeight())/2
     local text = type(v.text) == "function" and v.text() or v.text
-    text = i == self._selected and "[ "..text.." ]" or text
     self._printf(text,x,y+text_y_offset,w,"center")
   end
+
   love.graphics.setFont(old_font)
+  love.graphics.setColor(old_color)
 end
 
 function menu:update(dt)

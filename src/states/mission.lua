@@ -176,7 +176,6 @@ function mission:init()
   self.objects_chevron = love.graphics.newImage("assets/hud/chevron.png")
   self.target = love.graphics.newImage("assets/hud/target.png")
 
-  self.map_bg = love.graphics.newImage("assets/hud/map_bg.png")
   self.icon_bg = love.graphics.newImage("assets/hud/icon_bg.png")
   self.camera = libs.hump.camera(love.graphics.getWidth()/2,love.graphics.getHeight()/2)
   self.camera_speed = 500
@@ -1659,6 +1658,7 @@ function mission:drawSelected()
 end
 
 function mission:miniMapArea()
+  -- todo: refactor map to use correct padding instead of fixed 32
   return 32+self:windowPadding(),32+self:windowPadding(),128,128
 end
 
@@ -1784,7 +1784,7 @@ end
 
 function mission:drawMinimap()
   local x,y,w,h = self:miniMapArea()
-  love.graphics.draw(self.map_bg,self:windowPadding(),self:windowPadding())
+  tooltipbg(self:windowPadding(),self:windowPadding(),192,192)
   love.graphics.setScissor(x-4,y-4,w+8,h+8)
   local scale = self:miniMapScale()
   for _,object in pairs(self.objects) do

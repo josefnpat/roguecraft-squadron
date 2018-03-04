@@ -31,7 +31,7 @@ end
 
 function state:draw()
   states.mission:draw()
-  love.graphics.setColor(0,0,0,100)
+  love.graphics.setColor(0,0,0,191)
   love.graphics.rectangle("fill",0,0,love.graphics:getWidth(),love.graphics:getHeight())
   love.graphics.setColor(255,255,255)
   self.menu:draw()

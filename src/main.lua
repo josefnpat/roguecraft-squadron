@@ -63,7 +63,7 @@ function makeFonts()
     default = love.graphics.newFont("assets/fonts/Yantramanav-Black.ttf",16),
     window_title = love.graphics.newFont("assets/fonts/ExpletusSans-Bold.ttf",20),
     title = love.graphics.newFont("assets/fonts/ExpletusSans-Bold.ttf",64),
-    menu = love.graphics.newFont("assets/fonts/Yantramanav-Black.ttf",22),
+    menu = love.graphics.newFont("assets/fonts/Yantramanav-Black.ttf",20),
     vn_name = love.graphics.newFont("assets/fonts/Yantramanav-Black.ttf",48),
     vn_text = love.graphics.newFont("assets/fonts/Yantramanav-Black.ttf",24),
     vn_info = love.graphics.newFont("assets/fonts/Yantramanav-Black.ttf",16),
@@ -230,6 +230,19 @@ function dropshadowf(text,x,y,w,a)
 end
 
 local tooltipf_edge = love.graphics.newImage("assets/hud/tooltip_edge.png")
+
+function tooltipbg(ox,oy,width,oh,c1,c2)
+  c1 = c1 or {15,63,63,256*7/8}
+  c2 = c2 or {0,255,255}
+  love.graphics.setColor(c1)
+  love.graphics.rectangle("fill",ox,oy,width,oh)
+  love.graphics.setColor(c2)
+  love.graphics.draw(tooltipf_edge,ox,oy)
+  love.graphics.draw(tooltipf_edge,ox+width,oy,math.pi/2)
+  love.graphics.draw(tooltipf_edge,ox+width,oy+oh,math.pi)
+  love.graphics.draw(tooltipf_edge,ox,oy+oh,-math.pi/2)
+end
+
 function tooltipf(text,ox,oy,ow)
   local padding = 8
 
@@ -247,14 +260,7 @@ function tooltipf(text,ox,oy,ow)
     offsetx = w - width
   end
 
-  love.graphics.setColor(0,63,0,191)
-  love.graphics.rectangle("fill",ox+offsetx,oy,width+padding*2,oh)
-
-  love.graphics.setColor(0,255,0)
-  love.graphics.draw(tooltipf_edge,ox+offsetx,oy)
-  love.graphics.draw(tooltipf_edge,ox+offsetx+width+padding*2,oy,math.pi/2)
-  love.graphics.draw(tooltipf_edge,ox+offsetx+width+padding*2,oy+oh,math.pi)
-  love.graphics.draw(tooltipf_edge,ox+offsetx,oy+oh,-math.pi/2)
+  tooltipbg(ox+offsetx,oy,width+padding*2,oh)
 
   love.graphics.setColor(0,0,0,191)
   love.graphics.printf(text,x+offsetx+2,y+2,w)

@@ -1,17 +1,6 @@
 local window = {}
 
-window.s = love.graphics.newImage("assets/hud/window.png")
 window.icon_bg = love.graphics.newImage("assets/hud/icon_bg.png")
-
-window.topleft =     love.graphics.newQuad(0,0,32,32,96,96)
-window.top =         love.graphics.newQuad(32,0,32,32,96,96)
-window.topright =    love.graphics.newQuad(64,0,32,32,96,96)
-window.right =       love.graphics.newQuad(64,32,32,32,96,96)
-window.bottomright = love.graphics.newQuad(64,64,32,32,96,96)
-window.bottom =      love.graphics.newQuad(32,64,32,32,96,96)
-window.bottomleft =  love.graphics.newQuad(0,64,32,32,96,96)
-window.left =        love.graphics.newQuad(0,32,32,32,96,96)
-window.center =      love.graphics.newQuad(32,32,32,32,96,96)
 
 function window.new(init)
   init = init or {}
@@ -70,41 +59,7 @@ function window:draw()
 
   local old_color = {love.graphics.getColor()}
   local old_font = love.graphics.getFont()
-
-  love.graphics.setColor(self.color)
-
-  love.graphics.setScissor(self.x+32,self.y+32,self.w-64,self.h-64)
-  for i = 1,self.w/32-1 do
-    for j = 1,self.h/32-1 do
-      love.graphics.draw(window.s,window.center,self.x+i*32,self.y+j*32)
-    end
-  end
-  love.graphics.setScissor()
-
-  love.graphics.draw(window.s,window.topleft,self.x,self.y)
-  love.graphics.setScissor(self.x+32,self.y,self.w-64,32)
-  for i = 1,self.w/32-1 do
-    love.graphics.draw(window.s,window.top,self.x+i*32,self.y)
-  end
-  love.graphics.setScissor()
-  love.graphics.draw(window.s,window.topright,self.x+self.w-32,self.y)
-  love.graphics.setScissor(self.x+self.w-32,self.y+32,32,self.h-64)
-  for i = 1,self.h/32-1 do
-    love.graphics.draw(window.s,window.right,self.x+self.w-32,self.y+i*32)
-  end
-  love.graphics.setScissor()
-  love.graphics.draw(window.s,window.bottomleft,self.x,self.y+self.h-32)
-  love.graphics.setScissor(self.x+32,self.y+self.h-32,self.w-64,32)
-  for i = 1,self.w/32-1 do
-    love.graphics.draw(window.s,window.bottom,self.x+i*32,self.y+self.h-32)
-  end
-  love.graphics.setScissor()
-  love.graphics.draw(window.s,window.bottomright,self.x+self.w-32,self.y+self.h-32)
-  love.graphics.setScissor(self.x,self.y+32,32,self.h-64)
-  for i = 1,self.h/32-1 do
-    love.graphics.draw(window.s,window.left,self.x,self.y+i*32)
-  end
-  love.graphics.setScissor()
+  tooltipbg(self.x,self.y,self.w,self.h,nil,self.color)
 
   love.graphics.setColor(old_color)
 
@@ -133,8 +88,8 @@ function window:draw()
   if #self.guides > 0 then
     --love.graphics.rectangle("line",self.x+32,self.y+coffset,self.w-64,self:_guideHeight())
     for iguide,guide in pairs(self.guides) do
-      love.graphics.draw(window.icon_bg,self.x+32,self.y+coffset+self.icon_size*(iguide-1))
-      love.graphics.draw(guide.icon,self.x+32,self.y+coffset+self.icon_size*(iguide-1))
+      love.graphics.draw(window.icon_bg,self.x+32,4+self.y+coffset+self.icon_size*(iguide-1))
+      love.graphics.draw(guide.icon,self.x+32,4+self.y+coffset+self.icon_size*(iguide-1))
       dropshadow(guide.text,
         self.x+32+self.icon_size+8,
         self.y+coffset+self.icon_size*(iguide-1)+(32-tfont:getHeight())/2
@@ -180,7 +135,7 @@ function window:update(dt)
     if self:inArea() then
       for _,obj in pairs(self:_buttonAreas()) do
         local mx,my = love.mouse.getPosition()
-        obj.area.y = obj.area.y + 32 + self:_titleHeight() + self:_textHeight() + self:_guideHeight() + self:_imageHeight()
+        obj.area.y = 8 + obj.area.y + 32 + self:_titleHeight() + self:_textHeight() + self:_guideHeight() + self:_imageHeight()
         obj.button.hover = self:_checkArea(mx,my,obj.area)
         if obj.button.callback and obj.button.hover and love.mouse.isDown(1) then
           obj.button.callback(self)

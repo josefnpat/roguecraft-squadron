@@ -100,7 +100,6 @@ function mainmenu:enter()
       x = (love.graphics.getWidth()-320)/2,
       title = libs.i18n('menu.survey.title'),
       text = libs.i18n('menu.survey.body'),
-      color = {255,127,255},
       buttons = {
         {
           text=libs.i18n('menu.survey.yes'),

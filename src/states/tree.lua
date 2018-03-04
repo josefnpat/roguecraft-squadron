@@ -9,7 +9,10 @@ function state:init()
   self.tree_class = g_tree
 
   self.icon_bg = love.graphics.newImage("assets/hud/icon_bg.png")
-  self.tree_bg = love.graphics.newImage("assets/hud/tree_bg.png")
+  self.tree_bg = {
+    w = 256,
+    h = 128,
+  }
 
   self.colors = {
     prereq_missing = {191,0,0},
@@ -110,7 +113,7 @@ function state:draw()
     end
     love.graphics.setColor(255,255,255)
     if found_child and debug_mode then
-      love.graphics.print(children_string,v.x+cx,v.y+cy+self.tree_bg:getHeight()/2)
+      love.graphics.print(children_string,v.x+cx,v.y+cy+self.tree_bg.h/2)
     end
   end
 
@@ -121,12 +124,18 @@ function state:draw()
     if i == self.move then
       x,y = love.mouse.getPosition()
     end
+
     if i == self.selected then
       love.graphics.setColor(self.colors.selected)
     else
       love.graphics.setColor(self.colors.unselected)
     end
-    love.graphics.draw(self.tree_bg,x-self.tree_bg:getWidth()/2,y-self.tree_bg:getHeight()/2)
+
+    tooltipbg(
+      x-self.tree_bg.w/2,
+      y-self.tree_bg.h/2,
+      self.tree_bg.w,
+      self.tree_bg.h,nil,self:getColorByNode(v))
 
     love.graphics.setColor(self:getColorByNode(v))
     love.graphics.draw(self.icon_bg,x-self.icon_bg:getWidth()/2,y-self.icon_bg:getHeight()/2)
@@ -142,43 +151,43 @@ function state:draw()
     local font = love.graphics.getFont()
 
     dropshadowf(v.title,
-      x - self.tree_bg:getWidth()/2,
+      x - self.tree_bg.w/2,
       y - self.icon_bg:getHeight()/2-font:getHeight(),
-      self.tree_bg:getWidth(),"center")
+      self.tree_bg.w,"center")
 
     dropshadowf(libs.i18n('tree.node.info',{
         cost = v.cost,
         level = self.tree_class:getLevelData(v.name),
         level_max = v.maxlevel,
       }),
-      x - self.tree_bg:getWidth()/2,
+      x - self.tree_bg.w/2,
       y + self.icon_bg:getHeight()/2,
-      self.tree_bg:getWidth(),
+      self.tree_bg.w,
       "center"
     )
 
-    love.graphics.setColor(255,255,255)
-    if debug_mode then
-      love.graphics.print("x:"..v.x.." y:"..v.y.." cost:"..v.cost,
-        x-self.tree_bg:getWidth()/2,
-        y-self.tree_bg:getHeight()/2)
-    end
-
-    if self.window then
-      love.graphics.setColor(0,0,0,127)
-      love.graphics.rectangle("fill",0,0,love.graphics.getWidth(),love.graphics.getHeight())
-      love.graphics.setColor(255,255,255)
-      self.window:draw()
-    end
-
-    love.graphics.setColor(255,255,255)
-    love.graphics.setFont(fonts.menu)
-    dropshadow(libs.i18n('tree.research_points',{
-      research_points=settings:read("tree_points"),
-    }),icon:getHeight(),icon:getHeight())
-    love.graphics.setFont(fonts.default)
-
   end
+
+  love.graphics.setColor(255,255,255)
+  if debug_mode then
+    love.graphics.print("x:"..v.x.." y:"..v.y.." cost:"..v.cost,
+      x-self.tree_bg.w/2,
+      y-self.tree_bg.h/2)
+  end
+
+  if self.window then
+    love.graphics.setColor(0,0,0,256*7/8)
+    love.graphics.rectangle("fill",0,0,love.graphics.getWidth(),love.graphics.getHeight())
+    love.graphics.setColor(255,255,255)
+    self.window:draw()
+  end
+
+  love.graphics.setColor(255,255,255)
+  love.graphics.setFont(fonts.menu)
+  dropshadow(libs.i18n('tree.research_points',{
+    research_points=settings:read("tree_points"),
+  }),32,32)
+  love.graphics.setFont(fonts.default)
 
   if debug_mode then
     love.graphics.print(
@@ -399,8 +408,8 @@ function state:mousepressed(x,y,b)
       local found = false
       for i,v in pairs(self.tree) do
         local ix,iy = v.x + cx,v.y + cy
-        if x > ix - self.tree_bg:getWidth()/2 and x < ix + self.tree_bg:getWidth()/2 and
-           y > iy - self.tree_bg:getHeight()/2 and y < iy + self.tree_bg:getHeight()/2 then
+        if x > ix - self.tree_bg.w/2 and x < ix + self.tree_bg.w/2 and
+           y > iy - self.tree_bg.h/2 and y < iy + self.tree_bg.h/2 then
           self.selected = i
           found = true
           break
