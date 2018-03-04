@@ -157,6 +157,9 @@ msgstr "Disabled"
 msgid "options.back"
 msgstr "Back"
 
+msgid "git.both.info"
+msgstr "v%{git_count} [%{git_hash}]"
+
 msgid "git.client.info"
 msgstr "Client: v%{git_count} [%{git_hash}]"
 
