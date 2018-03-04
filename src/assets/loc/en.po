@@ -395,7 +395,7 @@ msgid "tree.node.info"
 msgstr "%{cost} Research Points [%{level}/%{level_max}]"
 
 msgid "tree.info"
-msgstr "Spend your research points. When you are ready, press READY."
+msgstr "Spend your research points. Use WASD or arrow keys to navigate the tree. When you are ready, press READY."
 
 msgid "tree.ready"
 msgstr "READY"

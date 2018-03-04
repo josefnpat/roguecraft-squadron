@@ -236,16 +236,17 @@ function state:update(dt)
   if self.window then
     self.window:update(dt)
   else
-    if love.keyboard.isDown("left") then
+    -- todo: figure out better tree editor, so we can have wasd for players
+    if love.keyboard.isDown("left","a") then
       self._x = self._x + 500*dt
     end
-    if love.keyboard.isDown("right") then
+    if love.keyboard.isDown("right","d") then
       self._x = self._x - 500*dt
     end
-    if love.keyboard.isDown("up") then
+    if love.keyboard.isDown("up","w") then
       self._y = self._y + 500*dt
     end
-    if love.keyboard.isDown("down") then
+    if love.keyboard.isDown("down","s") then
       self._y = self._y - 500*dt
     end
   end
