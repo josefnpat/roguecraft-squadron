@@ -178,9 +178,6 @@ function mission:init()
 
   self.icon_bg = love.graphics.newImage("assets/hud/icon_bg.png")
   self.camera = libs.hump.camera(love.graphics.getWidth()/2,love.graphics.getHeight()/2)
-  self.camera_speed = 500
-  self.camera.vertical_mouse_move = 1/16.875
-  self.camera.horizontal_mouse_move = 1/30
 
   self.controlgroups = {}
 
@@ -2561,30 +2558,7 @@ function mission:updateMission(dt)
         end
       end
     else
-
-      local left = love.keyboard.isDown("left","a") or
-        love.mouse.getX() < love.graphics.getWidth()*self.camera.horizontal_mouse_move
-      local right = love.keyboard.isDown("right","d") or
-        love.mouse.getX() > love.graphics.getWidth()*(1-self.camera.horizontal_mouse_move)
-      local up = love.keyboard.isDown("up","w") or
-        love.mouse.getY() < love.graphics.getHeight()*self.camera.vertical_mouse_move
-      local down = love.keyboard.isDown("down","s") or
-        love.mouse.getY() > love.graphics.getHeight()*(1-self.camera.vertical_mouse_move)
-
-      local dx,dy = 0,0
-      if left then
-        dx = -self.camera_speed*dt*settings:read("camera_speed")
-      end
-      if right then
-        dx = self.camera_speed*dt*settings:read("camera_speed")
-      end
-      if up then
-        dy = -self.camera_speed*dt*settings:read("camera_speed")
-      end
-      if down then
-        dy = self.camera_speed*dt*settings:read("camera_speed")
-      end
-
+      local dx,dy = libs.camera_edge.get_delta(dt)
       self.camera:move(dx,dy)
       self:clampCamera()
     end

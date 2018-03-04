@@ -260,6 +260,10 @@ function state:update(dt)
     end
   end
 
+  local dx,dy = libs.camera_edge.get_delta(dt)
+  self._x = self._x - dx
+  self._y = self._y - dy
+
   self.done:update(dt)
 
 end
