@@ -1,6 +1,9 @@
 msgid "menu.new_game"
 msgstr "New Game"
 
+msgid "menu.back"
+msgstr "Back"
+
 msgid "menu.continue_game"
 msgstr "Continue Game"
 
