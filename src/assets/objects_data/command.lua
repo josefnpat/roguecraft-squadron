@@ -15,6 +15,7 @@ return function()
       "build_habitat",
       "build_fighter",
       "build_drydock",
+      "build_satellite",
     },
     build_time = 60,
   }

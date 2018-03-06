@@ -655,7 +655,7 @@ function mission:init()
           else
             local tobject = self.build[objtype]()
             return libs.i18n('mission.build_status.ready',{
-              build_name = libs.i18n('mission.object.'..tobject.type..'.name'),--tobject.display_name,
+              build_name = libs.i18n('mission.object.'..tobject.type..'.name'),
               build_cost = self:makeCostString(tobject.cost),
             }) .. "\n" .. libs.i18n('mission.object.'..tobject.type..'.info')
           end
@@ -771,7 +771,7 @@ function mission:nextLevel()
     if object.collect ~= nil then
       object.collect = false
     end
-    if object.owner == 0  then
+    if object.owner == 0 and object.health ~= nil then
       table.insert(tobjects,object)
     end
   end
@@ -995,15 +995,18 @@ function mission:nearbyPosition(position)
 end
 
 function mission:canAffordObject(object)
-  for resource_type,cost in pairs(object.cost) do
-    if self.resources[resource_type] < cost then
-      return false
+  if object.cost then
+    for resource_type,cost in pairs(object.cost) do
+      if self.resources[resource_type] < cost then
+        return false
+      end
     end
   end
   return true
 end
 
 function mission:buyBuildObject(costs)
+  if costs == nil then return true end
   local good = true
   for resource_type,cost in pairs(costs) do
     if self.resources[resource_type] < cost then
@@ -1028,6 +1031,7 @@ function mission:buyBuildObject(costs)
 end
 
 function mission:makeCostString(costs)
+  if costs == nil then return "Free" end
   local s = {}
   for resource_type,cost in pairs(costs) do
     table.insert(s,resource_type..": "..cost)

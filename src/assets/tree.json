@@ -90,6 +90,23 @@
         "x": 575,
         "y": -192
     },
+    "build_satellite" : {
+      "asset": [
+        "assets",
+        "objects_icon",
+        "satellite0.png"
+      ],
+      "children": [],
+      "cost": 1,
+      "desc" :"In an effort to provide more information on the battlefield, we have figured out how to make a satellite that is small enough to not go on main sensors, but still provide information to the fleet.",
+      "info": "An immobile satellite that provides vision that can't be seen by the enemy.",
+      "level": 0,
+      "maxlevel": 1,
+      "name": "build_satellite",
+      "title": "Build Satellite",
+      "x": 288,
+      "y": -192
+    },
     "build_advdrydock": {
         "asset": [
             "assets",
@@ -126,7 +143,7 @@
         "maxlevel": 1,
         "name": "build_advdrydock",
         "title": "Build Advanced Drydock",
-        "x": 1,
+        "x": 0,
         "y": 383
     },
     "build_artillery": {
@@ -202,6 +219,9 @@
             },
             {
                 "name": "build_salvager"
+            },
+            {
+                "name": "build_satellite"
             }
         ],
         "cost": 0,
@@ -500,7 +520,7 @@
         "maxlevel": 3,
         "name": "upgrade_build_time",
         "title": "Upgrade Build Speed",
-        "x": -1,
+        "x": 0,
         "y": 640
     },
     "upgrade_crew": {
@@ -519,8 +539,8 @@
         "maxlevel": 3,
         "name": "upgrade_crew",
         "title": "Upgrade Habitat Crew",
-        "x": 286,
-        "y": -192
+        "x": 0,
+        "y": -384
     },
     "upgrade_damage": {
         "asset": [

@@ -436,6 +436,12 @@ msgstr "Advanced Drydock"
 msgid "mission.object.advdrydock.info"
 msgstr "A construction ship that can build advanced ships."
 
+msgid "mission.object.satellite.name"
+msgstr "Satellite"
+
+msgid "mission.object.satellite.info"
+msgstr "An immobile satellite that provides vision that can't be seen by the enemy."
+
 msgid "mission.object.artillery.name"
 msgstr "Artillery Vessel"
 
