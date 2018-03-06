@@ -59,6 +59,7 @@ function mainmenu:enter()
       libs.i18n('menu.continue_game').." ("..settings:read("diff")..")",
       function()
         mainmenu:setDifficulty(settings:read("diff"))
+        states.mission.newGame = true
         libs.hump.gamestate.switch(states.disclaimer)
       end
     )
@@ -74,16 +75,6 @@ function mainmenu:enter()
     libs.hump.gamestate.switch(states.options)
     previousState = states.menu
   end)
-
-  self.menum:add(
-    function()
-      return libs.i18n('menu.tech_tree',{tree_points=settings:read("tree_points")})
-    end,
-    function()
-      libs.hump.gamestate.switch(states.tree)
-      previousState = states.menu
-    end
-  )
 
   if self.debug_menu_enabled then
     self.menum:add(libs.i18n('menu.debug'),function()
@@ -125,24 +116,28 @@ function mainmenu:enter()
   self.menud:add("Ensign (Easy)",function()
     mainmenu:setDifficulty("easy")
     settings:write("diff","easy")
+    states.mission.newGame = true
     libs.hump.gamestate.switch(states.disclaimer)
   end)
 
   self.menud:add("Captain (Medium)",function()
     mainmenu:setDifficulty("medium")
     settings:write("diff","medium")
+    states.mission.newGame = true
     libs.hump.gamestate.switch(states.disclaimer)
   end)
 
   self.menud:add("Colonel (Hard)",function()
     mainmenu:setDifficulty("hard")
     settings:write("diff","hard")
+    states.mission.newGame = true
     libs.hump.gamestate.switch(states.disclaimer)
   end)
 
   self.menud:add("Admiral (Impossible)",function()
     mainmenu:setDifficulty("impossible")
     settings:write("diff","immpossible")
+    states.mission.newGame = true
     libs.hump.gamestate.switch(states.disclaimer)
   end)
 

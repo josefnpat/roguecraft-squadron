@@ -48,7 +48,7 @@ function state:init()
       {
         text = libs.i18n('tree.ready'),
         callback = function()
-          libs.hump.gamestate.switch(previousState)
+          libs.hump.gamestate.switch(states.mission)
         end,
       },
     }
@@ -79,11 +79,17 @@ end
 function state:enter()
   self.window = nil
   self.tree_class:loadGame()
+  if settings:read("tree_points") == 0 then
+    libs.hump.gamestate.switch(states.mission)
+  end
 end
 
 function state:leave()
   self.tree_class:saveGame()
-  states.mission:init()
+  if states.mission.newGame then
+    states.mission.newGame = nil
+    states.mission:init()
+  end
 end
 
 function state:draw()
@@ -393,7 +399,7 @@ function state:keypressed(key)
       if self.window then
         self.window = nil
       else
-        libs.hump.gamestate.switch(previousState)
+        libs.hump.gamestate.switch(states.mission)
       end
     end
   end

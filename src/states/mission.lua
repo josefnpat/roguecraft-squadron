@@ -1,6 +1,5 @@
 local mission = {}
 
-
 function mission:enter()
   states.menu.music.title:stop()
   states.menu.music.game:play()
@@ -24,6 +23,7 @@ function mission:init()
     "build_enemy_jumpscrambler",
     "build_enemy_mine",
     "build_cloud",
+    "build_research_pod",
   }
 
   --TODO: NOT HACK
@@ -846,6 +846,17 @@ function mission:nextLevel()
       local station_object = self:build_object("station",parent_object)
       table.insert(self.objects,station_object)
     end
+  end
+
+  for i = 1,self.level do
+    local parent_object = {
+        position = {
+          x = self.level == 1 and math.random(0,love.graphics.getWidth()) or math.random(0,32*128),
+          y = self.level == 1 and math.random(0,love.graphics.getHeight()) or math.random(0,32*128),
+        },
+    }
+    local research_pod_object = self:build_object("research_pod",parent_object)
+    table.insert(self.objects,research_pod_object)
   end
 
   if level_data.enemy then
@@ -1968,6 +1979,7 @@ function mission:updateMission(dt)
         self.score:add("time",self.time)
         self.time = 0
         self:nextLevel()
+        libs.hump.gamestate.switch(states.tree)
       else
         states.gameover.win = true
         libs.hump.gamestate.switch(states.gameover)
@@ -2244,6 +2256,14 @@ function mission:updateMission(dt)
 
       if self:distance(object.position,object.target_object.position) < 48 then
 
+        -- research point
+        if object.target_object.research then
+          settings:write("tree_points",
+            settings:read("tree_points")+object.target_object.research)
+          object.target_object.remove_from_game = true
+          object.target_object = nil
+        end
+
         -- takeover ships
         if object.takeover and object.target_object.pc ~= false and object.target_object.owner ~= 0 then
           local gotyou = false
@@ -2285,7 +2305,7 @@ function mission:updateMission(dt)
           local isupply = resource_type .. "_supply"
           local idelta = resource_type .. "_delta"
           local icargo = resource_type .. "_cargo"
-          if object[igather] and object.target_object[isupply] then
+          if object[igather] and object.target_object and object.target_object[isupply] then
             local upgrade = dat.upgrade and ((self.upgrades[dat.upgrade] or 0)*0.25) or 0
             local amount = object[igather]*dt*(1+upgrade)
             if self.resources[resource_type] ~= self.resources[icargo] then

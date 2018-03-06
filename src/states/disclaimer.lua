@@ -34,7 +34,6 @@ end
 function disclaimer:getouttahere()
   --TODO: skip tree if no points
   libs.hump.gamestate.switch(states.tree)
-  previousState = states.mission
 end
 
 return disclaimer
