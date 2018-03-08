@@ -79,6 +79,9 @@ end
 function state:enter()
   self.window = nil
   self.tree_class:loadGame()
+  if cheat then
+    settings:write("tree_points",9000)
+  end
   if settings:read("tree_points") == 0 then
     libs.hump.gamestate.switch(states.mission)
   end
