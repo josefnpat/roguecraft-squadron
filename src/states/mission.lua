@@ -778,6 +778,8 @@ function mission:nextLevel()
   -- Removing things in lua pairs breaks things badly.
   self.objects = tobjects
 
+  self.fow_map = {}
+
   self.level = self.level + 1
 
   self.notif:add("Level "..self.level)
@@ -1318,6 +1320,26 @@ function mission:shortestAngle(c,t)
   return (t-c+math.pi)%(math.pi*2)-math.pi
 end
 
+function mission:drawFow(fow_obj_x,fow_obj_y,fow_scale,fow_rot,fow_alpha)
+
+  love.graphics.setColor(255,255,255,fow_alpha)
+
+  local x = fow_obj_x-self.camera.x+love.graphics.getWidth()/2
+  local y = fow_obj_y-self.camera.y+love.graphics.getHeight()/2
+
+  if settings:read("fow_quality") == "img_canvas" then
+    love.graphics.draw(self.fow_img,x,y,
+      fow_rot,fow_scale,fow_scale,
+      self.fow_img:getWidth()/2,
+      self.fow_img:getHeight()/2)
+  else
+    love.graphics.setColor(0,0,0,fow_alpha)
+    love.graphics.circle("fill",x,y,512*fow_scale)
+    love.graphics.setColor(255,255,255)
+  end
+
+end
+
 function mission:draw()
 
   libs.stars:draw(self.camera.x/2,self.camera.y/2)
@@ -1437,6 +1459,16 @@ function mission:draw()
 
   self.camera:detach()
 
+  if debug_mode then
+    for fow_obj_x,fow_obj_row in pairs(self.fow_map) do
+      for fow_obj_y,fow_obj_val in pairs(fow_obj_row) do
+        local x = fow_obj_x-self.camera.x+love.graphics.getWidth()/2
+        local y = fow_obj_y-self.camera.y+love.graphics.getHeight()/2
+        love.graphics.print("fow",x,y)
+      end
+    end
+  end
+
   self.fow:renderTo(function()
     love.graphics.clear()
     love.graphics.setColor(255,255,255)
@@ -1444,26 +1476,22 @@ function mission:draw()
       love.graphics.getWidth(),
       love.graphics.getHeight()
     )
-    for _,object in pairs(self.objects) do
-      if object.owner == 0 then
-        local x = object.position.x-self.camera.x+love.graphics.getWidth()/2
-        local y = object.position.y-self.camera.y+love.graphics.getHeight()/2
 
-        -- don't forget minimap
-        local fow = self.fow_mult*(object.fow or 1)*(1+(self.upgrades.fow or 0)*0.25)
-
-        if settings:read("fow_quality") == "img_canvas" then
-          love.graphics.draw(self.fow_img,x,y,
-            object.fow_rot,fow,fow,
-            self.fow_img:getWidth()/2,
-            self.fow_img:getHeight()/2)
-        else
-          love.graphics.setColor(0,0,0)
-          love.graphics.circle("fill",x,y,512*fow)
-          love.graphics.setColor(255,255,255)
-        end
+    for fow_obj_x,fow_obj_row in pairs(self.fow_map) do
+      for fow_obj_y,fow_obj_val in pairs(fow_obj_row) do
+        self:drawFow(fow_obj_x,fow_obj_y,1,0,255/20)
       end
     end
+
+    love.graphics.setColor(255,255,255)
+
+    for _,object in pairs(self.objects) do
+      if object.owner == 0 then
+        local fow = self.fow_mult*(object.fow or 1)*(1+(self.upgrades.fow or 0)*0.25)
+        self:drawFow(object.position.x,object.position.y,fow,object.fow_rot)
+      end
+    end
+
     for _,explosion in pairs(self.explosions) do
       local percent = 1 - explosion.dt/#self.explosion_images
       local fow_scale = (explosion.fow or 1)*percent
@@ -1799,6 +1827,17 @@ function mission:drawMinimap()
   tooltipbg(self:windowPadding(),self:windowPadding(),192,192)
   love.graphics.setScissor(x-4,y-4,w+8,h+8)
   local scale = self:miniMapScale()
+
+  love.graphics.setColor(0,0,0,127)
+  for fow_obj_x,fow_obj_row in pairs(self.fow_map) do
+    for fow_obj_y,fow_obj_val in pairs(fow_obj_row) do
+      love.graphics.circle("fill",
+        x+fow_obj_x/scale,
+        y+fow_obj_y/scale,
+        self.fow_img:getWidth()/scale/2*1)
+    end
+  end
+
   for _,object in pairs(self.objects) do
     if object.owner == 0 then
       love.graphics.setColor(255,255,255,63)
@@ -1811,6 +1850,7 @@ function mission:drawMinimap()
         self.fow_img:getWidth()/scale/2*fow)
     end
   end
+
   for _,object in pairs(self.objects) do
     if object.minimap ~= false then
       love.graphics.setColor(self:ownerColor(object.owner))
@@ -2010,6 +2050,14 @@ function mission:updateMission(dt)
 
   -- First Pass (value construction)
   for _,object in pairs(self.objects) do
+
+    if object.owner == 0 then
+      local fow_map_x = math.floor(object.position.x/128)*128
+      local fow_map_y = math.floor(object.position.y/128)*128
+
+      self.fow_map[fow_map_x] = self.fow_map[fow_map_x] or {}
+      self.fow_map[fow_map_x][fow_map_y] = true
+    end
 
     if object.wander and object.wander.x then
       object.wander.x = math.max(4,math.min(128*32-4,object.wander.x))
