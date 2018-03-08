@@ -1824,7 +1824,11 @@ end
 
 function mission:drawMinimap()
   local x,y,w,h = self:miniMapArea()
-  tooltipbg(self:windowPadding(),self:windowPadding(),192,192)
+  -- wow, offset city!
+  tooltipbg(
+    self:windowPadding()+32-4-2,
+    self:windowPadding()+32-4-2,
+    192-64+8+4,192-64+8+4)
   love.graphics.setScissor(x-4,y-4,w+8,h+8)
   local scale = self:miniMapScale()
 
