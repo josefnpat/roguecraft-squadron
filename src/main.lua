@@ -1,6 +1,8 @@
 -- Thanks @bartbes! fixes cygwin buffer
 io.stdout:setvbuf("no")
 
+love.window.setIcon(love.image.newImageData("assets/icon.png"))
+
 math.randomseed(os.time())
 
 vn = {
