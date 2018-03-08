@@ -3,7 +3,7 @@ return function()
     type = "enemy_mine",
     size = 16,
     rotate = (math.random(0,1)*2-1),
-    pc = false,
+    health = {max=5},
     minimap = false,
     detonate = {
       range = 32,
