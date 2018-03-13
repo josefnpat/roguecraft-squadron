@@ -1147,7 +1147,7 @@ function mission:mousepressed(x,y,b)
   if self:mouseInMiniMap() then
     if b == 2 then
       local mx,my,mw,mh = self:miniMapArea()
-      local px,py = (x-mx)*32,(y-my)*32
+      local px,py = (x-mx)*self:miniMapScale(),(y-my)*self:miniMapScale()
       self:moveSelected(px,py)
     end
   elseif self.tutorial and self.tutorial:inArea() then
@@ -1547,26 +1547,30 @@ function mission:draw()
   end
   love.graphics.setColor(255,255,255)
 
-  self:drawMinimap()
+  self:drawMiniMap()
   self:drawSelected()
   self:drawActions()
 
+
+  local barp = 8
+  local barh = 32+8+8
+
   local level_bar = libs.bar.new{
-    text=libs.i18n('mission.level',{
-      level=self.level,
-      max_level=8,
+    text = libs.i18n('mission.level',{
+      level = self.level,
+      max_level = 8,
     }),
-    x=self:windowPadding(),
-    y=128+64+self:windowPadding(),
+    x = self:windowPadding(),
+    y = self:miniMapSize() + self:windowPadding() + barp,
     barValue = self.level/8,
   }
   level_bar:draw()
 
   local jump_bar = libs.bar.new{
-    text=self:jumpStringShort(),
-    x=self:windowPadding(),
-    y=128+64+32+8+8+self:windowPadding(),
-    icon=self.action_icons.jump,
+    text = self:jumpStringShort(),
+    x = self:windowPadding(),
+    y = self:miniMapSize() + barh + self:windowPadding() + barp*2,
+    icon = self.action_icons.jump,
     barValue = 1 - self.jump/self.jump_max,
   }
   jump_bar:draw()
@@ -1593,7 +1597,7 @@ function mission:draw()
       local resource_bar = libs.bar.new{
         text = text,
         x = self:windowPadding(),
-        y = 128 + 64 + 32 + self:windowPadding() + (32+8+8)*sindex,
+        y = self:miniMapSize() + self:windowPadding() + barh*sindex + barp*3,
         icon = self.resource_icons[r],
         barValue = res/resmax,
       }
@@ -1748,11 +1752,15 @@ end
 
 function mission:miniMapArea()
   -- todo: refactor map to use correct padding instead of fixed 32
-  return 32+self:windowPadding(),32+self:windowPadding(),128,128
+  return self:windowPadding(),self:windowPadding(),self:miniMapSize(),self:miniMapSize()
+end
+
+function mission:miniMapSize()
+  return 256
 end
 
 function mission:miniMapScale()
-  return 32
+  return 16
 end
 
 function mission:mouseInMiniMap()
@@ -1871,14 +1879,11 @@ function mission:getObjectIntersectionQuery(queries)
   return foundObjects
 end
 
-function mission:drawMinimap()
+function mission:drawMiniMap()
   local x,y,w,h = self:miniMapArea()
-  -- wow, offset city!
-  tooltipbg(
-    self:windowPadding()+32-4-2,
-    self:windowPadding()+32-4-2,
-    192-64+8+4,192-64+8+4)
-  love.graphics.setScissor(x-4,y-4,w+8,h+8)
+  tooltipbg(x,y,w,h)
+
+  love.graphics.setScissor(x,y,w,h)
   local scale = self:miniMapScale()
 
   love.graphics.setColor(0,0,0,127)
@@ -1907,7 +1912,6 @@ function mission:drawMinimap()
   for _,object in pairs(self.objects) do
     if object.minimap ~= false then
       love.graphics.setColor(self:ownerColor(object.owner))
-      --love.graphics.points(x+object.position.x/scale,y+object.position.y/scale)
       love.graphics.rectangle("fill",
         x+object.position.x/scale,y+object.position.y/scale,2,2)
     end
@@ -1925,7 +1929,6 @@ function mission:drawMinimap()
   local cw = love.graphics.getWidth()/scale
   local ch = love.graphics.getHeight()/scale
   love.graphics.rectangle("line",x+cx,y+cy,cw,ch)
-
 
   love.graphics.setScissor()
   love.graphics.setColor(255,255,255)
@@ -2699,8 +2702,8 @@ end
 function mission:clampCamera()
   local nx = math.max(self.camera.x,love.graphics.getWidth()/2)
   local ny = math.max(self.camera.y,love.graphics.getHeight()/2)
-  nx = math.min(nx,128*self:miniMapScale()-love.graphics.getWidth()/2)
-  ny = math.min(ny,128*self:miniMapScale()-love.graphics.getHeight()/2)
+  nx = math.min(nx,self:miniMapSize()*self:miniMapScale()-love.graphics.getWidth()/2)
+  ny = math.min(ny,self:miniMapSize()*self:miniMapScale()-love.graphics.getHeight()/2)
   self.camera.x = nx
   self.camera.y = ny
 end
