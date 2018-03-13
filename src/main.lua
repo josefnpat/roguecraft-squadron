@@ -101,6 +101,7 @@ libs = {
   cursor = require"libs.cursor",
   version = require"libs.version",
   camera_edge = require"libs.camera_edge",
+  bar = require"libs.bar",
 }
 
 states = {

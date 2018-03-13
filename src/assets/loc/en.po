@@ -239,7 +239,7 @@ msgid "mission.action.jump.ready"
 msgstr "Ready"
 
 msgid "mission.action.jump.not_ready"
-msgstr "Calculating: %{jump_percent} percent"
+msgstr "Calculating: %{jump_percent}"
 
 msgid "mission.action.jump_process.pre"
 msgstr "Calculate Jump Coordinates %{jump_process_status}"

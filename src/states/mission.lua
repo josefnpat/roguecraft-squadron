@@ -86,6 +86,10 @@ function mission:init()
 
   self.resources_types = {"ore","material","crew"}
   self.resources_types_formatted = {"Ore","Material","Crew"}
+  self.resource_icons = {}
+  for i,v in pairs(self.resources_types) do
+    self.resource_icons[v] = love.graphics.newImage("assets/resources/"..v..".png")
+  end
 
   self.colors = {
     ui = {
@@ -106,7 +110,6 @@ function mission:init()
     self.objects_image[v] = {}
     self.objects_icon[v] = {}
   end
-
 
   self.sfx_data = {
     jump = love.sound.newSoundData("assets/sfx/jump.ogg"),
@@ -289,23 +292,7 @@ function mission:init()
   self.actions.jump = {
     icon = "jump",
     tooltip = function(object)
-      if #self:getObjectWithModifier("jump_disable") > 0 then
-        return libs.i18n('mission.action.jump.pre',{
-          jump_status=libs.i18n('mission.action.jump.disabled')
-        })
-      end
-      local percent = math.floor((1 - self.jump/self.jump_max)*1000)/10
-      if self.jump <= 0 then
-        return libs.i18n('mission.action.jump.pre',{
-          jump_status=libs.i18n('mission.action.jump.ready')
-        })
-      else
-        return libs.i18n('mission.action.jump.pre',{
-          jump_status=libs.i18n('mission.action.jump.not_ready',{
-            jump_percent=percent,
-          })
-        })
-      end
+      return self:jumpString()
     end,
     color = function(object)
       return (self.jump <= 0 and #self:getObjectWithModifier("jump_disable") == 0) and
@@ -708,6 +695,40 @@ function mission:init()
   --table.insert(self.objects,self:build_object("habitat",{position=self.start.position,owner=0}))
 
 end -- END OF INIT
+
+function mission:jumpString()
+  if #self:getObjectWithModifier("jump_disable") > 0 then
+    return libs.i18n('mission.action.jump.pre',{
+      jump_status=libs.i18n('mission.action.jump.disabled')
+    })
+  end
+  local percent = math.floor((1 - self.jump/self.jump_max)*1000)/10
+  if self.jump <= 0 then
+    return libs.i18n('mission.action.jump.pre',{
+      jump_status=libs.i18n('mission.action.jump.ready')
+    })
+  else
+    return libs.i18n('mission.action.jump.pre',{
+      jump_status=libs.i18n('mission.action.jump.not_ready',{
+        jump_percent=percent,
+      })
+    })
+  end
+end
+
+function mission:jumpStringShort()
+  if #self:getObjectWithModifier("jump_disable") > 0 then
+    return libs.i18n('mission.action.jump.disabled')
+  end
+  local percent = math.floor((1 - self.jump/self.jump_max)*1000)/10
+  if self.jump <= 0 then
+    return libs.i18n('mission.action.jump.ready')
+  else
+    return libs.i18n('mission.action.jump.not_ready',{
+      jump_percent=percent,
+    }).."%" --todo: remove i18n hack
+  end
+end
 
 function mission:ignoreBuild(name)
   for i,v in pairs(self._ignoreBuild) do
@@ -1530,12 +1551,27 @@ function mission:draw()
   self:drawSelected()
   self:drawActions()
 
-  dropshadow(libs.i18n('mission.level',{
-    level=self.level,
-    max_level=8,
-  }),self:windowPadding(),128+32+32+self:windowPadding())
+  local level_bar = libs.bar.new{
+    text=libs.i18n('mission.level',{
+      level=self.level,
+      max_level=8,
+    }),
+    x=self:windowPadding(),
+    y=128+64+self:windowPadding(),
+    barValue = self.level/8,
+  }
+  level_bar:draw()
 
-  local sindex = 1
+  local jump_bar = libs.bar.new{
+    text=self:jumpStringShort(),
+    x=self:windowPadding(),
+    y=128+64+32+8+8+self:windowPadding(),
+    icon=self.action_icons.jump,
+    barValue = 1 - self.jump/self.jump_max,
+  }
+  jump_bar:draw()
+
+  local sindex = 2
   for rindex,r in pairs(self.resources_types) do
     if self.resources[r.."_cargo"] > 0 then
       local symbol
@@ -1546,14 +1582,27 @@ function mission:draw()
         love.graphics.setColor(0,255,0)
         symbol = "▲"
       end
-      dropshadow(
-        self.resources_types_formatted[rindex]..": "..
-        math.floor(self.resources[r]).."/"..self.resources[r.."_cargo"]..
-        " ["..symbol..math.floor(self.resources[r.."_delta"]+0.5).."]",
-        self:windowPadding(),128+32+32+self:windowPadding()+18*(sindex))
+
+      local res = math.floor(self.resources[r])
+      local resmax = self.resources[r.."_cargo"]
+
+      local text = self.resources_types_formatted[rindex]..": "..
+        res.."/"..resmax..
+        " ["..symbol..math.floor(self.resources[r.."_delta"]+0.5).."]"
+
+      local resource_bar = libs.bar.new{
+        text = text,
+        x = self:windowPadding(),
+        y = 128 + 64 + 32 + self:windowPadding() + (32+8+8)*sindex,
+        icon = self.resource_icons[r],
+        barValue = res/resmax,
+      }
+
+      resource_bar:draw()
       sindex = sindex + 1
     end
   end
+
   love.graphics.setColor(255,255,255)
 
   if self.tutorial then self.tutorial:draw() end
