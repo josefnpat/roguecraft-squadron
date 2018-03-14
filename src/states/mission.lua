@@ -178,6 +178,8 @@ function mission:init()
     upgrade = love.graphics.newImage("assets/actions/upgrade.png"),
     cta = love.graphics.newImage("assets/actions/cta.png"),
   }
+
+  self.level_icon = love.graphics.newImage("assets/hud/level.png")
   --TODO: add passive icons, such as attack/mine
 
   self.bullets = {
@@ -1587,6 +1589,7 @@ function mission:draw()
     x = self:windowPadding(),
     y = self:miniMapSize() + self:windowPadding() + barp,
     barValue = self.level/8,
+    icon = self.level_icon,
   }
   level_bar:draw()
 
