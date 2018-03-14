@@ -71,6 +71,8 @@ function mission:init()
 
   self.explosion_images = {}
   self.explosions = {}
+  self.effect_images = {}
+  self.effects = {}
 
   self.selected_row_max = 16
 
@@ -78,6 +80,13 @@ function mission:init()
     table.insert(
       self.explosion_images,
       love.graphics.newImage("assets/explosions/b"..i..".png")
+    )
+  end
+
+  for i = 1,4 do
+    table.insert(
+      self.effect_images,
+      love.graphics.newImage("assets/effects/"..i..".png")
     )
   end
 
@@ -1377,6 +1386,21 @@ function mission:draw()
 
   self.camera:attach()
 
+  love.graphics.setColor(255,255,255)
+  for ei,effect in pairs(self.effects) do
+    local index = math.floor(effect.dt)+1
+    local img = self.effect_images[index]
+    if img then
+      love.graphics.draw(img,
+        effect.x,effect.y,
+        effect.angle,1,1,
+        img:getWidth()/2,
+        img:getHeight()/2)
+    else
+      table.remove(self.effects,ei)
+    end
+  end
+
   for _,object in pairs(self.objects) do
 
     if object.work then
@@ -2087,6 +2111,10 @@ function mission:updateMission(dt)
     e.dt = e.dt + dt*#self.explosion_images*4
   end
 
+  for _,e in pairs(self.effects) do
+    e.dt = e.dt + dt*#self.effect_images*4
+  end
+
   if self.target_show then
     if not self.target_show.anim_max then
       self.target_show.anim_max = self.target_show.anim
@@ -2327,6 +2355,7 @@ function mission:updateMission(dt)
         amount = self.resources.ore
       end
       if amount > 0 then
+        self:addEffect(object.position.x,object.position.y)
         loopSFX(self.sfx.refine)
       end
       self.resources.material = self.resources.material + amount
@@ -2425,6 +2454,7 @@ function mission:updateMission(dt)
                 self.resources[resource_type] = self.resources[resource_type] + object.target_object[isupply]
                 object.target_object[isupply] = 0
               end
+              self:addEffect(object.position.x,object.position.y)
               if dat.sfx then
                 loopSFX(dat.sfx)
               end
@@ -2693,6 +2723,17 @@ function mission:updateMission(dt)
 
   end
 
+end
+
+function mission:addEffect(x,y)
+  table.insert(self.effects,{
+    x = x + math.random(-32,32),
+    y = y + math.random(-32,32),
+    angle = math.random()*math.pi*2,
+    dt = 0,
+    --fow_rot = object.fow_rot,
+    --fow = object.fow or 1,
+  })
 end
 
 function mission:isTurning(object)
