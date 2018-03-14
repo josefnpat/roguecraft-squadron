@@ -8,6 +8,7 @@ return function()
     speed = 50,
     health = {max = 15,},
     material = 100,
+    ore_refine = 5,
     repair = false,
     refine = false,
     actions = {"salvage","repair","refine","upgrade_refine"},

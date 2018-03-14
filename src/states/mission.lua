@@ -2317,8 +2317,8 @@ function mission:updateMission(dt)
       end
     end
 
-    if object.refine and object.material_gather then
-      local amount = object.material_gather*dt*(1+(self.upgrades.refine or 0)*0.1)
+    if object.refine and object.ore_refine then
+      local amount = object.ore_refine*dt*(1+(self.upgrades.refine or 0)*0.1)
       local remain = self.resources.material_cargo - self.resources.material
       if amount > remain then
         amount = remain
