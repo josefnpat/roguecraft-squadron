@@ -4,13 +4,13 @@ function mainmenu:init()
 
   self.music = {}
 
-  self.music.title = love.audio.newSource("assets/music/Terran4.1.ogg","stream")
+  self.music.title = love.audio.newSource("assets/music/Astrogator_v2.ogg","stream")
   self.music.title:setVolume(settings:read("music_vol"))
   self.music.title:setLooping(true)
 
   self.music.title:play()
 
-  self.music.game = love.audio.newSource("assets/music/Terran4.1.ogg","stream")
+  self.music.game = love.audio.newSource("assets/music/Astrogator_v2.ogg","stream")
   self.music.game:setVolume(settings:read("music_vol"))
   self.music.game:setLooping(true)
 
