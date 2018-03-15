@@ -1711,7 +1711,9 @@ function mission:drawActions()
 
   local dx = love.graphics.getWidth()-self:iconSize()-self:windowPadding()
   local dy = self:windowPadding()
-  tooltipbg(dx-2,dy-2,self:iconSize()+4,#actions*(self:iconSize()+self:iconPadding())+4)
+  if #actions > 0 then
+    tooltipbg(dx-2,dy-2,self:iconSize()+4,#actions*(self:iconSize()+self:iconPadding())+4)
+  end
 
   for ai,a in pairs(actions) do
     local x = dx
