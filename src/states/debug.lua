@@ -2,6 +2,7 @@ local state = {}
 
 function state:init()
 
+
   self.menu = libs.menu.new{title="[DEBUG]"}
 
   self.menu:add(
@@ -62,9 +63,17 @@ function state:init()
     libs.hump.gamestate.switch(states.menu)
   end)
 
+  self.p = libs.matrixpanel.new{}
+
+  for i,v in pairs(love.filesystem.getDirectoryItems("assets/actions/")) do
+    self.p:addAction(love.graphics.newImage("assets/actions/"..v))
+  end
+
+
 end
 
 function state:update(dt)
+  self.p:update(dt)
   self.menu:update(dt)
 end
 
@@ -72,6 +81,7 @@ function state:draw()
   libs.stars:draw()
   libs.stars:drawPlanet()
   self.menu:draw()
+  self.p:draw()
 end
 
 return state

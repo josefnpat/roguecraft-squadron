@@ -8,11 +8,13 @@ function mainmenu:init()
   self.music.title:setVolume(settings:read("music_vol"))
   self.music.title:setLooping(true)
 
+  self.music.title:play()
+
   self.music.game = love.audio.newSource("assets/music/Terran4.1.ogg","stream")
   self.music.game:setVolume(settings:read("music_vol"))
   self.music.game:setLooping(true)
 
-  self.music.title:play()
+  self.music.game:stop()
 
   self.logo = love.graphics.newImage("assets/logo.png")
 
