@@ -1707,9 +1707,15 @@ end
 function mission:drawActions()
 
   local cobject = self:singleSelected()
-  for ai,a in pairs(self:getActions()) do
-    local x = love.graphics.getWidth()-self:iconSize()-self:windowPadding()
-    local y = self:windowPadding()+(ai-1)*(self:iconSize()+self:iconPadding())
+  local actions = self:getActions()
+
+  local dx = love.graphics.getWidth()-self:iconSize()-self:windowPadding()
+  local dy = self:windowPadding()
+  tooltipbg(dx-2,dy-2,self:iconSize()+4,#actions*(self:iconSize()+self:iconPadding())+4)
+
+  for ai,a in pairs(actions) do
+    local x = dx
+    local y = dy+(ai-1)*(self:iconSize()+self:iconPadding())
 
     local alpha = 255
     if a.pressed then
