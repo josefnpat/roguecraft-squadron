@@ -1,7 +1,7 @@
 local menu = {}
 
-menu.change_sound = love.audio.newSource("assets/sfx/hover.ogg")
-menu.callback_sound = love.audio.newSource("assets/sfx/select.ogg")
+menu.change_sound = love.audio.newSource("assets/sfx/hover.ogg","static")
+menu.callback_sound = love.audio.newSource("assets/sfx/select.ogg","static")
 
 function menu.new(init)
   init = init or {}
