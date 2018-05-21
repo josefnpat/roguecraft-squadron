@@ -5,6 +5,14 @@ function state:init()
 
   self.menu = libs.menu.new{title="[DEBUG]"}
 
+  self.menu:add(libs.i18n('menu.client'),function()
+    libs.hump.gamestate.switch(states.client)
+  end)
+
+  self.menu:add(libs.i18n('menu.server'),function()
+    libs.hump.gamestate.switch(states.server)
+  end)
+
   self.menu:add(
     function()
       return "Debug mode ["..(debug_mode and "Enabled" or "Disabled").."]"

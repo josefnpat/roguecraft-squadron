@@ -13,6 +13,12 @@ msgstr "Options"
 msgid "menu.tech_tree"
 msgstr "Tech Tree [%{tree_points}]"
 
+msgid "menu.client"
+msgstr "Client"
+
+msgid "menu.server"
+msgstr "Server"
+
 msgid "menu.debug"
 msgstr "Debug"
 

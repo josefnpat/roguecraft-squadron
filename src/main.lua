@@ -102,6 +102,9 @@ libs = {
   version = require"libs.version",
   camera_edge = require"libs.camera_edge",
   bar = require"libs.bar",
+  lovernet = require"libs.lovernet.lovernet",
+  bitser = require"libs.lovernet.bitser",
+  selection = require"libs.selection",
 }
 
 states = {
@@ -115,6 +118,8 @@ states = {
   credits = require "states.credits",
   disclaimer = require "states.disclaimer",
   debug = require "states.debug",
+  client = require"states.client",
+  server = require"states.server",
 }
 
 function love.load(arg)
