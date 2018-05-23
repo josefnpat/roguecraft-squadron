@@ -1,23 +1,35 @@
-local lovernet = {}
+local client = {}
 
-function lovernet:init()
+function client:init()
   self.lovernet = libs.lovernet.new{serdes=libs.bitser}
   self.lovernet:addOp('git_count')
   self.lovernet:addOp('user_count')
   self.lovernet:addOp('debug_create_object')
   self.lovernet:addOp('get_new_objects')
+  self.lovernet:addOp('get_new_updates')
+  self.lovernet:addOp('move_objects')
 
   -- init
   self.lovernet:pushData('git_count')
   self.object_index = 0
+  self.update_index = 0
 
   self.selection = libs.selection.new()
   self.objects = {}
 
 end
 
-function lovernet:update(dt)
-  self.lovernet:pushData('get_new_objects',{index=self.object_index})
+function client:getObjectByIndex(index)
+  for _,v in pairs(self.objects) do
+    if v.index == index then
+      return v
+    end
+  end
+end
+
+function client:update(dt)
+  self.lovernet:pushData('get_new_objects',{i=self.object_index})
+  self.lovernet:pushData('get_new_updates',{u=self.update_index})
   self.lovernet:pushData('user_count')
   self.lovernet:update(dt)
   if love.keyboard.isDown("c") then
@@ -35,18 +47,38 @@ function lovernet:update(dt)
     self.lovernet:clearCache('get_new_objects')
   end
 
+  if self.lovernet:getCache('get_new_updates') then
+    self.update_index = self.lovernet:getCache('get_new_updates').i
+    for sobject_index,sobject in pairs(self.lovernet:getCache('get_new_updates').u) do
+      local object = self:getObjectByIndex(sobject.i)
+      if object then
+        for i,v in pairs(sobject.u) do
+          object[i] = v
+        end
+      else
+        print('Failed to update object#'..sobject.i.." (missing)")
+      end
+    end
+  end
+  self.lovernet:clearCache('get_new_updates')
 end
 
-function lovernet:mousepressed(x,y,button)
+function client:mousepressed(x,y,button)
   if button == 1 then
     if false then -- in UI elements
     else
       self.selection:start(x,y)
     end
+  elseif button == 2 then
+    self.lovernet:sendData('move_objects',{
+      x=love.mouse.getX(),
+      y=love.mouse.getY(),
+      o=self.selection:getSelectedIndexes(),
+    })
   end
 end
 
-function lovernet:mousereleased(x,y,button)
+function client:mousereleased(x,y,button)
   if button == 1 then
     if false then -- in UI elements
     else
@@ -59,7 +91,7 @@ function lovernet:mousereleased(x,y,button)
   end
 end
 
-function lovernet:draw()
+function client:draw()
 
   for object_index,object in pairs(self.objects) do
     love.graphics.setColor(255,255,255)
@@ -80,8 +112,9 @@ function lovernet:draw()
     str = str .. "connected users: " .. self.lovernet:getCache('user_count') .. "\n"
   end
   str = str .. "objects: " .. #self.objects .. "\n"
+  str = str .. "update_index: " .. self.update_index .. "\n"
   love.graphics.print(str)
   self.selection:draw()
 end
 
-return lovernet
+return client
