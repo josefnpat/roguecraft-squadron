@@ -20,11 +20,25 @@ git_hash,git_count = "missing git.lua",-1
 pcall( function() return require("git") end );
 
 function love.conf(t)
-  t.window.width = settings:read("window_width")
-  t.window.height = settings:read("window_height")
-  t.window.title = game_name
-  t.window.resizable = true
-  t.window.fullscreen = settings:read("window_fullscreen")
-  t.window.fullscreentype = "desktop"
-  t.window.msaa = settings:read("window_msaa")
+
+  for _,v in pairs(arg) do
+    if v == "--server" or v == "-s" then
+      headless = true
+    end
+  end
+
+  if headless then
+    t.window = false
+    t.modules.graphics = false
+    t.modules.window = false
+  else
+    t.window.width = settings:read("window_width")
+    t.window.height = settings:read("window_height")
+    t.window.title = game_name
+    t.window.resizable = true
+    t.window.fullscreen = settings:read("window_fullscreen")
+    t.window.fullscreentype = "desktop"
+    t.window.msaa = settings:read("window_msaa")
+  end
+
 end

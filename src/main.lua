@@ -1,128 +1,146 @@
--- Thanks @bartbes! fixes cygwin buffer
-io.stdout:setvbuf("no")
-
-love.window.setIcon(love.image.newImageData("assets/icon.png"))
-
-math.randomseed(os.time())
-
-vn = {
-  adj = {
-    default = love.graphics.newImage("assets/vn/adj/default.png"),
-    overlay = {
-      love.graphics.newImage("assets/vn/adj/shine1.png"),
-      love.graphics.newImage("assets/vn/adj/shine2.png")
-    },
-  },
-  com = {
-    default = love.graphics.newImage("assets/vn/com/default.png"),
-  }
-}
-
-vn_audio = {
-  adj = {
-    correct = love.audio.newSource("assets/vn/adj/audio/correct.ogg","stream"),
-    incorrect = love.audio.newSource("assets/vn/adj/audio/incorrect.ogg","stream"),
-    warning = love.audio.newSource("assets/vn/adj/audio/warning.ogg","stream"),
-    line1 = love.audio.newSource("assets/vn/adj/audio/line1.ogg","stream"),
-    line2 = love.audio.newSource("assets/vn/adj/audio/line2.ogg","stream"),
-    line3 = love.audio.newSource("assets/vn/adj/audio/line3.ogg","stream"),
-    line4 = love.audio.newSource("assets/vn/adj/audio/line4.ogg","stream"),
-    line5 = love.audio.newSource("assets/vn/adj/audio/line5.ogg","stream"),
-    line6 = love.audio.newSource("assets/vn/adj/audio/line6.ogg","stream"),
-    line7 = love.audio.newSource("assets/vn/adj/audio/line7.ogg","stream"),
-    line8 = love.audio.newSource("assets/vn/adj/audio/line8.ogg","stream"),
-    --line9 = love.audio.newSource("assets/vn/adj/audio/line9.ogg","stream"),
-  },
-  com = {
-    line1 = love.audio.newSource("assets/vn/com/audio/line1.ogg","stream"),
-    line2 = love.audio.newSource("assets/vn/com/audio/line2.ogg","stream"),
-    line3 = love.audio.newSource("assets/vn/com/audio/line3.ogg","stream"),
-    line4 = love.audio.newSource("assets/vn/com/audio/line4.ogg","stream"),
-    line5 = love.audio.newSource("assets/vn/com/audio/line5.ogg","stream"),
-    line6 = love.audio.newSource("assets/vn/com/audio/line6.ogg","stream"),
-    line7 = love.audio.newSource("assets/vn/com/audio/line7.ogg","stream"),
-    line8 = love.audio.newSource("assets/vn/com/audio/line8.ogg","stream"),
-    line9 = love.audio.newSource("assets/vn/com/audio/line9.ogg","stream"),
-    line10 = love.audio.newSource("assets/vn/com/audio/line10.ogg","stream"),
-    line11 = love.audio.newSource("assets/vn/com/audio/line11.ogg","stream"),
-    line12 = love.audio.newSource("assets/vn/com/audio/line12.ogg","stream"),
-    line13 = love.audio.newSource("assets/vn/com/audio/line13.ogg","stream"),
-    line14 = love.audio.newSource("assets/vn/com/audio/line14.ogg","stream"),
-    line15 = love.audio.newSource("assets/vn/com/audio/line15.ogg","stream"),
-  },
-}
-
-difficulty = {
-  mult = {
-    asteroid = 1,
-    enemy = 1,
-    scrap = 1,
-  },
-}
-
-function makeFonts()
-  fonts = {
-    default = love.graphics.newFont("assets/fonts/Yantramanav-Regular.ttf",16),
-    window_title = love.graphics.newFont("assets/fonts/ExpletusSans-Bold.ttf",20),
-    title = love.graphics.newFont("assets/fonts/ExpletusSans-Bold.ttf",64),
-    menu = love.graphics.newFont("assets/fonts/Yantramanav-Regular.ttf",20),
-    vn_name = love.graphics.newFont("assets/fonts/Yantramanav-Regular.ttf",48),
-    vn_text = love.graphics.newFont("assets/fonts/Yantramanav-Regular.ttf",24),
-    vn_info = love.graphics.newFont("assets/fonts/Yantramanav-Regular.ttf",16),
-    fallback = love.graphics.newFont("assets/fonts/NovaMono.ttf",16),
-  }
-end
-makeFonts()
-
-love.graphics.setFont(fonts.default)
-fonts.default:setFallbacks(fonts.fallback)
-
-libs = {
-  hump = {
-    gamestate = require "libs.gamestate",
-    camera = require "libs.camera",
-  },
-  healthcolor = require"libs.healthcolor",
-  splash = require "libs.splash",
-  vn = require"libs.vn",
-  stars = require"libs.stars",
-  score = require"libs.score",
-  menu = require"libs.menu",
-  pcb = require"libs.progresscirclebar",
-  window = require"libs.window",
-  tutorial = require"libs.tutorial",
-  json = require"libs.json",
-  notif = require"libs.notif",
-  tree = require"libs.tree",
-  assetchooser = require"libs.assetchooser",
-  stringchooser = require"libs.stringchooser",
-  i18n = require"libs.i18n",
-  gettext = require"libs.gettextlib",
-  cursor = require"libs.cursor",
-  version = require"libs.version",
-  camera_edge = require"libs.camera_edge",
-  bar = require"libs.bar",
-  lovernet = require"libs.lovernet.lovernet",
-  bitser = require"libs.lovernet.bitser",
-  selection = require"libs.selection",
-}
-
-states = {
-  splash = require "states.splash",
-  menu = require "states.menu",
-  pause = require "states.pause",
-  options = require "states.options",
-  gameover = require"states.gameover",
-  tree = require"states.tree",
-  mission = require "states.mission",
-  credits = require "states.credits",
-  disclaimer = require "states.disclaimer",
-  debug = require "states.debug",
-  client = require"states.client",
-  server = require"states.server",
-}
-
 function love.load(arg)
+
+  -- Thanks @bartbes! fixes cygwin buffer
+  io.stdout:setvbuf("no")
+
+  if headless then
+    libs = {
+      hump = {
+        gamestate = require "libs.gamestate",
+      },
+      lovernet = require"libs.lovernet.lovernet",
+      bitser = require"libs.lovernet.bitser",
+    }
+    states = {
+      server = require "states.server",
+    }
+    libs.hump.gamestate.registerEvents()
+    libs.hump.gamestate.switch(states.server)
+    return
+  end
+
+  love.window.setIcon(love.image.newImageData("assets/icon.png"))
+
+  math.randomseed(os.time())
+
+  tooltipf_edge = love.graphics.newImage("assets/hud/tooltip_edge.png")
+
+  vn = {
+    adj = {
+      default = love.graphics.newImage("assets/vn/adj/default.png"),
+      overlay = {
+        love.graphics.newImage("assets/vn/adj/shine1.png"),
+        love.graphics.newImage("assets/vn/adj/shine2.png")
+      },
+    },
+    com = {
+      default = love.graphics.newImage("assets/vn/com/default.png"),
+    }
+  }
+
+  vn_audio = {
+    adj = {
+      correct = love.audio.newSource("assets/vn/adj/audio/correct.ogg","stream"),
+      incorrect = love.audio.newSource("assets/vn/adj/audio/incorrect.ogg","stream"),
+      warning = love.audio.newSource("assets/vn/adj/audio/warning.ogg","stream"),
+      line1 = love.audio.newSource("assets/vn/adj/audio/line1.ogg","stream"),
+      line2 = love.audio.newSource("assets/vn/adj/audio/line2.ogg","stream"),
+      line3 = love.audio.newSource("assets/vn/adj/audio/line3.ogg","stream"),
+      line4 = love.audio.newSource("assets/vn/adj/audio/line4.ogg","stream"),
+      line5 = love.audio.newSource("assets/vn/adj/audio/line5.ogg","stream"),
+      line6 = love.audio.newSource("assets/vn/adj/audio/line6.ogg","stream"),
+      line7 = love.audio.newSource("assets/vn/adj/audio/line7.ogg","stream"),
+      line8 = love.audio.newSource("assets/vn/adj/audio/line8.ogg","stream"),
+      --line9 = love.audio.newSource("assets/vn/adj/audio/line9.ogg","stream"),
+    },
+    com = {
+      line1 = love.audio.newSource("assets/vn/com/audio/line1.ogg","stream"),
+      line2 = love.audio.newSource("assets/vn/com/audio/line2.ogg","stream"),
+      line3 = love.audio.newSource("assets/vn/com/audio/line3.ogg","stream"),
+      line4 = love.audio.newSource("assets/vn/com/audio/line4.ogg","stream"),
+      line5 = love.audio.newSource("assets/vn/com/audio/line5.ogg","stream"),
+      line6 = love.audio.newSource("assets/vn/com/audio/line6.ogg","stream"),
+      line7 = love.audio.newSource("assets/vn/com/audio/line7.ogg","stream"),
+      line8 = love.audio.newSource("assets/vn/com/audio/line8.ogg","stream"),
+      line9 = love.audio.newSource("assets/vn/com/audio/line9.ogg","stream"),
+      line10 = love.audio.newSource("assets/vn/com/audio/line10.ogg","stream"),
+      line11 = love.audio.newSource("assets/vn/com/audio/line11.ogg","stream"),
+      line12 = love.audio.newSource("assets/vn/com/audio/line12.ogg","stream"),
+      line13 = love.audio.newSource("assets/vn/com/audio/line13.ogg","stream"),
+      line14 = love.audio.newSource("assets/vn/com/audio/line14.ogg","stream"),
+      line15 = love.audio.newSource("assets/vn/com/audio/line15.ogg","stream"),
+    },
+  }
+
+  difficulty = {
+    mult = {
+      asteroid = 1,
+      enemy = 1,
+      scrap = 1,
+    },
+  }
+
+  function makeFonts()
+    fonts = {
+      default = love.graphics.newFont("assets/fonts/Yantramanav-Regular.ttf",16),
+      window_title = love.graphics.newFont("assets/fonts/ExpletusSans-Bold.ttf",20),
+      title = love.graphics.newFont("assets/fonts/ExpletusSans-Bold.ttf",64),
+      menu = love.graphics.newFont("assets/fonts/Yantramanav-Regular.ttf",20),
+      vn_name = love.graphics.newFont("assets/fonts/Yantramanav-Regular.ttf",48),
+      vn_text = love.graphics.newFont("assets/fonts/Yantramanav-Regular.ttf",24),
+      vn_info = love.graphics.newFont("assets/fonts/Yantramanav-Regular.ttf",16),
+      fallback = love.graphics.newFont("assets/fonts/NovaMono.ttf",16),
+    }
+  end
+  makeFonts()
+
+  love.graphics.setFont(fonts.default)
+  fonts.default:setFallbacks(fonts.fallback)
+
+  libs = {
+    hump = {
+      gamestate = require "libs.gamestate",
+      camera = require "libs.camera",
+    },
+    healthcolor = require"libs.healthcolor",
+    splash = require "libs.splash",
+    vn = require"libs.vn",
+    stars = require"libs.stars",
+    score = require"libs.score",
+    menu = require"libs.menu",
+    pcb = require"libs.progresscirclebar",
+    window = require"libs.window",
+    tutorial = require"libs.tutorial",
+    json = require"libs.json",
+    notif = require"libs.notif",
+    tree = require"libs.tree",
+    assetchooser = require"libs.assetchooser",
+    stringchooser = require"libs.stringchooser",
+    i18n = require"libs.i18n",
+    gettext = require"libs.gettextlib",
+    cursor = require"libs.cursor",
+    version = require"libs.version",
+    camera_edge = require"libs.camera_edge",
+    bar = require"libs.bar",
+    lovernet = require"libs.lovernet.lovernet",
+    bitser = require"libs.lovernet.bitser",
+    selection = require"libs.selection",
+  }
+
+  states = {
+    splash = require "states.splash",
+    menu = require "states.menu",
+    pause = require "states.pause",
+    options = require "states.options",
+    gameover = require"states.gameover",
+    tree = require"states.tree",
+    mission = require "states.mission",
+    credits = require "states.credits",
+    disclaimer = require "states.disclaimer",
+    debug = require "states.debug",
+    client = require"states.client",
+    server = require"states.server",
+  }
 
   local loc_data = libs.gettext._decode(function()
     return love.filesystem.lines("assets/loc/en.po")
@@ -210,12 +228,14 @@ function love.resize()
 end
 
 function love.update(dt)
-  libs.cursor.update(dt)
-  love.mouse.setGrabbed(
-    libs.hump.gamestate.current() == states.mission and
-    not states.mission.vn:getRun() and
-    love.window.hasFocus()
-  )
+  if not headless then
+    libs.cursor.update(dt)
+    love.mouse.setGrabbed(
+      libs.hump.gamestate.current() == states.mission and
+      not states.mission.vn:getRun() and
+      love.window.hasFocus()
+    )
+  end
 end
 
 function love.quit()
@@ -237,8 +257,6 @@ function dropshadowf(text,x,y,w,a)
   love.graphics.setColor(color)
   love.graphics.printf(text,x,y,w,a)
 end
-
-local tooltipf_edge = love.graphics.newImage("assets/hud/tooltip_edge.png")
 
 function tooltipbg(ox,oy,width,oh,c1,c2)
   c1 = c1 or {15,63,63,256*7/8}
