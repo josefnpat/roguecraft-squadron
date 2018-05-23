@@ -32,17 +32,14 @@ function client:update(dt)
   self.lovernet:pushData('get_new_updates',{u=self.update_index})
   self.lovernet:pushData('user_count')
   self.lovernet:update(dt)
-  if love.keyboard.isDown("c") then
-    self.lovernet:sendData('debug_create_object',{
-      x=love.mouse.getX(),
-      y=love.mouse.getY(),
-    })
-  end
 
   if self.lovernet:getCache('get_new_objects') then
-    for _,object in pairs(self.lovernet:getCache('get_new_objects')) do
-      table.insert(self.objects,object)
-      self.object_index = math.max(self.object_index,object.index)
+    for _,sobject in pairs(self.lovernet:getCache('get_new_objects')) do
+      local object = self:getObjectByIndex(sobject.index)
+      if not object then
+        table.insert(self.objects,sobject)
+        self.object_index = math.max(self.object_index,sobject.index)
+      end
     end
     self.lovernet:clearCache('get_new_objects')
   end
@@ -88,6 +85,15 @@ function client:mousereleased(x,y,button)
         self.selection:endSet(x,y,self.objects)
       end
     end
+  end
+end
+
+function client:keypressed(key)
+  if key == "c" then
+    self.lovernet:sendData('debug_create_object',{
+      x=love.mouse.getX(),
+      y=love.mouse.getY(),
+    })
   end
 end
 

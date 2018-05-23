@@ -20,7 +20,6 @@ function server:init()
   self.lovernet:addOp('debug_create_object')
   self.lovernet:addValidateOnServer('debug_create_object',{x='number',y='number'})
   self.lovernet:addProcessOnServer('debug_create_object',function(self,peer,arg,storage)
-    --local user = self:getUser(peer)
     storage.objects_index = storage.objects_index + 1
     local object = {
       index=storage.objects_index,
@@ -95,7 +94,6 @@ function server:init()
       end
     end
 
-    -- todo: clean up updates
     local min_last_update = math.huge
     for _,user in pairs(self:getUsers()) do
       min_last_update = math.min(min_last_update,user.last_update)
