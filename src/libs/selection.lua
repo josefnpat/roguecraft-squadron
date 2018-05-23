@@ -11,6 +11,7 @@ function selection.new(init)
   self.getSelected = selection.getSelected
   self.isSelected = selection.isSelected
   self.draw = selection.draw
+  self.getSelectedIndexes = selection.getSelectedIndexes
   self._getMinMax = selection._getMinMax
   self._inSelection = selection._inSelection
 
@@ -54,6 +55,14 @@ function selection:isSelected(objectTest)
     end
   end
   return false
+end
+
+function selection:getSelectedIndexes()
+  local indexes = {}
+  for _,object in pairs(self._objects) do
+    table.insert(indexes,object.index)
+  end
+  return indexes
 end
 
 function selection:draw()
