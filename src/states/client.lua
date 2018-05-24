@@ -138,8 +138,8 @@ function client:mousepressed(x,y,button)
             cx+love.mouse.getX(),
             cy+love.mouse.getY()
           )
-          curAngle = curAngle + math.pi/8
-        until n == nil or nd > 64
+          curAngle = curAngle + math.pi/32
+        until n == nil or nd > 48
         object._ttx=cx+love.mouse.getX()
         object._tty=cy+love.mouse.getY()
         tx,ty = cx+love.mouse.getX(),cy+love.mouse.getY()
@@ -150,7 +150,7 @@ function client:mousepressed(x,y,button)
         x=tx,
         y=ty,
       })
-      curAngle = curAngle + math.pi/8
+      curAngle = curAngle + math.pi/32
     end
     self.lovernet:sendData('move_objects',{o=moves})
     for _,object in pairs(self.selection:getSelected()) do
