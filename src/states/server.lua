@@ -43,26 +43,28 @@ function server:init()
   end)
 
   self.lovernet:addOp('move_objects')
-  self.lovernet:addValidateOnServer('move_objects',{
-    x='number',
-    y='number',
-    o=function(data)
-      if type(data)~='table' then
-        return false,'data.o is not a table ['..tostring(data).."]"
-      end
-      for _,v in pairs(data) do
-        if type(v)~='number' then
-          return false,'value in data.o is not a number ['..tostring(v).."]"
-        end
-      end
-      return true
+  self.lovernet:addValidateOnServer('move_objects',{o=function(data)
+    if type(data)~='table' then
+      return false,'data.o is not a table ['..tostring(data).."]"
     end
-  })
+    for _,v in pairs(data) do
+      if type(v.i)~='number' then
+        return false,'value.i in data.o is not a number ['..tostring(v.i).."]"
+      end
+      if type(v.x)~='number' then
+        return false,'value.y in data.o is not a number ['..tostring(v.x).."]"
+      end
+      if type(v.y)~='number' then
+        return false,'value.x in data.o is not a number ['..tostring(v.y).."]"
+      end
+    end
+    return true
+  end})
   self.lovernet:addProcessOnServer('move_objects',function(self,peer,arg,storage)
     for _,object in pairs(storage.objects) do
       -- todo: cache indexes
-      for _,sobject_index in pairs(arg.o) do
-        if object.index == sobject_index then
+      for _,sobject in pairs(arg.o) do
+        if object.index == sobject.i then
 
           local cx,cy
           if object.tdt then
@@ -70,8 +72,8 @@ function server:init()
             object.x,object.y = cx,cy
           end
 
-          object.tx = arg.x
-          object.ty = arg.y
+          object.tx = sobject.x
+          object.ty = sobject.y
           object.tdt = love.timer.getTime()
           storage.global_update_index = storage.global_update_index + 1
           local update={

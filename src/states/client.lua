@@ -2,6 +2,7 @@ local client = {}
 
 function client:init()
   self.lovernet = libs.lovernet.new{serdes=libs.bitser}
+  -- todo: make common functions use short names
   self.lovernet:addOp('git_count')
   self.lovernet:addOp('user_count')
   self.lovernet:addOp('debug_create_object')
@@ -88,6 +89,33 @@ function client:update(dt)
 
 end
 
+function CartArchSpiral(initRad,turnDistance,angle)
+  local x = (initRad+turnDistance*angle)*math.cos(angle)
+  local y = (initRad+turnDistance*angle)*math.sin(angle)
+  return x,y
+end
+
+function client:distanceTarget(a,b)
+  local ax = a._ttx or a.tx or a.x
+  local ay = a._tty or a.ty or a.y
+  local bx = b._ttx or b.tx or b.x
+  local by = b._tty or b.ty or b.y
+  return math.sqrt( (ax - bx)^2  + (ay - by)^2 )
+end
+
+function client:findNearestTarget(objects,x,y)
+  local nearest,nearest_distance = nil,math.huge
+  for _,object in pairs(objects) do
+    if object.tx ~= x and object.ty ~= y then
+      local distance = self:distanceTarget({tx=x,ty=y},object)
+      if distance < nearest_distance then
+        nearest,nearest_distance = object,distance
+      end
+    end
+  end
+  return nearest,nearest_distance
+end
+
 function client:mousepressed(x,y,button)
   if button == 1 then
     if false then -- in UI elements
@@ -95,11 +123,39 @@ function client:mousepressed(x,y,button)
       self.selection:start(x,y)
     end
   elseif button == 2 then
-    self.lovernet:sendData('move_objects',{
-      x=love.mouse.getX(),
-      y=love.mouse.getY(),
-      o=self.selection:getSelectedIndexes(),
-    })
+    local moves = {}
+    local curAngle = 0
+    local selected = self.selection:getSelected()
+    for _,object in pairs(self.selection:getSelected()) do
+
+      local tx,ty = x,y
+      if #selected > 1 then
+        local cx,cy
+        repeat
+          cx,cy = CartArchSpiral(8,8,curAngle)
+          local n,nd = client:findNearestTarget(
+            self.objects,
+            cx+love.mouse.getX(),
+            cy+love.mouse.getY()
+          )
+          curAngle = curAngle + math.pi/8
+        until n == nil or nd > 64
+        object._ttx=cx+love.mouse.getX()
+        object._tty=cy+love.mouse.getY()
+        tx,ty = cx+love.mouse.getX(),cy+love.mouse.getY()
+      end
+
+      table.insert(moves,{
+        i=object.index,
+        x=tx,
+        y=ty,
+      })
+      curAngle = curAngle + math.pi/8
+    end
+    self.lovernet:sendData('move_objects',{o=moves})
+    for _,object in pairs(self.selection:getSelected()) do
+      object._ttx,object._tty = nil,nil
+    end
   end
 end
 
