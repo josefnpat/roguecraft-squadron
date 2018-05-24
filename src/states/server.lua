@@ -113,6 +113,11 @@ function server:init()
     return data
   end)
 
+  self.lovernet:addOp('t')
+  self.lovernet:addProcessOnServer('t',function(self,peer,arg,storage)
+    return love.timer.getTime()
+  end)
+
   self.lovernet:getStorage().objects = {}
   self.lovernet:getStorage().objects_index = 0
 
