@@ -23,24 +23,28 @@ function selection:start(x,y)
 end
 
 function selection:endAdd(x,y,objects)
-  local xmin,ymin,xmax,ymax = self:_getMinMax(self.sx,self.sy,x,y)
-  for _,object in pairs(objects) do
-    if self:_inSelection(object,xmin,ymin,xmax,ymax) and not self:isSelected(object) then
-      table.insert(self._objects)
+  if self.sx and self.sy then
+    local xmin,ymin,xmax,ymax = self:_getMinMax(self.sx,self.sy,x,y)
+    for _,object in pairs(objects) do
+      if self:_inSelection(object,xmin,ymin,xmax,ymax) and not self:isSelected(object) then
+        table.insert(self._objects,object)
+      end
     end
+    self.sx,self.sy = nil,nil
   end
-  self.sx,self.sy = nil,nil
 end
 
 function selection:endSet(x,y,objects)
-  self._objects = {}
-  local xmin,ymin,xmax,ymax = self:_getMinMax(self.sx,self.sy,x,y)
-  for _,object in pairs(objects) do
-    if self:_inSelection(object,xmin,ymin,xmax,ymax) then
-      table.insert(self._objects,object)
+  if self.sx and self.sy then
+    self._objects = {}
+    local xmin,ymin,xmax,ymax = self:_getMinMax(self.sx,self.sy,x,y)
+    for _,object in pairs(objects) do
+      if self:_inSelection(object,xmin,ymin,xmax,ymax) then
+        table.insert(self._objects,object)
+      end
     end
+    self.sx,self.sy = nil,nil
   end
-  self.sx,self.sy = nil,nil
 end
 
 function selection:getSelected()
