@@ -53,6 +53,11 @@ function client:update(dt)
     for _,sobject in pairs(self.lovernet:getCache('get_new_objects')) do
       local object = self:getObjectByIndex(sobject.index)
       if not object then
+
+        -- init objects:
+        sobject.dx = sobject.x
+        sobject.dy = sobject.y
+
         table.insert(self.objects,sobject)
         self.object_index = math.max(self.object_index,sobject.index)
       end
@@ -74,6 +79,13 @@ function client:update(dt)
     end
   end
   self.lovernet:clearCache('get_new_updates')
+
+  for _,object in pairs(self.objects) do
+    local cx,cy = libs.net.getCurrentLocation(object,self.time)
+    object.dx = (object.dx or cx) + (cx-object.dx)/2
+    object.dy = (object.dy or cy) + (cy-object.dy)/2
+  end
+
 end
 
 function client:mousepressed(x,y,button)
@@ -111,18 +123,23 @@ function client:keypressed(key)
       y=love.mouse.getY(),
     })
   end
+  if key == "`" then
+    debug_mode = not debug_mode
+  end
 end
 
 function client:draw()
 
   for object_index,object in pairs(self.objects) do
+    love.graphics.setColor( self.selection:isSelected(object) and {0,255,0} or {255,255,255})
+    love.graphics.circle("line",object.dx,object.dy,32)
     love.graphics.setColor(255,255,255)
-    if self.selection:isSelected(object) then
-      love.graphics.setColor(0,255,0)
+    if debug_mode and object.tx and object.ty then
+      love.graphics.line(object.x,object.y,object.tx,object.ty)
+      local cx,cy = libs.net.getCurrentLocation(object,self.time)
+      love.graphics.circle('line',cx,cy,16)
+      love.graphics.printf(object.index,object.dx-16,object.dy,32,"center")
     end
-    love.graphics.print(object_index,object.x,object.y)
-    love.graphics.circle("line",object.x,object.y,32)
-    love.graphics.setColor(255,255,255)
   end
 
   local str = ""

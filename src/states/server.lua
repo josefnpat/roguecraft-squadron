@@ -25,6 +25,7 @@ function server:init()
       index=storage.objects_index,
       x=arg.x,
       y=arg.y,
+      speed=100,
     }
     table.insert(storage.objects,object)
   end)
@@ -62,16 +63,29 @@ function server:init()
       -- todo: cache indexes
       for _,sobject_index in pairs(arg.o) do
         if object.index == sobject_index then
-          object.x = arg.x + math.random(-64,64)
-          object.y = arg.y + math.random(-64,64)
+
+          local cx,cy
+          if object.tdt then
+            cx,cy = libs.net.getCurrentLocation(object,love.timer.getTime())
+            object.x,object.y = cx,cy
+          end
+
+          object.tx = arg.x
+          object.ty = arg.y
+          object.tdt = love.timer.getTime()
           storage.global_update_index = storage.global_update_index + 1
+          local update={
+            tx=object.tx,
+            ty=object.ty,
+            tdt = object.tdt,
+          }
+          if cx and cy then
+            update.x,update.y = cx,cy
+          end
           table.insert(storage.updates,{
             index=object.index,
             update_index = storage.global_update_index,
-            update={
-              x=object.x,
-              y=object.y,
-            }
+            update=update,
           })
         end
       end

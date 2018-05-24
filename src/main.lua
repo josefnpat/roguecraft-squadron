@@ -10,6 +10,7 @@ function love.load(arg)
       },
       lovernet = require"libs.lovernet.lovernet",
       bitser = require"libs.lovernet.bitser",
+      net = require"libs.net",
     }
     states = {
       server = require "states.server",
@@ -125,6 +126,7 @@ function love.load(arg)
     lovernet = require"libs.lovernet.lovernet",
     bitser = require"libs.lovernet.bitser",
     selection = require"libs.selection",
+    net = require"libs.net",
   }
 
   states = {

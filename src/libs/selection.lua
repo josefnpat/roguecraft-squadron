@@ -81,8 +81,8 @@ function selection:_getMinMax(x,y,x2,y2)
 end
 
 function selection:_inSelection(object,xmin,ymin,xmax,ymax)
-  return object.x >= xmin and object.x <= xmax and
-    object.y >= ymin and object.y <= ymax
+  return object.dx >= xmin and object.dx <= xmax and
+    object.dy >= ymin and object.dy <= ymax
 end
 
 return selection
