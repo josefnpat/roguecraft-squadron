@@ -200,6 +200,15 @@ end
 
 function client:draw()
 
+  -- color test
+  if debug_mode then
+    for i,v in pairs(libs.net._users) do
+      love.graphics.setColor(v.selected_color)
+      love.graphics.rectangle("fill",64*i+128,64,64,64)
+      love.graphics.setColor(255,255,255)
+    end
+  end
+
   for object_index,object in pairs(self.objects) do
     if self.selection:isSelected(object) then
       love.graphics.setColor(libs.net.getUser(object.user).selected_color)
