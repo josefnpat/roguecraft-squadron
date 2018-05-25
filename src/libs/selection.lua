@@ -9,6 +9,7 @@ function selection.new(init)
   self.endAdd = selection.endAdd
   self.endSet = selection.endSet
   self.getSelected = selection.getSelected
+  self.getUnselected = selection.getUnselected
   self.isSelected = selection.isSelected
   self.draw = selection.draw
   self.getSelectedIndexes = selection.getSelectedIndexes
@@ -49,6 +50,16 @@ end
 
 function selection:getSelected()
   return self._objects
+end
+
+function selection:getUnselected(objects)
+  local unsel = {}
+  for _,object in pairs(objects) do
+    if not self:isSelected(object) then
+      table.insert(unsel,object)
+    end
+  end
+  return unsel
 end
 
 function selection:isSelected(objectTest)

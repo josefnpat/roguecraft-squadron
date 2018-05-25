@@ -126,6 +126,7 @@ function client:mousepressed(x,y,button)
     local moves = {}
     local curAngle = 0
     local selected = self.selection:getSelected()
+    local unselected = self.selection:getUnselected(self.objects)
     for _,object in pairs(self.selection:getSelected()) do
 
       local tx,ty = x,y
@@ -134,7 +135,7 @@ function client:mousepressed(x,y,button)
         repeat
           cx,cy = CartArchSpiral(8,8,curAngle)
           local n,nd = client:findNearestTarget(
-            self.objects,
+            unselected,
             cx+love.mouse.getX(),
             cy+love.mouse.getY()
           )
@@ -144,6 +145,8 @@ function client:mousepressed(x,y,button)
         object._tty=cy+love.mouse.getY()
         tx,ty = cx+love.mouse.getX(),cy+love.mouse.getY()
       end
+
+      table.insert(unselected,object)
 
       table.insert(moves,{
         i=object.index,
