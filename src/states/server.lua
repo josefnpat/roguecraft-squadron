@@ -17,15 +17,23 @@ function server:init()
     return count
   end)
 
+  self.lovernet:addOp('get_user')
+  self.lovernet:addProcessOnServer('get_user',function(self,peer,arg,storage)
+    local user = self:getUser(peer)
+    return {id=user.id}
+  end)
+
   self.lovernet:addOp('debug_create_object')
   self.lovernet:addValidateOnServer('debug_create_object',{x='number',y='number'})
   self.lovernet:addProcessOnServer('debug_create_object',function(self,peer,arg,storage)
+    local user = self:getUser(peer)
     storage.objects_index = storage.objects_index + 1
     local object = {
       index=storage.objects_index,
       x=arg.x,
       y=arg.y,
       speed=100,
+      user=user.id,
     }
     table.insert(storage.objects,object)
   end)
@@ -61,6 +69,9 @@ function server:init()
     return true
   end})
   self.lovernet:addProcessOnServer('move_objects',function(self,peer,arg,storage)
+    -- todo: ensure all objects being moved are by the correct user
+    local user = self:getUser(peer)
+
     for _,object in pairs(storage.objects) do
       -- todo: cache indexes
       for _,sobject in pairs(arg.o) do
@@ -140,8 +151,14 @@ function server:init()
   self.lovernet:getStorage().updates = {}
   self.lovernet:getStorage().global_update_index = 0
 
+  self.last_user_index = 0
+  local lovernet_scope = self
+
   self.lovernet:onAddUser(function(user)
     user.last_update = 0
+    user.id = lovernet_scope.last_user_index
+    lovernet_scope.last_user_index = lovernet_scope.last_user_index + 1
+    -- todo: add unique names
   end)
 
 end

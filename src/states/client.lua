@@ -5,6 +5,7 @@ function client:init()
   -- todo: make common functions use short names
   self.lovernet:addOp('git_count')
   self.lovernet:addOp('user_count')
+  self.lovernet:addOp('get_user')
   self.lovernet:addOp('debug_create_object')
   self.lovernet:addOp('get_new_objects')
   self.lovernet:addOp('get_new_updates')
@@ -13,6 +14,7 @@ function client:init()
 
   -- init
   self.lovernet:pushData('git_count')
+  self.lovernet:pushData('get_user')
   self.object_index = 0
   self.update_index = 0
   self.user_count = 0
@@ -39,9 +41,17 @@ function client:update(dt)
 
   if self.lovernet:getCache('git_count') then
     self.server_git_count = self.lovernet:getCache('git_count')
+    self.lovernet:clearCache('git_count')
   end
+
   if self.lovernet:getCache('user_count') then
     self.user_count = self.lovernet:getCache('user_count')
+  end
+
+  if self.lovernet:getCache('get_user') then
+    self.user = self.lovernet:getCache('get_user')
+    self.lovernet:clearCache('get_user')
+    self.selection:setUser(self.user.id)
   end
 
   if self.lovernet:getCache('t') then
@@ -78,8 +88,9 @@ function client:update(dt)
         print('Failed to update object#'..sobject.i.." (missing)")
       end
     end
+    self.lovernet:clearCache('get_new_updates')
   end
-  self.lovernet:clearCache('get_new_updates')
+
 
   for _,object in pairs(self.objects) do
     local cx,cy = libs.net.getCurrentLocation(object,self.time)
@@ -190,18 +201,33 @@ end
 function client:draw()
 
   for object_index,object in pairs(self.objects) do
-    love.graphics.setColor( self.selection:isSelected(object) and {0,255,0} or {255,255,255})
+    if self.selection:isSelected(object) then
+      love.graphics.setColor(libs.net.getUser(object.user).selected_color)
+    else
+      love.graphics.setColor(libs.net.getUser(object.user).color)
+    end
     love.graphics.circle("line",object.dx,object.dy,32)
     love.graphics.setColor(255,255,255)
-    if debug_mode and object.tx and object.ty then
-      love.graphics.line(object.x,object.y,object.tx,object.ty)
-      local cx,cy = libs.net.getCurrentLocation(object,self.time)
-      love.graphics.circle('line',cx,cy,16)
-      love.graphics.printf(object.index,object.dx-16,object.dy,32,"center")
+    if debug_mode then
+      if object.tx and object.ty then
+        love.graphics.line(object.x,object.y,object.tx,object.ty)
+        local cx,cy = libs.net.getCurrentLocation(object,self.time)
+        love.graphics.circle('line',cx,cy,16)
+      end
+      local str = ""
+      str = str .. "index: " .. object.index .. "\n"
+      str = str .. "user: " .. libs.net.getUser(object.user).name .. "["..object.user.."]\n"
+      love.graphics.printf(str,object.dx-64,object.dy,128,"center")
     end
   end
 
   local str = ""
+  if self.user then
+    str = str .. "user.id: " .. libs.net.getUser(self.user.id).name .. "["..self.user.id.."]\n"
+    love.graphics.setColor(255,255,255)
+  else
+    str = str .. "loading user ... \n"
+  end
   str = str .. "time: " .. self.time .. "\n"
   str = str .. "objects: " .. #self.objects .. "\n"
   str = str .. "update_index: " .. self.update_index .. "\n"

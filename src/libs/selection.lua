@@ -4,6 +4,7 @@ function selection.new(init)
   local self = {}
 
   self._objects = {}
+  self._user = -1
 
   self.start = selection.start
   self.endAdd = selection.endAdd
@@ -13,8 +14,10 @@ function selection.new(init)
   self.isSelected = selection.isSelected
   self.draw = selection.draw
   self.getSelectedIndexes = selection.getSelectedIndexes
+  self.setUser = selection.setUser
   self._getMinMax = selection._getMinMax
   self._inSelection = selection._inSelection
+  self._constraints = selection._constraints
 
   return self
 end
@@ -27,7 +30,7 @@ function selection:endAdd(x,y,objects)
   if self.sx and self.sy then
     local xmin,ymin,xmax,ymax = self:_getMinMax(self.sx,self.sy,x,y)
     for _,object in pairs(objects) do
-      if self:_inSelection(object,xmin,ymin,xmax,ymax) and not self:isSelected(object) then
+      if self:_constraints(object,xmin,ymin,xmax,ymax) and not self:isSelected(object) then
         table.insert(self._objects,object)
       end
     end
@@ -40,7 +43,7 @@ function selection:endSet(x,y,objects)
     self._objects = {}
     local xmin,ymin,xmax,ymax = self:_getMinMax(self.sx,self.sy,x,y)
     for _,object in pairs(objects) do
-      if self:_inSelection(object,xmin,ymin,xmax,ymax) then
+      if self:_constraints(object,xmin,ymin,xmax,ymax) then
         table.insert(self._objects,object)
       end
     end
@@ -80,6 +83,10 @@ function selection:getSelectedIndexes()
   return indexes
 end
 
+function selection:setUser(user)
+  self._user = user
+end
+
 function selection:draw()
   if self.sx and self.sy then
     local mx,my = love.mouse.getPosition()
@@ -94,6 +101,10 @@ end
 function selection:_inSelection(object,xmin,ymin,xmax,ymax)
   return object.dx >= xmin and object.dx <= xmax and
     object.dy >= ymin and object.dy <= ymax
+end
+
+function selection:_constraints(object,xmin,ymin,xmax,ymax)
+  return self:_inSelection(object,xmin,ymin,xmax,ymax) and self._user == object.user
 end
 
 return selection
