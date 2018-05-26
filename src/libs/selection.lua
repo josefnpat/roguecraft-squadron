@@ -7,8 +7,11 @@ function selection.new(init)
   self._user = -1
 
   self.start = selection.start
+  self.isSelection = selection.isSelection
   self.endAdd = selection.endAdd
   self.endSet = selection.endSet
+  self.setSingleSelected = selection.setSingleSelected
+  self.clearSelection = selection.clearSelection
   self.getSelected = selection.getSelected
   self.getUnselected = selection.getUnselected
   self.isSelected = selection.isSelected
@@ -24,6 +27,10 @@ end
 
 function selection:start(x,y)
   self.sx,self.sy = x,y
+end
+
+function selection:isSelection(x,y)
+  return math.abs(self.sx-x)>16 or math.abs(self.sy-y)>16
 end
 
 function selection:endAdd(x,y,objects)
@@ -49,6 +56,15 @@ function selection:endSet(x,y,objects)
     end
     self.sx,self.sy = nil,nil
   end
+end
+
+function selection:setSingleSelected(object)
+  self._objects = {object}
+end
+
+function selection:clearSelection()
+  self.sx,self.sy = nil,nil
+  self._objects = {}
 end
 
 function selection:getSelected()
