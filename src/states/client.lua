@@ -258,6 +258,14 @@ function client:draw()
       love.graphics.setColor(libs.net.getUser(object.user).color)
     end
     love.graphics.circle("line",object.dx,object.dy,object.size)
+    love.graphics.setColor(0,255,0,63)
+    for _,target in pairs(self.objects) do
+      if target.index == object.target then
+        love.graphics.line(object.dx,object.dy,target.dx,target.dy)
+        break
+      end
+    end
+
     love.graphics.setColor(255,255,255)
     if debug_mode then
       if object.tx and object.ty then
