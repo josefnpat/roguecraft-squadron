@@ -10,6 +10,7 @@ function client:init()
   self.lovernet:addOp('get_new_objects')
   self.lovernet:addOp('get_new_updates')
   self.lovernet:addOp('move_objects')
+  self.lovernet:addOp('target_objects')
   self.lovernet:addOp('t')
 
   -- init
@@ -82,7 +83,7 @@ function client:update(dt)
       local object = self:getObjectByIndex(sobject.i)
       if object then
         for i,v in pairs(sobject.u) do
-          object[i] = v
+          object[i] = v == "nil" and nil or v
         end
       else
         print('Failed to update object#'..sobject.i.." (missing)")
@@ -106,6 +107,23 @@ function CartArchSpiral(initRad,turnDistance,angle)
   return x,y
 end
 
+function client:distanceDraw(a,b)
+  return math.sqrt( (a.dx - b.dx)^2  + (a.dy - b.dy)^2 )
+end
+
+function client:findNearestDraw(objects,x,y,include)
+  local nearest,nearest_distance = nil,math.huge
+  for _,object in pairs(objects) do
+    if include == nil or include(object) then
+      local distance = self:distanceDraw({dx=x,dy=y},object)
+      if distance < nearest_distance then
+        nearest,nearest_distance = object,distance
+      end
+    end
+  end
+  return nearest,nearest_distance
+end
+
 function client:distanceTarget(a,b)
   local ax = a._ttx or a.tx or a.x
   local ay = a._tty or a.ty or a.y
@@ -114,10 +132,10 @@ function client:distanceTarget(a,b)
   return math.sqrt( (ax - bx)^2  + (ay - by)^2 )
 end
 
-function client:findNearestTarget(objects,x,y)
+function client:findNearestTarget(objects,x,y,include)
   local nearest,nearest_distance = nil,math.huge
   for _,object in pairs(objects) do
-    if object.tx ~= x and object.ty ~= y then
+    if include == nil or include(object) then
       local distance = self:distanceTarget({tx=x,ty=y},object)
       if distance < nearest_distance then
         nearest,nearest_distance = object,distance
@@ -127,48 +145,51 @@ function client:findNearestTarget(objects,x,y)
   return nearest,nearest_distance
 end
 
+function client:moveSelectedObjects(x,y)
+  local moves = {}
+  local curAngle = 0
+  local selected = self.selection:getSelected()
+  local unselected = self.selection:getUnselected(self.objects)
+  for _,object in pairs(self.selection:getSelected()) do
+
+    local tx,ty = x,y
+    if #selected > 1 then
+      local cx,cy
+      repeat
+        cx,cy = CartArchSpiral(8,8,curAngle)
+        local n,nd = client:findNearestTarget(
+          unselected,
+          cx+love.mouse.getX(),
+          cy+love.mouse.getY(),
+          function(object)
+            return object.tx ~= x and object.ty ~= y
+          end
+        )
+        curAngle = curAngle + math.pi/32
+      until n == nil or nd > 48
+      object._ttx=cx+love.mouse.getX()
+      object._tty=cy+love.mouse.getY()
+      tx,ty = cx+love.mouse.getX(),cy+love.mouse.getY()
+    end
+    table.insert(unselected,object)
+    table.insert(moves,{
+      i=object.index,
+      x=tx,
+      y=ty,
+    })
+    curAngle = curAngle + math.pi/32
+  end
+  self.lovernet:sendData('move_objects',{o=moves})
+  for _,object in pairs(self.selection:getSelected()) do
+    object._ttx,object._tty = nil,nil
+  end
+end
+
 function client:mousepressed(x,y,button)
   if button == 1 then
     if false then -- in UI elements
     else
       self.selection:start(x,y)
-    end
-  elseif button == 2 then
-    local moves = {}
-    local curAngle = 0
-    local selected = self.selection:getSelected()
-    local unselected = self.selection:getUnselected(self.objects)
-    for _,object in pairs(self.selection:getSelected()) do
-
-      local tx,ty = x,y
-      if #selected > 1 then
-        local cx,cy
-        repeat
-          cx,cy = CartArchSpiral(8,8,curAngle)
-          local n,nd = client:findNearestTarget(
-            unselected,
-            cx+love.mouse.getX(),
-            cy+love.mouse.getY()
-          )
-          curAngle = curAngle + math.pi/32
-        until n == nil or nd > 48
-        object._ttx=cx+love.mouse.getX()
-        object._tty=cy+love.mouse.getY()
-        tx,ty = cx+love.mouse.getX(),cy+love.mouse.getY()
-      end
-
-      table.insert(unselected,object)
-
-      table.insert(moves,{
-        i=object.index,
-        x=tx,
-        y=ty,
-      })
-      curAngle = curAngle + math.pi/32
-    end
-    self.lovernet:sendData('move_objects',{o=moves})
-    for _,object in pairs(self.selection:getSelected()) do
-      object._ttx,object._tty = nil,nil
     end
   end
 end
@@ -177,11 +198,32 @@ function client:mousereleased(x,y,button)
   if button == 1 then
     if false then -- in UI elements
     else
-      if love.keyboard.isDown('lshift') then
-        self.selection:endAdd(x,y,self.objects)
+      if self.selection:isSelection(x,y) then
+        if love.keyboard.isDown('lshift') then
+          self.selection:endAdd(x,y,self.objects)
+        else
+          self.selection:endSet(x,y,self.objects)
+        end
       else
-        self.selection:endSet(x,y,self.objects)
+        self.selection:clearSelection()
+        local n,nd = self:findNearestDraw(self.objects,x,y,function(object)
+          return object.user == self.user.id
+        end)
+        if n and nd <= n.size then
+          self.selection:setSingleSelected(n)
+        end
       end
+    end
+  elseif button == 2 then
+    local n,nd = self:findNearestDraw(self.objects,x,y)
+    if n and nd <= n.size then
+      local targets = {}
+      for _,object in pairs(self.selection:getSelected()) do
+        table.insert(targets,{i=object.index,t=n.index})
+      end
+      self.lovernet:sendData('target_objects',{t=targets})
+    else
+      self:moveSelectedObjects(x,y)
     end
   end
 end
@@ -215,7 +257,7 @@ function client:draw()
     else
       love.graphics.setColor(libs.net.getUser(object.user).color)
     end
-    love.graphics.circle("line",object.dx,object.dy,32)
+    love.graphics.circle("line",object.dx,object.dy,object.size)
     love.graphics.setColor(255,255,255)
     if debug_mode then
       if object.tx and object.ty then
@@ -225,6 +267,7 @@ function client:draw()
       end
       local str = ""
       str = str .. "index: " .. object.index .. "\n"
+      str = str .. "target: " .. tostring(object.target) .. "\n"
       str = str .. "user: " .. libs.net.getUser(object.user).name .. "["..object.user.."]\n"
       love.graphics.printf(str,object.dx-64,object.dy,128,"center")
     end

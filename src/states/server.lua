@@ -1,5 +1,14 @@
 local server = {}
 
+function server.addUpdate(object,storage,update)
+  storage.global_update_index = storage.global_update_index + 1
+  table.insert(storage.updates,{
+    index=object.index,
+    update_index = storage.global_update_index,
+    update=update,
+  })
+end
+
 function server:init()
   self.lovernet = libs.lovernet.new{type=libs.lovernet.mode.server,serdes=libs.bitser}
 
@@ -34,6 +43,7 @@ function server:init()
       y=arg.y,
       speed=100,
       user=user.id,
+      size=32,
     }
     table.insert(storage.objects,object)
   end)
@@ -76,34 +86,61 @@ function server:init()
       -- todo: cache indexes
       for _,sobject in pairs(arg.o) do
         if object.index == sobject.i then
-
           local cx,cy
-          if object.tdt then
+          if object.tdt and object.tx and object.ty then
             cx,cy = libs.net.getCurrentLocation(object,love.timer.getTime())
             object.x,object.y = cx,cy
           end
-
           object.tx = sobject.x
           object.ty = sobject.y
           object.tdt = love.timer.getTime()
-          storage.global_update_index = storage.global_update_index + 1
+          object.target = nil
           local update={
             tx=object.tx,
             ty=object.ty,
             tdt = object.tdt,
+            target = "nil",
           }
           if cx and cy then
             update.x,update.y = cx,cy
           end
-          table.insert(storage.updates,{
-            index=object.index,
-            update_index = storage.global_update_index,
-            update=update,
+          server.addUpdate(object,storage,update)
+        end
+      end
+
+    end
+  end)
+
+  self.lovernet:addOp('target_objects')
+  self.lovernet:addValidateOnServer('target_objects',{t=function(data)
+    if type(data)~='table' then
+      return false,'data.t is not a table ['..tostring(data).."]"
+    end
+    for _,v in pairs(data) do
+      if type(v.i)~='number' then
+        return false,'value.i in data.t is not a number ['..tostring(v.i).."]"
+      end
+      if type(v.t)~='number' then
+        return false,'value.t in data.t is not a number ['..tostring(v.t).."]"
+      end
+    end
+    return true
+  end})
+  self.lovernet:addProcessOnServer('target_objects',function(self,peer,arg,storage)
+
+    for _,object in pairs(storage.objects) do
+      -- todo: cache indexes
+      for _,sobject in pairs(arg.t) do
+        if object.index == sobject.i then
+          object.target = sobject.t
+          server.addUpdate(object,storage,{
+            target = object.target,
           })
         end
       end
 
     end
+
   end)
 
   self.lovernet:addOp('get_new_updates')
