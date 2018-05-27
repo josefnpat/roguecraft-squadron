@@ -99,7 +99,11 @@ function client:update(dt)
       local object = self:getObjectByIndex(sobject.i)
       if object then
         for i,v in pairs(sobject.u) do
-          object[i] = v == "nil" and nil or v
+          if v == "nil" then
+            object[i] = nil
+          else
+            object[i] = v
+          end
         end
       else
         print('Failed to update object#'..sobject.i.." (missing)")

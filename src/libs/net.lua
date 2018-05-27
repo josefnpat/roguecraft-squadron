@@ -60,4 +60,10 @@ function net.getCurrentLocation(object,time)
   end
 end
 
+function net.distance(a,b,time)
+  local ax,ay = net.getCurrentLocation(a,time)
+  local bx,by = net.getCurrentLocation(b,time)
+  return math.sqrt( (ax-bx)^2 + (ay-by)^2 )
+end
+
 return net

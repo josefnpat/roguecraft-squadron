@@ -1,12 +1,40 @@
 local server = {}
 
-function server.addUpdate(object,storage,update)
+function server:addUpdate(object,update)
+  local storage = self.lovernet:getStorage()
   storage.global_update_index = storage.global_update_index + 1
   table.insert(storage.updates,{
     index=object.index,
     update_index = storage.global_update_index,
     update=update,
   })
+end
+
+function server:stopObject(object)
+  local cx,cy = libs.net.getCurrentLocation(object,love.timer.getTime())
+  object.x,object.y = cx,cy
+  object.tx,object.ty,object.tdt = nil,nil,nil
+  return cx,cy
+end
+
+function server:stopUpdateObject(object)
+  local cx,cy = self:stopObject(object)
+  self:addUpdate(object,{
+    x=cx,
+    y=cy,
+    tx="nil",
+    ty="nil",
+    tdt="nil",
+  })
+end
+
+function server:findObject(index)
+  local storage = self.lovernet:getStorage()
+  for _,object in pairs(storage.objects) do
+    if object.index == index then
+      return object
+    end
+  end
 end
 
 function server:init()
@@ -86,11 +114,7 @@ function server:init()
       -- todo: cache indexes
       for _,sobject in pairs(arg.o) do
         if object.index == sobject.i then
-          local cx,cy
-          if object.tdt and object.tx and object.ty then
-            cx,cy = libs.net.getCurrentLocation(object,love.timer.getTime())
-            object.x,object.y = cx,cy
-          end
+          local cx,cy = server:stopObject(object)
           object.tx = sobject.x
           object.ty = sobject.y
           object.tdt = love.timer.getTime()
@@ -104,7 +128,7 @@ function server:init()
           if cx and cy then
             update.x,update.y = cx,cy
           end
-          server.addUpdate(object,storage,update)
+          server:addUpdate(object,update)
         end
       end
 
@@ -127,20 +151,17 @@ function server:init()
     return true
   end})
   self.lovernet:addProcessOnServer('target_objects',function(self,peer,arg,storage)
-
     for _,object in pairs(storage.objects) do
       -- todo: cache indexes
       for _,sobject in pairs(arg.t) do
         if object.index == sobject.i then
           object.target = sobject.t
-          server.addUpdate(object,storage,{
+          server:addUpdate(object,{
             target = object.target,
           })
         end
       end
-
     end
-
   end)
 
   self.lovernet:addOp('get_new_updates')
@@ -202,6 +223,50 @@ end
 
 function server:update(dt)
   self.lovernet:update(dt)
+  local storage = self.lovernet:getStorage()
+  for _,object in pairs(storage.objects) do
+
+    local target = self:findObject(object.target)
+
+    if target then
+
+      -- if object has itself as target=, stop
+      if object.index == target.index then
+        self:stopUpdateObject(object)
+      end
+
+      if object.user == target.user then
+
+        local distance = libs.net.distance(object,target,love.timer.getTime())
+        if distance > object.size+target.size then
+
+          local tcx,tcy = libs.net.getCurrentLocation(target,love.timer.getTime())
+          if object.tx ~= tcx or object.ty ~= tcy then
+
+            local cx,cy = self:stopObject(object)
+            object.tx = tcx
+            object.ty = tcy
+            object.tdt = love.timer.getTime()
+            self:addUpdate(object,{
+              x=cx,
+              y=cy,
+              tx=object.tx,
+              ty=object.ty,
+              tdt=object.tdt,
+            })
+
+          end
+
+        else
+          self:stopUpdateObject(object)
+        end
+      end
+
+    else -- target == nil
+      --nop
+    end
+
+  end
 end
 
 function server:draw()
