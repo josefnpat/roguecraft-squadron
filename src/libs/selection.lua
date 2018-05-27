@@ -30,7 +30,7 @@ function selection:start(x,y)
 end
 
 function selection:isSelection(x,y)
-  return math.abs(self.sx-x)>16 or math.abs(self.sy-y)>16
+  return self.sx and self.sy and (math.abs(self.sx-x)>16 or math.abs(self.sy-y)>16)
 end
 
 function selection:endAdd(x,y,objects)
@@ -103,10 +103,14 @@ function selection:setUser(user)
   self._user = user
 end
 
-function selection:draw()
+function selection:draw(camera)
   if self.sx and self.sy then
     local mx,my = love.mouse.getPosition()
-    love.graphics.rectangle("line",self.sx,self.sy,mx-self.sx,my-self.sy)
+    love.graphics.rectangle("line",
+      self.sx,
+      self.sy,
+      mx-self.sx-love.graphics.getWidth()/2+camera.x,
+      my-self.sy-love.graphics.getHeight()/2+camera.y)
   end
 end
 

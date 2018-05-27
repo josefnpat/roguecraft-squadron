@@ -48,7 +48,7 @@ function net.getUser(index)
 end
 
 function net.getCurrentLocation(object,time)
-  if object.tdt then
+  if object.tdt and object.tx and object.ty then
     local dt = math.max(0,time - object.tdt)
     local distance = math.sqrt( (object.x-object.tx)^2 + (object.y-object.ty)^2 )
     local ratio = math.min(1,object.speed * dt / distance)

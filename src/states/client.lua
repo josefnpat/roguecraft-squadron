@@ -23,6 +23,18 @@ function client:init()
   self.selection = libs.selection.new()
   self.objects = {}
 
+  self.camera = libs.hump.camera(0,0)
+
+end
+
+function client:getCameraOffsetX()
+  return self.camera.x-love.graphics.getWidth()/2
+end
+function client:getCameraOffsetY()
+  return self.camera.y-love.graphics.getHeight()/2
+end
+function client:getCameraOffset()
+  return self:getCameraOffsetX(),self:getCameraOffsetY()
 end
 
 function client:getObjectByIndex(index)
@@ -34,6 +46,10 @@ function client:getObjectByIndex(index)
 end
 
 function client:update(dt)
+
+  local dx,dy = libs.camera_edge.get_delta(dt)
+  self.camera:move(dx,dy)
+
   self.lovernet:pushData('get_new_objects',{i=self.object_index})
   self.lovernet:pushData('get_new_updates',{u=self.update_index})
   self.lovernet:pushData('user_count')
@@ -152,24 +168,27 @@ function client:moveSelectedObjects(x,y)
   local unselected = self.selection:getUnselected(self.objects)
   for _,object in pairs(self.selection:getSelected()) do
 
-    local tx,ty = x,y
+    local tx = x+self:getCameraOffsetX()
+    local ty = y+self:getCameraOffsetY()
     if #selected > 1 then
       local cx,cy
       repeat
         cx,cy = CartArchSpiral(8,8,curAngle)
         local n,nd = client:findNearestTarget(
           unselected,
-          cx+love.mouse.getX(),
-          cy+love.mouse.getY(),
+          cx+love.mouse.getX()+self:getCameraOffsetX(),
+          cy+love.mouse.getY()+self:getCameraOffsetY(),
           function(object)
             return object.tx ~= x and object.ty ~= y
           end
         )
         curAngle = curAngle + math.pi/32
       until n == nil or nd > 48
-      object._ttx=cx+love.mouse.getX()
-      object._tty=cy+love.mouse.getY()
-      tx,ty = cx+love.mouse.getX(),cy+love.mouse.getY()
+      object._ttx=cx+love.mouse.getX()+self:getCameraOffsetX()
+      object._tty=cy+love.mouse.getY()+self:getCameraOffsetY()
+      tx = cx+love.mouse.getX()+self:getCameraOffsetX()
+      ty = cy+love.mouse.getY()+self:getCameraOffsetY()
+
     end
     table.insert(unselected,object)
     table.insert(moves,{
@@ -189,7 +208,9 @@ function client:mousepressed(x,y,button)
   if button == 1 then
     if false then -- in UI elements
     else
-      self.selection:start(x,y)
+      self.selection:start(
+        x+self:getCameraOffsetX(),
+        y+self:getCameraOffsetY())
     end
   end
 end
@@ -198,24 +219,39 @@ function client:mousereleased(x,y,button)
   if button == 1 then
     if false then -- in UI elements
     else
-      if self.selection:isSelection(x,y) then
+      if self.selection:isSelection(x+self:getCameraOffsetX(),y+self:getCameraOffsetY()) then
         if love.keyboard.isDown('lshift') then
-          self.selection:endAdd(x,y,self.objects)
+          self.selection:endAdd(
+            x+self:getCameraOffsetX(),
+            y+self:getCameraOffsetY(),
+            self.objects)
         else
-          self.selection:endSet(x,y,self.objects)
+          self.selection:endSet(
+            x+self:getCameraOffsetX(),
+            y+self:getCameraOffsetY(),
+            self.objects)
         end
       else
         self.selection:clearSelection()
-        local n,nd = self:findNearestDraw(self.objects,x,y,function(object)
-          return object.user == self.user.id
-        end)
+        local n,nd = self:findNearestDraw(
+          self.objects,
+          x+self:getCameraOffsetX(),
+          y+self:getCameraOffsetY(),
+          function(object)
+            return object.user == self.user.id
+          end
+        )
         if n and nd <= n.size then
           self.selection:setSingleSelected(n)
         end
       end
     end
   elseif button == 2 then
-    local n,nd = self:findNearestDraw(self.objects,x,y)
+    local n,nd = self:findNearestDraw(
+      self.objects,
+      x+self:getCameraOffsetX(),
+      y+self:getCameraOffsetY()
+    )
     if n and nd <= n.size then
       local targets = {}
       for _,object in pairs(self.selection:getSelected()) do
@@ -231,8 +267,8 @@ end
 function client:keypressed(key)
   if key == "c" then
     self.lovernet:sendData('debug_create_object',{
-      x=love.mouse.getX(),
-      y=love.mouse.getY(),
+      x=love.mouse.getX()+self:getCameraOffsetX(),
+      y=love.mouse.getY()+self:getCameraOffsetY(),
     })
   end
   if key == "`" then
@@ -241,6 +277,8 @@ function client:keypressed(key)
 end
 
 function client:draw()
+
+    libs.stars:draw(self.camera.x/2,self.camera.y/2)
 
   -- color test
   if debug_mode then
@@ -251,17 +289,27 @@ function client:draw()
     end
   end
 
+  self.camera:attach()
+
   for object_index,object in pairs(self.objects) do
     if self.selection:isSelected(object) then
       love.graphics.setColor(libs.net.getUser(object.user).selected_color)
     else
       love.graphics.setColor(libs.net.getUser(object.user).color)
     end
-    love.graphics.circle("line",object.dx,object.dy,object.size)
+    love.graphics.circle("line",
+      object.dx,
+      object.dy,
+      object.size
+    )
     love.graphics.setColor(0,255,0,63)
     for _,target in pairs(self.objects) do
       if target.index == object.target then
-        love.graphics.line(object.dx,object.dy,target.dx,target.dy)
+        love.graphics.line(
+          object.dx,
+          object.dy,
+          target.dx,
+          target.dy)
         break
       end
     end
@@ -281,22 +329,29 @@ function client:draw()
     end
   end
 
-  local str = ""
-  if self.user then
-    str = str .. "user.id: " .. libs.net.getUser(self.user.id).name .. "["..self.user.id.."]\n"
-    love.graphics.setColor(255,255,255)
-  else
-    str = str .. "loading user ... \n"
+  self.selection:draw(self.camera)
+
+  self.camera:detach()
+
+  if debug_mode then
+    local str = ""
+    if self.user then
+      str = str .. "user.id: " .. libs.net.getUser(self.user.id).name .. "["..self.user.id.."]\n"
+      love.graphics.setColor(255,255,255)
+    else
+      str = str .. "loading user ... \n"
+    end
+    str = str .. "time: " .. self.time .. "\n"
+    str = str .. "objects: " .. #self.objects .. "\n"
+    str = str .. "update_index: " .. self.update_index .. "\n"
+    str = str .. "connected users: " .. self.user_count .. "\n"
+    str = str .. "camera: "..math.floor(self.camera.x)..","..math.floor(self.camera.y).."\n"
+    if self.server_git_count ~= git_count then
+      str = str .. "mismatch: " .. git_count .. " ~= " .. tostring(self.server_git_count) .. "\n"
+    end
+    love.graphics.print(str,32,32)
   end
-  str = str .. "time: " .. self.time .. "\n"
-  str = str .. "objects: " .. #self.objects .. "\n"
-  str = str .. "update_index: " .. self.update_index .. "\n"
-  str = str .. "connected users: " .. self.user_count .. "\n"
-  if self.server_git_count ~= git_count then
-    str = str .. "mismatch: " .. git_count .. " ~= " .. tostring(self.server_git_count) .. "\n"
-  end
-  love.graphics.print(str)
-  self.selection:draw()
+
 end
 
 return client
