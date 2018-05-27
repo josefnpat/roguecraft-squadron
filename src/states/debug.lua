@@ -5,13 +5,30 @@ function state:init()
 
   self.menu = libs.menu.new{title="[DEBUG]"}
 
-  self.menu:add(libs.i18n('menu.client'),function()
-    libs.hump.gamestate.switch(states.client)
-  end)
+  self.menu:add(
+    function()
+      return libs.i18n('menu.client') .. " ["..settings:read("remote_server_address").."]"
+    end,
+    function()
+      states.client._remote_address = settings:read("remote_server_address")
+      libs.hump.gamestate.switch(states.client)
+    end
+  )
+
+  self.menu:add(
+    function()
+      return libs.i18n('menu.client') .. ' [localhost]'
+    end,
+    function()
+      states.client._remote_address = nil
+      libs.hump.gamestate.switch(states.client)
+    end
+  )
 
   self.menu:add(libs.i18n('menu.server'),function()
-    libs.hump.gamestate.switch(states.server)
-  end)
+      libs.hump.gamestate.switch(states.server)
+    end
+  )
 
   self.menu:add(
     function()

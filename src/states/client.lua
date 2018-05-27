@@ -1,7 +1,8 @@
 local client = {}
 
 function client:init()
-  self.lovernet = libs.lovernet.new{serdes=libs.bitser}
+
+  self.lovernet = libs.lovernet.new{serdes=libs.bitser,ip=self._remote_address}
   -- todo: make common functions use short names
   self.lovernet:addOp('git_count')
   self.lovernet:addOp('user_count')
