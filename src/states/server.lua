@@ -1,5 +1,7 @@
 local server = {}
 
+server._follow_update_mult = 2
+
 function server:addUpdate(object,update)
   local storage = self.lovernet:getStorage()
   storage.global_update_index = storage.global_update_index + 1
@@ -18,14 +20,16 @@ function server:stopObject(object)
 end
 
 function server:stopUpdateObject(object)
-  local cx,cy = self:stopObject(object)
-  self:addUpdate(object,{
-    x=cx,
-    y=cy,
-    tx="nil",
-    ty="nil",
-    tdt="nil",
-  })
+  if object.tx and object.ty and object.tdt then
+    local cx,cy = self:stopObject(object)
+    self:addUpdate(object,{
+      x=cx,
+      y=cy,
+      tx="nil",
+      ty="nil",
+      tdt="nil",
+    })
+  end
 end
 
 function server:findObject(index)
@@ -241,7 +245,12 @@ function server:update(dt)
         if distance > object.size+target.size then
 
           local tcx,tcy = libs.net.getCurrentLocation(target,love.timer.getTime())
-          if object.tx ~= tcx or object.ty ~= tcy then
+
+          -- todo: rename w vars in a way that makes sense, I am tired.
+          local wx,wy = object.tx or object.x,object.ty or object.y
+          local wdistance = math.sqrt( (wx-tcx)^2 + (wy-tcy)^2 )
+
+          if wdistance > object.size+target.size*server._follow_update_mult then
 
             local cx,cy = self:stopObject(object)
             object.tx = tcx
