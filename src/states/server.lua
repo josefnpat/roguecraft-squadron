@@ -67,15 +67,21 @@ function server:init()
   self.lovernet:addOp('debug_create_object')
   self.lovernet:addValidateOnServer('debug_create_object',{x='number',y='number'})
   self.lovernet:addProcessOnServer('debug_create_object',function(self,peer,arg,storage)
+
+    local type_index = "debug"
+    local type = libs.objectrenderer.getType(type_index)
+
     local user = self:getUser(peer)
     storage.objects_index = storage.objects_index + 1
     local object = {
       index=storage.objects_index,
+      type=type_index,
+      render=libs.objectrenderer.randomRenderIndex(type),
       x=arg.x,
       y=arg.y,
-      speed=100,
+      speed=type.speed,
       user=user.id,
-      size=32,
+      size=type.size,
     }
     table.insert(storage.objects,object)
   end)
@@ -225,56 +231,55 @@ function server:init()
 
 end
 
+function server:targetIsSelf(object,target)
+  if object.index == target.index then
+    self:stopUpdateObject(object)
+  end
+end
+
+function server:targetIsAlly(object,target)
+  if object.user == target.user then
+    local distance = libs.net.distance(object,target,love.timer.getTime())
+    if distance > object.size+target.size then
+      local tcx,tcy = libs.net.getCurrentLocation(target,love.timer.getTime())
+      -- todo: rename w vars in a way that makes sense, I am tired.
+      local wx,wy = object.tx or object.x,object.ty or object.y
+      local wdistance = math.sqrt( (wx-tcx)^2 + (wy-tcy)^2 )
+      if wdistance > object.size+target.size*server._follow_update_mult then
+        local cx,cy = self:stopObject(object)
+        object.tx = tcx
+        object.ty = tcy
+        object.tdt = love.timer.getTime()
+        self:addUpdate(object,{
+          x=cx,
+          y=cy,
+          tx=object.tx,
+          ty=object.ty,
+          tdt=object.tdt,
+        })
+      end
+    else
+      self:stopUpdateObject(object)
+    end
+  end
+end
+
+function server:targetIsNeutral(object,target)
+  -- todo
+end
+
 function server:update(dt)
   self.lovernet:update(dt)
   local storage = self.lovernet:getStorage()
   for _,object in pairs(storage.objects) do
-
     local target = self:findObject(object.target)
-
     if target then
-
-      -- if object has itself as target=, stop
-      if object.index == target.index then
-        self:stopUpdateObject(object)
-      end
-
-      if object.user == target.user then
-
-        local distance = libs.net.distance(object,target,love.timer.getTime())
-        if distance > object.size+target.size then
-
-          local tcx,tcy = libs.net.getCurrentLocation(target,love.timer.getTime())
-
-          -- todo: rename w vars in a way that makes sense, I am tired.
-          local wx,wy = object.tx or object.x,object.ty or object.y
-          local wdistance = math.sqrt( (wx-tcx)^2 + (wy-tcy)^2 )
-
-          if wdistance > object.size+target.size*server._follow_update_mult then
-
-            local cx,cy = self:stopObject(object)
-            object.tx = tcx
-            object.ty = tcy
-            object.tdt = love.timer.getTime()
-            self:addUpdate(object,{
-              x=cx,
-              y=cy,
-              tx=object.tx,
-              ty=object.ty,
-              tdt=object.tdt,
-            })
-
-          end
-
-        else
-          self:stopUpdateObject(object)
-        end
-      end
-
+      self:targetIsSelf(object,target)
+      self:targetIsAlly(object,target)
+      self:targetIsNeutral(object,target)
     else -- target == nil
       --nop
     end
-
   end
 end
 

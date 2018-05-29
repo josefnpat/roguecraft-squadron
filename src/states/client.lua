@@ -86,6 +86,8 @@ function client:update(dt)
         -- init objects:
         sobject.dx = sobject.x
         sobject.dy = sobject.y
+        sobject.angle = math.random()*2*math.pi
+        sobject.dangle = math.random()*2*math.pi
 
         table.insert(self.objects,sobject)
         self.object_index = math.max(self.object_index,sobject.index)
@@ -115,14 +117,12 @@ function client:update(dt)
 
 
   for _,object in pairs(self.objects) do
-    local cx,cy = libs.net.getCurrentLocation(object,self.time)
-    object.dx = (object.dx or cx) + (cx-object.dx)/2
-    object.dy = (object.dy or cy) + (cy-object.dy)/2
+    libs.objectrenderer.update(object,self.objects,dt,self.time)
   end
 
 end
 
-function CartArchSpiral(initRad,turnDistance,angle)
+function client:CartArchSpiral(initRad,turnDistance,angle)
   local x = (initRad+turnDistance*angle)*math.cos(angle)
   local y = (initRad+turnDistance*angle)*math.sin(angle)
   return x,y
@@ -178,7 +178,7 @@ function client:moveSelectedObjects(x,y)
     if #selected > 1 then
       local cx,cy
       repeat
-        cx,cy = CartArchSpiral(8,8,curAngle)
+        cx,cy = self:CartArchSpiral(8,8,curAngle)
         local n,nd = client:findNearestTarget(
           unselected,
           cx+love.mouse.getX()+self:getCameraOffsetX(),
@@ -283,7 +283,7 @@ end
 
 function client:draw()
 
-    libs.stars:draw(self.camera.x/2,self.camera.y/2)
+  libs.stars:draw(self.camera.x/2,self.camera.y/2)
 
   -- color test
   if debug_mode then
@@ -297,41 +297,7 @@ function client:draw()
   self.camera:attach()
 
   for object_index,object in pairs(self.objects) do
-    if self.selection:isSelected(object) then
-      love.graphics.setColor(libs.net.getUser(object.user).selected_color)
-    else
-      love.graphics.setColor(libs.net.getUser(object.user).color)
-    end
-    love.graphics.circle("line",
-      object.dx,
-      object.dy,
-      object.size
-    )
-    love.graphics.setColor(0,255,0,63)
-    for _,target in pairs(self.objects) do
-      if target.index == object.target then
-        love.graphics.line(
-          object.dx,
-          object.dy,
-          target.dx,
-          target.dy)
-        break
-      end
-    end
-
-    love.graphics.setColor(255,255,255)
-    if debug_mode then
-      if object.tx and object.ty then
-        love.graphics.line(object.x,object.y,object.tx,object.ty)
-        local cx,cy = libs.net.getCurrentLocation(object,self.time)
-        love.graphics.circle('line',cx,cy,16)
-      end
-      local str = ""
-      str = str .. "index: " .. object.index .. "\n"
-      str = str .. "target: " .. tostring(object.target) .. "\n"
-      str = str .. "user: " .. libs.net.getUser(object.user).name .. "["..object.user.."]\n"
-      love.graphics.printf(str,object.dx-64,object.dy,128,"center")
-    end
+    libs.objectrenderer.draw(object,self.objects,self.selection:isSelected(object),self.time)
   end
 
   self.selection:draw(self.camera)

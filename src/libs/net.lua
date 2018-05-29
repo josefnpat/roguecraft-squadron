@@ -43,6 +43,10 @@ net._default = {
   selected_color={255,0,255},
 }
 
+function net.getAngle(x1,y1,x2,y2)
+  return math.atan2(y2-y1,x2-x1)
+end
+
 function net.getUser(index)
   return net._users[index+1] or net._default
 end
