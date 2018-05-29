@@ -121,7 +121,7 @@ function server:init()
     for _,object in pairs(storage.objects) do
       -- todo: cache indexes
       for _,sobject in pairs(arg.o) do
-        local type = objectrenderer.getType(sobject.type)
+        local type = libs.objectrenderer.getType(object.type)
         if object.index == sobject.i and type.speed then
           local cx,cy = server:stopObject(object)
           object.tx = sobject.x
