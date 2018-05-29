@@ -15,7 +15,7 @@ function objectrenderer.load(loadAssets)
       object.icons = {}
       for _,render in pairs(renders) do
         table.insert(object.renders,love.graphics.newImage(renders_dir.."/"..render))
-        table.insert(object.renders,love.graphics.newImage(icons_dir.."/"..render))
+        table.insert(object.icons,love.graphics.newImage(icons_dir.."/"..render))
       end
     end
     data[type] = object
@@ -63,8 +63,9 @@ function objectrenderer.draw(object,objects,isSelected,time)
     str = str .. "index: " .. object.index .. "\n"
     str = str .. "target: " .. tostring(object.target) .. "\n"
     str = str .. "user: " .. libs.net.getUser(object.user).name .. "["..object.user.."]\n"
-    str = str .. "angle: " .. object.angle .. "\n"
-    str = str .. "dangle: " .. object.dangle .. "\n"
+    str = str .. "angle: " .. math.floor(object.angle*100)/100 .. "\n"
+    str = str .. "dangle: " .. math.floor(object.dangle*100)/100 .. "\n"
+    str = str .. "render: " .. math.floor(object.render) .. "\n"
     love.graphics.printf(str,object.dx-64,object.dy,128,"center")
   end
 
