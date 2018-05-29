@@ -203,6 +203,7 @@ function client:moveSelectedObjects(x,y)
     })
     curAngle = curAngle + math.pi/32
   end
+  -- todo: do not attempt to move objects without speed
   self.lovernet:sendData('move_objects',{o=moves})
   for _,object in pairs(self.selection:getSelected()) do
     object._ttx,object._tty = nil,nil
@@ -225,6 +226,7 @@ function client:mousereleased(x,y,button)
     if false then -- in UI elements
     else
       if self.selection:isSelection(x+self:getCameraOffsetX(),y+self:getCameraOffsetY()) then
+
         if love.keyboard.isDown('lshift') then
           self.selection:endAdd(
             x+self:getCameraOffsetX(),
@@ -236,7 +238,9 @@ function client:mousereleased(x,y,button)
             y+self:getCameraOffsetY(),
             self.objects)
         end
+
       else
+
         self.selection:clearSelection()
         local n,nd = self:findNearestDraw(
           self.objects,
@@ -246,26 +250,37 @@ function client:mousereleased(x,y,button)
             return object.user == self.user.id
           end
         )
-        if n and nd <= n.size then
-          self.selection:setSingleSelected(n)
+
+        if n then
+          local type = libs.objectrenderer.getType(n.type)
+          if nd <= type.size then
+            self.selection:setSingleSelected(n)
+          end
         end
+
       end
     end
   elseif button == 2 then
+
     local n,nd = self:findNearestDraw(
       self.objects,
       x+self:getCameraOffsetX(),
       y+self:getCameraOffsetY()
     )
-    if n and nd <= n.size then
-      local targets = {}
-      for _,object in pairs(self.selection:getSelected()) do
-        table.insert(targets,{i=object.index,t=n.index})
+
+    if n then
+      local type = libs.objectrenderer.getType(n.type)
+      if nd <= type.size then
+        local targets = {}
+        for _,object in pairs(self.selection:getSelected()) do
+          table.insert(targets,{i=object.index,t=n.index})
+        end
+        self.lovernet:sendData('target_objects',{t=targets})
+      else
+        self:moveSelectedObjects(x,y)
       end
-      self.lovernet:sendData('target_objects',{t=targets})
-    else
-      self:moveSelectedObjects(x,y)
     end
+
   end
 end
 

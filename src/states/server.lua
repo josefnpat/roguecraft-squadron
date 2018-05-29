@@ -79,9 +79,7 @@ function server:init()
       render=libs.objectrenderer.randomRenderIndex(type),
       x=arg.x,
       y=arg.y,
-      speed=type.speed,
       user=user.id,
-      size=type.size,
     }
     table.insert(storage.objects,object)
   end)
@@ -123,7 +121,8 @@ function server:init()
     for _,object in pairs(storage.objects) do
       -- todo: cache indexes
       for _,sobject in pairs(arg.o) do
-        if object.index == sobject.i then
+        local type = objectrenderer.getType(sobject.type)
+        if object.index == sobject.i and type.speed then
           local cx,cy = server:stopObject(object)
           object.tx = sobject.x
           object.ty = sobject.y
@@ -240,12 +239,15 @@ end
 function server:targetIsAlly(object,target)
   if object.user == target.user then
     local distance = libs.net.distance(object,target,love.timer.getTime())
-    if distance > object.size+target.size then
+    local object_type = libs.objectrenderer.getType(object.type)
+    local target_type = libs.objectrenderer.getType(target.type)
+    local sub_distance = object_type.size+target_type.size
+    if distance > sub_distance then
       local tcx,tcy = libs.net.getCurrentLocation(target,love.timer.getTime())
       -- todo: rename w vars in a way that makes sense, I am tired.
       local wx,wy = object.tx or object.x,object.ty or object.y
       local wdistance = math.sqrt( (wx-tcx)^2 + (wy-tcy)^2 )
-      if wdistance > object.size+target.size*server._follow_update_mult then
+      if wdistance > (sub_distance)*server._follow_update_mult then
         local cx,cy = self:stopObject(object)
         object.tx = tcx
         object.ty = tcy

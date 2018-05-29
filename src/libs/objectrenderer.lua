@@ -46,7 +46,7 @@ function objectrenderer.draw(object,objects,isSelected,time)
   love.graphics.circle("line",
     object.dx,
     object.dy,
-    object.size
+    type.size
   )
 
   love.graphics.setColor(255,255,255)

@@ -52,10 +52,11 @@ function net.getUser(index)
 end
 
 function net.getCurrentLocation(object,time)
+  local type = libs.objectrenderer.getType(object.type)
   if object.tdt and object.tx and object.ty then
     local dt = math.max(0,time - object.tdt)
     local distance = math.sqrt( (object.x-object.tx)^2 + (object.y-object.ty)^2 )
-    local ratio = math.min(1,object.speed * dt / distance)
+    local ratio = math.min(1,type.speed * dt / distance)
     local cx = (1-ratio)*object.x+ratio*object.tx
     local cy = (1-ratio)*object.y+ratio*object.ty
     return cx,cy
