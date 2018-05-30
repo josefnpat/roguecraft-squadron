@@ -93,6 +93,8 @@ function client:update(dt)
 
         if not self.focusObject and sobject.user == self.user.id then
           self.focusObject = sobject
+          self:lookAtObject(sobject)
+          self.selection:setSingleSelected(sobject)
         end
 
         table.insert(self.objects,sobject)
@@ -319,6 +321,12 @@ end
 
 function client:resize()
   self.fow:resize()
+end
+
+function client:lookAtObject(object)
+  self.camera:move(
+    self.focusObject.x+self.camera.x,
+    self.focusObject.y+self.camera.y)
 end
 
 function client:draw()

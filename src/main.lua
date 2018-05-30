@@ -3,6 +3,8 @@ function love.load(arg)
   -- Thanks @bartbes! fixes cygwin buffer
   io.stdout:setvbuf("no")
 
+  math.randomseed(os.time())
+
   if headless then
     libs = {
       hump = {
@@ -25,8 +27,6 @@ function love.load(arg)
   end
 
   love.window.setIcon(love.image.newImageData("assets/icon.png"))
-
-  math.randomseed(os.time())
 
   tooltipf_edge = love.graphics.newImage("assets/hud/tooltip_edge.png")
 

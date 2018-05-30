@@ -23,6 +23,13 @@ function server.generateMap(storage)
   end
 end
 
+function server.generatePlayer(storage,user_id)
+  local mapsize = settings:read("map_size")
+  local x = math.random(-mapsize,mapsize)
+  local y = math.random(-mapsize,mapsize)
+  server.createObject(storage,"command",x,y,user_id)
+end
+
 function server.createObject(storage,type_index,x,y,user_id)
   local type = libs.objectrenderer.getType(type_index)
   storage.objects_index = storage.objects_index + 1
@@ -251,6 +258,8 @@ function server:init()
     user.id = lovernet_scope.last_user_index
     lovernet_scope.last_user_index = lovernet_scope.last_user_index + 1
     -- todo: add unique names
+    server.generatePlayer(self.lovernet:getStorage(),user.id)
+
   end)
 
   server.generateMap(self.lovernet:getStorage())
