@@ -2,7 +2,7 @@ local server = {}
 
 server._follow_update_mult = 2
 
-server._genDefault = {
+server._genMapDefault = {
   asteroid=100,
   scrap=100,
   station=25,
@@ -12,9 +12,14 @@ server._genDefault = {
   cat=1,
 }
 
+server._genPlayerDefault = {
+  salvager=1,
+  mining=2,
+}
+
 function server.generateMap(storage)
   local mapsize = settings:read("map_size")
-  for object_type,object_count in pairs(server._genDefault) do
+  for object_type,object_count in pairs(server._genMapDefault) do
     for i = 1,object_count do
       local x = math.random(-mapsize,mapsize)
       local y = math.random(-mapsize,mapsize)
@@ -28,6 +33,13 @@ function server.generatePlayer(storage,user_id)
   local x = math.random(-mapsize,mapsize)
   local y = math.random(-mapsize,mapsize)
   server.createObject(storage,"command",x,y,user_id)
+  for object_type,object_count in pairs(server._genPlayerDefault) do
+    for i = 1,object_count do
+      local cx = math.random(-128,128)
+      local cy = math.random(-128,128)
+      server.createObject(storage,object_type,x+cx,y+cy,user_id)
+    end
+  end
 end
 
 function server.createObject(storage,type_index,x,y,user_id)
