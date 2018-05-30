@@ -50,7 +50,14 @@ function objectrenderer.draw(object,objects,isSelected,time)
   )
 
   love.graphics.setColor(255,255,255)
-  love.graphics.draw(type.renders[object.render],object.dx,object.dy,object.dangle,1,1,type.size,type.size)
+  love.graphics.draw(
+    type.renders[object.render],
+    object.dx,
+    object.dy,
+    object.dangle,
+    1,1,
+    type.renders[object.render]:getWidth()/2,
+    type.renders[object.render]:getHeight()/2)
 
   love.graphics.setColor(255,255,255)
   if debug_mode then
@@ -66,6 +73,7 @@ function objectrenderer.draw(object,objects,isSelected,time)
     str = str .. "angle: " .. math.floor(object.angle*100)/100 .. "\n"
     str = str .. "dangle: " .. math.floor(object.dangle*100)/100 .. "\n"
     str = str .. "render: " .. math.floor(object.render) .. "\n"
+    str = str .. "d: ["..math.floor(object.dx)..","..math.floor(object.dy).."]"
     love.graphics.printf(str,object.dx-64,object.dy,128,"center")
   end
 
