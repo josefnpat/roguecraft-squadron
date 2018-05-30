@@ -58,6 +58,10 @@ function net.getUser(index)
   return index and (net._users[index+1] or net._default) or net._neutral
 end
 
+function net.shortestAngle(c,t)
+  return (t-c+math.pi)%(math.pi*2)-math.pi
+end
+
 function net.getCurrentLocation(object,time)
   local type = libs.objectrenderer.getType(object.type)
   if object.tdt and object.tx and object.ty then
@@ -70,6 +74,17 @@ function net.getCurrentLocation(object,time)
   else
     return object.x,object.y
   end
+end
+
+function net.getCurrentBulletLocation(bullet,target,time)
+  local ctime = time - bullet.tdt
+  local ratio = math.min(1,ctime/bullet.eta)
+
+  local ctx,cty = net.getCurrentLocation(target,time)
+
+  local cbx = (1-ratio)*bullet.x+ratio*ctx
+  local cby = (1-ratio)*bullet.y+ratio*cty
+  return cbx,cby,ctx,cty
 end
 
 function net.distance(a,b,time)

@@ -61,6 +61,7 @@ function objectrenderer.draw(object,objects,isSelected,time)
 
   love.graphics.setColor(255,255,255)
   if debug_mode then
+
     if object.tx and object.ty then
       love.graphics.line(object.x,object.y,object.tx,object.ty)
       local cx,cy = libs.net.getCurrentLocation(object,time)
@@ -75,25 +76,21 @@ function objectrenderer.draw(object,objects,isSelected,time)
     str = str .. "render: " .. math.floor(object.render) .. "\n"
     str = str .. "d: ["..math.floor(object.dx)..","..math.floor(object.dy).."]"
     love.graphics.printf(str,object.dx-64,object.dy,128,"center")
-  end
-
-  love.graphics.setColor(0,255,0,63)
-  for _,target in pairs(objects) do
-    if target.index == object.target then
-      love.graphics.line(
-        object.dx,
-        object.dy,
-        target.dx,
-        target.dy)
-      break
+    love.graphics.setColor(0,255,0,63)
+    for _,target in pairs(objects) do
+      if target.index == object.target then
+        love.graphics.line(
+          object.dx,
+          object.dy,
+          target.dx,
+          target.dy)
+        break
+      end
     end
+
   end
   love.graphics.setColor(255,255,255)
 
-end
-
-function objectrenderer.shortestAngle(c,t)
-  return (t-c+math.pi)%(math.pi*2)-math.pi
 end
 
 function objectrenderer.update(object,objects,dt,time)
@@ -105,7 +102,7 @@ function objectrenderer.update(object,objects,dt,time)
     object.angle = libs.net.getAngle(object.x,object.y,object.tx,object.ty)
   end
 
-  object.dangle = object.dangle + objectrenderer.shortestAngle(object.dangle,object.angle)*dt*4
+  object.dangle = object.dangle + libs.net.shortestAngle(object.dangle,object.angle)*dt*4
 
 end
 

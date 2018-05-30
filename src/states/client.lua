@@ -10,6 +10,7 @@ function client:init()
   self.lovernet:addOp('debug_create_object')
   self.lovernet:addOp('get_new_objects')
   self.lovernet:addOp('get_new_updates')
+  self.lovernet:addOp('get_new_bullets')
   self.lovernet:addOp('move_objects')
   self.lovernet:addOp('target_objects')
   self.lovernet:addOp('t')
@@ -19,10 +20,12 @@ function client:init()
   self.lovernet:pushData('get_user')
   self.object_index = 0
   self.update_index = 0
+  self.bullet_index = 0
   self.user_count = 0
   self.time = 0
   self.selection = libs.selection.new()
   self.objects = {}
+  self.bullets = {}
 
   self.camera = libs.hump.camera(0,0)
   self.minimap = libs.minimap.new()
@@ -55,6 +58,7 @@ function client:update(dt)
 
   self.lovernet:pushData('get_new_objects',{i=self.object_index})
   self.lovernet:pushData('get_new_updates',{u=self.update_index})
+  self.lovernet:pushData('get_new_bullets',{b=self.bullet_index})
   self.lovernet:pushData('user_count')
   self.lovernet:pushData('t')
   self.lovernet:update(dt)
@@ -123,10 +127,52 @@ function client:update(dt)
     self.lovernet:clearCache('get_new_updates')
   end
 
+  if self.lovernet:getCache('get_new_bullets') then
+    self.bullet_index = self.lovernet:getCache('get_new_bullets').i
+    for sbullet_index,sbullet in pairs(self.lovernet:getCache('get_new_bullets').b) do
+
+      local source
+      local target
+      for _,object in pairs(self.objects) do
+        if object.index == sbullet.b.s then
+          source = object
+        end
+        if object.index == sbullet.b.t then
+          target = object
+        end
+      end
+
+      if source and target then
+        local bullet = {
+          x = source.dx,
+          y = source.dy,
+          cx = source.dx,
+          cy = source.dy,
+          dx = source.dx,
+          dy = source.dy,
+          target = target.index,
+          tdt=sbullet.b.tdt,
+          eta=sbullet.b.eta,
+          type=sbullet.b.type,
+        }
+        table.insert(self.bullets,bullet)
+      end
+
+    end
+    self.lovernet:clearCache('get_new_bullets')
+  end
+
   for _,object in pairs(self.objects) do
     libs.objectrenderer.update(object,self.objects,dt,self.time)
     if object.user == self.user.id then
       self.fow:update(dt,object)
+    end
+  end
+
+  for bullet_index,bullet in pairs(self.bullets) do
+    local keep = libs.bulletrenderer.update(bullet,self.bullets,self.objects,dt,self.time)
+    if not keep then
+      table.remove(self.bullets,bullet_index)
     end
   end
 
@@ -339,6 +385,10 @@ function client:draw()
     libs.objectrenderer.draw(object,self.objects,self.selection:isSelected(object),self.time)
   end
 
+  for bullet_index,bullet in pairs(self.bullets) do
+    libs.bulletrenderer.draw(bullet,self.objects,self.time)
+  end
+
   self.selection:draw(self.camera)
   self.camera:detach()
   self.fow:draw(self.objects,{},self.user)
@@ -365,6 +415,7 @@ function client:draw()
     str = str .. "time: " .. self.time .. "\n"
     str = str .. "objects: " .. #self.objects .. "\n"
     str = str .. "update_index: " .. self.update_index .. "\n"
+    str = str .. "bullet_index: " .. self.bullet_index .. "\n"
     str = str .. "connected users: " .. self.user_count .. "\n"
     str = str .. "camera: "..math.floor(self.camera.x)..","..math.floor(self.camera.y).."\n"
     if self.server_git_count ~= git_count then

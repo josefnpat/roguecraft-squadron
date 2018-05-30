@@ -14,9 +14,11 @@ function love.load(arg)
       bitser = require"libs.lovernet.bitser",
       net = require"libs.net",
       objectrenderer = require"libs.objectrenderer",
+      bulletrenderer = require"libs.bulletrenderer",
     }
 
     libs.objectrenderer.load(false)
+    libs.bulletrenderer.load(false)
 
     states = {
       server = require "states.server",
@@ -132,12 +134,14 @@ function love.load(arg)
     selection = require"libs.selection",
     net = require"libs.net",
     objectrenderer = require"libs.objectrenderer",
+    bulletrenderer = require"libs.bulletrenderer",
     minimap = require"libs.minimap",
     fow = require"libs.fow",
     demo = require"libs.demo",
   }
 
   libs.objectrenderer.load(true)
+  libs.bulletrenderer.load(true)
 
   states = {
     splash = require "states.splash",

@@ -1,6 +1,7 @@
 local server = {}
 
-server._follow_update_mult = 2
+server._follow_update_mult = 1.2
+server._shoot_update_mult = 0.8
 
 server._genMapDefault = {
   asteroid=100,
@@ -64,6 +65,16 @@ function server:addUpdate(object,update)
     index=object.index,
     update_index = storage.global_update_index,
     update=update,
+  })
+end
+
+function server:addBullet(object,bullet)
+  local storage = self.lovernet:getStorage()
+  storage.global_bullet_index = storage.global_bullet_index + 1
+  table.insert(storage.bullets,{
+    index=object.index,
+    bullet_index = storage.global_bullet_index,
+    bullet=bullet,
   })
 end
 
@@ -251,6 +262,40 @@ function server:init()
     return data
   end)
 
+  self.lovernet:addOp('get_new_bullets')
+  self.lovernet:addValidateOnServer('get_new_bullets',{b='number'})
+  self.lovernet:addProcessOnServer('get_new_bullets',function(self,peer,arg,storage)
+
+    local user = self:getUser(peer)
+
+    local data = {}
+    data.i = storage.global_bullet_index
+    data.b = {}
+    for _,bullet in pairs(storage.bullets) do
+      if bullet.bullet_index > user.last_bullet then
+        table.insert(data.b,{i=bullet.index,b=bullet.bullet})
+      end
+    end
+
+    local min_last_bullet = math.huge
+    for _,user in pairs(self:getUsers()) do
+      min_last_bullet = math.min(min_last_bullet,user.last_bullet)
+    end
+
+    local new_bullets = {}
+    for _,bullet in pairs(storage.bullets) do
+      if bullet.bullet_index > min_last_bullet then
+        table.insert(new_bullets,bullet)
+      end
+    end
+    storage.bullets = new_bullets
+
+    -- todo: possible attack vector - force server to record all updates
+    user.last_bullet = math.max(user.last_bullet,arg.b)
+
+    return data
+  end)
+
   self.lovernet:addOp('t')
   self.lovernet:addProcessOnServer('t',function(self,peer,arg,storage)
     return love.timer.getTime()
@@ -262,11 +307,15 @@ function server:init()
   self.lovernet:getStorage().updates = {}
   self.lovernet:getStorage().global_update_index = 0
 
+  self.lovernet:getStorage().bullets = {}
+  self.lovernet:getStorage().global_bullet_index = 0
+
   self.last_user_index = 0
   local lovernet_scope = self
 
   self.lovernet:onAddUser(function(user)
     user.last_update = 0
+    user.last_bullet = 0
     user.id = lovernet_scope.last_user_index
     lovernet_scope.last_user_index = lovernet_scope.last_user_index + 1
     -- todo: add unique names
@@ -278,44 +327,85 @@ function server:init()
 
 end
 
+-- TARGET IS
+
 function server:targetIsSelf(object,target)
-  if object.index == target.index then
+  return object.index == target.index
+end
+
+function server:targetIsAlly(object,target)
+  return object.user == target.user
+end
+
+function server:targetIsEnemy(object,target)
+  return target.user ~= nil and object.user ~= target.user
+end
+
+function server:targetIsNeutral(object,target)
+  return target.user == nil
+end
+
+-- ACTION TARGET
+
+function server:gotoTarget(object,target,range)
+  local distance = libs.net.distance(object,target,love.timer.getTime())
+  local object_type = libs.objectrenderer.getType(object.type)
+  local target_type = libs.objectrenderer.getType(target.type)
+  if distance > range then
+    local tcx,tcy = libs.net.getCurrentLocation(target,love.timer.getTime())
+    -- todo: rename w vars in a way that makes sense, I am tired.
+    local wx,wy = object.tx or object.x,object.ty or object.y
+    local wdistance = math.sqrt( (wx-tcx)^2 + (wy-tcy)^2 )
+    if wdistance > (range) then
+      local cx,cy = self:stopObject(object)
+      object.tx = tcx
+      object.ty = tcy
+      object.tdt = love.timer.getTime()
+      self:addUpdate(object,{
+        x=cx,
+        y=cy,
+        tx=object.tx,
+        ty=object.ty,
+        tdt=object.tdt,
+      })
+    end
+  else
     self:stopUpdateObject(object)
   end
 end
 
-function server:targetIsAlly(object,target)
-  if object.user == target.user then
-    local distance = libs.net.distance(object,target,love.timer.getTime())
-    local object_type = libs.objectrenderer.getType(object.type)
-    local target_type = libs.objectrenderer.getType(target.type)
-    local sub_distance = object_type.size+target_type.size
-    if distance > sub_distance then
-      local tcx,tcy = libs.net.getCurrentLocation(target,love.timer.getTime())
-      -- todo: rename w vars in a way that makes sense, I am tired.
-      local wx,wy = object.tx or object.x,object.ty or object.y
-      local wdistance = math.sqrt( (wx-tcx)^2 + (wy-tcy)^2 )
-      if wdistance > (sub_distance)*server._follow_update_mult then
-        local cx,cy = self:stopObject(object)
-        object.tx = tcx
-        object.ty = tcy
-        object.tdt = love.timer.getTime()
-        self:addUpdate(object,{
-          x=cx,
-          y=cy,
-          tx=object.tx,
-          ty=object.ty,
-          tdt=object.tdt,
-        })
-      end
-    else
-      self:stopUpdateObject(object)
+function server:shootTarget(object,target,dt)
+  local distance = libs.net.distance(object,target,love.timer.getTime())
+  local object_type = libs.objectrenderer.getType(object.type)
+  if distance < object_type.shoot.range then
+    object.reload_dt = (object.reload_dt or 0) + dt
+    if object.reload_dt > object_type.shoot.reload then
+      object.reload_dt = object.reload_dt - object_type.shoot.reload
+      local time = love.timer.getTime()
+      local cx,cy = libs.net.getCurrentLocation(object,time)
+      server:addBullet(object,{
+        x=cx,
+        y=cy,
+        s=object.index,
+        t=target.index,
+        tdt=time,
+        eta=distance/object_type.speed,
+        type=object.type,
+      })
     end
   end
 end
 
-function server:targetIsNeutral(object,target)
-  -- todo
+-- RANGES
+function server:getFollowRange(object,target)
+  local object_type = libs.objectrenderer.getType(object.type)
+  local target_type = libs.objectrenderer.getType(target.type)
+  return (object_type.size+target_type.size)*server._follow_update_mult
+end
+
+function server:getShootRange(object,target)
+  local object_type = libs.objectrenderer.getType(object.type)
+  return object_type.shoot.range*server._shoot_update_mult
 end
 
 function server:update(dt)
@@ -323,14 +413,47 @@ function server:update(dt)
   local storage = self.lovernet:getStorage()
   for _,object in pairs(storage.objects) do
     local target = self:findObject(object.target)
+
     if target then
-      self:targetIsSelf(object,target)
-      self:targetIsAlly(object,target)
-      self:targetIsNeutral(object,target)
+
+      if self:targetIsNeutral(object,target) then
+        self:gotoTarget(object,target,server:getFollowRange(object,target))
+      elseif self:targetIsSelf(object,target) then
+        self:stopUpdateObject(object)
+      elseif self:targetIsAlly(object,target) then
+        self:gotoTarget(object,target,server:getFollowRange(object,target))
+      elseif self:targetIsEnemy(object,target) then
+        local object_type = libs.objectrenderer.getType(object.type)
+        if object_type.shoot then
+          self:gotoTarget(object,target,server:getShootRange(object,target))
+          self:shootTarget(object,target,dt)
+        else
+          self:gotoTarget(object,target,server:getFollowRange(object,target))
+        end
+      end
+
     else -- target == nil
       --nop
     end
   end
+
+  for bullet_index,bullet in pairs(storage.bullets) do
+    local remove_bullet = false
+    local target = self:findObject(bullet.bullet.t)
+    if target then
+      local time = love.timer.getTime()
+      local target_type = libs.objectrenderer.getType(target.type)
+      local cbx,cby,ctx,cty = libs.net.getCurrentBulletLocation(bullet.bullet,target,time)
+      local distance = math.sqrt( (cbx-ctx)^2 + (cby-cty)^2 )
+      remove_bullet = distance < target_type.size/2
+    else
+      remove_bullet = true
+    end
+    if remove_bullet then
+      table.remove(storage.bullets,bullet_index)
+    end
+  end
+
 end
 
 function server:draw()
@@ -338,6 +461,8 @@ function server:draw()
   str = str .. "objects: " .. #self.lovernet:getStorage().objects .. "\n"
   str = str .. "updates: " .. #self.lovernet:getStorage().updates .. "\n"
   str = str .. "global_update_index: " .. self.lovernet:getStorage().global_update_index .. "\n"
+  str = str .. "bullets: " .. #self.lovernet:getStorage().bullets .. "\n"
+  str = str .. "global_bullet_index: " .. self.lovernet:getStorage().global_bullet_index .. "\n"
   for i,v in pairs(self.lovernet:getUsers()) do
     str = str .. "user["..v.name.."]: " .. v.last_update .. "\n"
   end
