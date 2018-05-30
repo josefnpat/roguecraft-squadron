@@ -134,6 +134,7 @@ function love.load(arg)
     objectrenderer = require"libs.objectrenderer",
     minimap = require"libs.minimap",
     fow = require"libs.fow",
+    demo = require"libs.demo",
   }
 
   libs.objectrenderer.load(true)

@@ -49,9 +49,7 @@ end
 
 function mainmenu:enter()
 
-  if love.filesystem.exists("demo.ogv") then
-    self.demo = love.graphics.newVideo("demo.ogv")
-  end
+  libs.demo:check()
 
   self.menum = libs.menu.new()--{title=game_name}
 
@@ -151,20 +149,17 @@ function mainmenu:enter()
 
 end
 
+function mainmenu:leave()
+  libs.demo:unload()
+end
+
 function mainmenu:update(dt)
   if self.feedback then
     self.feedback:update(dt)
   else
     self.menu:update(dt)
   end
-  if self.demo then
-    if not self.demo:isPlaying() then
-      self.music.game:play()
-    else
-      self.music.game:pause()
-    end
-    self.demo_dt = (self.demo_dt or 0) + dt
-  end
+  libs.demo:update(dt)
 end
 
 function mainmenu:draw()
@@ -180,24 +175,16 @@ function mainmenu:draw()
 
   self.menu:draw()
 
-  if self.demo and self.demo_dt > 30 then
-    self.demo:play()
-    love.graphics.draw(self.demo,x,y,0,
-      love.graphics.getWidth()/self.demo:getWidth(),
-      love.graphics.getHeight()/self.demo:getHeight()
-    )
-  end
-
   if self.feedback then self.feedback:draw() end
 
   libs.version.draw()
 
+  libs.demo:draw()
+
 end
 
 function mainmenu:mousemoved()
-  if self.demo then
-    self:stopDemo()
-  end
+  libs.demo:stop()
 end
 
 function mainmenu:keypressed(key)
@@ -212,17 +199,7 @@ function mainmenu:keypressed(key)
   else
     self.debug_menu_index = 1
   end
-  if self.demo then
-    self:stopDemo()
-  end
-end
-
-function mainmenu:stopDemo()
-  if self.demo:isPlaying() then
-    self.demo:pause()
-    self.demo:rewind()
-  end
-  self.demo_dt = nil
+  libs.demo:stop()
 end
 
 return mainmenu
