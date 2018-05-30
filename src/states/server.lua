@@ -124,8 +124,9 @@ function server:init()
         local type = libs.objectrenderer.getType(object.type)
         if object.index == sobject.i and type.speed then
           local cx,cy = server:stopObject(object)
-          object.tx = sobject.x
-          object.ty = sobject.y
+          local mapsize = settings:read("map_size")
+          object.tx = math.min(math.max(-mapsize,sobject.x),mapsize)
+          object.ty = math.min(math.max(-mapsize,sobject.y),mapsize)
           object.tdt = love.timer.getTime()
           object.target = nil
           local update={

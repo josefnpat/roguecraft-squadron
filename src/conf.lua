@@ -15,6 +15,7 @@ settings:define("tree_points",0)
 settings:define("tree_levels",{})
 settings:define("diff","new")
 settings:define("remote_server_address","50.116.63.25")
+settings:define("map_size",32*192/2)
 
 game_name = "RogueCraft Squadron"
 git_hash,git_count = "missing git.lua",-1

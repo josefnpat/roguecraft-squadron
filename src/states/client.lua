@@ -25,6 +25,8 @@ function client:init()
   self.objects = {}
 
   self.camera = libs.hump.camera(0,0)
+  self.minimap = libs.minimap.new()
+  self.fow = libs.fow.new{camera=self.camera}
 
 end
 
@@ -89,6 +91,10 @@ function client:update(dt)
         sobject.angle = math.random()*2*math.pi
         sobject.dangle = math.random()*2*math.pi
 
+        if not self.focusObject and sobject.user == self.user.id then
+          self.focusObject = sobject
+        end
+
         table.insert(self.objects,sobject)
         self.object_index = math.max(self.object_index,sobject.index)
       end
@@ -115,9 +121,17 @@ function client:update(dt)
     self.lovernet:clearCache('get_new_updates')
   end
 
-
   for _,object in pairs(self.objects) do
     libs.objectrenderer.update(object,self.objects,dt,self.time)
+    if object.user == self.user.id then
+      self.fow:update(dt,object)
+    end
+  end
+
+  if self.minimap:mouseInside() then
+    if love.mouse.isDown(1) then
+      self.minimap:moveToMouse(self.camera)
+    end
   end
 
 end
@@ -212,7 +226,8 @@ end
 
 function client:mousepressed(x,y,button)
   if button == 1 then
-    if false then -- in UI elements
+    if self.minimap:mouseInside() then
+      -- nop
     else
       self.selection:start(
         x+self:getCameraOffsetX(),
@@ -223,7 +238,8 @@ end
 
 function client:mousereleased(x,y,button)
   if button == 1 then
-    if false then -- in UI elements
+    if self.minimap:mouseInside() then
+      -- nop
     else
       if self.selection:isSelection(x+self:getCameraOffsetX(),y+self:getCameraOffsetY()) then
 
@@ -262,23 +278,31 @@ function client:mousereleased(x,y,button)
     end
   elseif button == 2 then
 
-    local n,nd = self:findNearestDraw(
-      self.objects,
-      x+self:getCameraOffsetX(),
-      y+self:getCameraOffsetY()
-    )
+    if self.minimap:mouseInside() then
+      local nx,ny = self.minimap:getRealCoords()
+      print(nx,ny)
+      self:moveSelectedObjects(nx-self:getCameraOffsetX(),ny-self:getCameraOffsetY())
+    else
 
-    if n then
-      local type = libs.objectrenderer.getType(n.type)
-      if nd <= type.size then
-        local targets = {}
-        for _,object in pairs(self.selection:getSelected()) do
-          table.insert(targets,{i=object.index,t=n.index})
+      local n,nd = self:findNearestDraw(
+        self.objects,
+        x+self:getCameraOffsetX(),
+        y+self:getCameraOffsetY()
+      )
+
+      if n then
+        local type = libs.objectrenderer.getType(n.type)
+        if nd <= type.size then
+          local targets = {}
+          for _,object in pairs(self.selection:getSelected()) do
+            table.insert(targets,{i=object.index,t=n.index})
+          end
+          self.lovernet:sendData('target_objects',{t=targets})
+        else
+          self:moveSelectedObjects(x,y)
         end
-        self.lovernet:sendData('target_objects',{t=targets})
-      else
-        self:moveSelectedObjects(x,y)
       end
+
     end
 
   end
@@ -296,18 +320,13 @@ function client:keypressed(key)
   end
 end
 
+function client:resize()
+  self.fow:resize()
+end
+
 function client:draw()
 
   libs.stars:draw(self.camera.x/2,self.camera.y/2)
-
-  -- color test
-  if debug_mode then
-    for i,v in pairs(libs.net._users) do
-      love.graphics.setColor(v.selected_color)
-      love.graphics.rectangle("fill",64*i+128,64,64,64)
-      love.graphics.setColor(255,255,255)
-    end
-  end
 
   self.camera:attach()
 
@@ -316,10 +335,21 @@ function client:draw()
   end
 
   self.selection:draw(self.camera)
-
   self.camera:detach()
+  self.fow:draw(self.objects,{},self.user)
+
+  if self.focusObject then
+    self.minimap:draw(self.camera,self.focusObject,self.objects,self.fow:getMap())
+  end
 
   if debug_mode then
+
+    for i,v in pairs(libs.net._users) do
+      love.graphics.setColor(v.selected_color)
+      love.graphics.rectangle("fill",64*i+128,64,64,64)
+      love.graphics.setColor(255,255,255)
+    end
+
     local str = ""
     if self.user then
       str = str .. "user.id: " .. libs.net.getUser(self.user.id).name .. "["..self.user.id.."]\n"
