@@ -89,7 +89,7 @@ function client:update(dt)
         sobject.dx = sobject.x
         sobject.dy = sobject.y
         sobject.angle = math.random()*2*math.pi
-        sobject.dangle = math.random()*2*math.pi
+        sobject.dangle = sobject.angle
 
         if not self.focusObject and sobject.user == self.user.id then
           self.focusObject = sobject
@@ -351,7 +351,7 @@ function client:draw()
 
     for i,v in pairs(libs.net._users) do
       love.graphics.setColor(v.selected_color)
-      love.graphics.rectangle("fill",64*i+128,64,64,64)
+      love.graphics.rectangle("fill",16*i+256,16,16,16)
       love.graphics.setColor(255,255,255)
     end
 
@@ -370,7 +370,7 @@ function client:draw()
     if self.server_git_count ~= git_count then
       str = str .. "mismatch: " .. git_count .. " ~= " .. tostring(self.server_git_count) .. "\n"
     end
-    love.graphics.print(str,32,32)
+    love.graphics.printf(str,32,32,love.graphics.getWidth()-64,"right")
   end
 
 end
