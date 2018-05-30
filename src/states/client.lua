@@ -261,10 +261,7 @@ function client:mousereleased(x,y,button)
         local n,nd = self:findNearestDraw(
           self.objects,
           x+self:getCameraOffsetX(),
-          y+self:getCameraOffsetY(),
-          function(object)
-            return object.user == self.user.id
-          end
+          y+self:getCameraOffsetY()
         )
 
         if n then

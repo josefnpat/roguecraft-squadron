@@ -69,7 +69,7 @@ function objectrenderer.draw(object,objects,isSelected,time)
     local str = ""
     str = str .. "index: " .. object.index .. "\n"
     str = str .. "target: " .. tostring(object.target) .. "\n"
-    str = str .. "user: " .. libs.net.getUser(object.user).name .. "["..object.user.."]\n"
+    str = str .. "user: " .. libs.net.getUser(object.user).name .. "["..tostring(object.user).."]\n"
     str = str .. "angle: " .. math.floor(object.angle*100)/100 .. "\n"
     str = str .. "dangle: " .. math.floor(object.dangle*100)/100 .. "\n"
     str = str .. "render: " .. math.floor(object.render) .. "\n"

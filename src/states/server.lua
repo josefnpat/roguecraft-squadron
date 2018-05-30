@@ -2,6 +2,42 @@ local server = {}
 
 server._follow_update_mult = 2
 
+server._genDefault = {
+  asteroid=100,
+  scrap=100,
+  station=25,
+  research_pod=100,
+  blackhole=10,
+  cloud=25,
+  cat=1,
+}
+
+function server.generateMap(storage)
+  local mapsize = settings:read("map_size")
+  for object_type,object_count in pairs(server._genDefault) do
+    for i = 1,object_count do
+      local x = math.random(-mapsize,mapsize)
+      local y = math.random(-mapsize,mapsize)
+      server.createObject(storage,object_type,x,y,nil)
+    end
+  end
+end
+
+function server.createObject(storage,type_index,x,y,user_id)
+  local type = libs.objectrenderer.getType(type_index)
+  storage.objects_index = storage.objects_index + 1
+  local object = {
+    index=storage.objects_index,
+    type=type_index,
+    render=libs.objectrenderer.randomRenderIndex(type),
+    x=x,
+    y=y,
+    user=user_id,
+  }
+  table.insert(storage.objects,object)
+  return object
+end
+
 function server:addUpdate(object,update)
   local storage = self.lovernet:getStorage()
   storage.global_update_index = storage.global_update_index + 1
@@ -67,21 +103,9 @@ function server:init()
   self.lovernet:addOp('debug_create_object')
   self.lovernet:addValidateOnServer('debug_create_object',{x='number',y='number'})
   self.lovernet:addProcessOnServer('debug_create_object',function(self,peer,arg,storage)
-
-    local type_index = "debug"
-    local type = libs.objectrenderer.getType(type_index)
-
     local user = self:getUser(peer)
-    storage.objects_index = storage.objects_index + 1
-    local object = {
-      index=storage.objects_index,
-      type=type_index,
-      render=libs.objectrenderer.randomRenderIndex(type),
-      x=arg.x,
-      y=arg.y,
-      user=user.id,
-    }
-    table.insert(storage.objects,object)
+    local type_index = "debug"
+    server.createObject(storage,type_index,arg.x,arg.y,user.id)
   end)
 
   self.lovernet:addOp('get_new_objects')
@@ -228,6 +252,8 @@ function server:init()
     lovernet_scope.last_user_index = lovernet_scope.last_user_index + 1
     -- todo: add unique names
   end)
+
+  server.generateMap(self.lovernet:getStorage())
 
 end
 

@@ -26,21 +26,28 @@ function HSVToRGB(h, s, v)
     return (r+m)*255,(g+m)*255,(b+m)*255
 end
 
+local selected_alpha = 127
+
 net._users = {}
 local names = {"Alberto","Beryl","Chris","Debby","Ernesto","Florence","Gordon","Helene"}
 for i,v in pairs(names) do
   local r,g,b = HSVToRGB(math.mod(i*0.618033988749895,1)*255,255,255)
   table.insert(net._users,{
     name = v,
-    color = {r,g,b,191},
+    color = {r,g,b,selected_alpha},
     selected_color = {r,g,b},
   })
 end
 
 net._default = {
   name="Undefined",
-  color={255,0,255,191},
+  color={255,0,255,selected_alpha},
   selected_color={255,0,255},
+}
+net._neutral = {
+  name="Neutral",
+  color={255,255,0,selected_alpha},
+  selected_color={255,255,0}
 }
 
 function net.getAngle(x1,y1,x2,y2)
@@ -48,7 +55,7 @@ function net.getAngle(x1,y1,x2,y2)
 end
 
 function net.getUser(index)
-  return net._users[index+1] or net._default
+  return index and (net._users[index+1] or net._default) or net._neutral
 end
 
 function net.getCurrentLocation(object,time)
