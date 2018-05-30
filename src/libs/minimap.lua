@@ -1,0 +1,105 @@
+local minimap = {}
+
+function minimap.new(init)
+  init = init or  {}
+  local self = {}
+
+  self.mouseInside = minimap.mouseInside
+  self.moveToMouse = minimap.moveToMouse
+  self.getRealCoords = minimap.getRealCoords
+
+  self.x = init.x or 32
+  self.y = init.y or 32
+  self.size = init.size or 192
+  self.scale = init.scale or 32
+  self.fow_mult = init.fow_mult or 1.5
+  self.fow_image_size = init.fow_image_size or 1024
+
+  self.draw = minimap.draw
+
+  return self
+end
+
+function minimap:mouseInside()
+  local mx,my = love.mouse.getPosition()
+  return mx >= self.x and mx <= self.x+self.size and my >= self.y and my <= self.y+self.size
+end
+
+function minimap:moveToMouse(camera)
+  local nx,ny = self:getRealCoords()
+  camera:move(-camera.x + nx, -camera.y + ny)
+end
+
+function minimap:getRealCoords()
+  local ox,oy = self.size/2,self.size/2
+  local nx = (love.mouse.getX()-self.x-ox)*self.scale
+  local ny = (love.mouse.getY()-self.y-oy)*self.scale
+  return nx,ny
+end
+
+function minimap:draw(camera,focus,objects,fow_map)
+    local x,y,w,h = self.x, self.y,self.size,self.size
+    tooltipbg(x,y,w,h)
+    love.graphics.setScissor(x,y,w,h)
+    local scale = self.scale
+    local ox,oy = self.size/2,self.size/2
+
+    love.graphics.setColor(0,0,0,127)
+    for fow_obj_x,fow_obj_row in pairs(fow_map) do
+      for fow_obj_y,fow_obj_val in pairs(fow_obj_row) do
+        love.graphics.circle("fill",
+          x+ox+fow_obj_x/scale,
+          y+oy+fow_obj_y/scale,
+          self.fow_image_size/scale/2*1)
+      end
+    end
+
+    for _,object in pairs(objects) do
+      if focus.user == object.user then
+        love.graphics.setColor(255,255,255,63)
+
+        -- don't forget canvas mask
+        local fow = self.fow_mult*(object.fow or 1)--*(1+(self.upgrades.fow or 0)*0.25)
+
+        love.graphics.circle("fill",
+          x+ox+object.dx/scale,y+oy+object.dy/scale,
+          self.fow_image_size/scale/2*fow)
+      end
+    end
+
+    for _,object in pairs(objects) do
+      local type = libs.objectrenderer.getType(object.type)
+      local color = {255,255,0}
+      if object.user then
+        local user = libs.net.getUser(object.user)
+        color = user.color
+      end
+      if type.minimap ~= false then
+        love.graphics.setColor(color)
+        love.graphics.rectangle("fill",
+          x+ox+object.dx/scale-2,y+oy+object.dy/scale-2,4,4)
+        love.graphics.setColor(255,255,255,127)
+        love.graphics.rectangle("line",
+          x+ox+object.dx/scale-1.5,y+oy+object.dy/scale-1.5,4,4)
+      end
+      if object.in_combat then
+        love.graphics.setColor(255,0,0)
+        love.graphics.circle("line",
+          x+ox+object.dx/scale,
+          y+oy+object.dy/scale,
+          6+math.sin(love.timer.getTime()*4))
+      end
+    end
+    love.graphics.setColor(255,255,255)
+    local cx = (camera.x-love.graphics.getWidth()/2)/scale
+    local cy = (camera.y-love.graphics.getHeight()/2)/scale
+    local cw = love.graphics.getWidth()/scale
+    local ch = love.graphics.getHeight()/scale
+    love.graphics.rectangle("line",x+ox+cx,y+oy+cy,cw,ch)
+
+    love.graphics.setScissor()
+    love.graphics.setColor(255,255,255)
+
+end
+
+return minimap

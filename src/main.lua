@@ -132,6 +132,8 @@ function love.load(arg)
     selection = require"libs.selection",
     net = require"libs.net",
     objectrenderer = require"libs.objectrenderer",
+    minimap = require"libs.minimap",
+    fow = require"libs.fow",
   }
 
   libs.objectrenderer.load(true)
