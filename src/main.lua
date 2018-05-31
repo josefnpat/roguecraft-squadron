@@ -138,6 +138,7 @@ function love.load(arg)
     minimap = require"libs.minimap",
     fow = require"libs.fow",
     demo = require"libs.demo",
+    planets = require"libs.planets",
   }
 
   libs.objectrenderer.load(true)

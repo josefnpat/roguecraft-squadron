@@ -30,6 +30,7 @@ function client:init()
   self.camera = libs.hump.camera(0,0)
   self.minimap = libs.minimap.new()
   self.fow = libs.fow.new{camera=self.camera}
+  self.planets = libs.planets.new{camera=self.camera}
 
 end
 
@@ -386,7 +387,7 @@ end
 function client:draw()
 
   libs.stars:draw(self.camera.x/2,self.camera.y/2)
-
+  self.planets:draw()
   self.camera:attach()
 
   for object_index,object in pairs(self.objects) do
