@@ -4,11 +4,32 @@ local data = {}
 
 function objectrenderer.load(loadAssets)
   for _,type in pairs(love.filesystem.getDirectoryItems("assets/mp_objects")) do
-    local object_dir = "assets/mp_objects/"..type.."/object"
-    local renders_dir ="assets/mp_objects/"..type.."/renders"
-    local icons_dir = "assets/mp_objects/"..type.."/icons"
-    local renders = love.filesystem.getDirectoryItems(renders_dir)
+    local dir = "assets/mp_objects/"..type
+    local object_dir = dir.."/object"
+    local renders_dir = dir.."/renders"
+    local icons_dir = dir.."/icons"
+
     local object = require(object_dir)()
+
+    local po_file = dir.."/en.po"
+    if love.filesystem.exists(po_file) then
+      local po_raw = love.filesystem.read(po_file)
+
+      object.loc = {}
+      for _,entry in pairs(libs.gettext.decode(po_raw)) do
+        object.loc[entry.id] = entry.str
+      end
+      for _,post in pairs({"name","info","build"}) do
+        local id = "mission.object."..type.."."..post
+        if object.loc[id] == nil then
+          print("warning: missing gettext id: "..id)
+        end
+      end
+    else
+      print("warning: missing file `"..po_file.."`")
+    end
+
+    local renders = love.filesystem.getDirectoryItems(renders_dir)
     object.renders_count = #renders
     if loadAssets then
       object.renders = {}
