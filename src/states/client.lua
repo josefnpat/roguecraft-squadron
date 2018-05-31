@@ -1,6 +1,22 @@
 local client = {}
 
 function client:init()
+  self.menu = libs.menu.new{title="[RCS]"}
+  self.menu:add(libs.i18n('pause.continue'),function()
+    self.menu_enabled = false
+  end)
+  -- todo:
+  -- self.menu:add(libs.i18n('pause.options'),function()
+  -- end)
+  self.menu:add(libs.i18n('pause.gameover'),function()
+    -- todo: disconnect the user, lolol
+    libs.hump.gamestate.switch(states.debug)
+    self.menu_enabled = false
+  end)
+
+end
+
+function client:enter()
 
   self.lovernet = libs.lovernet.new{serdes=libs.bitser,ip=self._remote_address}
   -- todo: make common functions use short names
@@ -26,12 +42,13 @@ function client:init()
   self.selection = libs.selection.new()
   self.objects = {}
   self.bullets = {}
+  self.menu_enabled = false
+  self.focusObject = nil
 
   self.camera = libs.hump.camera(0,0)
   self.minimap = libs.minimap.new()
   self.fow = libs.fow.new{camera=self.camera}
   self.planets = libs.planets.new{camera=self.camera}
-
 end
 
 function client:getCameraOffsetX()
@@ -54,8 +71,10 @@ end
 
 function client:update(dt)
 
-  local dx,dy = libs.camera_edge.get_delta(dt)
-  self.camera:move(dx,dy)
+  if not self.menu_enabled then
+    local dx,dy = libs.camera_edge.get_delta(dt)
+    self.camera:move(dx,dy)
+  end
 
   self.lovernet:pushData('get_new_objects',{i=self.object_index})
   self.lovernet:pushData('get_new_updates',{u=self.update_index})
@@ -186,9 +205,13 @@ function client:update(dt)
     end
   end
 
-  if self.minimap:mouseInside() and not self.selection:selectionInProgress() then
-    if love.mouse.isDown(1) then
-      self.minimap:moveToMouse(self.camera)
+  if self.menu_enabled then
+    self.menu:update(dt)
+  else
+    if self.minimap:mouseInside() and not self.selection:selectionInProgress() then
+      if love.mouse.isDown(1) then
+        self.minimap:moveToMouse(self.camera)
+      end
     end
   end
 
@@ -283,6 +306,7 @@ function client:moveSelectedObjects(x,y)
 end
 
 function client:mousepressed(x,y,button)
+  if self.menu_enabled then return end
   if button == 1 then
     if self.minimap:mouseInside() then
       -- nop
@@ -295,6 +319,7 @@ function client:mousepressed(x,y,button)
 end
 
 function client:mousereleased(x,y,button)
+  if self.menu_enabled then return end
   if button == 1 then
     if self.minimap:mouseInside() and not self.selection:selectionInProgress() then
       -- nop
@@ -372,6 +397,9 @@ function client:keypressed(key)
   if key == "`" then
     debug_mode = not debug_mode
   end
+  if key == "escape" then
+    self.menu_enabled = not self.menu_enabled
+  end
 end
 
 function client:resize()
@@ -442,6 +470,13 @@ function client:draw()
       str = str .. "mismatch: " .. git_count .. " ~= " .. tostring(self.server_git_count) .. "\n"
     end
     love.graphics.printf(str,32,32,love.graphics.getWidth()-64,"right")
+  end
+
+  if self.menu_enabled then
+    love.graphics.setColor(0,0,0,191)
+    love.graphics.rectangle("fill",0,0,love.graphics:getWidth(),love.graphics:getHeight())
+    love.graphics.setColor(255,255,255)
+    self.menu:draw()
   end
 
 end
