@@ -398,6 +398,17 @@ function client:draw()
   end
 
   self.selection:draw(self.camera)
+
+  if #self.selection:getSelected() == 1 then
+    local object = self.selection:getSelected()[1]
+    local object_type = libs.objectrenderer.getType(object.type)
+    tooltipf(
+      (object_type.loc.name or "").." — "..(object_type.loc.info or ""),
+      object.dx+object_type.size,
+      object.dy+object_type.size,
+      320,"right")
+  end
+
   self.camera:detach()
   self.fow:draw(self.objects,{},self.user)
 

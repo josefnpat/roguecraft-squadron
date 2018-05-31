@@ -21,6 +21,7 @@ function objectrenderer.load(loadAssets)
       end
       for _,post in pairs({"name","info","build"}) do
         local id = "mission.object."..type.."."..post
+        object.loc[post] = object.loc[id]
         if object.loc[id] == nil then
           print("warning: missing gettext id: "..id)
         end
