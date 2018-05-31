@@ -44,16 +44,19 @@ function server.generatePlayer(storage,user_id)
 end
 
 function server.createObject(storage,type_index,x,y,user_id)
-  local type = libs.objectrenderer.getType(type_index)
+  local object_type = libs.objectrenderer.getType(type_index)
   storage.objects_index = storage.objects_index + 1
   local object = {
     index=storage.objects_index,
     type=type_index,
-    render=libs.objectrenderer.randomRenderIndex(type),
+    render=libs.objectrenderer.randomRenderIndex(object_type),
     x=x,
     y=y,
     user=user_id,
   }
+  if object_type.health then
+    object.health = object_type.health.max
+  end
   table.insert(storage.objects,object)
   return object
 end
@@ -282,14 +285,6 @@ function server:init()
       min_last_bullet = math.min(min_last_bullet,user.last_bullet)
     end
 
-    local new_bullets = {}
-    for _,bullet in pairs(storage.bullets) do
-      if bullet.bullet_index > min_last_bullet then
-        table.insert(new_bullets,bullet)
-      end
-    end
-    storage.bullets = new_bullets
-
     -- todo: possible attack vector - force server to record all updates
     user.last_bullet = math.max(user.last_bullet,arg.b)
 
@@ -339,6 +334,10 @@ end
 
 function server:targetIsEnemy(object,target)
   return target.user ~= nil and object.user ~= target.user
+end
+
+function server:targetCanBeShot(object)
+  return object.health ~= nil
 end
 
 function server:targetIsNeutral(object,target)
@@ -411,7 +410,7 @@ end
 function server:update(dt)
   self.lovernet:update(dt)
   local storage = self.lovernet:getStorage()
-  for _,object in pairs(storage.objects) do
+  for object_index,object in pairs(storage.objects) do
     local target = self:findObject(object.target)
 
     if target then
@@ -424,7 +423,7 @@ function server:update(dt)
         self:gotoTarget(object,target,server:getFollowRange(object,target))
       elseif self:targetIsEnemy(object,target) then
         local object_type = libs.objectrenderer.getType(object.type)
-        if object_type.shoot then
+        if self:targetCanBeShot(object) and object_type.shoot then
           self:gotoTarget(object,target,server:getShootRange(object,target))
           self:shootTarget(object,target,dt)
         else
@@ -435,6 +434,11 @@ function server:update(dt)
     else -- target == nil
       --nop
     end
+
+    if object.health and object.health <= 0 then
+      table.remove(storage.objects,object_index)
+    end
+
   end
 
   for bullet_index,bullet in pairs(storage.bullets) do
@@ -445,7 +449,14 @@ function server:update(dt)
       local target_type = libs.objectrenderer.getType(target.type)
       local cbx,cby,ctx,cty = libs.net.getCurrentBulletLocation(bullet.bullet,target,time)
       local distance = math.sqrt( (cbx-ctx)^2 + (cby-cty)^2 )
-      remove_bullet = distance < target_type.size/2
+      if distance < target_type.size/2 then
+        remove_bullet = true
+        local object_type = libs.objectrenderer.getType(bullet.bullet.type)
+        target.health = math.max(0,target.health - object_type.shoot.damage)
+        self:addUpdate(target,{
+          health=target.health,
+        })
+      end
     else
       remove_bullet = true
     end
@@ -458,6 +469,7 @@ end
 
 function server:draw()
   str = ""
+  str = str .. "time: " .. math.floor(love.timer.getTime()) .. "\n"
   str = str .. "objects: " .. #self.lovernet:getStorage().objects .. "\n"
   str = str .. "updates: " .. #self.lovernet:getStorage().updates .. "\n"
   str = str .. "global_update_index: " .. self.lovernet:getStorage().global_update_index .. "\n"

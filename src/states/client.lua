@@ -142,14 +142,18 @@ function client:update(dt)
         end
       end
 
+      local source_type = libs.objectrenderer.getType(source.type)
+      local randx = source.dx + math.random(-source_type.size,source_type.size)/2
+      local randy = source.dy + math.random(-source_type.size,source_type.size)/2
+
       if source and target then
         local bullet = {
-          x = source.dx,
-          y = source.dy,
-          cx = source.dx,
-          cy = source.dy,
-          dx = source.dx,
-          dy = source.dy,
+          x = randx,
+          y = randy,
+          cx = randx,
+          cy = randy,
+          dx = randx,
+          dy = randy,
           target = target.index,
           tdt=sbullet.b.tdt,
           eta=sbullet.b.eta,
@@ -162,10 +166,13 @@ function client:update(dt)
     self.lovernet:clearCache('get_new_bullets')
   end
 
-  for _,object in pairs(self.objects) do
+  for object_index,object in pairs(self.objects) do
     libs.objectrenderer.update(object,self.objects,dt,self.time)
     if object.user == self.user.id then
       self.fow:update(dt,object)
+    end
+    if object.health and object.health <= 0 then
+      table.remove(self.objects,object_index)
     end
   end
 

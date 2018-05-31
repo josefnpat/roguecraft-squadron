@@ -49,6 +49,27 @@ function objectrenderer.draw(object,objects,isSelected,time)
     type.size
   )
 
+  if object.health then
+    local object_type = libs.objectrenderer.getType(object.type)
+    local percent = object.health/object_type.health.max
+    if percent < 1 or love.keyboard.isDown("lalt") then
+      local bx,by,bw,bh = object.dx-32,object.dy+object_type.size,64,6
+      love.graphics.setColor(0,0,0,127)
+      love.graphics.rectangle("fill",bx,by,bw,bh)
+      love.graphics.setColor(libs.healthcolor(percent))
+      local bw = 64/object_type.health.max*5
+      for i = 1,object_type.health.max/5*percent do
+        love.graphics.rectangle("fill",bx+bw*(i-1)+1,by+1,bw-1,bh-2)
+      end
+    end
+    local hue_change = 0.5
+    if percent < hue_change then
+      local hue = 255*percent/hue_change
+      ship_color = {255,hue,hue}
+    end
+  end
+
+
   love.graphics.setColor(255,255,255)
   love.graphics.draw(
     type.renders[object.render],
