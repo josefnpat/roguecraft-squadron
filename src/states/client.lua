@@ -142,11 +142,13 @@ function client:update(dt)
         end
       end
 
-      local source_type = libs.objectrenderer.getType(source.type)
-      local randx = source.dx + math.random(-source_type.size,source_type.size)/2
-      local randy = source.dy + math.random(-source_type.size,source_type.size)/2
 
       if source and target then
+
+        local source_type = libs.objectrenderer.getType(source.type)
+        local randx = source.dx + math.random(-source_type.size,source_type.size)/2
+        local randy = source.dy + math.random(-source_type.size,source_type.size)/2
+
         local bullet = {
           x = randx,
           y = randy,
