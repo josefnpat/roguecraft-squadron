@@ -176,7 +176,7 @@ function client:update(dt)
     end
   end
 
-  if self.minimap:mouseInside() then
+  if self.minimap:mouseInside() and not self.selection:selectionInProgress() then
     if love.mouse.isDown(1) then
       self.minimap:moveToMouse(self.camera)
     end
@@ -286,7 +286,7 @@ end
 
 function client:mousereleased(x,y,button)
   if button == 1 then
-    if self.minimap:mouseInside() then
+    if self.minimap:mouseInside() and not self.selection:selectionInProgress() then
       -- nop
     else
       if self.selection:isSelection(x+self:getCameraOffsetX(),y+self:getCameraOffsetY()) then
@@ -323,9 +323,8 @@ function client:mousereleased(x,y,button)
     end
   elseif button == 2 then
 
-    if self.minimap:mouseInside() then
+    if self.minimap:mouseInside() and not self.selection:selectionInProgress() then
       local nx,ny = self.minimap:getRealCoords()
-      print(nx,ny)
       self:moveSelectedObjects(nx-self:getCameraOffsetX(),ny-self:getCameraOffsetY())
     else
 
