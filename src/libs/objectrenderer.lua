@@ -10,24 +10,25 @@ function objectrenderer.load(loadAssets)
     local icons_dir = dir.."/icons"
 
     local object = require(object_dir)()
+    if loadAssets then
+      local po_file = dir.."/en.po"
+      if love.filesystem.exists(po_file) then
+        local po_raw = love.filesystem.read(po_file)
 
-    local po_file = dir.."/en.po"
-    if love.filesystem.exists(po_file) then
-      local po_raw = love.filesystem.read(po_file)
-
-      object.loc = {}
-      for _,entry in pairs(libs.gettext.decode(po_raw)) do
-        object.loc[entry.id] = entry.str
-      end
-      for _,post in pairs({"name","info","build"}) do
-        local id = "mission.object."..type.."."..post
-        object.loc[post] = object.loc[id]
-        if object.loc[id] == nil then
-          print("warning: missing gettext id: "..id)
+        object.loc = {}
+        for _,entry in pairs(libs.gettext.decode(po_raw)) do
+          object.loc[entry.id] = entry.str
         end
+        for _,post in pairs({"name","info","build"}) do
+          local id = "mission.object."..type.."."..post
+          object.loc[post] = object.loc[id]
+          if object.loc[id] == nil then
+            print("warning: missing gettext id: "..id)
+          end
+        end
+      else
+        print("warning: missing file `"..po_file.."`")
       end
-    else
-      print("warning: missing file `"..po_file.."`")
     end
 
     local renders = love.filesystem.getDirectoryItems(renders_dir)
