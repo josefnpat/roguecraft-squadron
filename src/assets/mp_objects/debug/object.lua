@@ -1,6 +1,6 @@
 return function()
   return {
-    type = "command",
+    type = "debug",
     cost = {material=1000,crew=100},
     fow = cheat and 32 or 0.5,
     crew = 100,
