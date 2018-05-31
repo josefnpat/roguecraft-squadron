@@ -16,8 +16,11 @@ msgstr "Tech Tree [%{tree_points}]"
 msgid "menu.client"
 msgstr "Client"
 
+msgid "menu.remote_server_address"
+msgstr "Change Remote Server Address"
+
 msgid "menu.server"
-msgstr "Server"
+msgstr "Start Server"
 
 msgid "menu.debug"
 msgstr "Debug"

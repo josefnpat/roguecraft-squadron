@@ -23,6 +23,12 @@ function mainmenu:init()
 
 end
 
+function mainmenu:textinput(t)
+  if self.chooser then
+    self.chooser:textinput(t)
+  end
+end
+
 function mainmenu:setDifficulty(diff)
 
   if diff == "easy" then
@@ -76,10 +82,56 @@ function mainmenu:enter()
     previousState = states.menu
   end)
 
+
   if self.debug_menu_enabled then
     self.menum:add(libs.i18n('menu.debug'),function()
       libs.hump.gamestate.switch(states.debug)
     end)
+  end
+
+  if debug_mode then
+
+    self.menum:add(
+      function()
+        return libs.i18n('menu.client') .. " ["..settings:read("remote_server_address").."]"
+      end,
+      function()
+        states.client._remote_address = settings:read("remote_server_address")
+        libs.hump.gamestate.switch(states.client)
+      end
+    )
+
+    self.menum:add(
+      function()
+        return libs.i18n('menu.client') .. ' [localhost]'
+      end,
+      function()
+        states.client._remote_address = nil
+        libs.hump.gamestate.switch(states.client)
+      end
+    )
+
+    self.menum:add(
+      function()
+        return libs.i18n('menu.remote_server_address')
+      end,
+      function()
+        self.chooser = libs.stringchooser.new{
+          prompt = "remote_server_address:",
+          string = settings:read("remote_server_address"),
+          callback = function(string)
+            self.chooser = nil
+            settings:write("remote_server_address",string)
+          end,
+        }
+      end
+    )
+
+    self.menum:add(libs.i18n('menu.server'),function()
+        libs.hump.gamestate.switch(states.server)
+      end
+    )
+
   end
 
   self.menum:add(libs.i18n('menu.credits'),function()
@@ -179,6 +231,10 @@ function mainmenu:draw()
 
   libs.version.draw()
 
+  if self.chooser then
+    self.chooser:draw()
+  end
+
   libs.demo:draw()
 
 end
@@ -188,6 +244,15 @@ function mainmenu:mousemoved()
 end
 
 function mainmenu:keypressed(key)
+
+  if key == "escape" then
+    self.chooser = nil
+  end
+
+  if self.chooser then
+    self.chooser:keypressed(key)
+  end
+
   if self.debug_menu[self.debug_menu_index] == key then
     self.debug_menu_index = self.debug_menu_index + 1
     if self.debug_menu_index == #self.debug_menu + 1 then
