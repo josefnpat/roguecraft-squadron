@@ -11,8 +11,8 @@ return function()
     repair = false,
     shoot = {
       image = "missile",
-      reload = 0.25,
-      damage = 2,
+      reload = 2.5,
+      damage = 20,
       speed = 200,
       range = 600,
       aggression = 400,
