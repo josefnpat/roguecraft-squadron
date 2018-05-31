@@ -1,7 +1,8 @@
 local client = {}
 
 function client:init()
-  self.menu = libs.menu.new{title="[RCS]"}
+  -- todo: i18n
+  self.menu = libs.menu.new{title="[MENU]"}
   self.menu:add(libs.i18n('pause.continue'),function()
     self.menu_enabled = false
   end)
