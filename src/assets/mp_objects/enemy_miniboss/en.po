@@ -1,0 +1,8 @@
+msgid "mission.object.enemy_miniboss.name"
+msgstr "Large Enemy Battlestar"
+
+msgid "mission.object.enemy_miniboss.info"
+msgstr "A larger combat ship."
+
+msgid "mission.object.enemy_miniboss.build"
+msgstr ""

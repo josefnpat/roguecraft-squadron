@@ -1,0 +1,9 @@
+msgid "mission.object.blackhole.name"
+msgstr "Black Hole"
+
+msgid "mission.object.blackhole.info"
+msgstr "A region of spacetime exhibiting such strong gravitational effects that nothing can escape from inside it."
+
+msgid "mission.object.blackhole.build"
+msgstr ""
+       

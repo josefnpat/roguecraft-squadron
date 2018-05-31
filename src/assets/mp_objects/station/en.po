@@ -1,0 +1,8 @@
+msgid "mission.object.station.name"
+msgstr "Station"
+
+msgid "mission.object.station.info"
+msgstr "This station contains [Crew] which can be collected by a [Habitat]."
+
+msgid "mission.object.station.build"
+msgstr ""

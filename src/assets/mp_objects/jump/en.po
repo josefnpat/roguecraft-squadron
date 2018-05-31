@@ -1,0 +1,8 @@
+msgid "mission.object.jump.name"
+msgstr "Jumpgate Generator"
+
+msgid "mission.object.jump.info"
+msgstr "A jump ship that will allow your fleet to jump to the next system faster."
+
+msgid "mission.object.jump.build"
+msgstr "The jumpship operates by creating a wormhole that allows mass to move through folded space. The jump ship is a very advanced piece of technology, but by carefully looking into how ours is designed, I think we can recreate a blueprint. The more we have, the quicker we can calculate our jump as they all will fold space together, creating a faster larger wormhole."

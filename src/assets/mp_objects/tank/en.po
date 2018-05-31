@@ -1,0 +1,8 @@
+msgid "mission.object.tank.name"
+msgstr "Armored Frontline Tank"
+
+msgid "mission.object.tank.info"
+msgstr "A combat ship with a lot of health to defend your squadron with."
+
+msgid "mission.object.tank.build"
+msgstr "Our current vehicles have many layers of armor to prevent folks from getting sucked out into space the second we take a bit of damage, but we can do better. So I had the boys down in research figure out how we can keep our ships up and running longer, faster and harder. A lot of good ideas came up, but the best was to build a wall around the fleet. We did the math, and it was cost prohibitive, so we think we can just build a wall around one of the ships, a wall of extra armor that is."

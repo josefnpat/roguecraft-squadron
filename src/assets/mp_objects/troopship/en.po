@@ -1,0 +1,9 @@
+msgid "mission.object.troopship.name"
+msgstr "Troopship"
+
+msgid "mission.object.troopship.info"
+msgstr "A vessal used to take over neutral ships or damaged enemy ships."
+
+msgid "mission.object.troopship.build"
+msgstr "Some ships are designed to penetrate an enemy hull, and provide an opening so we can have a small group of folks take a ship by force. Some of the troops are just climbing up the walls, and that's not even with the artificial gravity disabled. I think we can build a ship that would basically provide a one way trip into neutral or enemy vessels. Don't worry, we'll give them big guns. The ship? Not at all."
+       

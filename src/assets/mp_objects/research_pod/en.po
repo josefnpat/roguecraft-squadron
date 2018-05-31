@@ -1,0 +1,8 @@
+msgid "mission.object.research_pod.name"
+msgstr "Research Pod"
+
+msgid "mission.object.research_pod.info"
+msgstr "This research pod contains research points which can be used to expand the capabilities of your fleet."
+
+msgid "mission.object.research_pod.build"
+msgstr ""

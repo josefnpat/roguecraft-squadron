@@ -1,0 +1,8 @@
+msgid "mission.object.enemy_tank.name"
+msgstr "Enemy Armored Frontline Tank"
+
+msgid "mission.object.enemy_tank.info"
+msgstr "A combat ship with a lot of health."
+
+msgid "mission.object.enemy_tank.build"
+msgstr ""

@@ -1,0 +1,8 @@
+msgid "mission.object.enemy_jumpscrambler.name"
+msgstr "Jump Scrambler"
+
+msgid "mission.object.enemy_jumpscrambler.info"
+msgstr "This enemy platform prevents your fleet from jumping."
+
+msgid "mission.object.enemy_jumpscrambler.build"
+msgstr ""

@@ -1,0 +1,8 @@
+msgid "mission.object.debug.name"
+msgstr "debug"
+
+msgid "mission.object.debug.info"
+msgstr "debug info"
+
+msgid "mission.object.debug.build"
+msgstr " "

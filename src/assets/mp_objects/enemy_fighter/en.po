@@ -1,0 +1,8 @@
+msgid "mission.object.enemy_fighter.name"
+msgstr "Enemy Fighter"
+
+msgid "mission.object.enemy_fighter.info"
+msgstr "A small combat ship."
+
+msgid "mission.object.enemy_fighter.build"
+msgstr ""

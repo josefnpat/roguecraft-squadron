@@ -1,0 +1,9 @@
+msgid "mission.object.asteroid.name"
+msgstr "Asteroid"
+
+msgid "mission.object.asteroid.info"
+msgstr "This asteroid contains [Ore] which can be mined by a [Mining Rig] and then the [Ore] can be refined by a [Refinery]."
+
+msgid "mission.object.asteroid.build"
+msgstr ""
+       

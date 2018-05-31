@@ -1,0 +1,10 @@
+msgid "mission.object.salvager.name"
+msgstr "Salvager"
+
+msgid "mission.object.salvager.info"
+msgstr "A ship used to gather salvage from destroyed ships."
+
+msgid "mission.object.salvager.build"
+msgstr "Salvagers are quite common nowadays, as space is a dangerous place to venture. This is a basic vulture ship designed to pick up scrap from destroyed enemies. It is a simple design, gets the job done and it's cheap to build. We should probably avoid putting claustrophobic folks in these guys."
+
+

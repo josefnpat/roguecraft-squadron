@@ -1,0 +1,8 @@
+msgid "mission.object.drydock.name"
+msgstr "Drydock"
+
+msgid "mission.object.drydock.info"
+msgstr "A construction ship that can build basic ships."
+
+msgid "mission.object.drydock.build"
+msgstr "At one point in history, humans created a self-replicating drydock. They ran out of materials rather quickly. Regardless, if you want bigger ships, you're going to have to build bigger drydocks."

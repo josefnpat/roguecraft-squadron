@@ -1,0 +1,8 @@
+msgid "mission.object.research.name"
+msgstr "Research Facility"
+
+msgid "mission.object.research.info"
+msgstr "A research ship used to advance your fleet."
+
+msgid "mission.object.research.build"
+msgstr "If you are looking to gain the edge against the enemies, you're going to want some advanced upgrades. Of course for complicated science stuff you're going to need complex science ships. Between you and me, I don't want those scientists on board my ship. They keep going on about science collaboration points."
