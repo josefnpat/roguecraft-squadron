@@ -7,6 +7,7 @@ function selection.new(init)
   self._user = -1
 
   self.start = selection.start
+  self.selectionInProgress = selection.selectionInProgress
   self.isSelection = selection.isSelection
   self.endAdd = selection.endAdd
   self.endSet = selection.endSet
@@ -27,6 +28,10 @@ end
 
 function selection:start(x,y)
   self.sx,self.sy = x,y
+end
+
+function selection:selectionInProgress()
+  return self.sx ~= nil and self.sy ~= nil
 end
 
 function selection:isSelection(x,y)
