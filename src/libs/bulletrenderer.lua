@@ -41,7 +41,7 @@ function bulletrenderer.update(bullet,bullets,objects,dt,time)
     }
   end
 
-  if target then
+  if target and target.dx and target.dy then
 
     local ctime = time - bullet.tdt
     local ratio = math.min(1,ctime/bullet.eta)
