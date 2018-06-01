@@ -136,6 +136,7 @@ function love.load(arg)
     objectrenderer = require"libs.objectrenderer",
     bulletrenderer = require"libs.bulletrenderer",
     minimap = require"libs.minimap",
+    resources = require"libs.resources",
     fow = require"libs.fow",
     demo = require"libs.demo",
     planets = require"libs.planets",

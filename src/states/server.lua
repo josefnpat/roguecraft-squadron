@@ -1,7 +1,9 @@
 local server = {}
 
+-- update system will spam network if this is <=1
 server._follow_update_mult = 1.2
 server._shoot_update_mult = 0.8
+server._gather_update_mult = 0.5
 
 server._genMapDefault = {
   asteroid=100,
@@ -13,9 +15,25 @@ server._genMapDefault = {
   cat=1,
 }
 
+server._genMapDefault = {
+  asteroid=100,
+  scrap=100,
+  station=100,
+  research_pod=1,
+  blackhole=1,
+  cloud=1,
+  cat=1,
+}
+
+server._genPlayerFirst = "command"
 server._genPlayerDefault = {
   salvager=1,
   mining=2,
+  habitat=1,
+}
+
+server._genResourcesDefault = {
+  material = 1600,
 }
 
 function server.generateMap(storage)
@@ -29,21 +47,48 @@ function server.generateMap(storage)
   end
 end
 
-function server.generatePlayer(storage,user_id)
+function server.generatePlayer(storage,user)
   local mapsize = settings:read("map_size")
   local x = math.random(-mapsize,mapsize)
   local y = math.random(-mapsize,mapsize)
-  server.createObject(storage,"command",x,y,user_id)
+  server.createObject(storage,server._genPlayerFirst,x,y,user)
   for object_type,object_count in pairs(server._genPlayerDefault) do
     for i = 1,object_count do
       local cx = math.random(-128,128)
       local cy = math.random(-128,128)
-      server.createObject(storage,object_type,x+cx,y+cy,user_id)
+      server.createObject(storage,object_type,x+cx,y+cy,user)
     end
   end
 end
 
-function server.createObject(storage,type_index,x,y,user_id)
+function server.updateCargo(storage,user)
+  for _,object in pairs(storage.objects) do
+
+    for _,restype in pairs(libs.net.resourceTypes) do
+      user.cargo[restype] = 0
+    end
+
+    for _,object in pairs(storage.objects) do
+      if object.user == user.id then
+        local object_type = libs.objectrenderer.getType(object.type)
+        for _,restype in pairs(libs.net.resourceTypes) do
+          if object_type[restype] then
+            user.cargo[restype] = user.cargo[restype] + object_type[restype]
+          end
+        end
+      end
+    end
+
+    for _,restype in pairs(libs.net.resourceTypes) do
+      if user.resources[restype] > user.cargo[restype] then
+        user.resources[restype] = user.cargo[restype]
+      end
+    end
+
+  end
+end
+
+function server.createObject(storage,type_index,x,y,user)
   local object_type = libs.objectrenderer.getType(type_index)
   storage.objects_index = storage.objects_index + 1
   local object = {
@@ -52,12 +97,15 @@ function server.createObject(storage,type_index,x,y,user_id)
     render=libs.objectrenderer.randomRenderIndex(object_type),
     x=x,
     y=y,
-    user=user_id,
+    user=user and user.id or nil,
   }
   if object_type.health then
     object.health = object_type.health.max
   end
   table.insert(storage.objects,object)
+  if user then
+    server.updateCargo(storage,user)
+  end
   return object
 end
 
@@ -138,7 +186,7 @@ function server:init()
   self.lovernet:addProcessOnServer('debug_create_object',function(self,peer,arg,storage)
     local user = self:getUser(peer)
     local type_index = "debug"
-    server.createObject(storage,type_index,arg.x,arg.y,user.id)
+    server.createObject(storage,type_index,arg.x,arg.y,user)
   end)
 
   self.lovernet:addOp('get_new_objects')
@@ -291,6 +339,16 @@ function server:init()
     return data
   end)
 
+  self.lovernet:addOp('get_resources')
+  self.lovernet:addProcessOnServer('get_resources',function(self,peer,arg,storage)
+    local user = self:getUser(peer)
+    local res = {}
+    for _,restype in pairs(libs.net.resourceTypes) do
+      res[restype] = math.floor(user.resources[restype])
+    end
+    return res
+  end)
+
   self.lovernet:addOp('t')
   self.lovernet:addProcessOnServer('t',function(self,peer,arg,storage)
     return love.timer.getTime()
@@ -309,12 +367,18 @@ function server:init()
   local lovernet_scope = self
 
   self.lovernet:onAddUser(function(user)
+    user.resources = {}
+    user.cargo = {}
+    for _,restype in pairs(libs.net.resourceTypes) do
+      user.resources[restype] = server._genResourcesDefault[restype] or 0
+      user.cargo[restype] = 0
+    end
     user.last_update = 0
     user.last_bullet = 0
     user.id = lovernet_scope.last_user_index
     lovernet_scope.last_user_index = lovernet_scope.last_user_index + 1
     -- todo: add unique names
-    server.generatePlayer(self.lovernet:getStorage(),user.id)
+    server.generatePlayer(self.lovernet:getStorage(),user)
 
   end)
 
@@ -377,9 +441,8 @@ function server:shootTarget(object,target,dt)
   local distance = libs.net.distance(object,target,love.timer.getTime())
   local object_type = libs.objectrenderer.getType(object.type)
   if distance < object_type.shoot.range then
-    object.reload_dt = (object.reload_dt or 0) + dt
     if object.reload_dt > object_type.shoot.reload then
-      object.reload_dt = object.reload_dt - object_type.shoot.reload
+      object.reload_dt = 0
       local time = love.timer.getTime()
       local cx,cy = libs.net.getCurrentLocation(object,time)
       server:addBullet(object,{
@@ -402,27 +465,66 @@ function server:getFollowRange(object,target)
   return (object_type.size+target_type.size)*server._follow_update_mult
 end
 
+function server:getGatherRange(object,target)
+  local object_type = libs.objectrenderer.getType(object.type)
+  local target_type = libs.objectrenderer.getType(target.type)
+  return (object_type.size+target_type.size)*server._gather_update_mult
+end
+
 function server:getShootRange(object,target)
   local object_type = libs.objectrenderer.getType(object.type)
   return object_type.shoot.range*server._shoot_update_mult
+end
+
+function server:getUserById(id,users)
+  if id == nil then return end
+  for _,user in pairs(self.lovernet:getUsers()) do
+    if user.id == id then
+      return user
+    end
+  end
+end
+
+function server:changeResource(user,restype,amount)
+  user.resources[restype] = user.resources[restype] + value
+  local cargo = user.cargo[restype]
+  local value = user.resources[restype]
+  user.resources[restype] = math.min(math.max(value,0),cargo)
 end
 
 function server:update(dt)
   self.lovernet:update(dt)
   local storage = self.lovernet:getStorage()
   for object_index,object in pairs(storage.objects) do
+
+    object.reload_dt = (object.reload_dt or 0) + dt
+    local object_type = libs.objectrenderer.getType(object.type)
+
+    local user = self:getUserById(object.user)
     local target = self:findObject(object.target)
+
+    if user then
+
+      for _,restype in pairs(libs.net.resourceTypes) do
+        local gen_str = restype.."_generate"
+        if object_type[gen_str] then
+          self:changeResource(user,restype,object_type[gen_str]*dt)
+        end
+      end
+
+    end
 
     if target then
 
+      local target_type = libs.objectrenderer.getType(target.type)
+
       if self:targetIsNeutral(object,target) then
-        self:gotoTarget(object,target,server:getFollowRange(object,target))
+        self:gotoTarget(object,target,server:getGatherRange(object,target))
       elseif self:targetIsSelf(object,target) then
         self:stopUpdateObject(object)
       elseif self:targetIsAlly(object,target) then
         self:gotoTarget(object,target,server:getFollowRange(object,target))
       elseif self:targetIsEnemy(object,target) then
-        local object_type = libs.objectrenderer.getType(object.type)
         if self:targetCanBeShot(object) and object_type.shoot then
           self:gotoTarget(object,target,server:getShootRange(object,target))
           self:shootTarget(object,target,dt)
@@ -431,12 +533,32 @@ function server:update(dt)
         end
       end
 
-    else -- target == nil
+      if user then
+
+        local distance = libs.net.distance(object,target,love.timer.getTime())
+        local follow_distance = (object_type.size+target_type.size)*server._gather_update_mult
+        if distance < follow_distance then
+          for _,restype in pairs(libs.net.resourceTypes) do
+            local gather_str = restype.."_gather"
+            local supply_str = restype.."_supply"
+            if object_type[gather_str] and target_type[supply_str] then
+              self:changeResource(user,restype,object_type[gather_str]*dt)
+            end
+          end
+
+        end
+
+      end -- end user
+
+    else -- end target
       --nop
     end
 
     if object.health and object.health <= 0 then
       table.remove(storage.objects,object_index)
+      if object.user then
+        self:updateCargo(storage,object.user)
+      end
     end
 
   end

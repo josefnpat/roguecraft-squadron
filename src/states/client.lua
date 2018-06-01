@@ -30,6 +30,7 @@ function client:enter()
   self.lovernet:addOp('get_new_bullets')
   self.lovernet:addOp('move_objects')
   self.lovernet:addOp('target_objects')
+  self.lovernet:addOp('get_resources')
   self.lovernet:addOp('t')
 
   -- init
@@ -49,6 +50,7 @@ function client:enter()
   self.camera = libs.hump.camera(0,0)
   self.minimap = libs.minimap.new()
   self.fow = libs.fow.new{camera=self.camera}
+  self.resources = libs.resources.new{}
   self.planets = libs.planets.new{camera=self.camera}
 end
 
@@ -80,6 +82,7 @@ function client:update(dt)
   self.lovernet:pushData('get_new_objects',{i=self.object_index})
   self.lovernet:pushData('get_new_updates',{u=self.update_index})
   self.lovernet:pushData('get_new_bullets',{b=self.bullet_index})
+  self.lovernet:pushData('get_resources')
   self.lovernet:pushData('user_count')
   self.lovernet:pushData('t')
   self.lovernet:update(dt)
@@ -106,10 +109,10 @@ function client:update(dt)
   end
 
   if self.lovernet:getCache('get_new_objects') then
+    local change = false
     for _,sobject in pairs(self.lovernet:getCache('get_new_objects')) do
       local object = self:getObjectByIndex(sobject.index)
       if not object then
-
         -- init objects:
         sobject.dx = sobject.x
         sobject.dy = sobject.y
@@ -124,7 +127,11 @@ function client:update(dt)
 
         table.insert(self.objects,sobject)
         self.object_index = math.max(self.object_index,sobject.index)
+        change = true
       end
+    end
+    if change then
+      self.resources:calcCargo(self.objects,self.user)
     end
     self.lovernet:clearCache('get_new_objects')
   end
@@ -192,14 +199,30 @@ function client:update(dt)
     self.lovernet:clearCache('get_new_bullets')
   end
 
+  if self.lovernet:getCache('get_resources') then
+    self.resources:setFull(self.lovernet:getCache('get_resources'))
+    self.lovernet:clearCache('get_resources')
+  end
+
+  self.resources:update(dt)
+
+  local change = false
+
   for object_index,object in pairs(self.objects) do
     libs.objectrenderer.update(object,self.objects,dt,self.time)
     if object.user == self.user.id then
       self.fow:update(dt,object)
     end
     if object.health and object.health <= 0 then
+      if object.user == self.user.id then
+        change = true
+      end
       table.remove(self.objects,object_index)
     end
+  end
+
+  if change then
+    self.resources:calcCargo(self.objects,self.user)
   end
 
   for bullet_index,bullet in pairs(self.bullets) do
@@ -447,6 +470,7 @@ function client:draw()
 
   if self.focusObject then
     self.minimap:draw(self.camera,self.focusObject,self.objects,self.fow:getMap())
+    self.resources:draw()
   end
 
   if debug_mode then

@@ -1,5 +1,14 @@
 local net = {}
 
+net.resourceTypes = {"ore","material","crew"}
+
+-- todo: i18n
+net.resourceStrings = {
+  ore="Ore",
+  material="Material",
+  crew="Crew",
+}
+
 -- https://love2d.org/wiki/HSV_color
 -- Converts HSV to RGB. (input and output range: 0 - 255)
 function HSVToRGB(h, s, v)
