@@ -167,22 +167,25 @@ function client:update(dt)
       if source and target then
 
         local source_type = libs.objectrenderer.getType(source.type)
-        local randx = source.dx + math.random(-source_type.size,source_type.size)/2
-        local randy = source.dy + math.random(-source_type.size,source_type.size)/2
+        local max = math.max(1,source_type.shoot.damage*4)
+        for i = 1,max do
+          local randx = source.dx + math.random(-source_type.size,source_type.size)
+          local randy = source.dy + math.random(-source_type.size,source_type.size)
 
-        local bullet = {
-          x = randx,
-          y = randy,
-          cx = randx,
-          cy = randy,
-          dx = randx,
-          dy = randy,
-          target = target.index,
-          tdt=sbullet.b.tdt,
-          eta=sbullet.b.eta,
-          type=sbullet.b.type,
-        }
-        table.insert(self.bullets,bullet)
+          local bullet = {
+            x = randx,
+            y = randy,
+            cx = randx,
+            cy = randy,
+            dx = randx,
+            dy = randy,
+            target = target.index,
+            tdt=sbullet.b.tdt,
+            eta=sbullet.b.eta+i/max*source_type.shoot.reload,
+            type=sbullet.b.type,
+          }
+          table.insert(self.bullets,bullet)
+        end
       end
 
     end

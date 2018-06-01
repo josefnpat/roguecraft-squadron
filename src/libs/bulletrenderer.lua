@@ -33,10 +33,20 @@ function bulletrenderer.update(bullet,bullets,objects,dt,time)
     end
   end
 
+  if target == nil then
+    target = {
+      dx = bullet.tdx,
+      dy = bullet.tdy,
+      type = bullet.ttype,
+    }
+  end
+
   if target then
 
     local ctime = time - bullet.tdt
     local ratio = math.min(1,ctime/bullet.eta)
+
+    bullet.tdx,bullet.tdy,bullet.ttype = target.dx,target.dy,target.type
 
     bullet.cx = (1-ratio)*bullet.x+ratio*target.dx
     bullet.cy = (1-ratio)*bullet.y+ratio*target.dy
