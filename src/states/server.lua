@@ -15,16 +15,6 @@ server._genMapDefault = {
   cat=1,
 }
 
-server._genMapDefault = {
-  asteroid=100,
-  scrap=100,
-  station=100,
-  research_pod=1,
-  blackhole=1,
-  cloud=1,
-  cat=1,
-}
-
 server._genPlayerFirst = "command"
 server._genPlayerDefault = {
   salvager=1,
