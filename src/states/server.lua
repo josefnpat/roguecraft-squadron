@@ -476,7 +476,7 @@ function server:getUserById(id,users)
 end
 
 function server:changeResource(user,restype,amount)
-  user.resources[restype] = user.resources[restype] + value
+  user.resources[restype] = user.resources[restype] + amount
   local cargo = user.cargo[restype]
   local value = user.resources[restype]
   user.resources[restype] = math.min(math.max(value,0),cargo)
