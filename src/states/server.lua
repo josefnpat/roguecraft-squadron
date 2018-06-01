@@ -547,7 +547,7 @@ function server:update(dt)
     if object.health and object.health <= 0 then
       table.remove(storage.objects,object_index)
       if user then
-        self:updateCargo(storage,user)
+        self.updateCargo(storage,user)
       end
     end
 
