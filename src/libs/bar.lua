@@ -24,6 +24,7 @@ function barlib.new(init)
   self._barValue = init.barValue or 0.5
   self._barHeight = init.barHeight or 2
   self._barWidth = init.barWidth or 2
+  self._barEnable = init.barEnable or true
   self._hover = false
   self.draw = barlib.draw
   self.update = barlib.update
@@ -42,12 +43,14 @@ function barlib.new(init)
   self.setIconPadding = barlib.setIconPadding
   self.setBarValue = barlib.setBarValue
   self.setBarHeight = barlib.setBarHeight
-  self.setBarWidth = barlib.setBarWidth
+  self.setBarWid7th = barlib.setBarWidth
+  self.setBarEnable = barlib.setBarEnable
 
   return self
 end
 
 function barlib:draw()
+  if not self._barEnable then return end
   local old_color = {love.graphics.getColor()}
   tooltipbg(self._x,self._y,self._width,self._height)
   if debug_mode then
@@ -75,7 +78,10 @@ function barlib:draw()
   local tw = self._width-self._padding*2-barlib.img.corner:getWidth()-self._barWidth-self._iconPadding
   local th = self._height-self._padding*2
   local thoff = (th-love.graphics.getFont():getHeight())/2
-  local ttext = self._hover and self._hoverText or self._text  local bx,by = tx,ty
+  local _text = type(self._text)=="function" and self._text() or tostring(self._text)
+  local _hoverText = type(self._hoverText)=="function" and self._hoverText() or tostring(self._hoverText)
+  local ttext = self._hover and _hoverText or _text
+  local bx,by = tx,ty
   local bw = (tw)*self._barValue
   local bh = self._height-self._padding*2-self._barHeight
 
@@ -154,6 +160,10 @@ end
 
 function barlib:setBarWidth(barWidth)
   self._barWidth = barWidth
+end
+
+function barlib:setBarEnable(barEnable)
+  self._barEnable = barEnable
 end
 
 return barlib
