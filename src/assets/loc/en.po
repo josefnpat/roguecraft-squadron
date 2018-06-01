@@ -1,11 +1,11 @@
-msgid "menu.new_game"
-msgstr "New Game"
-
-msgid "menu.back"
-msgstr "Back"
+msgid "menu.singleplayer"
+msgstr "Single Player"
 
 msgid "menu.continue_game"
 msgstr "Continue Game"
+
+msgid "menu.new_game"
+msgstr "New Game"
 
 msgid "menu.options"
 msgstr "Options"
@@ -13,14 +13,20 @@ msgstr "Options"
 msgid "menu.tech_tree"
 msgstr "Tech Tree [%{tree_points}]"
 
+msgid "menu.back"
+msgstr "Back"
+
+msgid "menu.multiplayer"
+msgstr "Multi Player (Alpha)"
+
 msgid "menu.client"
-msgstr "Client"
+msgstr "Connect to Server"
 
 msgid "menu.remote_server_address"
 msgstr "Change Remote Server Address"
 
 msgid "menu.server"
-msgstr "Start Server"
+msgstr "Host Server"
 
 msgid "menu.debug"
 msgstr "Debug"
@@ -855,4 +861,3 @@ msgstr "This concludes the tutorial. Your goal is to jump past level 8."
 
 msgid "tutorial.help.15"
 msgstr "There is a lot more to RogueCraft Squadron. I guess you'll just have to figure it out yourself! Here are some tips, though:"
-

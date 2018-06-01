@@ -59,23 +59,15 @@ function mainmenu:enter()
 
   self.menum = libs.menu.new()--{title=game_name}
 
-  if settings:read("diff") ~= "new" then
-    --TODO: i18n
-    self.menum:add(
-      libs.i18n('menu.continue_game').." ("..settings:read("diff")..")",
-      function()
-        mainmenu:setDifficulty(settings:read("diff"))
-        states.mission.newGame = true
-        libs.hump.gamestate.switch(states.disclaimer)
-      end
-    )
-  end
+  self.menum:add(libs.i18n('menu.singleplayer'),function()
+      self.menu = self.menusp
+    end
+  )
 
-  self.menum:add(libs.i18n('menu.new_game'),function()
-    settings:write("tree_points",0)
-    settings:write("tree_levels",{})
-    self.menu = self.menud
-  end)
+  self.menum:add(libs.i18n('menu.multiplayer'),function()
+      self.menu = self.menump
+    end
+  )
 
   self.menum:add(libs.i18n('menu.options'),function()
     libs.hump.gamestate.switch(states.options)
@@ -87,51 +79,6 @@ function mainmenu:enter()
     self.menum:add(libs.i18n('menu.debug'),function()
       libs.hump.gamestate.switch(states.debug)
     end)
-  end
-
-  if debug_mode then
-
-    self.menum:add(
-      function()
-        return libs.i18n('menu.client') .. " ["..settings:read("remote_server_address").."]"
-      end,
-      function()
-        states.client._remote_address = settings:read("remote_server_address")
-        libs.hump.gamestate.switch(states.client)
-      end
-    )
-
-    self.menum:add(
-      function()
-        return libs.i18n('menu.client') .. ' [localhost]'
-      end,
-      function()
-        states.client._remote_address = nil
-        libs.hump.gamestate.switch(states.client)
-      end
-    )
-
-    self.menum:add(
-      function()
-        return libs.i18n('menu.remote_server_address')
-      end,
-      function()
-        self.chooser = libs.stringchooser.new{
-          prompt = "remote_server_address:",
-          string = settings:read("remote_server_address"),
-          callback = function(string)
-            self.chooser = nil
-            settings:write("remote_server_address",string)
-          end,
-        }
-      end
-    )
-
-    self.menum:add(libs.i18n('menu.server'),function()
-        libs.hump.gamestate.switch(states.server)
-      end
-    )
-
   end
 
   self.menum:add(libs.i18n('menu.credits'),function()
@@ -161,6 +108,84 @@ function mainmenu:enter()
     }
     self.feedback.y = (love.graphics.getHeight()-self.feedback.h)/2
   end)
+
+  self.menusp = libs.menu.new()
+
+  if settings:read("diff") ~= "new" then
+    --TODO: i18n
+    self.menusp:add(
+      libs.i18n('menu.continue_game').." ("..settings:read("diff")..")",
+      function()
+        mainmenu:setDifficulty(settings:read("diff"))
+        states.mission.newGame = true
+        libs.hump.gamestate.switch(states.disclaimer)
+      end
+    )
+  end
+
+  self.menusp:add(libs.i18n('menu.new_game'),function()
+    settings:write("tree_points",0)
+    settings:write("tree_levels",{})
+    self.menu = self.menud
+  end)
+
+  self.menusp:add(libs.i18n('menu.back'),function()
+      self.menu = self.menum
+    end
+  )
+
+  self.menump = libs.menu.new()
+
+  self.menump:add(
+    function()
+      return libs.i18n('menu.client') .. " ["..settings:read("remote_server_address").."]"
+    end,
+    function()
+      states.client._remote_address = settings:read("remote_server_address")
+      libs.hump.gamestate.switch(states.client)
+    end
+  )
+
+  self.menump:add(
+    function()
+      return libs.i18n('menu.client') .. ' [localhost]'
+    end,
+    function()
+      states.client._remote_address = nil
+      libs.hump.gamestate.switch(states.client)
+    end
+  )
+
+  self.menump:add(
+    function()
+      return libs.i18n('menu.remote_server_address')
+    end,
+    function()
+      self.chooser = libs.stringchooser.new{
+        prompt = "remote_server_address:",
+        string = settings:read("remote_server_address"),
+        callback = function(string)
+          self.chooser = nil
+          settings:write("remote_server_address",string)
+        end,
+      }
+    end
+  )
+
+  self.menump:add(
+    function()
+      return libs.i18n('menu.server')
+    end,
+    function()
+      libs.hump.gamestate.switch(states.server)
+    end
+  )
+
+  self.menump:add(libs.i18n('menu.back'),function()
+      self.chooser = nil
+      self.menu = self.menum
+    end
+  )
 
   self.menud = libs.menu.new()
 

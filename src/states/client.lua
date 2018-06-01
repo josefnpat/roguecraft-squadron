@@ -11,7 +11,7 @@ function client:init()
   -- end)
   self.menu:add(libs.i18n('pause.gameover'),function()
     -- todo: disconnect the user, lolol
-    libs.hump.gamestate.switch(states.debug)
+    libs.hump.gamestate.switch(states.menu)
     self.menu_enabled = false
   end)
 
