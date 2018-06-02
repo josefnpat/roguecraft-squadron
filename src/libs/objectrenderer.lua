@@ -64,6 +64,15 @@ function objectrenderer.draw(object,objects,isSelected,time)
 
   local type = objectrenderer.getType(object.type)
 
+  if object.anim then
+    love.graphics.setColor(255,255,255,127)
+    love.graphics.circle("line",
+      object.dx,
+      object.dy,
+      type.size+math.sin(object.anim*math.pi)*4
+    )
+  end
+
   if isSelected then
     love.graphics.setColor(libs.net.getUser(object.user).selected_color)
   else
@@ -156,6 +165,13 @@ function objectrenderer.update(object,objects,dt,time)
   end
 
   object.dangle = object.dangle + libs.net.shortestAngle(object.dangle,object.angle)*dt*4
+
+  if object.anim then
+    object.anim = object.anim - dt*4
+    if object.anim < 0 then
+      object.anim = nil
+    end
+  end
 
 end
 

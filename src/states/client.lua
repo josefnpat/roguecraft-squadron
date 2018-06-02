@@ -59,6 +59,9 @@ end
 
 function client:selectionOnChange()
   self.actionpanel:process(self.selection,self.lovernet)
+  for _,object in pairs(self.selection:getSelected()) do
+    object.anim = 1
+  end
 end
 
 function client:getCameraOffsetX()
@@ -324,8 +327,10 @@ function client:moveSelectedObjects(x,y)
       object._tty=cy+love.mouse.getY()+self:getCameraOffsetY()
       tx = cx+love.mouse.getX()+self:getCameraOffsetX()
       ty = cy+love.mouse.getY()+self:getCameraOffsetY()
-
     end
+
+    object.anim = 1
+
     table.insert(unselected,object)
     table.insert(moves,{
       i=object.index,
@@ -415,8 +420,10 @@ function client:mousereleased(x,y,button)
         local type = libs.objectrenderer.getType(n.type)
         if nd <= type.size then
           local targets = {}
+          n.anim = 1
           for _,object in pairs(self.selection:getSelected()) do
             table.insert(targets,{i=object.index,t=n.index})
+            object.anim = 1
           end
           self.lovernet:sendData('target_objects',{t=targets})
         else
