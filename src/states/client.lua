@@ -56,6 +56,7 @@ function client:enter()
   self.actionpanel = libs.actionpanel.new()
   self.explosions = libs.explosions.new()
   self.gather = libs.gather.new()
+  self.moveanim = libs.moveanim.new()
 
 end
 
@@ -224,6 +225,7 @@ function client:update(dt)
   self.actionpanel:update(dt)
   self.fow:updateAll(dt,self.objects,self.user)
   self.explosions:update(dt)
+  self.moveanim:update(dt)
 
   local change = false
 
@@ -358,6 +360,7 @@ function client:moveSelectedObjects(x,y)
       y=ty,
     })
     curAngle = curAngle + math.pi/32
+    self.moveanim:add(love.mouse.getX(),love.mouse.getY(),self.camera)
   end
   -- todo: do not attempt to move objects without speed
   self.lovernet:sendData('move_objects',{o=moves})
@@ -498,6 +501,7 @@ function client:draw()
   end
 
   self.explosions:draw()
+  self.moveanim:draw()
   self.selection:draw(self.camera)
 
   if #self.selection:getSelected() == 1 then

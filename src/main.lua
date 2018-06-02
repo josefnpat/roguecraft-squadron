@@ -144,6 +144,7 @@ function love.load(arg)
     actionpanel = require"libs.actionpanel",
     explosions = require"libs.explosions",
     gather = require"libs.gather",
+    moveanim = require"libs.moveanim",
   }
 
   libs.objectrenderer.load(true)
