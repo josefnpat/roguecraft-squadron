@@ -9,8 +9,9 @@ server._throttle_object_updates = 100
 server._throttle_bullet_updates = 100
 
 server._genMapDefault = {
-  scrap=500,
+  scrap=200,
   station=25,
+  asteroid=100,
 }
 
 server._genPlayerFirst = "command"
@@ -613,10 +614,27 @@ function server:update(dt)
     if user then
 
       for _,restype in pairs(libs.net.resourceTypes) do
+
         local gen_str = restype.."_generate"
         if object_type[gen_str] then
           self:changeResource(user,restype,object_type[gen_str]*dt)
         end
+
+        local convert_str = restype.."_convert"
+        if object_type[convert_str] then
+          local trestype = object_type[convert_str].output
+          local amount = object_type[convert_str].rate*dt
+          local space_remaining = user.cargo[trestype] - user.resources[trestype]
+          if amount > space_remaining then
+            amount = space_remaining
+          end
+          if amount > user.resources[restype] then
+            amount = user.resources[restype]
+          end
+          user.resources[restype] = user.resources[restype] - amount
+          user.resources[trestype] = user.resources[trestype] + amount
+        end
+
       end
 
     end
