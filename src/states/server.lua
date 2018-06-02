@@ -26,6 +26,34 @@ server._genResourcesDefault = {
   material = 1600,
 }
 
+function server.setupActions(storage)
+
+  server.actions = {}
+
+  for _,object_type in pairs(libs.objectrenderer.getTypes()) do
+    local action = "build_"..object_type.type
+    server.actions[action] = function(user,parent)
+
+      -- todo: build time
+      local cx,cy = libs.net.getCurrentLocation(parent,love.timer.getTime())
+      local newobject = server.createObject(storage,object_type.type,cx,cy,user)
+      if object_type.speed then
+        newobject.tx = cx + math.random(-128,128)
+        newobject.ty = cy + math.random(-128,128)
+        newobject.tdt = love.timer.getTime()
+        local update={
+          tx=newobject.tx,
+          ty=newobject.ty,
+          tdt=newobject.tdt,
+        }
+        server:addUpdate(newobject,update)
+      end
+
+    end
+  end
+
+end
+
 function server.generateMap(storage)
   local mapsize = settings:read("map_size")
   for object_type,object_count in pairs(server._genMapDefault) do
@@ -139,8 +167,9 @@ function server:stopUpdateObject(object)
   end
 end
 
-function server:findObject(index)
-  local storage = self.lovernet:getStorage()
+function server:findObject(index,storage)
+  if index == nil then return end
+  storage = storage or self.lovernet:getStorage()
   for _,object in pairs(storage.objects) do
     if object.index == index then
       return object
@@ -339,6 +368,31 @@ function server:init()
     return res
   end)
 
+  self.lovernet:addOp('action')
+  self.lovernet:addValidateOnServer('action',{
+    a='string',
+    t=function(data)
+      if type(data)~='table' then
+        return false,'data.t is not a table ['..tostring(data).."]"
+      end
+      for _,v in pairs(data) do
+        if type(v)~='number' then
+          return false,'value in data.t is not a number ['..tostring(v).."]"
+        end
+      end
+      return true
+    end,
+  })
+  self.lovernet:addProcessOnServer('action',function(self,peer,arg,storage)
+    local user = self:getUser(peer)
+    for _,object_id in pairs(arg.t) do
+      local parent = server:findObject(object_id,storage)
+      if server.actions[arg.a] then
+        server.actions[arg.a](user,parent)
+      end
+    end
+  end)
+
   self.lovernet:addOp('t')
   self.lovernet:addProcessOnServer('t',function(self,peer,arg,storage)
     return love.timer.getTime()
@@ -371,6 +425,8 @@ function server:init()
     server.generatePlayer(self.lovernet:getStorage(),user)
 
   end)
+
+  server.setupActions(self.lovernet:getStorage())
 
   server.generateMap(self.lovernet:getStorage())
 

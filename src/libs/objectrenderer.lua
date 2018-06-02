@@ -52,6 +52,10 @@ function objectrenderer.getType(type)
   return data[type]
 end
 
+function objectrenderer.getTypes()
+  return data
+end
+
 function objectrenderer.randomRenderIndex(type)
   return math.random(type.renders_count)
 end

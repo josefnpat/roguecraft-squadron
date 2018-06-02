@@ -23,10 +23,17 @@ function matrixpanel.new(init)
   self.setWidth = matrixpanel.setWidth
   self.getHeight = matrixpanel.getHeight
   self.setIconPadding = matrixpanel.setIconPadding
+  self.clearActions = matrixpanel.clearActions
   self.addAction = matrixpanel.addAction
-  self.mouseInArea = matrixpanel.mouseInArea
+  self.mouseInside = matrixpanel.mouseInside
+  self.runHoverAction = matrixpanel.runHoverAction
+  self.hasActions = matrixpanel.hasActions
 
   return self
+end
+
+function matrixpanel:mouseInside(x,y)
+  return x >= self._x and y >= self._y and x < self._width + self._x and y < self:getHeight() + self._y
 end
 
 function matrixpanel:getIconArea(i)
@@ -62,14 +69,27 @@ end
 function matrixpanel:draw()
 
   tooltipbg(self._x,self._y,self._width,self:getHeight())
+  local old_color = {love.graphics.getColor()}
   for ai,action in pairs(self._actions) do
     local x,y,w,h = self:getIconArea(ai)
     local ix,iy = x + self._padding, y + self._padding
     if debug_mode then
       love.graphics.rectangle(action.hover and "fill" or "line",x,y,w,h)
     end
+    if action.color then
+      if type(action.color) == "function" then
+        love.graphics.setColor(action.color(action.hover))
+      else
+        love.graphics.setColor(action.color)
+      end
+    end
     love.graphics.draw(matrixpanel.icon_bg,ix,iy)
     love.graphics.draw(action.image,ix,iy)
+  end
+  love.graphics.setColor(old_color)
+
+  if self._hover then
+    tooltipf(self._hover_text,self._hover_x,self._hover_y,320,true)
   end
 end
 
@@ -83,6 +103,9 @@ function matrixpanel:update(dt)
     local x,y,w,h = self:getIconArea(ai)
     if mx >= x and mx <= x + w and my >= y and my <= y + h then
       found = action
+      self._hover_x = x + self._iconSize
+      self._hover_y = y + self._iconSize
+      self._hover_text = type(action.text) == "function" and action.text() or tostring(action.text)
       break
     end
   end
@@ -92,10 +115,27 @@ function matrixpanel:update(dt)
   end
 end
 
-function matrixpanel:addAction(image)
+function matrixpanel:clearActions()
+  self._actions = {}
+end
+
+function matrixpanel:addAction(image,callback,color,text)
   table.insert(self._actions,{
     image = image,
+    callback = callback,
+    color = color,
+    text = text,
   })
+end
+
+function matrixpanel:hasActions()
+  return #self._actions > 0
+end
+
+function matrixpanel:runHoverAction()
+  if self._hover then
+    self._hover.callback()
+  end
 end
 
 return matrixpanel

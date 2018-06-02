@@ -7,6 +7,9 @@ function selection.new(init)
   self._user = -1
 
   self.start = selection.start
+  self._onChange = init.onChange or function() end
+  self._onChangeScope = init.onChangeScope or function() end
+  self.setOnChange = selection.setOnChange
   self.selectionInProgress = selection.selectionInProgress
   self.isSelection = selection.isSelection
   self.endAdd = selection.endAdd
@@ -30,6 +33,14 @@ function selection:start(x,y)
   self.sx,self.sy = x,y
 end
 
+function selection:setOnChange(f)
+  self._onChange = f
+end
+
+function selection:setOnChangeScope(scope)
+  self._onChangeScope = scope
+end
+
 function selection:selectionInProgress()
   return self.sx ~= nil and self.sy ~= nil
 end
@@ -47,6 +58,7 @@ function selection:endAdd(x,y,objects)
       end
     end
     self.sx,self.sy = nil,nil
+    self._onChange(self._onChangeScope)
   end
 end
 
@@ -60,16 +72,19 @@ function selection:endSet(x,y,objects)
       end
     end
     self.sx,self.sy = nil,nil
+    self._onChange(self._onChangeScope)
   end
 end
 
 function selection:setSingleSelected(object)
   self._objects = {object}
+  self._onChange(self._onChangeScope)
 end
 
 function selection:clearSelection()
   self.sx,self.sy = nil,nil
   self._objects = {}
+  self._onChange(self._onChangeScope)
 end
 
 function selection:getSelected()

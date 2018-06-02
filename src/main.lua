@@ -140,6 +140,8 @@ function love.load(arg)
     fow = require"libs.fow",
     demo = require"libs.demo",
     planets = require"libs.planets",
+    matrixpanel = require"libs.matrixpanel",
+    actionpanel = require"libs.actionpanel",
   }
 
   libs.objectrenderer.load(true)
@@ -288,7 +290,7 @@ function tooltipbg(ox,oy,width,oh,c1,c2)
   love.graphics.draw(tooltipf_edge,ox,oy+oh,-math.pi/2)
 end
 
-function tooltipf(text,ox,oy,ow)
+function tooltipf(text,ox,oy,ow,align)
   local padding = 8
 
   local x = ox + padding
@@ -301,7 +303,8 @@ function tooltipf(text,ox,oy,ow)
   local oh = h + padding*2
 
   local offsetx = 0
-  if width < w then
+  -- dirty hack
+  if not align and width < w then
     offsetx = w - width
   end
 

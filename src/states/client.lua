@@ -32,6 +32,7 @@ function client:enter()
   self.lovernet:addOp('target_objects')
   self.lovernet:addOp('get_resources')
   self.lovernet:addOp('t')
+  self.lovernet:addOp('action')
 
   -- init
   self.lovernet:pushData('git_count')
@@ -41,7 +42,7 @@ function client:enter()
   self.bullet_index = 0
   self.user_count = 0
   self.time = 0
-  self.selection = libs.selection.new()
+  self.selection = libs.selection.new{onChange=client.selectionOnChange,onChangeScope=self}
   self.objects = {}
   self.bullets = {}
   self.menu_enabled = false
@@ -52,6 +53,12 @@ function client:enter()
   self.fow = libs.fow.new{camera=self.camera}
   self.resources = libs.resources.new{}
   self.planets = libs.planets.new{camera=self.camera}
+  self.actionpanel = libs.actionpanel.new()
+
+end
+
+function client:selectionOnChange()
+  self.actionpanel:process(self.selection,self.lovernet)
 end
 
 function client:getCameraOffsetX()
@@ -205,10 +212,12 @@ function client:update(dt)
   end
 
   self.resources:update(dt)
+  self.actionpanel:update(dt)
 
   local change = false
 
   for object_index,object in pairs(self.objects) do
+
     libs.objectrenderer.update(object,self.objects,dt,self.time)
     if object.user == self.user.id then
       self.fow:update(dt,object)
@@ -335,7 +344,9 @@ end
 function client:mousepressed(x,y,button)
   if self.menu_enabled then return end
   if button == 1 then
-    if self.minimap:mouseInside() then
+    if self.minimap:mouseInside(x,y) then
+      -- nop
+    elseif self.actionpanel:mouseInside(x,y) then
       -- nop
     else
       self.selection:start(
@@ -350,6 +361,10 @@ function client:mousereleased(x,y,button)
   if button == 1 then
     if self.minimap:mouseInside() and not self.selection:selectionInProgress() then
       -- nop
+    elseif self.minimap:mouseInside(x,y) and not self.selection:selectionInProgress() then
+      -- nop
+    elseif self.actionpanel:mouseInside(x,y) and not self.selection:selectionInProgress() then
+      self.actionpanel:runHoverAction()
     else
       if self.selection:isSelection(x+self:getCameraOffsetX(),y+self:getCameraOffsetY()) then
 
@@ -471,6 +486,7 @@ function client:draw()
   if self.focusObject then
     self.minimap:draw(self.camera,self.focusObject,self.objects,self.fow:getMap())
     self.resources:draw()
+    self.actionpanel:draw()
   end
 
   if debug_mode then
