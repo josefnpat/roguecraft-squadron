@@ -142,6 +142,11 @@ function objectrenderer.update(object,objects,dt,time)
   object.dx = (object.dx or cx) + (cx-object.dx)/2
   object.dy = (object.dy or cy) + (cy-object.dy)/2
 
+  local object_type = objectrenderer.getType(object.type)
+  if object_type.rotate then
+    object.angle = object.angle + object_type.rotate*dt
+  end
+
   if object.tx and object.ty then
     object.angle = libs.net.getAngle(object.x,object.y,object.tx,object.ty)
   end
