@@ -460,7 +460,7 @@ function client:mousereleased(x,y,button)
 end
 
 function client:keypressed(key)
-  if key == "c" then
+  if debug_mode and key == "c" then
     self.lovernet:sendData('debug_create_object',{
       x=love.mouse.getX()+self:getCameraOffsetX(),
       y=love.mouse.getY()+self:getCameraOffsetY(),
