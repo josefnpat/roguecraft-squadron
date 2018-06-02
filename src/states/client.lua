@@ -61,6 +61,7 @@ function client:enter()
   self.explosions = libs.explosions.new()
   self.gather = libs.gather.new()
   self.moveanim = libs.moveanim.new()
+  self.mpcheese = libs.mpcheese.new()
 
   self.music:play()
 
@@ -96,6 +97,8 @@ function client:getObjectByIndex(index)
 end
 
 function client:update(dt)
+
+  self.mpcheese:update(dt,self.user_count,self.objects)
 
   if not self.menu_enabled then
     local dx,dy = libs.camera_edge.get_delta(dt)
@@ -239,7 +242,11 @@ function client:update(dt)
 
   local change = false
 
+  self.mpcheese:clear()
+
   for object_index,object in pairs(self.objects) do
+
+    self.mpcheese:updateObject(object)
 
     -- todo: figure out client side only?
     if object.gather then
@@ -380,6 +387,7 @@ function client:moveSelectedObjects(x,y)
 end
 
 function client:mousepressed(x,y,button)
+  if self.mpcheese:waiting() then return end
   if self.menu_enabled then return end
   if button == 1 then
     if self.minimap:mouseInside(x,y) then
@@ -395,6 +403,7 @@ function client:mousepressed(x,y,button)
 end
 
 function client:mousereleased(x,y,button)
+  if self.mpcheese:waiting() then return end
   if self.menu_enabled then return end
   if button == 1 then
     if self.minimap:mouseInside() and not self.selection:selectionInProgress() then
@@ -470,6 +479,7 @@ function client:mousereleased(x,y,button)
 end
 
 function client:keypressed(key)
+  if self.mpcheese:waiting() then return end
   if debug_mode and key == "c" then
     self.lovernet:sendData('debug_create_object',{
       x=love.mouse.getX()+self:getCameraOffsetX(),
@@ -532,6 +542,8 @@ function client:draw()
     self.resources:draw()
     self.actionpanel:draw()
   end
+
+  self.mpcheese:draw(self.user)
 
   if debug_mode then
 

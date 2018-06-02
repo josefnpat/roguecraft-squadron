@@ -145,6 +145,7 @@ function love.load(arg)
     explosions = require"libs.explosions",
     gather = require"libs.gather",
     moveanim = require"libs.moveanim",
+    mpcheese = require"libs.mpcheese",
   }
 
   libs.objectrenderer.load(true)

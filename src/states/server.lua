@@ -21,7 +21,8 @@ server._genPlayerDefault = {
 }
 
 server._genResourcesDefault = {
-  material = 1600,
+  material = math.huge,
+  crew = math.huge,
 }
 
 function server.setupActions(storage)
