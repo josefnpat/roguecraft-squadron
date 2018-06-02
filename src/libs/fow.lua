@@ -78,7 +78,8 @@ function fow:draw(objects,explosions,user)
 
     for _,object in pairs(objects) do
       if object.user == user.id then
-        local fow = self.fow_mult*(object.fow or 1)--*(1+(self.upgrades.fow or 0)*0.25)
+        local object_type = libs.objectrenderer.getType(object.type)
+        local fow = self.fow_mult*(object_type.fow or 1)--*(1+(self.upgrades.fow or 0)*0.25)
         self:drawSingle(object.dx,object.dy,fow,object.fow_rot)
       end
     end
