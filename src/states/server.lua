@@ -34,19 +34,22 @@ function server.setupActions(storage)
     local action = "build_"..object_type.type
     server.actions[action] = function(user,parent)
 
-      -- todo: build time
-      local cx,cy = libs.net.getCurrentLocation(parent,love.timer.getTime())
-      local newobject = server.createObject(storage,object_type.type,cx,cy,user)
-      if object_type.speed then
-        newobject.tx = cx + math.random(-128,128)
-        newobject.ty = cy + math.random(-128,128)
-        newobject.tdt = love.timer.getTime()
-        local update={
-          tx=newobject.tx,
-          ty=newobject.ty,
-          tdt=newobject.tdt,
-        }
-        server:addUpdate(newobject,update)
+      if server.objectCanAfford(object_type,user) then
+        server.objectBuy(object_type,user)
+        -- todo: build time
+        local cx,cy = libs.net.getCurrentLocation(parent,love.timer.getTime())
+        local newobject = server.createObject(storage,object_type.type,cx,cy,user)
+        if object_type.speed then
+          newobject.tx = cx + math.random(-128,128)
+          newobject.ty = cy + math.random(-128,128)
+          newobject.tdt = love.timer.getTime()
+          local update={
+            tx=newobject.tx,
+            ty=newobject.ty,
+            tdt=newobject.tdt,
+          }
+          server:addUpdate(newobject,update)
+        end
       end
 
     end
@@ -103,6 +106,24 @@ function server.updateCargo(storage,user)
       end
     end
 
+  end
+end
+
+function server.objectCanAfford(object_type,user)
+  if object_type.cost == nil then
+    return true
+  end
+  for restype,value in pairs(object_type.cost) do
+    if user.resources[restype] < value then
+      return false
+    end
+  end
+  return true
+end
+
+function server.objectBuy(object_type,user)
+  for restype,value in pairs(object_type.cost) do
+    user.resources[restype] = user.resources[restype] - value
   end
 end
 
