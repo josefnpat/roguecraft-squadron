@@ -86,6 +86,17 @@ function net.getCurrentLocation(object,time)
   end
 end
 
+function net.hasTarget(object,time)
+  if object.target ~= nil then
+    return true
+  end
+  local cx,cy = net.getCurrentLocation(object,time)
+  if (object.tx ~= nil and object.ty ~= nil) and (cx ~= object.tx or cy ~= object.ty) then
+    return true
+  end
+  return false
+end
+
 function net.objectShouldBeRemoved(object)
   if object.health and object.health <= 0 then
     return true

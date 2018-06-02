@@ -572,16 +572,43 @@ function server:changeResource(user,restype,amount)
   user.resources[restype] = math.min(math.max(value,0),cargo)
 end
 
+function server:attackNearby(object)
+  if object.user ~= nil and not libs.net.hasTarget(object,love.timer.getTime()) then
+    local object_type = libs.objectrenderer.getType(object.type)
+    if object_type.shoot then
+      local storage = self.lovernet:getStorage()
+      local nearby = {}
+      for _,tobject in pairs(storage.objects) do
+        if tobject ~= object and tobject.user ~= nil and tobject.user ~= object.user then
+          if libs.net.distance(object,tobject,love.timer.getTime()) <  object_type.shoot.range then
+            object.target = tobject.index
+            server:addUpdate(object,{
+              target = object.target,
+            })
+          end
+        end
+      end
+    end
+  end
+end
+
 function server:update(dt)
   self.lovernet:update(dt)
   local storage = self.lovernet:getStorage()
   for object_index,object in pairs(storage.objects) do
+
+
 
     object.reload_dt = (object.reload_dt or 0) + dt
     local object_type = libs.objectrenderer.getType(object.type)
 
     local user = self:getUserById(object.user)
     local target = self:findObject(object.target)
+
+    if target == nil then
+      object.target = nil
+    end
+    self:attackNearby(object)
 
     if user then
 
