@@ -222,7 +222,7 @@ function client:update(dt)
     if object.user == self.user.id then
       self.fow:update(dt,object)
     end
-    if object.health and object.health <= 0 then
+    if libs.net.objectShouldBeRemoved(object) then
       if object.user == self.user.id then
         change = true
       end

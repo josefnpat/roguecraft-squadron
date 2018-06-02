@@ -85,6 +85,19 @@ function net.getCurrentLocation(object,time)
   end
 end
 
+function net.objectShouldBeRemoved(object)
+  if object.health and object.health <= 0 then
+    return true
+  end
+  for _,restype in pairs(libs.net.resourceTypes) do
+    local supply_str = restype.."_supply"
+    if object[supply_str] and object[supply_str] <= 0 then
+      return true
+    end
+  end
+  return false
+end
+
 function net.getCurrentBulletLocation(bullet,target,time)
   local ctime = time - bullet.tdt
   local ratio = math.min(1,ctime/bullet.eta)

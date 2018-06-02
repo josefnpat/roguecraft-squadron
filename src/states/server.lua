@@ -604,12 +604,29 @@ function server:update(dt)
 
         local distance = libs.net.distance(object,target,love.timer.getTime())
         local follow_distance = (object_type.size+target_type.size)*server._gather_update_mult
+
         if distance < follow_distance then
           for _,restype in pairs(libs.net.resourceTypes) do
             local gather_str = restype.."_gather"
             local supply_str = restype.."_supply"
             if object_type[gather_str] and target_type[supply_str] then
-              self:changeResource(user,restype,object_type[gather_str]*dt)
+              target[supply_str] = target[supply_str] or target_type[supply_str]
+              local amount = object_type[gather_str]*dt
+              local space_remaining = user.cargo[restype] - user.resources[restype]
+              if amount > space_remaining then
+                amount = space_remaining
+              end
+              if amount > target[supply_str] then
+                amount = target[supply_str]
+              end
+              target[supply_str] = math.max(0,target[supply_str] - amount)
+              self:changeResource(user,restype,amount)
+              print(amount,target[supply_str])
+              if target[supply_str] == 0 then
+                local update = {}
+                update[supply_str] = 0
+                server:addUpdate(target,update)
+              end
             end
           end
 
@@ -621,7 +638,7 @@ function server:update(dt)
       --nop
     end
 
-    if object.health and object.health <= 0 then
+    if libs.net.objectShouldBeRemoved(object) then
       table.remove(storage.objects,object_index)
       if user then
         self.updateCargo(storage,user)
