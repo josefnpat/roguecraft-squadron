@@ -11,6 +11,9 @@ function objectrenderer.load(loadAssets)
 
     local object = require(object_dir)()
     if loadAssets then
+
+      objectrenderer.chevron = love.graphics.newImage("assets/hud/chevron.png")
+
       local po_file = dir.."/en.po"
       if love.filesystem.exists(po_file) then
         local po_raw = love.filesystem.read(po_file)
@@ -79,11 +82,17 @@ function objectrenderer.draw(object,objects,isSelected,time)
     love.graphics.setColor(libs.net.getUser(object.user).color)
   end
 
-  love.graphics.circle("line",
-    object.dx,
-    object.dy,
-    type.size
-  )
+  love.graphics.draw(objectrenderer.chevron,
+    object.dx,object.dy,0,1,1,
+    objectrenderer.chevron:getWidth()/2,objectrenderer.chevron:getHeight()/2)
+
+  if isSelected then
+    love.graphics.circle("line",
+      object.dx,
+      object.dy,
+      type.size
+    )
+  end
 
   if object.health then
     local object_type = libs.objectrenderer.getType(object.type)
