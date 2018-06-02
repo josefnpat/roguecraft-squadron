@@ -37,42 +37,46 @@ function minimap:getRealCoords()
   return nx,ny
 end
 
-function minimap:draw(camera,focus,objects,fow_map)
-    local x,y,w,h = self.x, self.y,self.size,self.size
-    tooltipbg(x,y,w,h)
-    love.graphics.setScissor(x,y,w,h)
-    local scale = self.scale
-    local ox,oy = self.size/2,self.size/2
+function minimap:draw(camera,focus,objects,fow,user)
 
-    love.graphics.setColor(0,0,0,127)
-    for fow_obj_x,fow_obj_row in pairs(fow_map) do
-      for fow_obj_y,fow_obj_val in pairs(fow_obj_row) do
-        love.graphics.circle("fill",
-          x+ox+fow_obj_x/scale,
-          y+oy+fow_obj_y/scale,
-          self.fow_image_size/scale/2*1)
-      end
+  local fow_map = fow:getMap()
+  local x,y,w,h = self.x, self.y,self.size,self.size
+  tooltipbg(x,y,w,h)
+  love.graphics.setScissor(x,y,w,h)
+  local scale = self.scale
+  local ox,oy = self.size/2,self.size/2
+
+  love.graphics.setColor(0,0,0,127)
+  for fow_obj_x,fow_obj_row in pairs(fow_map) do
+    for fow_obj_y,fow_obj_val in pairs(fow_obj_row) do
+      love.graphics.circle("fill",
+        x+ox+fow_obj_x/scale,
+        y+oy+fow_obj_y/scale,
+        self.fow_image_size/scale/2*1)
     end
+  end
 
-    for _,object in pairs(objects) do
-      if focus.user == object.user then
-        love.graphics.setColor(255,255,255,63)
-        local object_type = libs.objectrenderer.getType(object.type)
-        -- don't forget canvas mask
-        local fow = self.fow_mult*(object_type.fow or 1)--*(1+(self.upgrades.fow or 0)*0.25)
+  for _,object in pairs(objects) do
+    if focus.user == object.user then
+      love.graphics.setColor(255,255,255,63)
+      local object_type = libs.objectrenderer.getType(object.type)
+      -- don't forget canvas mask
+      local fow = self.fow_mult*(object_type.fow or 1)--*(1+(self.upgrades.fow or 0)*0.25)
 
-        love.graphics.circle("fill",
-          x+ox+object.dx/scale,y+oy+object.dy/scale,
-          self.fow_image_size/scale/2*fow)
-      end
+      love.graphics.circle("fill",
+        x+ox+object.dx/scale,y+oy+object.dy/scale,
+        self.fow_image_size/scale/2*fow)
     end
+  end
 
-    for _,object in pairs(objects) do
+  for _,object in pairs(objects) do
+
+    if user.id == object.user or fow:objectVisible(object) then
       local type = libs.objectrenderer.getType(object.type)
       local color = {255,255,0}
       if object.user then
-        local user = libs.net.getUser(object.user)
-        color = user.color
+        local cuser = libs.net.getUser(object.user)
+        color = cuser.color
       end
       if type.minimap ~= false then
         love.graphics.setColor(color)
@@ -90,15 +94,16 @@ function minimap:draw(camera,focus,objects,fow_map)
           6+math.sin(love.timer.getTime()*4))
       end
     end
-    love.graphics.setColor(255,255,255)
-    local cx = (camera.x-love.graphics.getWidth()/2)/scale
-    local cy = (camera.y-love.graphics.getHeight()/2)/scale
-    local cw = love.graphics.getWidth()/scale
-    local ch = love.graphics.getHeight()/scale
-    love.graphics.rectangle("line",x+ox+cx,y+oy+cy,cw,ch)
+  end
+  love.graphics.setColor(255,255,255)
+  local cx = (camera.x-love.graphics.getWidth()/2)/scale
+  local cy = (camera.y-love.graphics.getHeight()/2)/scale
+  local cw = love.graphics.getWidth()/scale
+  local ch = love.graphics.getHeight()/scale
+  love.graphics.rectangle("line",x+ox+cx,y+oy+cy,cw,ch)
 
-    love.graphics.setScissor()
-    love.graphics.setColor(255,255,255)
+  love.graphics.setScissor()
+  love.graphics.setColor(255,255,255)
 
 end
 

@@ -494,7 +494,7 @@ function client:draw()
   self.fow:draw(self.objects,{},self.user)
 
   if self.focusObject then
-    self.minimap:draw(self.camera,self.focusObject,self.objects,self.fow:getMap())
+    self.minimap:draw(self.camera,self.focusObject,self.objects,self.fow,self.user)
     self.resources:draw()
     self.actionpanel:draw()
   end

@@ -11,13 +11,28 @@ function fow.new(init)
   self.draw = fow.draw
   self.drawSingle = fow.drawSingle
   self.update = fow.update
+  self.objectVisible = fow.objectVisible
 
   self.fow_map = {}
   self:resize()
   self.fow_img = love.graphics.newImage("assets/fow.png")
   self.fow_mult = 1.5
+  self.resolution = 128
+  self.resolution_mult = 1024/self.resolution/2
 
   return self
+end
+
+function fow:objectVisible(object)
+  for x,row in pairs(self.fow_map) do
+    for y,node in pairs(row) do
+      local distance = math.sqrt( (x-object.dx+self.resolution/2)^2 + (y-object.dy+self.resolution/2)^2  )
+      if distance < self.resolution*self.resolution_mult then
+        return true
+      end
+    end
+  end
+  return false
 end
 
 function fow:getMap()
@@ -116,10 +131,11 @@ end
 function fow:update(dt,object)
   object.fow_rot = object.fow_rot and object.fow_rot + dt/60 or math.random()*math.pi*2
 
-  local fow_map_x = math.floor(object.dx/128)*128
-  local fow_map_y = math.floor(object.dy/128)*128
+  local fow_map_x = math.floor(object.dx/self.resolution)*self.resolution
+  local fow_map_y = math.floor(object.dy/self.resolution)*self.resolution
   self.fow_map[fow_map_x] = self.fow_map[fow_map_x] or {}
   self.fow_map[fow_map_x][fow_map_y] = true
+
 end
 
 return fow
