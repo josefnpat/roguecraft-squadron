@@ -9,20 +9,14 @@ server._throttle_object_updates = 100
 server._throttle_bullet_updates = 100
 
 server._genMapDefault = {
-  asteroid=100,
-  scrap=100,
+  scrap=500,
   station=25,
-  research_pod=100,
-  blackhole=10,
-  cloud=25,
-  cat=1,
 }
 
 server._genPlayerFirst = "command"
 server._genPlayerDefault = {
-  salvager=1,
-  mining=2,
   habitat=1,
+  salvager=1,
 }
 
 server._genResourcesDefault = {

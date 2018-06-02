@@ -8,8 +8,8 @@ return function()
     health = {max = 400,},
     shoot = {
       image = "missile",
-      reload = 0.125,
-      damage = 0.25,
+      reload = 0.125*10,
+      damage = 0.25*10,
       speed = 200,
       range = 100,
       aggression = 400,
