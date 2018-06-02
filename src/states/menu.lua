@@ -142,6 +142,7 @@ function mainmenu:enter()
     end,
     function()
       states.client._remote_address = settings:read("remote_server_address")
+      self.music.title:stop()
       libs.hump.gamestate.switch(states.client)
     end
   )
@@ -152,6 +153,7 @@ function mainmenu:enter()
     end,
     function()
       states.client._remote_address = nil
+      self.music.title:stop()
       libs.hump.gamestate.switch(states.client)
     end
   )

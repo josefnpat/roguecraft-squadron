@@ -15,6 +15,10 @@ function client:init()
     self.menu_enabled = false
   end)
 
+  self.music = love.audio.newSource("assets/music/Astrogator_v2.ogg","stream")
+  self.music:setVolume(settings:read("music_vol"))
+  self.music:setLooping(true)
+
 end
 
 function client:enter()
@@ -58,6 +62,12 @@ function client:enter()
   self.gather = libs.gather.new()
   self.moveanim = libs.moveanim.new()
 
+  self.music:play()
+
+end
+
+function client:leave()
+  self.music:stop()
 end
 
 function client:selectionOnChange()
