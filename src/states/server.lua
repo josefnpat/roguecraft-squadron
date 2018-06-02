@@ -5,6 +5,9 @@ server._follow_update_mult = 1.2
 server._shoot_update_mult = 0.8
 server._gather_update_mult = 0.5
 
+server._throttle_object_updates = 100
+server._throttle_bullet_updates = 100
+
 server._genMapDefault = {
   asteroid=100,
   scrap=100,
@@ -325,14 +328,22 @@ function server:init()
 
     local user = self:getUser(peer)
 
+    local throttle = server._throttle_object_updates
+    local throttle_index = user.last_update
+
     local data = {}
-    data.i = storage.global_update_index
     data.u = {}
     for _,update in pairs(storage.updates) do
       if update.update_index > user.last_update then
+        throttle = throttle - 1
+        if throttle < 0 then
+          break
+        end
+        throttle_index = update.update_index
         table.insert(data.u,{i=update.index,u=update.update})
       end
     end
+    data.i = throttle_index
 
     local min_last_update = math.huge
     for _,user in pairs(self:getUsers()) do
@@ -359,14 +370,22 @@ function server:init()
 
     local user = self:getUser(peer)
 
+    local throttle = server._throttle_bullet_updates
+    local throttle_index = user.last_bullet
+
     local data = {}
-    data.i = storage.global_bullet_index
     data.b = {}
     for _,bullet in pairs(storage.bullets) do
       if bullet.bullet_index > user.last_bullet then
+        throttle = throttle - 1
+        if throttle < 0 then
+          break
+        end
+        throttle_index = bullet.bullet_index
         table.insert(data.b,{i=bullet.index,b=bullet.bullet})
       end
     end
+    data.i = throttle_index
 
     local min_last_bullet = math.huge
     for _,user in pairs(self:getUsers()) do
