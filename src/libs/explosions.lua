@@ -14,7 +14,6 @@ function explosions.new(init)
 
   self.add = explosions.add
   self.update = explosions.update
-  self.drawFow = explosions.drawFow
   self.draw = explosions.draw
 
   self.data = {}

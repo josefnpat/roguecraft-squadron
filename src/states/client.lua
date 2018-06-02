@@ -55,6 +55,7 @@ function client:enter()
   self.planets = libs.planets.new{camera=self.camera}
   self.actionpanel = libs.actionpanel.new()
   self.explosions = libs.explosions.new()
+  self.gather = libs.gather.new()
 
 end
 
@@ -218,6 +219,7 @@ function client:update(dt)
     self.lovernet:clearCache('get_resources')
   end
 
+  self.gather:update(dt)
   self.resources:update(dt)
   self.actionpanel:update(dt)
   self.fow:updateAll(dt,self.objects,self.user)
@@ -226,6 +228,15 @@ function client:update(dt)
   local change = false
 
   for object_index,object in pairs(self.objects) do
+
+    -- todo: figure out client side only?
+    if object.gather then
+      object.gather = object.gather - dt
+      if object.gather <= 0 then
+        object.gather = nil
+      end
+      self.gather:add(object.dx,object.dy)
+    end
 
     libs.objectrenderer.update(object,self.objects,dt,self.time)
     if object.user == self.user.id then
@@ -476,6 +487,8 @@ function client:draw()
   self.planets:draw()
   self.camera:attach()
 
+  self.gather:draw()
+
   for object_index,object in pairs(self.objects) do
     libs.objectrenderer.draw(object,self.objects,self.selection:isSelected(object),self.time)
   end
@@ -484,7 +497,7 @@ function client:draw()
     libs.bulletrenderer.draw(bullet,self.objects,self.time)
   end
 
-  self.explosions:draw(self.camera)
+  self.explosions:draw()
   self.selection:draw(self.camera)
 
   if #self.selection:getSelected() == 1 then

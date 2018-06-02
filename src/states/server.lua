@@ -154,6 +154,16 @@ function server:addUpdate(object,update)
   })
 end
 
+function server:addGather(dt,object,amount)
+  if amount > 0 then
+    object.gather_dt = (object.gather_dt or 0) + dt
+    if object.gather_dt > 1 then
+      object.gather_dt = nil
+      server:addUpdate(object,{gather=1})
+    end
+  end
+end
+
 function server:addBullet(object,bullet)
   local storage = self.lovernet:getStorage()
   storage.global_bullet_index = storage.global_bullet_index + 1
@@ -617,7 +627,13 @@ function server:update(dt)
 
         local gen_str = restype.."_generate"
         if object_type[gen_str] then
-          self:changeResource(user,restype,object_type[gen_str]*dt)
+          local amount = object_type[gen_str]*dt
+          local space_remaining = user.cargo[restype] - user.resources[restype]
+          if amount > space_remaining then
+            amount = space_remaining
+          end
+          self:changeResource(user,restype,amount)
+          server:addGather(dt,object,amount)
         end
 
         local convert_str = restype.."_convert"
@@ -633,6 +649,7 @@ function server:update(dt)
           end
           user.resources[restype] = user.resources[restype] - amount
           user.resources[trestype] = user.resources[trestype] + amount
+          server:addGather(dt,object,amount)
         end
 
       end
@@ -679,6 +696,7 @@ function server:update(dt)
               end
               target[supply_str] = math.max(0,target[supply_str] - amount)
               self:changeResource(user,restype,amount)
+              server:addGather(dt,object,amount)
               if target[supply_str] == 0 then
                 local update = {}
                 update[supply_str] = 0
