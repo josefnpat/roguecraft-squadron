@@ -54,6 +54,7 @@ function client:enter()
   self.resources = libs.resources.new{}
   self.planets = libs.planets.new{camera=self.camera}
   self.actionpanel = libs.actionpanel.new()
+  self.explosions = libs.explosions.new()
 
 end
 
@@ -220,6 +221,7 @@ function client:update(dt)
   self.resources:update(dt)
   self.actionpanel:update(dt)
   self.fow:updateAll(dt,self.objects,self.user)
+  self.explosions:update(dt)
 
   local change = false
 
@@ -233,6 +235,8 @@ function client:update(dt)
       if object.user == self.user.id then
         change = true
       end
+      local object_type = libs.objectrenderer.getType(object.type)
+      self.explosions:add(object,object_type.size)
       table.remove(self.objects,object_index)
     end
   end
@@ -244,6 +248,7 @@ function client:update(dt)
   for bullet_index,bullet in pairs(self.bullets) do
     local keep = libs.bulletrenderer.update(bullet,self.bullets,self.objects,dt,self.time)
     if not keep then
+      self.explosions:add(bullet,32)
       table.remove(self.bullets,bullet_index)
     end
   end
@@ -479,6 +484,7 @@ function client:draw()
     libs.bulletrenderer.draw(bullet,self.objects,self.time)
   end
 
+  self.explosions:draw(self.camera)
   self.selection:draw(self.camera)
 
   if #self.selection:getSelected() == 1 then

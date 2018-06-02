@@ -142,6 +142,7 @@ function love.load(arg)
     planets = require"libs.planets",
     matrixpanel = require"libs.matrixpanel",
     actionpanel = require"libs.actionpanel",
+    explosions = require"libs.explosions",
   }
 
   libs.objectrenderer.load(true)
