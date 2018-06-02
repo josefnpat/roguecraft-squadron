@@ -13,12 +13,12 @@ return function()
     repair = false,
     actions = {
       "salvage","repair","upgrade_build_time",
-      "build_command",
-      "build_jump",
+      -- "build_command",
+      -- "build_jump",
       "build_radar",
       "build_tank",
       "build_artillery",
-      "build_research",
+      -- "build_research",
     },
     build_time = 10,
   }

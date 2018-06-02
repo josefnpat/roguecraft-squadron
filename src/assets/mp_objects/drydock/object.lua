@@ -16,7 +16,7 @@ return function()
       "build_mining",
       "build_refinery",
       "build_cargo",
-      "build_troopship",
+      -- "build_troopship",
       "build_combat",
       "build_advdrydock",
     },

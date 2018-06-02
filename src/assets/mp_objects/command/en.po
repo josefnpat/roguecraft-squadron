@@ -5,4 +5,4 @@ msgid "mission.object.command.info"
 msgstr "A combat ship to defend your squadron with."
 
 msgid "mission.object.command.build"
-msgstr " "desc": "The pride and joy of any exploratory fleet, this vessel contains everything one needs to survive in the depths of space. As well as providing basic construction, freight storage and housing facilities, this vessel is a closed ecological system. Assuming major functions aren't disrupted, this ship can last forever. Ships like this, will be with you 'til the day you die."
+msgstr "The pride and joy of any exploratory fleet, this vessel contains everything one needs to survive in the depths of space. As well as providing basic construction, freight storage and housing facilities, this vessel is a closed ecological system. Assuming major functions aren't disrupted, this ship can last forever. Ships like this, will be with you 'til the day you die."

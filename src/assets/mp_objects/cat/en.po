@@ -5,5 +5,4 @@ msgid "mission.object.cat.info"
 msgstr "A strange cat"
 
 msgid "mission.object.cat.build"
-msgstr " "
-       
+msgstr "You can't build a cat."
