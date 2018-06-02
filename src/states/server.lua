@@ -640,7 +640,6 @@ function server:update(dt)
               end
               target[supply_str] = math.max(0,target[supply_str] - amount)
               self:changeResource(user,restype,amount)
-              print(amount,target[supply_str])
               if target[supply_str] == 0 then
                 local update = {}
                 update[supply_str] = 0
