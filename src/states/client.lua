@@ -128,6 +128,9 @@ function client:update(dt)
         sobject.dy = sobject.y
         sobject.angle = math.random()*2*math.pi
         sobject.dangle = sobject.angle
+        if sobject.user == self.user.id then
+          sobject.anim = 1
+        end
 
         if not self.focusObject and sobject.user == self.user.id then
           self.focusObject = sobject
