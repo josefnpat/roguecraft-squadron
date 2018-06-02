@@ -12,6 +12,7 @@ function fow.new(init)
   self.drawSingle = fow.drawSingle
   self.update = fow.update
   self.objectVisible = fow.objectVisible
+  self.updateAll = fow.updateAll
 
   self.fow_map = {}
   self:resize()
@@ -128,14 +129,30 @@ function fow:draw(objects,explosions,user)
 
 end
 
+function fow:updateAll(dt,objects,user)
+  local size = math.floor(libs.net.mapsize/self.resolution+0.5)--*self.resolution
+  for x = -size,size do
+    for y = -size,size do
+      local rx,ry = x*self.resolution,y*self.resolution
+      self.fow_map[rx] = self.fow_map[rx] or {}
+      if self.fow_map[rx][ry] == nil then
+        for _,object in pairs(objects) do
+          if object.user == user.id then
+            local object_type = libs.objectrenderer.getType(object.type)
+            local distance = math.sqrt( (rx-object.dx)^2 + (ry-object.dy)^2 )
+            if distance < (object_type.fow or 1)*512 then
+              self.fow_map[rx][ry] = true
+              break
+            end
+          end
+        end
+      end
+    end
+  end
+end
+
 function fow:update(dt,object)
   object.fow_rot = object.fow_rot and object.fow_rot + dt/60 or math.random()*math.pi*2
-
-  local fow_map_x = math.floor(object.dx/self.resolution)*self.resolution
-  local fow_map_y = math.floor(object.dy/self.resolution)*self.resolution
-  self.fow_map[fow_map_x] = self.fow_map[fow_map_x] or {}
-  self.fow_map[fow_map_x][fow_map_y] = true
-
 end
 
 return fow

@@ -55,20 +55,18 @@ function server.setupActions(storage)
 end
 
 function server.generateMap(storage)
-  local mapsize = settings:read("map_size")
   for object_type,object_count in pairs(server._genMapDefault) do
     for i = 1,object_count do
-      local x = math.random(-mapsize,mapsize)
-      local y = math.random(-mapsize,mapsize)
+      local x = math.random(-libs.net.mapsize,libs.net.mapsize)
+      local y = math.random(-libs.net.mapsize,libs.net.mapsize)
       server.createObject(storage,object_type,x,y,nil)
     end
   end
 end
 
 function server.generatePlayer(storage,user)
-  local mapsize = settings:read("map_size")
-  local x = math.random(-mapsize,mapsize)
-  local y = math.random(-mapsize,mapsize)
+  local x = math.random(-libs.net.mapsize,libs.net.mapsize)
+  local y = math.random(-libs.net.mapsize,libs.net.mapsize)
   server.createObject(storage,server._genPlayerFirst,x,y,user)
   for object_type,object_count in pairs(server._genPlayerDefault) do
     for i = 1,object_count do
@@ -266,9 +264,8 @@ function server:init()
         local type = libs.objectrenderer.getType(object.type)
         if object.index == sobject.i and type.speed then
           local cx,cy = server:stopObject(object)
-          local mapsize = settings:read("map_size")
-          object.tx = math.min(math.max(-mapsize,sobject.x),mapsize)
-          object.ty = math.min(math.max(-mapsize,sobject.y),mapsize)
+          object.tx = math.min(math.max(-libs.net.mapsize,sobject.x),libs.net.mapsize)
+          object.ty = math.min(math.max(-libs.net.mapsize,sobject.y),libs.net.mapsize)
           object.tdt = love.timer.getTime()
           object.target = nil
           local update={

@@ -219,6 +219,7 @@ function client:update(dt)
 
   self.resources:update(dt)
   self.actionpanel:update(dt)
+  self.fow:updateAll(dt,self.objects,self.user)
 
   local change = false
 

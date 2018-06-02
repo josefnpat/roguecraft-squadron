@@ -1,6 +1,7 @@
 local net = {}
 
 net.resourceTypes = {"ore","material","crew"}
+net.mapsize = 32*192/2
 
 -- todo: i18n
 net.resourceStrings = {
