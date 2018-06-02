@@ -255,14 +255,13 @@ function server:init()
     return true
   end})
   self.lovernet:addProcessOnServer('move_objects',function(self,peer,arg,storage)
-    -- todo: ensure all objects being moved are by the correct user
     local user = self:getUser(peer)
 
     for _,object in pairs(storage.objects) do
       -- todo: cache indexes
       for _,sobject in pairs(arg.o) do
         local type = libs.objectrenderer.getType(object.type)
-        if object.index == sobject.i and type.speed then
+        if object.index == sobject.i and type.speed and user.id == object.user then
           local cx,cy = server:stopObject(object)
           object.tx = math.min(math.max(-libs.net.mapsize,sobject.x),libs.net.mapsize)
           object.ty = math.min(math.max(-libs.net.mapsize,sobject.y),libs.net.mapsize)
@@ -300,10 +299,12 @@ function server:init()
     return true
   end})
   self.lovernet:addProcessOnServer('target_objects',function(self,peer,arg,storage)
+    local user = self:getUser(peer)
+
     for _,object in pairs(storage.objects) do
       -- todo: cache indexes
       for _,sobject in pairs(arg.t) do
-        if object.index == sobject.i then
+        if object.index == sobject.i and object.user == user.id then
           object.target = sobject.t
           server:addUpdate(object,{
             target = object.target,
@@ -418,8 +419,10 @@ function server:init()
     local user = self:getUser(peer)
     for _,object_id in pairs(arg.t) do
       local parent = server:findObject(object_id,storage)
-      if server.actions[arg.a] then
-        server.actions[arg.a](user,parent)
+      if parent.user == user.id then
+        if server.actions[arg.a] then
+          server.actions[arg.a](user,parent)
+        end
       end
     end
   end)

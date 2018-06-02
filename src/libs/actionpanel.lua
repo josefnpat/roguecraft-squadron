@@ -43,11 +43,11 @@ function actionpanel:makeCostString(costs)
   return table.concat(s," + ")
 end
 
-function actionpanel:getSelectedActions(selected)
+function actionpanel:getSelectedActions(selected,user)
   local selection_types = {}
   for _,object in pairs(selected) do
     local object_type = libs.objectrenderer.getType(object.type)
-    if object_type.actions then
+    if object.user == user.id and object_type.actions then
       for _,action in pairs(object_type.actions) do
         selection_types[action] = (selection_types[action] or 0) + 1
       end
@@ -62,12 +62,12 @@ function actionpanel:getSelectedActions(selected)
   return valid
 end
 
-function actionpanel:process(selection,lovernet)
+function actionpanel:process(selection,lovernet,user)
 
   local selected = selection:getSelected()
   self.panel:clearActions()
 
-  local selected_actions = self:getSelectedActions(selected)
+  local selected_actions = self:getSelectedActions(selected,user)
 
   -- build commands
   for _,object_type in pairs(libs.objectrenderer.getTypes()) do
