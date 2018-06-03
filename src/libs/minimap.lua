@@ -73,10 +73,10 @@ function minimap:draw(camera,focus,objects,fow,user)
 
     if user.id == object.user or fow:objectVisible(object) then
       local type = libs.objectrenderer.getType(object.type)
-      local color = {255,255,0}
+      local color = {255,255,0,127}
       if object.user then
         local cuser = libs.net.getUser(object.user)
-        color = cuser.color
+        color = cuser.selected_color
       end
       if type.minimap ~= false then
         love.graphics.setColor(color)
