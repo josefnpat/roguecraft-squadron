@@ -430,17 +430,36 @@ function client:mousereleased(x,y,button)
       else
 
         self.selection:clearSelection()
-        local n,nd = self:findNearestDraw(
+        local closest_object,closest_object_distance = self:findNearestDraw(
           self.objects,
           x+self:getCameraOffsetX(),
           y+self:getCameraOffsetY()
         )
 
-        if n then
-          local type = libs.objectrenderer.getType(n.type)
-          if nd <= type.size then
-            self.selection:setSingleSelected(n)
+        if self.last_selected == closest_object then
+          self.last_selected = nil
+          self.last_selected_timeout = nil
+
+          local new_selection = {}
+
+          for _,object in pairs(self.objects) do
+            if object.user == self.user.id and object.type == closest_object.type then
+              self.selection:add(object)
+            end
           end
+
+        else
+
+          self.last_selected = closest_object
+          self.last_selected_timeout = 0.5 -- default for windows
+
+          if closest_object then
+            local type = libs.objectrenderer.getType(closest_object.type)
+            if closest_object_distance <= type.size then
+              self.selection:setSingleSelected(closest_object)
+            end
+          end
+
         end
 
       end

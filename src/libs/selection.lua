@@ -14,6 +14,7 @@ function selection.new(init)
   self.isSelection = selection.isSelection
   self.endAdd = selection.endAdd
   self.endSet = selection.endSet
+  self.add = selection.add
   self.setSingleSelected = selection.setSingleSelected
   self.clearSelection = selection.clearSelection
   self.getSelected = selection.getSelected
@@ -74,6 +75,11 @@ function selection:endSet(x,y,objects)
     self.sx,self.sy = nil,nil
     self._onChange(self._onChangeScope)
   end
+end
+
+function selection:add(object)
+  table.insert(self._objects,object)
+  self._onChange(self._onChangeScope)
 end
 
 function selection:setSingleSelected(object)
