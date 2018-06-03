@@ -103,8 +103,8 @@ function matrixpanel:update(dt)
     local x,y,w,h = self:getIconArea(ai)
     if mx >= x and mx <= x + w and my >= y and my <= y + h then
       found = action
-      self._hover_x = x + self._iconSize
-      self._hover_y = y + self._iconSize
+      self._hover_x = x + self._iconSize*2
+      self._hover_y = y + self._iconSize*2
       self._hover_text = type(action.text) == "function" and action.text() or tostring(action.text)
       break
     end
