@@ -431,7 +431,7 @@ function server:init()
     local user = self:getUser(peer)
     for _,object_id in pairs(arg.t) do
       local parent = server:findObject(object_id,storage)
-      if parent.user == user.id then
+      if parent and parent.user == user.id then
         if server.actions[arg.a] then
           server.actions[arg.a](user,parent)
         end
