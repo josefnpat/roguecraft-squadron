@@ -203,7 +203,7 @@ function client:update(dt)
       if source and target then
 
         local source_type = libs.objectrenderer.getType(source.type)
-        local max = math.max(1,source_type.shoot.damage*4)
+        local max = math.max(1,source_type.shoot.damage)
         for i = 1,max do
           local randx = source.dx + math.random(-source_type.size,source_type.size)
           local randy = source.dy + math.random(-source_type.size,source_type.size)
