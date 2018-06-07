@@ -47,7 +47,7 @@ end
 function lovernetprofiler:update(dt)
   local payload = self._lovernet:_encode(self._lovernet._data)
   table.insert(self._data,{
-    data=#self._data,
+    data=#self._lovernet._data,
     serialized=#payload,
     fps=love.timer.getFPS(),
   })
