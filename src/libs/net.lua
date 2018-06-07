@@ -94,9 +94,9 @@ function net.getCurrentLocation(object,time)
     local ratio = math.min(1,(type.speed or 0)* dt / distance)
     local cx = (1-ratio)*object.x+ratio*object.tx
     local cy = (1-ratio)*object.y+ratio*object.ty
-    return cx,cy
+    return round(cx),round(cy)
   else
-    return object.x,object.y
+    return round(object.x),round(object.y)
   end
 end
 

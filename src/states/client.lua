@@ -105,12 +105,25 @@ function client:update(dt)
     self.camera:move(dx,dy)
   end
 
-  self.lovernet:pushData(libs.net.op.get_new_objects,{i=self.object_index})
-  self.lovernet:pushData(libs.net.op.get_new_updates,{u=self.update_index})
-  self.lovernet:pushData(libs.net.op.get_new_bullets,{b=self.bullet_index})
-  self.lovernet:pushData(libs.net.op.get_resources)
-  self.lovernet:pushData(libs.net.op.user_count)
-  self.lovernet:pushData(libs.net.op.time)
+  if not self.lovernet:hasData(libs.net.op.get_new_objects) then
+    self.lovernet:pushData(libs.net.op.get_new_objects,{i=self.object_index})
+  end
+  if not self.lovernet:hasData(libs.net.op.get_new_updates) then
+    self.lovernet:pushData(libs.net.op.get_new_updates,{u=self.update_index})
+  end
+  if not self.lovernet:hasData(libs.net.op.get_new_bullets) then
+    self.lovernet:pushData(libs.net.op.get_new_bullets,{b=self.bullet_index})
+  end
+  if not self.lovernet:hasData(libs.net.op.get_resources) then
+    self.lovernet:pushData(libs.net.op.get_resources)
+  end
+  if not self.lovernet:hasData(libs.net.op.user_count) then
+    self.lovernet:pushData(libs.net.op.user_count)
+  end
+  if not self.lovernet:hasData(libs.net.op.time) then
+    self.lovernet:pushData(libs.net.op.time)
+  end
+
   if self.lovernetprofiler then
     self.lovernetprofiler:update(dt)
   end

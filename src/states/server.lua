@@ -280,9 +280,9 @@ function server:init()
           object.tdt = love.timer.getTime()
           object.target = nil
           local update={
-            tx=object.tx,
-            ty=object.ty,
-            tdt = object.tdt,
+            tx = round(object.tx),
+            ty = round(object.ty),
+            tdt = round(object.tdt,2),
             target = "nil",
           }
           if cx and cy then
@@ -609,8 +609,10 @@ function server:update(dt)
   local storage = self.lovernet:getStorage()
   for object_index,object in pairs(storage.objects) do
 
-    object.reload_dt = (object.reload_dt or 0) + dt
     local object_type = libs.objectrenderer.getType(object.type)
+    if object_type.shoot and object_type.shoot.reload then
+      object.reload_dt = (object.reload_dt or 0) + dt
+    end
 
     local user = self:getUserById(object.user)
     local target = self:findObject(object.target)
