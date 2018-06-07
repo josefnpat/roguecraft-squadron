@@ -219,7 +219,7 @@ function client:update(dt)
       if source and target then
 
         local source_type = libs.objectrenderer.getType(source.type)
-        local max = math.max(1,source_type.shoot.damage)
+        local max = 1--math.max(1,source_type.shoot.damage)
         for i = 1,max do
           local randx = source.dx + math.random(-source_type.size,source_type.size)
           local randy = source.dy + math.random(-source_type.size,source_type.size)
@@ -314,7 +314,7 @@ end
 function client:CartArchSpiral(initRad,turnDistance,angle)
   local x = (initRad+turnDistance*angle)*math.cos(angle)
   local y = (initRad+turnDistance*angle)*math.sin(angle)
-  return x,y
+  return round(x),round(y)
 end
 
 function client:distanceDraw(a,b)
