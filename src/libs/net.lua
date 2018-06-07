@@ -105,7 +105,7 @@ function net.hasTarget(object,time)
     return true
   end
   local cx,cy = net.getCurrentLocation(object,time)
-  if (object.tx ~= nil and object.ty ~= nil) and (cx ~= object.tx or cy ~= object.ty) then
+  if (object.tx ~= nil and object.ty ~= nil) and (cx ~= round(object.tx) or cy ~= round(object.ty)) then
     return true
   end
   return false
