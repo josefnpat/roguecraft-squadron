@@ -208,13 +208,13 @@ end
 function server:init()
   self.lovernet = libs.lovernet.new{type=libs.lovernet.mode.server,serdes=libs.bitser}
 
-  self.lovernet:addOp('git_count')
-  self.lovernet:addProcessOnServer('git_count',function(self,peer,arg,storage)
+  self.lovernet:addOp(libs.net.op.git_count)
+  self.lovernet:addProcessOnServer(libs.net.op.git_count,function(self,peer,arg,storage)
     return git_count
   end)
 
-  self.lovernet:addOp('user_count')
-  self.lovernet:addProcessOnServer('user_count',function(self,peer,arg,storage)
+  self.lovernet:addOp(libs.net.op.user_count)
+  self.lovernet:addProcessOnServer(libs.net.op.user_count,function(self,peer,arg,storage)
     local count = 0
     for user_index,user in pairs(self:getUsers()) do
       count = count + 1
@@ -222,23 +222,23 @@ function server:init()
     return count
   end)
 
-  self.lovernet:addOp('get_user')
-  self.lovernet:addProcessOnServer('get_user',function(self,peer,arg,storage)
+  self.lovernet:addOp(libs.net.op.get_user)
+  self.lovernet:addProcessOnServer(libs.net.op.get_user,function(self,peer,arg,storage)
     local user = self:getUser(peer)
     return {id=user.id}
   end)
 
-  self.lovernet:addOp('debug_create_object')
-  self.lovernet:addValidateOnServer('debug_create_object',{x='number',y='number'})
-  self.lovernet:addProcessOnServer('debug_create_object',function(self,peer,arg,storage)
+  self.lovernet:addOp(libs.net.op.debug_create_object)
+  self.lovernet:addValidateOnServer(libs.net.op.debug_create_object,{x='number',y='number'})
+  self.lovernet:addProcessOnServer(libs.net.op.debug_create_object,function(self,peer,arg,storage)
     local user = self:getUser(peer)
     local type_index = "debug"
     server.createObject(storage,type_index,arg.x,arg.y,user)
   end)
 
-  self.lovernet:addOp('get_new_objects')
-  self.lovernet:addValidateOnServer('get_new_objects',{i='number'})
-  self.lovernet:addProcessOnServer('get_new_objects',function(self,peer,arg,storage)
+  self.lovernet:addOp(libs.net.op.get_new_objects)
+  self.lovernet:addValidateOnServer(libs.net.op.get_new_objects,{i='number'})
+  self.lovernet:addProcessOnServer(libs.net.op.get_new_objects,function(self,peer,arg,storage)
     local objects = {}
     for _,object in pairs(storage.objects) do
       if object.index > arg.i then
@@ -248,8 +248,8 @@ function server:init()
     return objects
   end)
 
-  self.lovernet:addOp('move_objects')
-  self.lovernet:addValidateOnServer('move_objects',{o=function(data)
+  self.lovernet:addOp(libs.net.op.move_objects)
+  self.lovernet:addValidateOnServer(libs.net.op.move_objects,{o=function(data)
     if type(data)~='table' then
       return false,'data.o is not a table ['..tostring(data).."]"
     end
@@ -266,7 +266,7 @@ function server:init()
     end
     return true
   end})
-  self.lovernet:addProcessOnServer('move_objects',function(self,peer,arg,storage)
+  self.lovernet:addProcessOnServer(libs.net.op.move_objects,function(self,peer,arg,storage)
     local user = self:getUser(peer)
 
     for _,object in pairs(storage.objects) do
@@ -295,8 +295,8 @@ function server:init()
     end
   end)
 
-  self.lovernet:addOp('target_objects')
-  self.lovernet:addValidateOnServer('target_objects',{t=function(data)
+  self.lovernet:addOp(libs.net.op.target_objects)
+  self.lovernet:addValidateOnServer(libs.net.op.target_objects,{t=function(data)
     if type(data)~='table' then
       return false,'data.t is not a table ['..tostring(data).."]"
     end
@@ -310,7 +310,7 @@ function server:init()
     end
     return true
   end})
-  self.lovernet:addProcessOnServer('target_objects',function(self,peer,arg,storage)
+  self.lovernet:addProcessOnServer(libs.net.op.target_objects,function(self,peer,arg,storage)
     local user = self:getUser(peer)
 
     for _,object in pairs(storage.objects) do
@@ -326,9 +326,9 @@ function server:init()
     end
   end)
 
-  self.lovernet:addOp('get_new_updates')
-  self.lovernet:addValidateOnServer('get_new_updates',{u='number'})
-  self.lovernet:addProcessOnServer('get_new_updates',function(self,peer,arg,storage)
+  self.lovernet:addOp(libs.net.op.get_new_updates)
+  self.lovernet:addValidateOnServer(libs.net.op.get_new_updates,{u='number'})
+  self.lovernet:addProcessOnServer(libs.net.op.get_new_updates,function(self,peer,arg,storage)
 
     local user = self:getUser(peer)
 
@@ -368,9 +368,9 @@ function server:init()
     return data
   end)
 
-  self.lovernet:addOp('get_new_bullets')
-  self.lovernet:addValidateOnServer('get_new_bullets',{b='number'})
-  self.lovernet:addProcessOnServer('get_new_bullets',function(self,peer,arg,storage)
+  self.lovernet:addOp(libs.net.op.get_new_bullets)
+  self.lovernet:addValidateOnServer(libs.net.op.get_new_bullets,{b='number'})
+  self.lovernet:addProcessOnServer(libs.net.op.get_new_bullets,function(self,peer,arg,storage)
 
     local user = self:getUser(peer)
 
@@ -402,8 +402,8 @@ function server:init()
     return data
   end)
 
-  self.lovernet:addOp('get_resources')
-  self.lovernet:addProcessOnServer('get_resources',function(self,peer,arg,storage)
+  self.lovernet:addOp(libs.net.op.get_resources)
+  self.lovernet:addProcessOnServer(libs.net.op.get_resources,function(self,peer,arg,storage)
     local user = self:getUser(peer)
     local res = {}
     for _,restype in pairs(libs.net.resourceTypes) do
@@ -412,8 +412,8 @@ function server:init()
     return res
   end)
 
-  self.lovernet:addOp('action')
-  self.lovernet:addValidateOnServer('action',{
+  self.lovernet:addOp(libs.net.op.action)
+  self.lovernet:addValidateOnServer(libs.net.op.action,{
     a='string',
     t=function(data)
       if type(data)~='table' then
@@ -427,7 +427,7 @@ function server:init()
       return true
     end,
   })
-  self.lovernet:addProcessOnServer('action',function(self,peer,arg,storage)
+  self.lovernet:addProcessOnServer(libs.net.op.action,function(self,peer,arg,storage)
     local user = self:getUser(peer)
     for _,object_id in pairs(arg.t) do
       local parent = server:findObject(object_id,storage)
@@ -439,8 +439,8 @@ function server:init()
     end
   end)
 
-  self.lovernet:addOp('t')
-  self.lovernet:addProcessOnServer('t',function(self,peer,arg,storage)
+  self.lovernet:addOp(libs.net.op.time)
+  self.lovernet:addProcessOnServer(libs.net.op.time,function(self,peer,arg,storage)
     return love.timer.getTime()
   end)
 
@@ -608,8 +608,6 @@ function server:update(dt)
   self.lovernet:update(dt)
   local storage = self.lovernet:getStorage()
   for object_index,object in pairs(storage.objects) do
-
-
 
     object.reload_dt = (object.reload_dt or 0) + dt
     local object_type = libs.objectrenderer.getType(object.type)

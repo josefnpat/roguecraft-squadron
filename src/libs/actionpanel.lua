@@ -78,7 +78,7 @@ function actionpanel:process(selection,lovernet,user)
       self.panel:addAction(
         object_type.icons[1],
         function(object)
-          lovernet:pushData('action',{a=action,t=selection:getSelectedIndexes()})
+          lovernet:pushData(libs.net.op.action,{a=action,t=selection:getSelectedIndexes()})
         end,
         function(hover)
           return hover and {0,255,0} or {0,255,255}

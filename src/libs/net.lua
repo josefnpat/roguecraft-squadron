@@ -1,5 +1,19 @@
 local net = {}
 
+net.op = {
+  git_count =           'g',
+  user_count =          'c',
+  get_user =            'u',
+  debug_create_object = 'd',
+  get_new_objects =     'o',
+  get_new_updates =     'p',
+  get_new_bullets =     'b',
+  move_objects =        'm',
+  target_objects =      'y',
+  get_resources =       'r',
+  time =                't',
+  action =              'a',
+}
 net.resourceTypes = {"ore","material","crew"}
 net.mapsize = 32*192/2
 

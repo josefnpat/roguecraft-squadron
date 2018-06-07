@@ -25,22 +25,22 @@ function client:enter()
 
   self.lovernet = libs.lovernet.new{serdes=libs.bitser,ip=self._remote_address}
   -- todo: make common functions use short names
-  self.lovernet:addOp('git_count')
-  self.lovernet:addOp('user_count')
-  self.lovernet:addOp('get_user')
-  self.lovernet:addOp('debug_create_object')
-  self.lovernet:addOp('get_new_objects')
-  self.lovernet:addOp('get_new_updates')
-  self.lovernet:addOp('get_new_bullets')
-  self.lovernet:addOp('move_objects')
-  self.lovernet:addOp('target_objects')
-  self.lovernet:addOp('get_resources')
-  self.lovernet:addOp('t')
-  self.lovernet:addOp('action')
+  self.lovernet:addOp(libs.net.op.git_count)
+  self.lovernet:addOp(libs.net.op.user_count)
+  self.lovernet:addOp(libs.net.op.get_user)
+  self.lovernet:addOp(libs.net.op.debug_create_object)
+  self.lovernet:addOp(libs.net.op.get_new_objects)
+  self.lovernet:addOp(libs.net.op.get_new_updates)
+  self.lovernet:addOp(libs.net.op.get_new_bullets)
+  self.lovernet:addOp(libs.net.op.move_objects)
+  self.lovernet:addOp(libs.net.op.target_objects)
+  self.lovernet:addOp(libs.net.op.get_resources)
+  self.lovernet:addOp(libs.net.op.time)
+  self.lovernet:addOp(libs.net.op.action)
 
   -- init
-  self.lovernet:pushData('git_count')
-  self.lovernet:pushData('get_user')
+  self.lovernet:pushData(libs.net.op.git_count)
+  self.lovernet:pushData(libs.net.op.get_user)
   self.object_index = 0
   self.update_index = 0
   self.bullet_index = 0
@@ -105,41 +105,41 @@ function client:update(dt)
     self.camera:move(dx,dy)
   end
 
-  self.lovernet:pushData('get_new_objects',{i=self.object_index})
-  self.lovernet:pushData('get_new_updates',{u=self.update_index})
-  self.lovernet:pushData('get_new_bullets',{b=self.bullet_index})
-  self.lovernet:pushData('get_resources')
-  self.lovernet:pushData('user_count')
-  self.lovernet:pushData('t')
+  self.lovernet:pushData(libs.net.op.get_new_objects,{i=self.object_index})
+  self.lovernet:pushData(libs.net.op.get_new_updates,{u=self.update_index})
+  self.lovernet:pushData(libs.net.op.get_new_bullets,{b=self.bullet_index})
+  self.lovernet:pushData(libs.net.op.get_resources)
+  self.lovernet:pushData(libs.net.op.user_count)
+  self.lovernet:pushData(libs.net.op.time)
   if self.lovernetprofiler then
     self.lovernetprofiler:update(dt)
   end
   self.lovernet:update(dt)
 
-  if self.lovernet:getCache('git_count') then
-    self.server_git_count = self.lovernet:getCache('git_count')
-    self.lovernet:clearCache('git_count')
+  if self.lovernet:getCache(libs.net.op.git_count) then
+    self.server_git_count = self.lovernet:getCache(libs.net.op.git_count)
+    self.lovernet:clearCache(libs.net.op.git_count)
   end
 
-  if self.lovernet:getCache('user_count') then
-    self.user_count = self.lovernet:getCache('user_count')
+  if self.lovernet:getCache(libs.net.op.user_count) then
+    self.user_count = self.lovernet:getCache(libs.net.op.user_count)
   end
 
-  if self.lovernet:getCache('get_user') then
-    self.user = self.lovernet:getCache('get_user')
-    self.lovernet:clearCache('get_user')
+  if self.lovernet:getCache(libs.net.op.get_user) then
+    self.user = self.lovernet:getCache(libs.net.op.get_user)
+    self.lovernet:clearCache(libs.net.op.get_user)
     self.selection:setUser(self.user.id)
   end
 
-  if self.lovernet:getCache('t') then
-    self.time = self.lovernet:getCache('t')
+  if self.lovernet:getCache(libs.net.op.time) then
+    self.time = self.lovernet:getCache(libs.net.op.time)
   else
     self.time = self.time + dt
   end
 
-  if self.lovernet:getCache('get_new_objects') then
+  if self.lovernet:getCache(libs.net.op.get_new_objects) then
     local change = false
-    for _,sobject in pairs(self.lovernet:getCache('get_new_objects')) do
+    for _,sobject in pairs(self.lovernet:getCache(libs.net.op.get_new_objects)) do
       local object = self:getObjectByIndex(sobject.index)
       if not object then
         -- init objects:
@@ -165,12 +165,12 @@ function client:update(dt)
     if change then
       self.resources:calcCargo(self.objects,self.user)
     end
-    self.lovernet:clearCache('get_new_objects')
+    self.lovernet:clearCache(libs.net.op.get_new_objects)
   end
 
-  if self.lovernet:getCache('get_new_updates') then
-    self.update_index = self.lovernet:getCache('get_new_updates').i
-    for sobject_index,sobject in pairs(self.lovernet:getCache('get_new_updates').u) do
+  if self.lovernet:getCache(libs.net.op.get_new_updates) then
+    self.update_index = self.lovernet:getCache(libs.net.op.get_new_updates).i
+    for sobject_index,sobject in pairs(self.lovernet:getCache(libs.net.op.get_new_updates).u) do
       local object = self:getObjectByIndex(sobject.i)
       if object then
         for i,v in pairs(sobject.u) do
@@ -184,12 +184,12 @@ function client:update(dt)
         print('Failed to update object#'..sobject.i.." (missing)")
       end
     end
-    self.lovernet:clearCache('get_new_updates')
+    self.lovernet:clearCache(libs.net.op.get_new_updates)
   end
 
-  if self.lovernet:getCache('get_new_bullets') then
-    self.bullet_index = self.lovernet:getCache('get_new_bullets').i
-    for sbullet_index,sbullet in pairs(self.lovernet:getCache('get_new_bullets').b) do
+  if self.lovernet:getCache(libs.net.op.get_new_bullets) then
+    self.bullet_index = self.lovernet:getCache(libs.net.op.get_new_bullets).i
+    for sbullet_index,sbullet in pairs(self.lovernet:getCache(libs.net.op.get_new_bullets).b) do
 
       local source
       local target
@@ -228,12 +228,12 @@ function client:update(dt)
       end
 
     end
-    self.lovernet:clearCache('get_new_bullets')
+    self.lovernet:clearCache(libs.net.op.get_new_bullets)
   end
 
-  if self.lovernet:getCache('get_resources') then
-    self.resources:setFull(self.lovernet:getCache('get_resources'))
-    self.lovernet:clearCache('get_resources')
+  if self.lovernet:getCache(libs.net.op.get_resources) then
+    self.resources:setFull(self.lovernet:getCache(libs.net.op.get_resources))
+    self.lovernet:clearCache(libs.net.op.get_resources)
   end
 
   self.gather:update(dt)
@@ -383,7 +383,7 @@ function client:moveSelectedObjects(x,y)
     self.moveanim:add(love.mouse.getX(),love.mouse.getY(),self.camera)
   end
   -- todo: do not attempt to move objects without speed
-  self.lovernet:sendData('move_objects',{o=moves})
+  self.lovernet:sendData(libs.net.op.move_objects,{o=moves})
   for _,object in pairs(self.selection:getSelected()) do
     object._ttx,object._tty = nil,nil
   end
@@ -489,7 +489,7 @@ function client:mousereleased(x,y,button)
             table.insert(targets,{i=object.index,t=n.index})
             object.anim = 1
           end
-          self.lovernet:sendData('target_objects',{t=targets})
+          self.lovernet:sendData(libs.net.op.target_objects,{t=targets})
         else
           self:moveSelectedObjects(x,y)
         end
@@ -503,7 +503,7 @@ end
 function client:keypressed(key)
   if self.mpcheese:waiting() then return end
   if debug_mode and key == "c" then
-    self.lovernet:sendData('debug_create_object',{
+    self.lovernet:sendData(libs.net.op.debug_create_object,{
       x=love.mouse.getX()+self:getCameraOffsetX(),
       y=love.mouse.getY()+self:getCameraOffsetY(),
     })
