@@ -111,6 +111,9 @@ function client:update(dt)
   self.lovernet:pushData('get_resources')
   self.lovernet:pushData('user_count')
   self.lovernet:pushData('t')
+  if self.lovernetprofiler then
+    self.lovernetprofiler:update(dt)
+  end
   self.lovernet:update(dt)
 
   if self.lovernet:getCache('git_count') then
@@ -511,6 +514,17 @@ function client:keypressed(key)
   if key == "escape" then
     self.menu_enabled = not self.menu_enabled
   end
+  if debug_mode and key == "p" then
+    if self.lovernetprofiler then
+      self.lovernetprofiler = nil
+    else
+      self.lovernetprofiler = libs.lovernetprofiler.new{
+        lovernet=self.lovernet,
+          x=256,
+          y=32,
+      }
+    end
+  end
 end
 
 function client:resize()
@@ -565,6 +579,10 @@ function client:draw()
   self.mpcheese:draw(self.user)
 
   if debug_mode then
+
+    if self.lovernetprofiler then
+      self.lovernetprofiler:draw()
+    end
 
     for i,v in pairs(libs.net._users) do
       love.graphics.setColor(v.selected_color)

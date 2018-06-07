@@ -130,6 +130,7 @@ function love.load(arg)
     camera_edge = require"libs.camera_edge",
     bar = require"libs.bar",
     lovernet = require"libs.lovernet.lovernet",
+    lovernetprofiler = require"libs.lovernetprofiler",
     bitser = require"libs.lovernet.bitser",
     selection = require"libs.selection",
     net = require"libs.net",
