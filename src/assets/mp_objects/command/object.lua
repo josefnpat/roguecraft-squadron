@@ -2,7 +2,7 @@ return function()
   return {
     type = "command",
     cost = {material=1000,crew=100},
-    fow = cheat and 32 or 0.5,
+    fow = 0.5,
     crew = 100,
     size = 64,
     speed = 50,
