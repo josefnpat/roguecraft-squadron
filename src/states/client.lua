@@ -191,7 +191,7 @@ function client:update(dt)
           end
         end
       else
-        print('Failed to update object#'..sobject.i.." (missing)")
+        -- print('Failed to update object#'..sobject.i.." (missing)")
       end
     end
     self.lovernet:clearCache(libs.net.op.get_new_updates)
