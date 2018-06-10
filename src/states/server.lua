@@ -592,20 +592,30 @@ end
 
 function server:attackNearby(object)
   if object.user ~= nil and not libs.net.hasTarget(object,love.timer.getTime()) then
+    assert(object.target==nil)
     local object_type = libs.objectrenderer.getType(object.type)
     if object_type.shoot then
       local storage = self.lovernet:getStorage()
       local nearby = {}
       for _,tobject in pairs(storage.objects) do
-        if tobject ~= object and tobject.user ~= nil and tobject.user ~= object.user then
-          if libs.net.distance(object,tobject,love.timer.getTime()) <  object_type.shoot.range then
-            object.target = tobject.index
-            server:addUpdate(object,{
-              target = object.target,
-            })
+        if tobject.index ~= object.index and tobject.user ~= nil and tobject.user ~= object.user then
+          if libs.net.distance(object,tobject,love.timer.getTime()) < object_type.shoot.range then
+            table.insert(nearby,tobject)
           end
         end
       end
+
+      local tobject = nearby[math.random(#nearby)]
+      if tobject then
+        assert(tobject.index~=nil)
+        assert(object.target==nil)
+        object.target = tobject.index
+        server:addUpdate(object,{
+          target = object.target,
+        },"attackNearby")
+        return
+      end
+
     end
   end
 end
