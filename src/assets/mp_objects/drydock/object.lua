@@ -19,6 +19,7 @@ return function()
       -- "build_troopship",
       "build_combat",
       "build_advdrydock",
+      "build_turret_small",
     },
     build_time = 5,
   }

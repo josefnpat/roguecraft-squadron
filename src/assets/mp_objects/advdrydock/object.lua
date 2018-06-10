@@ -19,6 +19,7 @@ return function()
       "build_tank",
       "build_artillery",
       -- "build_research",
+      "build_turret_large",
     },
     build_time = 10,
   }
