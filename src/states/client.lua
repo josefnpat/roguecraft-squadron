@@ -78,10 +78,10 @@ function client:selectionOnChange()
 end
 
 function client:getCameraOffsetX()
-  return self.camera.x-love.graphics.getWidth()/2
+  return math.floor(self.camera.x-love.graphics.getWidth()/2)
 end
 function client:getCameraOffsetY()
-  return self.camera.y-love.graphics.getHeight()/2
+  return math.floor(self.camera.y-love.graphics.getHeight()/2)
 end
 function client:getCameraOffset()
   return self:getCameraOffsetX(),self:getCameraOffsetY()
