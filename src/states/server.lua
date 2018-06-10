@@ -5,8 +5,8 @@ server._follow_update_mult = 1.2
 server._shoot_update_mult = 0.8
 server._gather_update_mult = 0.5
 
-server._throttle_object_updates = 100
-server._throttle_bullet_updates = 100
+server._throttle_object_updates = math.huge
+server._throttle_bullet_updates = math.huge
 
 server._genMapDefault = {
   scrap=200,
