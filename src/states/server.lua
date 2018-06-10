@@ -25,6 +25,8 @@ server._genResourcesDefault = {
   crew = math.huge,
 }
 
+server._addUpdateProfile = {}
+
 function server.setupActions(storage)
 
   server.actions = {}
@@ -47,7 +49,7 @@ function server.setupActions(storage)
             ty=newobject.ty,
             tdt=newobject.tdt,
           }
-          server:addUpdate(newobject,update)
+          server:addUpdate(newobject,update,"setupActions")
         end
       end
 
@@ -145,7 +147,7 @@ function server.createObject(storage,type_index,x,y,user)
   return object
 end
 
-function server:addUpdate(object,update)
+function server:addUpdate(object,update,feature)
   local storage = self.lovernet:getStorage()
   storage.global_update_index = storage.global_update_index + 1
   table.insert(storage.updates,{
@@ -153,6 +155,8 @@ function server:addUpdate(object,update)
     update_index = storage.global_update_index,
     update=update,
   })
+  feature = feature or "N/A"
+  server._addUpdateProfile[feature] = (server._addUpdateProfile[feature] or 0) + 1
 end
 
 function server:addGather(dt,object,amount)
@@ -160,7 +164,7 @@ function server:addGather(dt,object,amount)
     object.gather_dt = (object.gather_dt or 0) + dt
     if object.gather_dt > 1 then
       object.gather_dt = nil
-      server:addUpdate(object,{gather=1})
+      server:addUpdate(object,{gather=1},"addGather")
     end
   end
 end
@@ -191,7 +195,7 @@ function server:stopUpdateObject(object)
       tx="nil",
       ty="nil",
       tdt="nil",
-    })
+    },"stopUpdateObject")
   end
 end
 
@@ -290,7 +294,7 @@ function server:init()
           if cx and cy then
             update.x,update.y = cx,cy
           end
-          server:addUpdate(object,update)
+          server:addUpdate(object,update,"move_objects")
         end
       end
 
@@ -322,7 +326,7 @@ function server:init()
           object.target = sobject.t
           server:addUpdate(object,{
             target = object.target,
-          })
+          },"target_objects")
         end
       end
     end
@@ -524,7 +528,7 @@ function server:gotoTarget(object,target,range)
         tx=object.tx,
         ty=object.ty,
         tdt=object.tdt,
-      })
+      },"gotoTarget")
     end
   else
     self:stopUpdateObject(object)
@@ -703,7 +707,7 @@ function server:update(dt)
               if target[supply_str] == 0 then
                 local update = {}
                 update[supply_str] = 0
-                server:addUpdate(target,update)
+                server:addUpdate(target,update,"<restype>_[gather|supply]")
               end
             end
           end
@@ -739,7 +743,7 @@ function server:update(dt)
         target.health = math.max(0,target.health - object_type.shoot.damage)
         self:addUpdate(target,{
           health=target.health,
-        })
+        },"bullet damage")
       end
     else
       remove_bullet = true
@@ -761,6 +765,10 @@ function server:draw()
   str = str .. "global_bullet_index: " .. self.lovernet:getStorage().global_bullet_index .. "\n"
   for i,v in pairs(self.lovernet:getUsers()) do
     str = str .. "user["..v.name.."]: " .. v.last_update .. "\n"
+  end
+  str = str .. "\n"
+  for i,v in pairs(server._addUpdateProfile) do
+    str = str .. i .. " - " .. v .. "\n"
   end
 
   love.graphics.print(str)
