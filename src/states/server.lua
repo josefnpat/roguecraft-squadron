@@ -549,7 +549,7 @@ function server:shootTarget(object,target,dt)
         s=object.index,
         t=target.index,
         tdt=time,
-        eta=distance/object_type.speed,
+        eta=distance/object_type.shoot.speed,
         type=object.type,
       })
     end
