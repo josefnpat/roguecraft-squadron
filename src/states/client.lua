@@ -509,6 +509,7 @@ function client:keypressed(key)
     self.lovernet:sendData(libs.net.op.debug_create_object,{
       x=love.mouse.getX()+self:getCameraOffsetX(),
       y=love.mouse.getY()+self:getCameraOffsetY(),
+      c=love.keyboard.isDown("lshift") and 100 or 1,
     })
   end
   if key == "`" then
