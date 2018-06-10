@@ -97,9 +97,6 @@ function actionpanel:process(selection,lovernet,user)
 
   end
 
-  -- other commands?
-
-
 end
 
 function actionpanel:mouseInside(x,y)
