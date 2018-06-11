@@ -5,7 +5,7 @@ return function()
     fow = 0.5,
     crew = 100,
     size = 64,
-    speed = 50,
+    speed = 150,
     health = {max = 75,},
     material = 1600,
     repair = false,
