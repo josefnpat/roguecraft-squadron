@@ -60,7 +60,13 @@ function server.setupActions(storage)
 
 end
 
-function server.generateMap(storage)
+server.maps = {}
+
+server.maps.random = {
+  config = {},
+}
+
+function server.maps.random.generate(storage,config)
   for object_type,object_count in pairs(server._genMapDefault) do
     for i = 1,object_count do
       local x = math.random(-libs.net.mapsize,libs.net.mapsize)
@@ -68,6 +74,62 @@ function server.generateMap(storage)
       server.createObject(storage,object_type,x,y,nil)
     end
   end
+end
+
+server.maps.spacedpockets = {
+  config = {
+    attemptRatio = 10,
+    size = 1024/2,
+    range = 1024*2,
+    count = 8,
+  },
+}
+
+function server.maps.spacedpockets.generate(storage,config)
+
+  local pocketAttempt = 0
+
+  local newPocket = function()
+    local x = math.random(-libs.net.mapsize+config.size,libs.net.mapsize-config.size)
+    local y = math.random(-libs.net.mapsize+config.size,libs.net.mapsize-config.size)
+    return {x=x,y=y}
+  end
+
+  local distancePocket = function(a,b)
+    return math.sqrt( (a.x - b.x)^2 + (a.y - b.y)^2 )
+  end
+
+  local validPocket = function(pockets,pocket)
+    for _,opocket in pairs(pockets) do
+      if distancePocket(pocket,opocket) < config.range - pocketAttempt*config.attemptRatio then
+        return false
+      end
+    end
+    return true
+  end
+
+  local pockets = {newPocket()}
+  while #pockets < config.count do
+    local pocket = newPocket()
+    if validPocket(pockets,pocket) then
+      table.insert(pockets,pocket)
+    end
+    pocketAttempt = pocketAttempt + 1
+  end
+
+  -- print("pocket creation attempts:"..tostring(pocketAttempt))
+
+  for object_type,object_count in pairs(server._genMapDefault) do
+    for i = 1,object_count do
+      local pocket = pockets[math.random(#pockets)]
+      local t = math.pi*2*math.random()
+      local r = math.random(-config.size,config.size)
+      local x = r*math.cos(t)+pocket.x
+      local y = r*math.sin(t)+pocket.y
+      server.createObject(storage,object_type,x,y,nil)
+    end
+  end
+
 end
 
 function server.generatePlayer(storage,user)
@@ -491,7 +553,11 @@ function server:init()
 
   server.setupActions(self.lovernet:getStorage())
 
-  server.generateMap(self.lovernet:getStorage())
+  local maptype = "spacedpockets"
+
+  server.maps[maptype].generate(
+    self.lovernet:getStorage(),
+    server.maps.spacedpockets.config)
 
 end
 
