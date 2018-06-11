@@ -86,11 +86,13 @@ function matrixpanel:draw()
     love.graphics.draw(matrixpanel.icon_bg,ix,iy)
     love.graphics.draw(action.image,ix,iy)
   end
-  love.graphics.setColor(old_color)
 
   if self._hover then
+    love.graphics.setColor(255,255,255)
     tooltipf(self._hover_text,self._hover_x,self._hover_y,320,true)
   end
+
+  love.graphics.setColor(old_color)
 end
 
 function matrixpanel:update(dt)
