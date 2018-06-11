@@ -43,7 +43,7 @@ function server.setupActions(storage)
           build_t=object_type.build_time,
         },"setupActions build_time")
         parent.build_queue = {
-          dt = object_type.build_time,
+          dt = object_type.build_time or 0,
           onDone = function()
             local cx,cy = libs.net.getCurrentLocation(parent,love.timer.getTime())
             local x = cx + math.random(-object_type.size,object_type.size)
@@ -194,8 +194,10 @@ function server.objectCanAfford(object_type,user)
 end
 
 function server.objectBuy(object_type,user)
-  for restype,value in pairs(object_type.cost) do
-    user.resources[restype] = user.resources[restype] - value
+  if object_type.cost then
+    for restype,value in pairs(object_type.cost) do
+      user.resources[restype] = user.resources[restype] - value
+    end
   end
 end
 
