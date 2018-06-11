@@ -197,8 +197,11 @@ function server:stopUpdateObject(object)
       tx="nil",
       ty="nil",
       tdt="nil",
-    },"stopUpdateObjectCoord")
+    },"stopUpdateObject")
   end
+end
+
+function server:stopUpdateObjectTarget(object)
   if object.target then
     object.target = nil
     self:addUpdate(object,{
@@ -634,6 +637,47 @@ function server:attackNearby(object)
   end
 end
 
+function server:collectNearby(object)
+  if object.user ~= nil and not libs.net.hasTarget(object,love.timer.getTime()) then
+    assert(object.target==nil)
+    local object_type = libs.objectrenderer.getType(object.type)
+    if object_type.collect ~= nil then
+      local storage = self.lovernet:getStorage()
+      local nearby = {}
+      for _,tobject in pairs(storage.objects) do
+
+        local tobject_type = libs.objectrenderer.getType(tobject.type)
+
+        for _,restype in pairs(libs.net.resourceTypes) do
+          local gather_str = restype.."_gather"
+          local supply_str = restype.."_supply"
+          local user = self:getUserById(object.user)
+
+          local has_space = user.cargo[restype] > user.resources[restype]
+          local types_match = object_type[gather_str] and tobject_type[supply_str]
+
+          if has_space and types_match and libs.net.distance(object,tobject,love.timer.getTime()) < object_type.fow*1024 then
+            table.insert(nearby,tobject)
+          end
+        end
+
+      end
+
+      local tobject = nearby[math.random(#nearby)]
+      if tobject then
+        assert(tobject.index~=nil)
+        assert(object.target==nil)
+        object.target = tobject.index
+        server:addUpdate(object,{
+          target = object.target,
+        },"collectNearby")
+        return
+      end
+
+    end
+  end
+end
+
 function server:update(dt)
   self.lovernet:update(dt)
   local storage = self.lovernet:getStorage()
@@ -650,6 +694,8 @@ function server:update(dt)
     if target == nil then
       object.target = nil
     end
+
+    self:collectNearby(object)
     self:attackNearby(object)
 
     if user then
@@ -714,6 +760,7 @@ function server:update(dt)
           self:shootTarget(object,target,dt)
         else
           self:stopUpdateObject(object)
+          self:stopUpdateObjectTarget(object)
         end
 
       end
