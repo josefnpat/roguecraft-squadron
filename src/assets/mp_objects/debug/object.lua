@@ -23,11 +23,7 @@ return function()
     },
     actions = {
       "salvage","repair",
-      "build_salvager",
-      "build_habitat",
-      "build_fighter",
-      "build_drydock",
-      "build_satellite",
+      "build_command",
     },
     build_time = 60,
   }

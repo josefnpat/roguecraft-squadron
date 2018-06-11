@@ -13,13 +13,14 @@ return function()
     repair = false,
     actions = {
       "salvage","repair",
+      "build_salvager",
+      "build_habitat",
       "build_mining",
       "build_refinery",
       "build_cargo",
-      -- "build_troopship",
-      "build_combat",
-      "build_advdrydock",
-      "build_turret_small",
+      "build_radar",
+      "build_command",
+      -- "build_research",
     },
     build_time = 5,
   }

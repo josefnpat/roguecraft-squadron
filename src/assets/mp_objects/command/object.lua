@@ -11,11 +11,11 @@ return function()
     repair = false,
     actions = {
       "salvage","repair",
+      "build_fighter",
       "build_salvager",
       "build_habitat",
-      "build_fighter",
       "build_drydock",
-      "build_satellite",
+      "build_advdrydock",
     },
     build_time = 60,
   }
