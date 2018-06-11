@@ -326,13 +326,29 @@ function server:init()
     end
   end)
 
+  local object_field_exceptions = {"build_queue"}
+  local function isNotException(val)
+    for _,exception_value in pairs(object_field_exceptions) do
+      if val == exception_value then
+        return false
+      end
+    end
+    return true
+  end
+
   self.lovernet:addOp(libs.net.op.get_new_objects)
   self.lovernet:addValidateOnServer(libs.net.op.get_new_objects,{i='number'})
   self.lovernet:addProcessOnServer(libs.net.op.get_new_objects,function(self,peer,arg,storage)
     local objects = {}
     for _,object in pairs(storage.objects) do
       if object.index > arg.i then
-        table.insert(objects,object)
+        local temp = {}
+        for i,v in pairs(object) do
+          if isNotException(i) then
+            temp[i] = v
+          end
+        end
+        table.insert(objects,temp)
       end
     end
     return objects
