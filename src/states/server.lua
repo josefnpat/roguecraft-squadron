@@ -197,7 +197,13 @@ function server:stopUpdateObject(object)
       tx="nil",
       ty="nil",
       tdt="nil",
-    },"stopUpdateObject")
+    },"stopUpdateObjectCoord")
+  end
+  if object.target then
+    object.target = nil
+    self:addUpdate(object,{
+      target="nil",
+    },"stopUpdateObjectTarget")
   end
 end
 
@@ -508,6 +514,12 @@ function server:targetIsNeutral(object,target)
   return target.user == nil
 end
 
+function server:targetIsInShootRange(object,target)
+  local object_type = libs.objectrenderer.getType(object.type)
+  local tdistance = object_type.shoot and object_type.shoot.range or 0--math.huge
+  return libs.net.distance(object,target,love.timer.getTime()) < tdistance
+end
+
 -- ACTION TARGET
 
 function server:gotoTarget(object,target,range)
@@ -679,19 +691,31 @@ function server:update(dt)
 
       local target_type = libs.objectrenderer.getType(target.type)
 
-      if self:targetIsNeutral(object,target) then
-        self:gotoTarget(object,target,server:getGatherRange(object,target))
-      elseif self:targetIsSelf(object,target) then
-        self:stopUpdateObject(object)
-      elseif self:targetIsAlly(object,target) then
-        self:gotoTarget(object,target,server:getFollowRange(object,target))
-      elseif self:targetIsEnemy(object,target) then
-        if self:targetCanBeShot(object) and object_type.shoot then
-          self:gotoTarget(object,target,server:getShootRange(object,target))
+      if object_type.speed then
+
+        if self:targetIsNeutral(object,target) then
+          self:gotoTarget(object,target,server:getGatherRange(object,target))
+        elseif self:targetIsSelf(object,target) then
+          self:stopUpdateObject(object)
+        elseif self:targetIsAlly(object,target) then
+          self:gotoTarget(object,target,server:getFollowRange(object,target))
+        elseif self:targetIsEnemy(object,target) then
+          if self:targetCanBeShot(object) and object_type.shoot then
+            self:gotoTarget(object,target,server:getShootRange(object,target))
+            self:shootTarget(object,target,dt)
+          else
+            self:gotoTarget(object,target,server:getFollowRange(object,target))
+          end
+        end
+
+      else -- not object_type.speed
+
+        if self:targetIsEnemy(object,target) and self:targetIsInShootRange(object,target) then
           self:shootTarget(object,target,dt)
         else
-          self:gotoTarget(object,target,server:getFollowRange(object,target))
+          self:stopUpdateObject(object)
         end
+
       end
 
       if user then
