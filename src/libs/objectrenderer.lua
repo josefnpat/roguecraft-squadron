@@ -131,8 +131,13 @@ function objectrenderer.draw(object,objects,isSelected,time)
     if object.tx and object.ty then
       love.graphics.line(object.x,object.y,object.tx,object.ty)
       local cx,cy = libs.net.getCurrentLocation(object,time)
-      love.graphics.circle('line',cx,cy,16)
+      love.graphics.circle('line',cx,cy,8)
     end
+
+    if type.shoot then
+      love.graphics.circle('line',object.dx,object.dy,type.shoot.range)
+    end
+
     local str = ""
     str = str .. "index: " .. object.index .. "\n"
     str = str .. "target: " .. tostring(object.target) .. "\n"
