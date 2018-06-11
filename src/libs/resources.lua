@@ -15,6 +15,7 @@ function resources.new(init)
   self.calcCargo = resources.calcCargo
   self.set = resources.set
   self.setFull = resources.setFull
+  self.canAfford = resources.canAfford
 
   local resourceIcons = {}
   self._value = {}
@@ -120,6 +121,16 @@ function resources:setFull(res)
   for restype,value in pairs(res) do
     self:set(restype,value)
   end
+end
+
+function resources:canAfford(object_type)
+  if object_type.cost == nil then return true end
+  for restype,value in pairs(object_type.cost) do
+    if self._value[restype] < value then
+      return false
+    end
+  end
+  return true
 end
 
 return resources

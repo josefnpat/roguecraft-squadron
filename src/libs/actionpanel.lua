@@ -62,7 +62,7 @@ function actionpanel:getSelectedActions(selected,user)
   return valid
 end
 
-function actionpanel:process(selection,lovernet,user)
+function actionpanel:process(selection,lovernet,user,resources)
 
   local selected = selection:getSelected()
   self.panel:clearActions()
@@ -81,7 +81,8 @@ function actionpanel:process(selection,lovernet,user)
           lovernet:pushData(libs.net.op.action,{a=action,t=selection:getSelectedIndexes()})
         end,
         function(hover)
-          return hover and {0,255,0} or {0,255,255}
+          local alpha = hover and 255 or 191
+          return resources:canAfford(object_type) and {0,255,255,alpha} or {255,0,0,alpha}
         end,
         function()
           local build_name = object_type.loc.name

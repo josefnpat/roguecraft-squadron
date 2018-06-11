@@ -35,24 +35,33 @@ function server.setupActions(storage)
     local action = "build_"..object_type.type
     server.actions[action] = function(user,parent)
 
-      if server.objectCanAfford(object_type,user) then
+      -- lazy init to prevent tons of extra tables
+
+      if parent.build_queue == nil and server.objectCanAfford(object_type,user) then
         server.objectBuy(object_type,user)
-        -- todo: build time
-        local cx,cy = libs.net.getCurrentLocation(parent,love.timer.getTime())
-        local x = cx + math.random(-object_type.size,object_type.size)
-        local y = cy + math.random(-object_type.size,object_type.size)
-        local newobject = server.createObject(storage,object_type.type,x,y,user)
-        if object_type.speed then
-          newobject.tx = cx + math.random(-128,128)
-          newobject.ty = cy + math.random(-128,128)
-          newobject.tdt = love.timer.getTime()
-          local update={
-            tx=newobject.tx,
-            ty=newobject.ty,
-            tdt=newobject.tdt,
-          }
-          server:addUpdate(newobject,update,"setupActions")
-        end
+        server:addUpdate(parent,{
+          build_t=object_type.build_time,
+        },"setupActions build_time")
+        parent.build_queue = {
+          dt = object_type.build_time,
+          onDone = function()
+            local cx,cy = libs.net.getCurrentLocation(parent,love.timer.getTime())
+            local x = cx + math.random(-object_type.size,object_type.size)
+            local y = cy + math.random(-object_type.size,object_type.size)
+            local newobject = server.createObject(storage,object_type.type,x,y,user)
+            if object_type.speed then
+              newobject.tx = cx + math.random(-128,128)
+              newobject.ty = cy + math.random(-128,128)
+              newobject.tdt = love.timer.getTime()
+              local update={
+                tx=newobject.tx,
+                ty=newobject.ty,
+                tdt=newobject.tdt,
+              }
+              server:addUpdate(newobject,update,"setupActions onDone")
+            end
+          end
+        }
       end
 
     end
@@ -718,12 +727,12 @@ function server:collectNearby(object)
           local gather_str = restype.."_gather"
           local supply_str = restype.."_supply"
           local user = self:getUserById(object.user)
-
-          local has_space = user.cargo[restype] > user.resources[restype]
-          local types_match = object_type[gather_str] and tobject_type[supply_str]
-
-          if has_space and types_match and libs.net.distance(object,tobject,love.timer.getTime()) < object_type.fow*1024 then
-            table.insert(nearby,tobject)
+          if user then
+            local has_space = user.cargo[restype] > user.resources[restype]
+            local types_match = object_type[gather_str] and tobject_type[supply_str]
+            if has_space and types_match and libs.net.distance(object,tobject,love.timer.getTime()) < object_type.fow*1024 then
+              table.insert(nearby,tobject)
+            end
           end
         end
 
@@ -756,6 +765,14 @@ function server:update(dt)
 
     local user = self:getUserById(object.user)
     local target = self:findObject(object.target)
+
+    if object.build_queue then
+      object.build_queue.dt = object.build_queue.dt - dt
+      if object.build_queue.dt <= 0 then
+        object.build_queue.onDone()
+        object.build_queue = nil
+      end
+    end
 
     if target == nil then
       object.target = nil

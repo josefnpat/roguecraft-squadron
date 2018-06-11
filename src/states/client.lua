@@ -71,7 +71,7 @@ function client:leave()
 end
 
 function client:selectionOnChange()
-  self.actionpanel:process(self.selection,self.lovernet,self.user)
+  self.actionpanel:process(self.selection,self.lovernet,self.user,self.resources)
   for _,object in pairs(self.selection:getSelected()) do
     object.anim = 1
   end
