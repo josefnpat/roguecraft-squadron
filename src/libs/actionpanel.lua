@@ -101,6 +101,8 @@ function actionpanel:process(selection,lovernet,user,resources)
 end
 
 function actionpanel:mouseInside(x,y)
+  x = x or love.mouse.getX()
+  y = y or love.mouse.getY()
   return self.panel:mouseInside(x,y)
 end
 

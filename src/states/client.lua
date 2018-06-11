@@ -97,11 +97,6 @@ end
 
 function client:update(dt)
 
-  if not self.menu_enabled then
-    local dx,dy = libs.camera_edge.get_delta(dt)
-    self.camera:move(dx,dy)
-  end
-
   if not self.lovernet:hasData(libs.net.op.get_new_objects) then
     self.lovernet:pushData(libs.net.op.get_new_objects,{i=self.object_index})
   end
@@ -293,8 +288,16 @@ function client:update(dt)
   end
 
   if self.menu_enabled then
+
     self.menu:update(dt)
+
   else
+
+    if not self.minimap:mouseInside() and not self.resources:mouseInside() and not self.actionpanel:mouseInside() then
+      local dx,dy = libs.camera_edge.get_delta(dt)
+      self.camera:move(dx,dy)
+    end
+
     if self.minimap:mouseInside() and not self.selection:selectionInProgress() then
       if love.mouse.isDown(1) then
         self.minimap:moveToMouse(self.camera)

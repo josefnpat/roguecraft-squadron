@@ -16,6 +16,7 @@ function resources.new(init)
   self.set = resources.set
   self.setFull = resources.setFull
   self.canAfford = resources.canAfford
+  self.mouseInside = resources.mouseInside
 
   local resourceIcons = {}
   self._value = {}
@@ -131,6 +132,15 @@ function resources:canAfford(object_type)
     end
   end
   return true
+end
+
+function resources:mouseInside()
+  for i,bar in pairs(self.resourceBars) do
+    if bar:mouseInside() then
+      return true
+    end
+  end
+  return false
 end
 
 return resources

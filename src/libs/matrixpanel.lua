@@ -22,6 +22,7 @@ function matrixpanel.new(init)
   self.setY = matrixpanel.setY
   self.setWidth = matrixpanel.setWidth
   self.getHeight = matrixpanel.getHeight
+  self.getWidth = matrixpanel.getWidth
   self.setIconPadding = matrixpanel.setIconPadding
   self.clearActions = matrixpanel.clearActions
   self.addAction = matrixpanel.addAction
@@ -33,7 +34,9 @@ function matrixpanel.new(init)
 end
 
 function matrixpanel:mouseInside(x,y)
-  return x >= self._x and y >= self._y and x < self._width + self._x and y < self:getHeight() + self._y
+  return x >= self._x and y >= self._y and
+    x <= self:getWidth() + self._x and
+    y <= self:getHeight() + self._y
 end
 
 function matrixpanel:getIconArea(i)
@@ -64,6 +67,10 @@ end
 function matrixpanel:getHeight()
   local row,iconsize,ipad = self:getIconData()
   return math.floor(#self._actions/row+1)*iconsize+ipad*2
+end
+
+function matrixpanel:getWidth()
+  return self._width
 end
 
 function matrixpanel:draw()
