@@ -610,11 +610,11 @@ function client:draw()
     self.actionpanel:draw()
   end
 
-  if debug_mode then
+  if self.lovernetprofiler then
+    self.lovernetprofiler:draw()
+  end
 
-    if self.lovernetprofiler then
-      self.lovernetprofiler:draw()
-    end
+  if debug_mode then
 
     for i,v in pairs(libs.net._users) do
       love.graphics.setColor(v.selected_color)
