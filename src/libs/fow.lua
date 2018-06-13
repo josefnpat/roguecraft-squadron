@@ -155,10 +155,15 @@ function fow:updateAll(dt,objects,user)
             local object_type = libs.objectrenderer.getType(object.type)
             local distance = math.sqrt( (rx-object.dx)^2 + (ry-object.dy)^2 )
             if distance < (object_type.fow or 1)*512 then
-              self.fow_map[rx][ry] = true
+              self.fow_map[rx][ry] = 60
               break
             end
           end
+        end
+      else
+        self.fow_map[rx][ry] = self.fow_map[rx][ry] - dt
+        if self.fow_map[rx][ry] <= 0 then
+          self.fow_map[rx][ry] = nil
         end
       end
     end
