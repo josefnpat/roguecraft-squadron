@@ -1,4 +1,4 @@
-local stations = {
+local names = {
   "Armistice Station",
   "Babylon 5",
   "Deep Space Nine",
@@ -16,7 +16,7 @@ local stations = {
 return function()
   return {
     type = "station",
-    display_name = stations[math.random(#stations)] .. " — " .. "todo",-- libs.i18n('mission.object.station.name'),
+    names = names,
     size = 64,
     crew_supply = math.random(25,50),
     rotate = (math.random(0,1)*2-1)/10,

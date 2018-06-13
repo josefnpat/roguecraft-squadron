@@ -63,6 +63,12 @@ function objectrenderer.randomRenderIndex(type)
   return math.random(type.renders_count)
 end
 
+function objectrenderer.randomNameIndex(type)
+  if type.names then
+    return math.random(#type.names)
+  end
+end
+
 function objectrenderer.draw(object,objects,isSelected,time)
 
   local type = objectrenderer.getType(object.type)
@@ -151,6 +157,7 @@ function objectrenderer.draw(object,objects,isSelected,time)
     str = str .. "angle: " .. math.floor(object.angle*100)/100 .. "\n"
     str = str .. "dangle: " .. math.floor(object.dangle*100)/100 .. "\n"
     str = str .. "render: " .. math.floor(object.render) .. "\n"
+    str = str .. "name_index: " .. math.floor(object.name_index) .. "\n"
     str = str .. "d: ["..math.floor(object.dx)..","..math.floor(object.dy).."]"
     love.graphics.printf(str,object.dx-64,object.dy,128,"center")
     love.graphics.setColor(0,255,0,63)

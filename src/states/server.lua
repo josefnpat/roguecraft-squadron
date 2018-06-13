@@ -12,6 +12,7 @@ server._genMapDefault = {
   scrap=200,
   station=25,
   asteroid=100,
+  cat=1,
 }
 
 server._genPlayerFirst = "command"
@@ -208,6 +209,7 @@ function server.createObject(storage,type_index,x,y,user)
     index=storage.objects_index,
     type=type_index,
     render=libs.objectrenderer.randomRenderIndex(object_type),
+    name=libs.objectrenderer.randomNameIndex(object_type),
     x=x,
     y=y,
     user=user and user.id or nil,

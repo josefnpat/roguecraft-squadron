@@ -567,8 +567,14 @@ function client:draw()
   if #self.selection:getSelected() == 1 then
     local object = self.selection:getSelected()[1]
     local object_type = libs.objectrenderer.getType(object.type)
+
+    local name = object_type.loc.name or ""
+    if object_type.names then
+      name = object_type.names[object.name]
+    end
+
     tooltipf(
-      (object_type.loc.name or "").." — "..(object_type.loc.info or ""),
+      name.." — "..(object_type.loc.info or ""),
       object.dx+object_type.size,
       object.dy+object_type.size,
       320,"right")
