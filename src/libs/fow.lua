@@ -18,7 +18,7 @@ function fow.new(init)
   self:resize()
   self.fow_img = love.graphics.newImage("assets/fow.png")
   self.fow_mult = 1.5
-  self.resolution = 128
+  self.resolution = 256
   self.resolution_mult = 1024/self.resolution/2
 
   return self
