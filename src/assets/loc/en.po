@@ -127,6 +127,18 @@ msgstr "OPTIONS"
 msgid "options.fullscreen"
 msgstr "Fullscreen"
 
+msgid "options.fullscreen_type.pre"
+msgstr "Fullscreen Type"
+
+msgid "options.fullscreen_type.desktop"
+msgstr "Desktop"
+
+msgid "options.fullscreen_type.exclusive"
+msgstr "Exclusive"
+
+msgid "options.display"
+msgstr "Display"
+
 msgid "options.window_msaa"
 msgstr "Multisample Anti-Aliasing: %{window_msaa}×"
 

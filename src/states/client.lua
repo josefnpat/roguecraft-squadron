@@ -535,7 +535,7 @@ function client:keypressed(key)
 end
 
 function client:resize()
-  self.fow:resize()
+  if self.fow then self.fow:resize() end
 end
 
 function client:lookAtObject(object)

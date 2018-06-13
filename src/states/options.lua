@@ -1,5 +1,19 @@
 local state = {}
 
+function state:updateWindowMode()
+  love.window.setMode(
+    settings:read("window_width"),
+    settings:read("window_height"),
+    {
+      fullscreen=settings:read("window_fullscreen"),
+      fullscreentype=settings:read("window_fullscreen_type"),
+      resizable=true,
+      msaa=settings:read("window_msaa"),
+      display=settings:read('window_display'),
+    }
+  )
+end
+
 function state:init()
 
   self.menu = libs.menu.new{title="["..libs.i18n('options.title').."]"}
@@ -7,17 +21,38 @@ function state:init()
   self.menu:add(libs.i18n('options.fullscreen'),function()
     local fs = not settings:read("window_fullscreen")
     settings:write("window_fullscreen",fs)
-
-    local msaa = settings:read("window_msaa")
-    love.window.setMode(
-      settings:read("window_width"),
-      settings:read("window_height"),
-      {fullscreen=fs,resizable=true,fullscreentype="desktop",msaa=msaa}
-    )
+    self:updateWindowMode()
   end)
 
+  --todo: add resolution setter
   self.menu:add(
-    function() 
+    function()
+      return libs.i18n('options.fullscreen_type.pre')..": "..
+        libs.i18n(settings:read("window_fullscreen_type") == "desktop" and
+          "options.fullscreen_type.desktop" or
+          "options.fullscreen_type.exclusive")
+    end,
+    function()
+      local target_type = settings:read("window_fullscreen_type") == "desktop" and "exclusive" or "desktop"
+      settings:write("window_fullscreen_type",target_type)
+      self:updateWindowMode()
+    end)
+
+  self.menu:add(
+    function()
+      return libs.i18n('options.display')..": "..settings:read('window_display')
+    end,
+    function()
+      local target_display = settings:read('window_display') + 1
+      if target_display > love.window.getDisplayCount() then
+        target_display = 1
+      end
+      settings:write('window_display',target_display)
+      self:updateWindowMode()
+    end)
+
+  self.menu:add(
+    function()
       return libs.i18n('options.window_msaa',{window_msaa=settings:read("window_msaa")})
     end,
     function()
@@ -27,13 +62,7 @@ function state:init()
         msaa = 0
       end
       settings:write("window_msaa",msaa)
-
-      local fs = settings:read("window_fullscreen")
-      love.window.setMode(
-        settings:read("window_width"),
-        settings:read("window_height"),
-        {fullscreen=fs,resizable=true,fullscreentype="desktop",msaa=msaa}
-      )
+      self:updateWindowMode()
     end
   )
 
