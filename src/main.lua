@@ -190,6 +190,7 @@ function love.load(arg)
   libs.cursor.add("takeover","assets/hud/cursors/takeover.png")
 
   libs.cursor.change("default")
+  libs.cursor.mode(settings:read("mouse_draw_mode"))
 
   local version_server_check = true
 
@@ -242,7 +243,12 @@ function love.load(arg)
     version_server = e == 200 and libs.json.decode(r) or nil
   end
 
-  libs.hump.gamestate.registerEvents()
+  -- this hack allows me to re-order when gamestate runs draw
+  local callbacks = {'errhand', 'update'} -- no draw
+  for k in pairs(love.handlers) do
+    callbacks[#callbacks+1] = k
+  end
+  libs.hump.gamestate.registerEvents(callbacks)
   libs.hump.gamestate.switch(target_state or states.splash)
 end
 
@@ -260,6 +266,11 @@ function love.update(dt)
       love.window.hasFocus()
     )
   end
+end
+
+function love.draw()
+  libs.hump.gamestate.current():draw()
+  libs.cursor.draw()
 end
 
 function love.quit()

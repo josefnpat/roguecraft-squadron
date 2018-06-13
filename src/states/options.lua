@@ -151,6 +151,19 @@ function state:init()
       settings:write("tutorial",tut)
     end)
 
+  self.menu:add(
+    function()
+      return libs.i18n('options.mouse_draw_mode.pre')..": "..
+        libs.i18n(settings:read("mouse_draw_mode") == "software" and
+          "options.mouse_draw_mode.software" or
+          "options.mouse_draw_mode.hardware")
+    end,
+    function()
+      local target_mode = settings:read("mouse_draw_mode") == "software" and "hardware" or "software"
+      settings:write("mouse_draw_mode",target_mode)
+      libs.cursor.mode(target_mode)
+    end)
+
   self.menu:add(libs.i18n('options.back'),function()
     libs.hump.gamestate.switch(previousState)
   end)

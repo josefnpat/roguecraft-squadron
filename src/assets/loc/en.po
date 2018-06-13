@@ -172,6 +172,15 @@ msgstr "Enabled"
 msgid "options.tutorial.disabled"
 msgstr "Disabled"
 
+msgid "options.mouse_draw_mode.pre"
+msgstr "Mouse Draw Mode"
+
+msgid "options.mouse_draw_mode.software"
+msgstr "Software"
+
+msgid "options.mouse_draw_mode.hardware"
+msgstr "Hardware"
+
 msgid "options.back"
 msgstr "Back"
 

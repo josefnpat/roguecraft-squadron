@@ -55,6 +55,8 @@ end
 
 function mainmenu:enter()
 
+  libs.cursor.change("default")
+
   libs.demo:check()
 
   self.menum = libs.menu.new()--{title=game_name}
