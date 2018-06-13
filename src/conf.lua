@@ -5,7 +5,7 @@ settings:define("window_height",720)
 settings:define("window_fullscreen",false)
 settings:define("window_fullscreen_type","desktop")
 settings:define("window_display",1)
-settings:define("window_vsync",true)
+settings:define("window_vsync",false)
 settings:define("window_msaa",2)
 settings:define("camera_speed",1)
 settings:define("bg_quality","medium")
@@ -43,7 +43,9 @@ function love.conf(t)
     t.window.title = game_name
     t.window.resizable = true
     t.window.fullscreen = settings:read("window_fullscreen")
-    t.window.fullscreentype = "desktop"
+    t.window.fullscreentype = settings:read("window_fullscreen_type")
+    t.window.window_display = settings:read("window_display")
+    t.window.vsync = settings:read("window_vsync")
     t.window.msaa = settings:read("window_msaa")
   end
 
