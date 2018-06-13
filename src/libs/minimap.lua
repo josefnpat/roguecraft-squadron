@@ -56,16 +56,18 @@ function minimap:draw(camera,focus,objects,fow,user)
     end
   end
 
-  for _,object in pairs(objects) do
-    if focus.user == object.user then
-      love.graphics.setColor(255,255,255,63)
-      local object_type = libs.objectrenderer.getType(object.type)
-      -- don't forget canvas mask
-      local fow = self.fow_mult*(object_type.fow or 1)--*(1+(self.upgrades.fow or 0)*0.25)
+  if debug_mode then
+    for _,object in pairs(objects) do
+      if focus.user == object.user then
+        love.graphics.setColor(255,255,255,63)
+        local object_type = libs.objectrenderer.getType(object.type)
+        -- don't forget canvas mask
+        local fow = self.fow_mult*(object_type.fow or 1)--*(1+(self.upgrades.fow or 0)*0.25)
 
-      love.graphics.circle("fill",
-        x+ox+object.dx/scale,y+oy+object.dy/scale,
-        self.fow_image_size/scale/2*fow)
+        love.graphics.circle("fill",
+          x+ox+object.dx/scale,y+oy+object.dy/scale,
+          self.fow_image_size/scale/2*fow)
+      end
     end
   end
 
