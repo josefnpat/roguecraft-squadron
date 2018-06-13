@@ -564,6 +564,10 @@ function client:draw()
   self.moveanim:draw()
   self.selection:draw(self.camera)
 
+  self.camera:detach()
+  self.fow:draw(self.objects,{},self.user)
+  self.camera:attach()
+
   if #self.selection:getSelected() == 1 then
     local object = self.selection:getSelected()[1]
     local object_type = libs.objectrenderer.getType(object.type)
@@ -581,7 +585,6 @@ function client:draw()
   end
 
   self.camera:detach()
-  self.fow:draw(self.objects,{},self.user)
 
   if self.focusObject then
     self.minimap:draw(self.camera,self.focusObject,self.objects,self.fow,self.user)
