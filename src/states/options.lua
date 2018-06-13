@@ -10,6 +10,7 @@ function state:updateWindowMode()
       resizable=true,
       msaa=settings:read("window_msaa"),
       display=settings:read('window_display'),
+      vsync=settings:read('window_vsync'),
     }
   )
 end
@@ -36,7 +37,8 @@ function state:init()
       local target_type = settings:read("window_fullscreen_type") == "desktop" and "exclusive" or "desktop"
       settings:write("window_fullscreen_type",target_type)
       self:updateWindowMode()
-    end)
+    end
+  )
 
   self.menu:add(
     function()
@@ -49,7 +51,19 @@ function state:init()
       end
       settings:write('window_display',target_display)
       self:updateWindowMode()
-    end)
+    end
+  )
+
+  self.menu:add(
+    function()
+      return libs.i18n('options.vsync.pre')..": "..
+        (settings:read('window_vsync') and libs.i18n('options.vsync.enabled') or libs.i18n('options.vsync.disabled'))
+    end,
+    function()
+      settings:write('window_vsync',not settings:read('window_vsync'))
+      self:updateWindowMode()
+    end
+  )
 
   self.menu:add(
     function()

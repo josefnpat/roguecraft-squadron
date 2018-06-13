@@ -139,6 +139,15 @@ msgstr "Exclusive"
 msgid "options.display"
 msgstr "Display"
 
+msgid "options.vsync.pre"
+msgstr "Vertical Sync"
+
+msgid "options.vsync.enabled"
+msgstr "Enabled"
+
+msgid "options.vsync.disabled"
+msgstr "Disabled"
+
 msgid "options.window_msaa"
 msgstr "Multisample Anti-Aliasing: %{window_msaa}×"
 
