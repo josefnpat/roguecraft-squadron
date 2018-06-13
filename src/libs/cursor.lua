@@ -42,7 +42,6 @@ function cursor.mode(val)
 end
 
 function cursor.draw()
-  love.graphics.print(cursor.current_mode)
   if cursor.current_mode == "software" then
     love.graphics.setColor(255,255,255)
     local image = cursor.current and cursor.current.software or cursor.default.software
