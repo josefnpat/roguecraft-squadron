@@ -1,12 +1,11 @@
 return function()
   return {
     type = "satellite",
-    cost = {material=10},
+    cost = {material=25},
     variation = math.random(0,2),
-    fow = 1,
+    fow = 2,
     size = 8,
-    build_time = 0.5,
+    build_time = 2.5,
     health = {max = 5,},
-    cost = {material=5},
   }
 end
