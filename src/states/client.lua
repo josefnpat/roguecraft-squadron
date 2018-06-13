@@ -293,6 +293,21 @@ function client:update(dt)
 
   else
 
+    if love.keyboard.isDown("space") then
+      local avgx,avgy,avgc = 0,0,0
+      for _,object in pairs(self.selection:getSelected()) do
+        avgx = avgx + object.dx
+        avgy = avgy + object.dy
+        avgc = avgc + 1
+      end
+      if avgc > 0 then
+        self.camera.x,self.camera.y = avgx/avgc,avgy/avgc
+      elseif self.focusObject then
+        self.camera.x = self.focusObject.dx
+        self.camera.y = self.focusObject.dy
+      end
+    end
+
     if not self.minimap:mouseInside() and not self.resources:mouseInside() and not self.actionpanel:mouseInside() then
       local dx,dy = libs.camera_edge.get_delta(dt)
       self.camera:move(dx,dy)
