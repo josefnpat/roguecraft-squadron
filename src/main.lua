@@ -255,15 +255,17 @@ end
 function love.resize()
   libs.stars:reload()
   states.mission:resize()
+  states.client:resize()
 end
 
 function love.update(dt)
   if not headless then
     libs.cursor.update(dt)
     love.mouse.setGrabbed(
-      libs.hump.gamestate.current() == states.mission and
-      not states.mission.vn:getRun() and
-      love.window.hasFocus()
+      (
+        libs.hump.gamestate.current() == states.mission or
+        libs.hump.gamestate.current() == states.client
+      ) and love.window.hasFocus()
     )
   end
 end
