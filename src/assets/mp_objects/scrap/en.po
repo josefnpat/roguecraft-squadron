@@ -2,7 +2,7 @@ msgid "mission.object.scrap.name"
 msgstr "Scrap"
 
 msgid "mission.object.scrap.info"
-msgstr "This scrap contains [Material] which can be collected by a [Salvager]."
+msgstr "This scrap contains [Material] which can be collected by a [Scrapper]."
 
 msgid "mission.object.scrap.build"
 msgstr ""
