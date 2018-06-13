@@ -544,6 +544,16 @@ function client:lookAtObject(object)
     self.focusObject.y+self.camera.y)
 end
 
+function client:isOnCamera(ent)
+  local range = 128
+  local x = self.camera.x-love.graphics.getWidth()/2-range
+  local y = self.camera.y-love.graphics.getHeight()/2-range
+  local w = love.graphics.getWidth() + range*2
+  local h = love.graphics.getHeight() + range*2
+  return ent.dx > x and ent.dx < x + w and
+    ent.dy > y and ent.dy < y + h
+end
+
 function client:draw()
 
   libs.stars:draw(self.camera.x/2,self.camera.y/2)
@@ -552,12 +562,20 @@ function client:draw()
 
   self.gather:draw()
 
+  local drawn_objects = 0
   for object_index,object in pairs(self.objects) do
-    libs.objectrenderer.draw(object,self.objects,self.selection:isSelected(object),self.time)
+    if self:isOnCamera(object) then
+      drawn_objects = drawn_objects + 1
+      libs.objectrenderer.draw(object,self.objects,self.selection:isSelected(object),self.time)
+    end
   end
 
+  local drawn_bullets = 0
   for bullet_index,bullet in pairs(self.bullets) do
-    libs.bulletrenderer.draw(bullet,self.objects,self.time)
+    if self:isOnCamera(bullet) then
+      drawn_bullets = drawn_bullets + 1
+      libs.bulletrenderer.draw(bullet,self.objects,self.time)
+    end
   end
 
   self.explosions:draw()
@@ -613,6 +631,8 @@ function client:draw()
     end
     str = str .. "time: " .. self.time .. "\n"
     str = str .. "objects: " .. #self.objects .. "\n"
+    str = str .. "drawn_objects: " .. drawn_objects .. "\n"
+    str = str .. "drawn_bullets: " .. drawn_bullets .. "\n"
     str = str .. "update_index: " .. self.update_index .. "\n"
     str = str .. "bullet_index: " .. self.bullet_index .. "\n"
     str = str .. "connected users: " .. self.user_count .. "\n"
