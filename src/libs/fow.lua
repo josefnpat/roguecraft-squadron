@@ -13,6 +13,7 @@ function fow.new(init)
   self.update = fow.update
   self.objectVisible = fow.objectVisible
   self.updateAll = fow.updateAll
+  self.isOnCamera = fow.isOnCamera
 
   self.fow_map = {}
   self:resize()
@@ -51,17 +52,30 @@ function fow:drawSingle(fow_obj_x,fow_obj_y,fow_scale,fow_rot,fow_alpha)
   local x = fow_obj_x-self.camera.x+love.graphics.getWidth()/2
   local y = fow_obj_y-self.camera.y+love.graphics.getHeight()/2
 
-  if settings:read("fow_quality") == "img_canvas" then
-    love.graphics.draw(self.fow_img,x,y,
-      fow_rot,fow_scale,fow_scale,
-      self.fow_img:getWidth()/2,
-      self.fow_img:getHeight()/2)
-  else
-    love.graphics.setColor(0,0,0,fow_alpha)
-    love.graphics.circle("fill",x,y,512*fow_scale)
-    love.graphics.setColor(255,255,255)
+  if self:isOnCamera(fow_obj_x,fow_obj_y,fow_scale) then
+
+    if settings:read("fow_quality") == "img_canvas" then
+      love.graphics.draw(self.fow_img,x,y,
+        fow_rot,fow_scale,fow_scale,
+        self.fow_img:getWidth()/2,
+        self.fow_img:getHeight()/2)
+    else
+      love.graphics.setColor(0,0,0,fow_alpha)
+      love.graphics.circle("fill",x,y,512*fow_scale)
+      love.graphics.setColor(255,255,255)
+    end
+
   end
 
+end
+
+function fow:isOnCamera(dx,dy,fow_scale)
+  local range = 512*fow_scale
+  local x = self.camera.x-love.graphics.getWidth()/2-range
+  local y = self.camera.y-love.graphics.getHeight()/2-range
+  local w = love.graphics.getWidth() + range*2
+  local h = love.graphics.getHeight() + range*2
+  return dx > x and dx < x + w and dy > y and dy < y + h
 end
 
 function fow:draw(objects,explosions,user)
