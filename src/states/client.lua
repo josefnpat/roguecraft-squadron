@@ -73,8 +73,16 @@ end
 
 function client:selectionOnChange()
   self.actionpanel:process(self.selection,self.lovernet,self.user,self.resources)
-  for _,object in pairs(self.selection:getSelected()) do
+  local selection = self.selection:getSelected()
+  local selection_is_users = false
+  for _,object in pairs(selection) do
+    if object.user == self.user.id then
+      selection_is_users = true
+    end
     object.anim = 1
+  end
+  if selection_is_users and #selection > 0 then
+    libs.sfx.loop("select")
   end
 end
 
@@ -272,12 +280,12 @@ function client:update(dt)
       if self.player_in_combat == nil then
         self.notif:add(
           libs.i18n('mission.notification.enemy_engage'),
-          nil,
+          libs.sfx.get("notif.enemy"),
           {63,15,15,256*7/8},
           {255,0,0}
         )
       end
-      self.player_in_combat = 1
+      self.player_in_combat = 5
       object.in_combat = object.in_combat - dt
       if object.in_combat <= 0 then
         object.in_combat = nil
@@ -401,7 +409,12 @@ function client:moveSelectedObjects(x,y)
   local curAngle = 0
   local selected = self.selection:getSelected()
   local unselected = self.selection:getUnselected(self.objects)
+  local send_move_command = true
   for _,object in pairs(self.selection:getSelected()) do
+
+    if object.user ~= self.user.id then
+      send_move_command = false
+    end
 
     local tx = x+self:getCameraOffsetX()
     local ty = y+self:getCameraOffsetY()
@@ -437,7 +450,10 @@ function client:moveSelectedObjects(x,y)
     self.moveanim:add(love.mouse.getX(),love.mouse.getY(),self.camera)
   end
   -- todo: do not attempt to move objects without speed
-  self.lovernet:sendData(libs.net.op.move_objects,{o=moves})
+  if send_move_command then
+    self.lovernet:sendData(libs.net.op.move_objects,{o=moves})
+    libs.sfx.loop("move")
+  end
   for _,object in pairs(self.selection:getSelected()) do
     object._ttx,object._tty = nil,nil
   end

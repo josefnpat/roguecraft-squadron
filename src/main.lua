@@ -146,10 +146,12 @@ function love.load(arg)
     explosions = require"libs.explosions",
     gather = require"libs.gather",
     moveanim = require"libs.moveanim",
+    sfx = require"libs.sfx",
   }
 
   libs.objectrenderer.load(true)
   libs.bulletrenderer.load(true)
+  libs.sfx.load()
 
   states = {
     splash = require "states.splash",

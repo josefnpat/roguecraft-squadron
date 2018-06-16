@@ -40,7 +40,7 @@ function notif:update(dt)
       end
     else
       self._dt = self._dt + dt
-      if self._dt > 3 then
+      if self._dt > 5 then
         self._dt = 0
         self._current = nil
       end

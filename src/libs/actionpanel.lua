@@ -78,7 +78,9 @@ function actionpanel:process(selection,lovernet,user,resources)
       self.panel:addAction(
         object_type.icons[1],
         function(object)
-          if not resources:canAfford(object_type) then
+          if resources:canAfford(object_type) then
+            libs.sfx.play("action.build.start")
+          else
             resources:cantAffordNotif(object_type)
           end
           lovernet:pushData(libs.net.op.action,{a=action,t=selection:getSelectedIndexes()})
