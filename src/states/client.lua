@@ -62,6 +62,7 @@ function client:enter()
   self.explosions = libs.explosions.new()
   self.gather = libs.gather.new()
   self.moveanim = libs.moveanim.new()
+  self.controlgroups = libs.controlgroups.new()
 
   self.music:play()
 
@@ -617,6 +618,7 @@ function client:keypressed(key)
       }
     end
   end
+  self.controlgroups:keypressed(key,self.selection)
 end
 
 function client:resize()

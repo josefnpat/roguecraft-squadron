@@ -147,6 +147,7 @@ function love.load(arg)
     gather = require"libs.gather",
     moveanim = require"libs.moveanim",
     sfx = require"libs.sfx",
+    controlgroups = require"libs.controlgroups",
   }
 
   libs.objectrenderer.load(true)

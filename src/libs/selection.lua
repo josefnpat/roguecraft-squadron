@@ -16,6 +16,7 @@ function selection.new(init)
   self.endAdd = selection.endAdd
   self.endSet = selection.endSet
   self.add = selection.add
+  self.setSelected = selection.setSelected
   self.setSingleSelected = selection.setSingleSelected
   self.clearSelection = selection.clearSelection
   self.getSelected = selection.getSelected
@@ -93,6 +94,11 @@ end
 
 function selection:add(object)
   table.insert(self._objects,object)
+  self:onChange()
+end
+
+function selection:setSelected(objects)
+  self._objects = objects
   self:onChange()
 end
 
