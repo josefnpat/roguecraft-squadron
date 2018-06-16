@@ -156,7 +156,7 @@ function resources:cantAffordNotif(object_type)
     end
   end
   assert(trestype)
-  libs.sfx.play("cant_afford."..trestype)
+  libs.sfx.loop("cant_afford."..trestype)
   self.notif:add(
     libs.i18n('mission.notification.cant_afford.'..trestype),
     nil,

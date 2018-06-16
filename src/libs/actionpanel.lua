@@ -92,7 +92,7 @@ function actionpanel:process(selection,lovernet,user,resources)
         object_type.icons[1],
         function(object)
           if resources:canAfford(object_type) then
-            libs.sfx.play("action.build.start")
+            libs.sfx.loop("action.build.start")
           else
             resources:cantAffordNotif(object_type)
           end
