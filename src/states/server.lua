@@ -957,7 +957,8 @@ function server:draw()
     str = str .. i .. " - " .. v .. "\n"
   end
 
-  love.graphics.print(str)
+  love.graphics.printf(str,32,32,love.graphics.getWidth()-64,"right")
+  libs.version.draw()
 end
 
 return server

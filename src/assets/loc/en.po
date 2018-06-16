@@ -209,10 +209,10 @@ msgid "git.both.info"
 msgstr "v%{git_count} [%{git_hash}]"
 
 msgid "git.client.info"
-msgstr "Client: v%{git_count} [%{git_hash}]"
+msgstr "Game: v%{git_count} [%{git_hash}]"
 
 msgid "git.server.info"
-msgstr "Server: v%{git_count} [%{git_hash}]"
+msgstr "Release: v%{git_count} [%{git_hash}]"
 
 msgid "git.server.message"
 msgstr "Server Message"

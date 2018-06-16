@@ -656,6 +656,7 @@ function client:draw()
       str = str .. "mismatch: " .. git_count .. " ~= " .. tostring(self.server_git_count) .. "\n"
     end
     love.graphics.printf(str,32,32,love.graphics.getWidth()-64,"right")
+    libs.version.draw()
   end
 
   if self.menu_enabled then
