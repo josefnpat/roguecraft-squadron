@@ -19,6 +19,7 @@ function resources.new(init)
   self.canAfford = resources.canAfford
   self.cantAffordNotif = resources.cantAffordNotif
   self.mouseInside = resources.mouseInside
+  self.getHeight = resources.getHeight
 
   local resourceIcons = {}
   self._value = {}
@@ -48,8 +49,6 @@ function resources.new(init)
         end
         return math.floor(self._value_tween[restype]).."/"..self._cargo[restype].." ["..percent.."%]"
       end,
-      x = 32,
-      y = 32 + self.size + (restype_index-1)*48,
       width = self.size,
       icon = resourceIcons[restype],
       barValue = 0,
@@ -69,7 +68,8 @@ function resources:updateBars(dt)
     if enabled then
       local barValue = self._value_tween[restype]/self._cargo[restype]
       self.resourceBars[restype]:setBarValue(barValue)
-      self.resourceBars[restype]:setY(32+self.size+(blep)*48)
+      self.resourceBars[restype]:setX(self.x)
+      self.resourceBars[restype]:setY(self.y+(blep)*48)
       blep = blep + 1
     end
   end
@@ -172,6 +172,16 @@ function resources:mouseInside()
     end
   end
   return false
+end
+
+function resources:getHeight()
+  local enabled = 0
+  for _,bar in pairs(self.resourceBars) do
+    if bar:getBarEnable() then
+      enabled = enabled + 1
+    end
+  end
+  return enabled*48
 end
 
 return resources

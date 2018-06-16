@@ -120,6 +120,14 @@ function matrixpanel:update(dt)
   end
 end
 
+function matrixpanel:setX(val)
+  self._x = val
+end
+
+function matrixpanel:setY(val)
+  self._y = val
+end
+
 function matrixpanel:clearActions()
   self._actions = {}
 end

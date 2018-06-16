@@ -104,6 +104,20 @@ function client:getObjectByIndex(index)
   end
 end
 
+function client:stackSide()
+  -- fix tooltips before adding right side stack feature
+  local cx,cy = 32,32
+  self.minimap.x = cx
+  self.minimap.y = cy
+  cy = cy + self.minimap.size
+  self.resources.x = cx
+  self.resources.y = cy
+  cy = cy + self.resources:getHeight()
+  self.actionpanel:setX(cx)
+  self.actionpanel:setY(cy)
+  cy = cy + self.actionpanel:getHeight()
+end
+
 function client:update(dt)
 
   if not self.lovernet:hasData(libs.net.op.get_new_objects) then
@@ -262,6 +276,7 @@ function client:update(dt)
   self.explosions:update(dt)
   self.moveanim:update(dt)
   self.notif:update(dt)
+  self:stackSide()
 
   local change = false
 

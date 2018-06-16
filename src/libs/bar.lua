@@ -45,6 +45,7 @@ function barlib.new(init)
   self.setBarHeight = barlib.setBarHeight
   self.setBarWid7th = barlib.setBarWidth
   self.setBarEnable = barlib.setBarEnable
+  self.getBarEnable = barlib.getBarEnable
   self.mouseInside = barlib.mouseInside
 
   return self
@@ -165,6 +166,10 @@ end
 
 function barlib:setBarEnable(barEnable)
   self._barEnable = barEnable
+end
+
+function barlib:getBarEnable(barEnable)
+  return self._barEnable
 end
 
 function barlib:mouseInside()
