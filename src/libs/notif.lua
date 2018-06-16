@@ -24,9 +24,10 @@ function notif:draw()
     tooltipbg(
       love.graphics.getWidth()/2-w/2,
       love.graphics.getHeight()*3/4-h/2,
-      w,h)
+      w,h,self._current.bgcolor,self._current.fgcolor)
     dropshadowf(self._current.text,
       0,love.graphics.getHeight()*3/4-tfont:getHeight()/2,love.graphics.getWidth(),"center")
+    love.graphics.setColor(old_color)
   end
 end
 
@@ -54,8 +55,8 @@ function notif:update(dt)
   end
 end
 
-function notif:add(text,sfx)
-  table.insert(self._data,{text=text,sfx=sfx})
+function notif:add(text,sfx,bgcolor,fgcolor)
+  table.insert(self._data,{text=text,sfx=sfx,bgcolor=bgcolor,fgcolor=fgcolor})
 end
 
 return notif

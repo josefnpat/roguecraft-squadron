@@ -52,10 +52,11 @@ function client:enter()
   self.menu_enabled = false
   self.focusObject = nil
 
+  self.notif = libs.notif.new()
   self.camera = libs.hump.camera(0,0)
   self.minimap = libs.minimap.new()
   self.fow = libs.fow.new{camera=self.camera}
-  self.resources = libs.resources.new{}
+  self.resources = libs.resources.new{notif=self.notif}
   self.planets = libs.planets.new{camera=self.camera}
   self.actionpanel = libs.actionpanel.new()
   self.explosions = libs.explosions.new()
@@ -179,6 +180,11 @@ function client:update(dt)
       local object = self:getObjectByIndex(sobject.i)
       if object then
         for i,v in pairs(sobject.u) do
+          -- todo: change notifications
+          if i == "health" and v < object[i] then
+            object.in_combat = 1
+          end
+          -- back to work
           if v == "nil" then
             object[i] = nil
           else
@@ -247,6 +253,7 @@ function client:update(dt)
   self.fow:updateAll(dt,self.objects,self.user)
   self.explosions:update(dt)
   self.moveanim:update(dt)
+  self.notif:update(dt)
 
   local change = false
 
@@ -261,6 +268,22 @@ function client:update(dt)
       self.gather:add(object.dx,object.dy)
     end
 
+    if object.in_combat then
+      if self.player_in_combat == nil then
+        self.notif:add(
+          libs.i18n('mission.notification.enemy_engage'),
+          nil,
+          {63,15,15,256*7/8},
+          {255,0,0}
+        )
+      end
+      self.player_in_combat = 1
+      object.in_combat = object.in_combat - dt
+      if object.in_combat <= 0 then
+        object.in_combat = nil
+      end
+    end
+
     libs.objectrenderer.update(object,self.objects,dt,self.time)
     if object.user == self.user.id then
       self.fow:update(dt,object)
@@ -272,6 +295,13 @@ function client:update(dt)
       local object_type = libs.objectrenderer.getType(object.type)
       self.explosions:add(object,object_type.size)
       table.remove(self.objects,object_index)
+    end
+  end
+
+  if self.player_in_combat then
+    self.player_in_combat = self.player_in_combat - dt
+    if self.player_in_combat <= 0 then
+      self.player_in_combat = nil
     end
   end
 
@@ -624,6 +654,8 @@ function client:draw()
     self.resources:draw()
     self.actionpanel:draw()
   end
+
+  self.notif:draw()
 
   if self.lovernetprofiler then
     self.lovernetprofiler:draw()

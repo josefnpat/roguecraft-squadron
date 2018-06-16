@@ -8,6 +8,7 @@ function resources.new(init)
   self.x = init.x or 32
   self.y = init.y or 32
   self.size = init.size or 192
+  self.notif = init.notif
 
   self.draw = resources.draw
   self.updateBars = resources.updateBars
@@ -16,6 +17,7 @@ function resources.new(init)
   self.set = resources.set
   self.setFull = resources.setFull
   self.canAfford = resources.canAfford
+  self.cantAffordNotif = resources.cantAffordNotif
   self.mouseInside = resources.mouseInside
 
   local resourceIcons = {}
@@ -114,6 +116,14 @@ function resources:set(restype,value)
   if self._value[restype] == nil then
     print("warning: resource type `"..tostring(restype).."` does not exist.")
   else
+    if self._value[restype] ~= self._cargo[restype] and value == self._cargo[restype] then
+      self.notif:add(
+        libs.i18n('mission.notification.cargo_full.'..restype),
+        nil,
+        {63,63,15,256*7/8},
+        {255,255,0}
+      )
+    end
     self._value[restype] = value
   end
 end
@@ -132,6 +142,26 @@ function resources:canAfford(object_type)
     end
   end
   return true
+end
+
+function resources:cantAffordNotif(object_type)
+  local trestype
+  for restype,value in pairs(object_type.cost) do
+    if self._value[restype] < value then
+      if trestype then
+        trestype = "multiple"
+      else
+        trestype = restype
+      end
+    end
+  end
+  assert(trestype)
+  self.notif:add(
+    libs.i18n('mission.notification.cant_afford.'..trestype),
+    nil,
+    {63,63,15,256*7/8},
+    {255,255,0}
+  )
 end
 
 function resources:mouseInside()

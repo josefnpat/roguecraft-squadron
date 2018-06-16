@@ -424,8 +424,26 @@ msgstr "Enemy reinforcements have arrived"
 msgid "mission.notification.enemy_engage"
 msgstr "You have engaged the enemy"
 
-msgid "mission.notification.cargo_full"
-msgstr "Your cargo bays are full"
+msgid "mission.notification.cargo_full.ore"
+msgstr "Your ore cargo bays are full"
+
+msgid "mission.notification.cargo_full.material"
+msgstr "Your material cargo bays are full"
+
+msgid "mission.notification.cargo_full.crew"
+msgstr "Your crew quarters are full"
+
+msgid "mission.notification.cant_afford.ore"
+msgstr "Insufficient Ore"
+
+msgid "mission.notification.cant_afford.material"
+msgstr "Insufficient Material"
+
+msgid "mission.notification.cant_afford.crew"
+msgstr "Insufficient Crew"
+
+msgid "mission.notification.cant_afford.multiple"
+msgstr "Insufficient Resources"
 
 msgid "pause.continue"
 msgstr "Continue"
