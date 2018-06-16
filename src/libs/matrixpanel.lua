@@ -66,7 +66,7 @@ end
 
 function matrixpanel:getHeight()
   local row,iconsize,ipad = self:getIconData()
-  return math.floor(#self._actions/row+1)*iconsize+ipad*2
+  return math.ceil(#self._actions/row)*iconsize+ipad*2
 end
 
 function matrixpanel:getWidth()

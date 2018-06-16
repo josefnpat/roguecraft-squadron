@@ -116,6 +116,9 @@ function client:stackSide()
   self.actionpanel:setX(cx)
   self.actionpanel:setY(cy)
   cy = cy + self.actionpanel:getHeight()
+  self.selection:setX(cx)
+  self.selection:setY(cy)
+  cy = cy + self.selection:getHeight()
 end
 
 function client:update(dt)
@@ -272,6 +275,7 @@ function client:update(dt)
   self.gather:update(dt)
   self.resources:update(dt)
   self.actionpanel:update(dt)
+  self.selection:update(dt)
   self.fow:updateAll(dt,self.objects,self.user)
   self.explosions:update(dt)
   self.moveanim:update(dt)
@@ -361,7 +365,8 @@ function client:update(dt)
       end
     end
 
-    if not self.minimap:mouseInside() and not self.resources:mouseInside() and not self.actionpanel:mouseInside() then
+    if not self.minimap:mouseInside() and not self.resources:mouseInside() and
+      not self.actionpanel:mouseInside() and not self.selection:mouseInside() then
       local dx,dy = libs.camera_edge.get_delta(dt)
       self.camera:move(dx,dy)
     end
@@ -481,6 +486,8 @@ function client:mousepressed(x,y,button)
       -- nop
     elseif self.actionpanel:mouseInside(x,y) then
       -- nop
+    elseif self.selection:mouseInside(x,y) then
+      -- nop
     else
       self.selection:start(
         x+self:getCameraOffsetX(),
@@ -498,6 +505,8 @@ function client:mousereleased(x,y,button)
       -- nop
     elseif self.actionpanel:mouseInside(x,y) and not self.selection:selectionInProgress() then
       self.actionpanel:runHoverAction()
+    elseif self.selection:mouseInside(x,y) and not self.selection:selectionInProgress() then
+      self.selection:runHoverAction()
     else
       if self.selection:isSelection(x+self:getCameraOffsetX(),y+self:getCameraOffsetY()) then
 
@@ -683,6 +692,7 @@ function client:draw()
   if self.focusObject then
     self.minimap:draw(self.camera,self.focusObject,self.objects,self.fow,self.user)
     self.resources:draw()
+    self.selection:drawPanel()
     self.actionpanel:draw()
   end
 

@@ -4,8 +4,8 @@ function actionpanel.new(init)
   init = init or {}
   local self = {}
 
-  self._x = 32
-  self._y = 32
+  self._x = init.x or 32
+  self._y = init.y or 32
   self.update = actionpanel.update
   self.draw = actionpanel.draw
   self.process = actionpanel.process
@@ -21,7 +21,7 @@ function actionpanel.new(init)
     x=self._x,
     y=self._y,
     width=192,
-    padding=6,
+    padding=1,
   }
 
   return self
@@ -129,7 +129,7 @@ function actionpanel:runHoverAction()
 end
 
 function actionpanel:getHeight()
-  return self.panel:getHeight()
+  return self.panel:hasActions() and self.panel:getHeight() or 0
 end
 
 return actionpanel
