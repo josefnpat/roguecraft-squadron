@@ -73,9 +73,8 @@ function matrixpanel:getWidth()
   return self._width
 end
 
-function matrixpanel:draw()
-
-  tooltipbg(self._x,self._y,self._width,self:getHeight())
+function matrixpanel:draw(bg,fg)
+  tooltipbg(self._x,self._y,self._width,self:getHeight(),bg,fg)
   for ai,action in pairs(self._actions) do
     local x,y,w,h = self:getIconArea(ai)
     local ix,iy = x + self._padding, y + self._padding

@@ -202,7 +202,7 @@ end
 
 function selection:drawPanel()
   if self.panel:hasActions() then
-    self.panel:draw()
+    self.panel:draw({63,63,63,256*7/8},{255,255,255})
   end
 end
 
