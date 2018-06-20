@@ -222,11 +222,11 @@ function server.createObject(storage,type_index,x,y,user)
   if object_type.health then
     object.health = object_type.health.max
   end
+  table.insert(storage.objects,object)
   if user then
     user.count = (user.count or 0) + 1
     server.updateCargo(storage,user)
   end
-  table.insert(storage.objects,object)
   return object
 end
 
