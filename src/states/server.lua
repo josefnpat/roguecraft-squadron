@@ -619,6 +619,15 @@ function server:init()
 
   end)
 
+  self.lovernet:onRemoveUser(function(user)
+    for _,object in pairs(self.lovernet:getStorage().objects) do
+      if object.user == user.id then
+        server:addUpdate(object,{remove=true},"delete_objects")
+        object.remove = true
+      end
+    end
+  end)
+
   server.setupActions(self.lovernet:getStorage())
 
   local maptype = "spacedpockets"
