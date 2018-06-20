@@ -328,6 +328,39 @@ function server:init()
     end
   end)
 
+  self.lovernet:addOp(libs.net.op.delete_objects)
+  self.lovernet:addValidateOnServer(libs.net.op.delete_objects,{d=function(data)
+    if type(data)~='table' then
+      return false,'data.d is not a table ['..tostring(data).."]"
+    end
+    for _,v in pairs(data) do
+      if type(v)~='number' then
+        return false,'value in data.o is not a number ['..tostring(v.i).."]"
+      end
+    end
+    return true
+  end})
+  self.lovernet:addValidateOnServer(libs.net.op.delete_objects,{d='table'})
+  self.lovernet:addProcessOnServer(libs.net.op.delete_objects,function(self,peer,arg,storage)
+    local user = self:getUser(peer)
+
+    for _,object in pairs(storage.objects) do
+      -- todo: cache indexes
+      for _,sobject_index in pairs(arg.d) do
+        if object.index == sobject_index and object.user == user.id then
+          local object_type = libs.objectrenderer.getType(object.type)
+          if object_type.cost then
+            for restype,cost in pairs(object_type.cost) do
+             server:changeResource(user,restype,cost)
+            end
+          end
+          server:addUpdate(object,{remove=true},"delete_objects")
+          object.remove = true
+        end
+      end
+    end
+  end)
+
   local object_field_exceptions = {"build_queue"}
   local function isNotException(val)
     for _,exception_value in pairs(object_field_exceptions) do

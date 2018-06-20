@@ -37,6 +37,7 @@ function client:enter()
   self.lovernet:addOp(libs.net.op.get_resources)
   self.lovernet:addOp(libs.net.op.time)
   self.lovernet:addOp(libs.net.op.action)
+  self.lovernet:addOp(libs.net.op.delete_objects)
 
   -- init
   self.lovernet:pushData(libs.net.op.git_count)
@@ -617,6 +618,11 @@ function client:keypressed(key)
           y=32,
       }
     end
+  end
+  if key == "delete" then
+    self.lovernet:sendData(libs.net.op.delete_objects,{
+      d=self.selection:getSelectedIndexes(),
+    })
   end
   self.controlgroups:keypressed(key,self.selection)
 end

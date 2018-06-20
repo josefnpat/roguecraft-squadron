@@ -2,9 +2,10 @@ local net = {}
 
 net.op = {
   git_count =           'g',
-  user_count =          'c',
+  user_count =          'n',
   get_user =            'u',
-  debug_create_object = 'd',
+  debug_create_object = 'c',
+  delete_objects =      'd',
   get_new_objects =     'o',
   get_new_updates =     'p',
   get_new_bullets =     'b',
@@ -112,6 +113,9 @@ function net.hasTarget(object,time)
 end
 
 function net.objectShouldBeRemoved(object)
+  if object.remove then
+    return true
+  end
   if object.health and object.health <= 0 then
     return true
   end
