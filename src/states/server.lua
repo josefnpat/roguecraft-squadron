@@ -26,6 +26,8 @@ server._genResourcesDefault = {
   crew = math.huge,
 }
 
+server._maxUserUnits = math.huge
+
 server._addUpdateProfile = {}
 
 function server.setupActions(storage)
@@ -183,6 +185,9 @@ function server.updateCargo(storage,user)
 end
 
 function server.objectCanAfford(object_type,user)
+  if user.count >= server._maxUserUnits then
+    return false
+  end
   if object_type.cost == nil then
     return true
   end
@@ -217,10 +222,11 @@ function server.createObject(storage,type_index,x,y,user)
   if object_type.health then
     object.health = object_type.health.max
   end
-  table.insert(storage.objects,object)
   if user then
+    user.count = (user.count or 0) + 1
     server.updateCargo(storage,user)
   end
+  table.insert(storage.objects,object)
   return object
 end
 
@@ -942,6 +948,8 @@ function server:update(dt)
     if libs.net.objectShouldBeRemoved(object) then
       table.remove(storage.objects,object_index)
       if user then
+        user.count = user.count - 1
+        assert(user.count>=0)
         self.updateCargo(storage,user)
       end
     end
