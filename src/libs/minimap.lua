@@ -11,7 +11,7 @@ function minimap.new(init)
   self.x = init.x or 32
   self.y = init.y or 32
   self.size = init.size or 192
-  self.scale = init.scale or 32
+  self.scale = init.scale or libs.net.mapsize/self.size*2
   self.fow_mult = init.fow_mult or 1.5
   self.fow_image_size = init.fow_image_size or 1024
 
