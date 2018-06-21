@@ -150,6 +150,15 @@ function selection:setUser(user)
 end
 
 function selection:onChange()
+
+  local newobjects = {}
+  for _,object in pairs(self._objects) do
+    if not libs.net.objectShouldBeRemoved(object) then
+      table.insert(newobjects,object)
+    end
+  end
+  self._objects = newobjects
+
   self.panel:clearActions()
   for _,object in pairs(self:getSelected()) do
     local object_type = libs.objectrenderer.getType(object.type)

@@ -358,6 +358,7 @@ function client:update(dt)
 
   if change then
     self.resources:calcCargo(self.objects,self.user)
+    self.selection:onChange()
   end
 
   for bullet_index,bullet in pairs(self.bullets) do
