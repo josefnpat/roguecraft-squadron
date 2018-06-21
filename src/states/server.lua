@@ -591,6 +591,35 @@ function server:init()
     return love.timer.getTime()
   end)
 
+  self.lovernet:addOp(libs.net.op.get_chat)
+  self.lovernet:addValidateOnServer(libs.net.op.get_chat,{i='number'})
+  self.lovernet:addProcessOnServer(libs.net.op.get_chat,function(self,peer,arg,storage)
+    local chats = {}
+    for _,chat in pairs(storage.chats) do
+      if chat.index > arg.i then
+        table.insert(chats,{
+          i=chat.index,
+          u=chat.user,
+          t=chat.text,
+        })
+      end
+    end
+    return chats
+  end)
+
+  -- todo: add UTF8 check
+  self.lovernet:addOp(libs.net.op.add_chat)
+  self.lovernet:addValidateOnServer(libs.net.op.add_chat,{t='string'})
+  self.lovernet:addProcessOnServer(libs.net.op.add_chat,function(self,peer,arg,storage)
+    local user = self:getUser(peer)
+    storage.global_chat_index = storage.global_chat_index + 1
+    table.insert(storage.chats,{
+      index=storage.global_chat_index,
+      user=user.id,
+      text=arg.t,
+    })
+  end)
+
   self.lovernet:getStorage().objects = {}
   self.lovernet:getStorage().objects_index = 0
 
@@ -599,6 +628,9 @@ function server:init()
 
   self.lovernet:getStorage().bullets = {}
   self.lovernet:getStorage().global_bullet_index = 0
+
+  self.lovernet:getStorage().chats = {}
+  self.lovernet:getStorage().global_chat_index = 0
 
   self.last_user_index = 0
   local lovernet_scope = self

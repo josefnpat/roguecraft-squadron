@@ -14,6 +14,8 @@ net.op = {
   get_resources =       'r',
   time =                't',
   action =              'a',
+  add_chat =            'k',
+  get_chat =            'l',
 }
 net.resourceTypes = {"ore","material","crew"}
 net.mapsize = 32*192/2

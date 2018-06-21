@@ -148,6 +148,7 @@ function love.load(arg)
     moveanim = require"libs.moveanim",
     sfx = require"libs.sfx",
     controlgroups = require"libs.controlgroups",
+    chat = require"libs.chat",
   }
 
   libs.objectrenderer.load(true)

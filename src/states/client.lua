@@ -1,3 +1,5 @@
+local utf8 = require"utf8"
+
 local client = {}
 
 function client:init()
@@ -24,7 +26,6 @@ end
 function client:enter()
 
   self.lovernet = libs.lovernet.new{serdes=libs.bitser,ip=self._remote_address}
-  -- todo: make common functions use short names
   self.lovernet:addOp(libs.net.op.git_count)
   self.lovernet:addOp(libs.net.op.user_count)
   self.lovernet:addOp(libs.net.op.get_user)
@@ -38,6 +39,8 @@ function client:enter()
   self.lovernet:addOp(libs.net.op.time)
   self.lovernet:addOp(libs.net.op.action)
   self.lovernet:addOp(libs.net.op.delete_objects)
+  self.lovernet:addOp(libs.net.op.add_chat)
+  self.lovernet:addOp(libs.net.op.get_chat)
 
   -- init
   self.lovernet:pushData(libs.net.op.git_count)
@@ -47,6 +50,7 @@ function client:enter()
   self.bullet_index = 0
   self.user_count = 0
   self.time = 0
+  self.chat_index = 0
   self.selection = libs.selection.new{onChange=client.selectionOnChange,onChangeScope=self}
   self.objects = {}
   self.bullets = {}
@@ -64,6 +68,7 @@ function client:enter()
   self.gather = libs.gather.new()
   self.moveanim = libs.moveanim.new()
   self.controlgroups = libs.controlgroups.new()
+  self.chat = libs.chat.new()
 
   self.music:play()
 
@@ -121,6 +126,9 @@ function client:stackSide()
   self.selection:setX(cx)
   self.selection:setY(cy)
   cy = cy + self.selection:getHeight()
+
+  self.chat:setX(love.graphics:getWidth() - self.chat:getWidth() - 32)
+  self.chat:setY(love.graphics:getHeight() - self.chat:getHeight() - 32)
 end
 
 function client:update(dt)
@@ -142,6 +150,9 @@ function client:update(dt)
   end
   if not self.lovernet:hasData(libs.net.op.time) then
     self.lovernet:pushData(libs.net.op.time)
+  end
+  if not self.lovernet:hasData(libs.net.op.get_chat) then
+    self.lovernet:pushData(libs.net.op.get_chat,{i=self.chat_index})
   end
 
   if self.lovernetprofiler then
@@ -168,6 +179,16 @@ function client:update(dt)
     self.time = self.lovernet:getCache(libs.net.op.time)
   else
     self.time = self.time + dt
+  end
+
+  if self.lovernet:getCache(libs.net.op.get_chat) then
+    for _,msg in pairs(self.lovernet:getCache(libs.net.op.get_chat)) do
+      if msg.i > self.chat_index then
+        self.chat:addData(msg.u,msg.t)
+      end
+      self.chat_index = math.max(self.chat_index,msg.i)
+    end
+    self.lovernet:clearCache(libs.net.op.get_chat)
   end
 
   if self.lovernet:getCache(libs.net.op.get_new_objects) then
@@ -282,6 +303,7 @@ function client:update(dt)
   self.explosions:update(dt)
   self.moveanim:update(dt)
   self.notif:update(dt)
+  self.chat:update(dt)
   self:stackSide()
 
   local change = false
@@ -368,7 +390,8 @@ function client:update(dt)
     end
 
     if not self.minimap:mouseInside() and not self.resources:mouseInside() and
-      not self.actionpanel:mouseInside() and not self.selection:mouseInside() then
+      not self.actionpanel:mouseInside() and not self.selection:mouseInside() and
+      not self.chat:mouseInside() then
       local dx,dy = libs.camera_edge.get_delta(dt)
       self.camera:move(dx,dy)
     end
@@ -490,6 +513,8 @@ function client:mousepressed(x,y,button)
       -- nop
     elseif self.selection:mouseInside(x,y) then
       -- nop
+    elseif self.chat:mouseInside(x,y) then
+      -- nop
     else
       self.selection:start(
         x+self:getCameraOffsetX(),
@@ -500,6 +525,7 @@ end
 
 function client:mousereleased(x,y,button)
   if self.menu_enabled then return end
+  self.chat:setActive(false)
   if button == 1 then
     if self.minimap:mouseInside() and not self.selection:selectionInProgress() then
       -- nop
@@ -509,6 +535,8 @@ function client:mousereleased(x,y,button)
       self.actionpanel:runHoverAction()
     elseif self.selection:mouseInside(x,y) and not self.selection:selectionInProgress() then
       self.selection:runHoverAction()
+    elseif self.chat:mouseInside(x,y) and not self.selection:selectionInProgress() then
+      self.chat:setActive(true)
     else
       if self.selection:isSelection(x+self:getCameraOffsetX(),y+self:getCameraOffsetY()) then
 
@@ -605,9 +633,6 @@ function client:keypressed(key)
   if key == "`" then
     debug_mode = not debug_mode
   end
-  if key == "escape" then
-    self.menu_enabled = not self.menu_enabled
-  end
   if debug_mode and key == "p" then
     if self.lovernetprofiler then
       self.lovernetprofiler = nil
@@ -619,12 +644,53 @@ function client:keypressed(key)
       }
     end
   end
-  if key == "delete" then
-    self.lovernet:sendData(libs.net.op.delete_objects,{
-      d=self.selection:getSelectedIndexes(),
-    })
+  if key == "return" then
+    if self.chat:getActive() then
+      if self.chat:getBuffer() ~= "" then
+        self.lovernet:sendData(libs.net.op.add_chat,{
+          t=self.chat:getBuffer(),
+        })
+        self.chat:setBuffer("")
+      end
+      self.chat:setActive(false)
+    else
+      self.chat:setActive(true)
+    end
   end
-  self.controlgroups:keypressed(key,self.selection)
+  if key == "escape" then
+    if self.chat:getActive() then
+      self.chat:setActive(false)
+      self.chat:setBuffer("")
+    else
+      self.menu_enabled = not self.menu_enabled
+    end
+  end
+  if self.chat:getActive() then
+    if key == "backspace" then
+      local buffer = self.chat:getBuffer()
+      local byteoffset = utf8.offset(buffer, -1)
+      if byteoffset then
+        buffer = string.sub(buffer, 1, byteoffset - 1)
+      end
+      self.chat:setBuffer(buffer)
+    end
+  else
+    if key == "z" then
+      self.chat:setHeight( self.chat:getHeight() == 320 and 640 or 320)
+    end
+    if key == "delete" then
+      self.lovernet:sendData(libs.net.op.delete_objects,{
+        d=self.selection:getSelectedIndexes(),
+      })
+    end
+    self.controlgroups:keypressed(key,self.selection)
+  end
+end
+
+function client:textinput(char)
+  if self.chat:getActive() then
+    self.chat:setBuffer(self.chat:getBuffer()..char)
+  end
 end
 
 function client:resize()
@@ -705,6 +771,8 @@ function client:draw()
   end
 
   self.notif:draw()
+
+  self.chat:draw()
 
   if self.lovernetprofiler then
     self.lovernetprofiler:draw()
