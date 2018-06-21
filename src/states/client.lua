@@ -676,7 +676,7 @@ function client:keypressed(key)
     end
   else
     if key == "z" then
-      self.chat:setHeight( self.chat:getHeight() == 320 and 640 or 320)
+      self.chat:setHeight( self.chat:getHeight() == 240 and 640 or 240)
     end
     if key == "delete" then
       self.lovernet:sendData(libs.net.op.delete_objects,{
