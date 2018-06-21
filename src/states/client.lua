@@ -389,12 +389,15 @@ function client:update(dt)
       end
     end
 
-    if not self.minimap:mouseInside() and not self.resources:mouseInside() and
-      not self.actionpanel:mouseInside() and not self.selection:mouseInside() and
-      not self.chat:mouseInside() then
-      local dx,dy = libs.camera_edge.get_delta(dt)
-      self.camera:move(dx,dy)
+    local dx,dy =0,0
+    if self:mouseInsideUI() then
+      if not self.chat:getActive() then
+        dx,dy = libs.camera_edge.get_keyb_delta(dt)
+      end
+    else
+      dx,dy = libs.camera_edge.get_dual_delta(dt)
     end
+    self.camera:move(dx,dy)
 
     if self.minimap:mouseInside() and not self.selection:selectionInProgress() then
       if love.mouse.isDown(1) then
@@ -403,6 +406,12 @@ function client:update(dt)
     end
   end
 
+end
+
+function client:mouseInsideUI()
+  return self.minimap:mouseInside() or self.resources:mouseInside() or
+      self.actionpanel:mouseInside() or self.selection:mouseInside() or
+      self.chat:mouseInside()
 end
 
 function client:CartArchSpiral(initRad,turnDistance,angle)

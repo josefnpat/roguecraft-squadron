@@ -2727,7 +2727,7 @@ function mission:updateMission(dt)
         end
       end
     else
-      local dx,dy = libs.camera_edge.get_delta(dt)
+      local dx,dy = libs.camera_edge.get_dual_delta(dt)
       self.camera:move(dx,dy)
       self:clampCamera()
     end
