@@ -1,0 +1,8 @@
+msgid "mission.object.debris.name"
+msgstr "Debris"
+
+msgid "mission.object.debris.info"
+msgstr "This debris contains [Material] which can be collected by a [Scrapper]."
+
+msgid "mission.object.debris.build"
+msgstr ""

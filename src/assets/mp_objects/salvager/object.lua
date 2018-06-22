@@ -1,7 +1,7 @@
 return function()
   return {
     type = "salvager",
-    cost = {material=25,crew=5},
+    cost = {material=50,crew=5},
     fow = 0.5,
     crew = 5,
     size = 32,

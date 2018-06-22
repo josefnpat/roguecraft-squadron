@@ -354,12 +354,6 @@ function server:init()
       -- todo: cache indexes
       for _,sobject_index in pairs(arg.d) do
         if object.index == sobject_index and object.user == user.id then
-          local object_type = libs.objectrenderer.getType(object.type)
-          if object_type.cost then
-            for restype,cost in pairs(object_type.cost) do
-             server:changeResource(user,restype,cost)
-            end
-          end
           server:addUpdate(object,{remove=true},"delete_objects")
           object.remove = true
         end
@@ -989,9 +983,20 @@ function server:update(dt)
     if libs.net.objectShouldBeRemoved(object) then
       table.remove(storage.objects,object_index)
       if user then
+
         user.count = user.count - 1
         assert(user.count>=0)
         self.updateCargo(storage,user)
+        local cx,cy = libs.net.getCurrentLocation(object,love.timer.getTime())
+        local object_type = libs.objectrenderer.getType(object.type)
+        if object_type.cost and object_type.cost.material then
+          for i = 1,math.floor(object_type.cost.material/25/2) do
+            local ox = math.random(-object_type.size,object_type.size)
+            local oy = math.random(-object_type.size,object_type.size)
+            server.createObject(storage,"debris",cx+ox,cy+oy,nil)
+          end
+        end
+
       end
     end
 

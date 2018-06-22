@@ -1,7 +1,6 @@
 return function()
   return {
     type = "asteroid",
-    variation = math.random(0,4),
     size = 32,
     ore_supply = math.random(500,1500),
     rotate = (math.random(0,1)*2-1)/10,
