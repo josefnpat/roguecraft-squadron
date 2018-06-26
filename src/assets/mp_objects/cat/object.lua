@@ -1,5 +1,5 @@
 local names = {
-  "Dinah","Alice","Grumpy Cat","Lil' Bub","Maru","Waffles","Morris","Bert",
+  "Dinah","Alice","Grumpy Cat","Lil' Bub","Maru","Waffles","Morris","Bert","Snowball","Tobias"
 }
 
 return function()
