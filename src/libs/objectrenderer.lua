@@ -189,6 +189,11 @@ function objectrenderer.update(object,objects,dt,time)
 
   if object.tx and object.ty then
     object.angle = libs.net.getAngle(object.x,object.y,object.tx,object.ty)
+  elseif object.target then
+    local target = libs.net.findObject(objects,object.target)
+    if target then
+      object.angle = libs.net.getAngle(object.dx,object.dy,target.dx,target.dy)
+    end
   end
 
   object.dangle = object.dangle + libs.net.shortestAngle(object.dangle,object.angle)*dt*4

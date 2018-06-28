@@ -103,6 +103,14 @@ function net.getCurrentLocation(object,time)
   end
 end
 
+function net.findObject(objects,index)
+  for _,object in pairs(objects) do
+    if object.index == index then
+      return object
+    end
+  end
+end
+
 function net.hasTarget(object,time)
   if object.target ~= nil then
     return true
