@@ -9,9 +9,9 @@ server._throttle_object_updates = math.huge
 server._throttle_bullet_updates = math.huge
 
 server._genMapDefault = {
-  scrap=200,
-  station=25,
-  asteroid=100,
+  scrap=50,
+  station=8,
+  asteroid=25,
   cat=1,
 }
 
@@ -990,7 +990,7 @@ function server:update(dt)
         local cx,cy = libs.net.getCurrentLocation(object,love.timer.getTime())
         local object_type = libs.objectrenderer.getType(object.type)
         if object_type.cost and object_type.cost.material then
-          for i = 1,math.floor(object_type.cost.material/25/2) do
+          for i = 1,math.floor(object_type.cost.material/25/4) do
             local ox = math.random(-object_type.size,object_type.size)
             local oy = math.random(-object_type.size,object_type.size)
             server.createObject(storage,"debris",cx+ox,cy+oy,nil)

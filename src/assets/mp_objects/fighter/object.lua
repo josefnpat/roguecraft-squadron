@@ -5,7 +5,7 @@ return function()
     fow = 0.75,
     crew = 15,
     size = 16,
-    speed = 200,
+    speed = 300,
     health = {max = 15,},
     shoot = {
       image = "missile",

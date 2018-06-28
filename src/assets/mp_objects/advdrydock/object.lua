@@ -8,7 +8,7 @@ return function()
     fow = 0.5,
     crew = 100,
     size = 48,
-    speed = 150,
+    speed = 50,
     health = {max = 50,},
     repair = false,
     actions = {

@@ -7,7 +7,7 @@ return function()
     size = 64,
     speed = 150,
     health = {max = 75,},
-    material = 1600,
+    material = 600,
     repair = false,
     actions = {
       "salvage","repair",
