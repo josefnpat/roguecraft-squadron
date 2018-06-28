@@ -26,6 +26,7 @@ function matrixpanel.new(init)
   self.setIconPadding = matrixpanel.setIconPadding
   self.clearActions = matrixpanel.clearActions
   self.addAction = matrixpanel.addAction
+  self.sort = matrixpanel.sort
   self.mouseInside = matrixpanel.mouseInside
   self.runHoverAction = matrixpanel.runHoverAction
   self.hasActions = matrixpanel.hasActions
@@ -131,13 +132,20 @@ function matrixpanel:clearActions()
   self._actions = {}
 end
 
-function matrixpanel:addAction(image,callback,color,text)
+function matrixpanel:addAction(image,callback,color,text,weight)
   table.insert(self._actions,{
     image = image,
     callback = callback,
     color = color,
     text = text,
+    weight = weight,
   })
+end
+
+function matrixpanel:sort(f)
+  table.sort(self._actions,function(a,b)
+    return a.weight < b.weight
+  end)
 end
 
 function matrixpanel:hasActions()

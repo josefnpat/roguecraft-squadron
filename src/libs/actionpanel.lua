@@ -110,8 +110,10 @@ function actionpanel:process(selection,lovernet,user,resources)
             'mission.build_status.ready',
             {build_name=build_name,build_cost=build_cost}
           ) .. "\n" .. info
-        end
+        end,
+        object_type.cost and object_type.cost.material or 0
       )
+      self.panel:sort()
     end
 
   end
