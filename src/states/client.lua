@@ -834,6 +834,7 @@ function client:draw()
     end
     str = str .. "time: " .. self.time .. "\n"
     str = str .. "objects: " .. #self.objects .. "\n"
+    str = str .. "count_player_objects: " .. tostring(self.count_player_objects) .. "\n"
     str = str .. "drawn_objects: " .. drawn_objects .. "\n"
     str = str .. "drawn_bullets: " .. drawn_bullets .. "\n"
     str = str .. "update_index: " .. self.update_index .. "\n"
