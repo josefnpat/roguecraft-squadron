@@ -451,6 +451,18 @@ msgstr "Control group %{group} set"
 msgid "mission.notification.controlgroup.use"
 msgstr "Control group %{group} recalled"
 
+msgid "mission.mpdisconnect.defeat"
+msgstr "DEFEAT"
+
+msgid "mission.mpdisconnect.victory"
+msgstr "VICTORY"
+
+msgid "mission.mpdisconnect.surrender"
+msgstr "Surrender"
+
+msgid "mission.mpdisconnect.spectate"
+msgstr "Spectate"
+
 msgid "pause.continue"
 msgstr "Continue"
 

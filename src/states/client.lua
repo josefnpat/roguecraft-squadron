@@ -56,6 +56,7 @@ function client:enter()
   self.bullets = {}
   self.menu_enabled = false
   self.focusObject = nil
+  self.game_start = false
 
   self.notif = libs.notif.new()
   self.camera = libs.hump.camera(0,0)
@@ -69,6 +70,7 @@ function client:enter()
   self.moveanim = libs.moveanim.new()
   self.controlgroups = libs.controlgroups.new()
   self.chat = libs.chat.new()
+  self.mpdisconnect = libs.mpdisconnect.new()
 
   self.music:play()
 
@@ -109,6 +111,16 @@ function client:getObjectByIndex(index)
       return v
     end
   end
+end
+
+function client:countPlayerObjects(user)
+  local count = 0
+  for _,object in pairs(self.objects) do
+    if object.user == user then
+      count = count + 1
+    end
+  end
+  return count
 end
 
 function client:stackSide()
@@ -218,6 +230,7 @@ function client:update(dt)
     end
     if change then
       self.resources:calcCargo(self.objects,self.user)
+      self.game_start = true
     end
     self.lovernet:clearCache(libs.net.op.get_new_objects)
   end
@@ -305,6 +318,11 @@ function client:update(dt)
   self.notif:update(dt)
   self.chat:update(dt)
   self:stackSide()
+
+  if self.game_start and self.user and not self.mpdisconnect:running() and self.count_player_objects == 0 then
+    self.mpdisconnect:setLose()
+  end
+  self.mpdisconnect:update(dt)
 
   local change = false
 
@@ -752,7 +770,10 @@ function client:draw()
   self.selection:draw(self.camera)
 
   self.camera:detach()
-  self.fow:draw(self.objects,{},self.user)
+  self.count_player_objects = self.user and self:countPlayerObjects(self.user.id) or math.huge
+  if not self.user or self.count_player_objects > 0 then
+    self.fow:draw(self.objects,{},self.user)
+  end
   self.camera:attach()
 
   if #self.selection:getSelected() == 1 then
@@ -774,14 +795,22 @@ function client:draw()
   self.camera:detach()
 
   if self.focusObject then
-    self.minimap:draw(self.camera,self.focusObject,self.objects,self.fow,self.user)
+
+    self.minimap:draw(
+      self.camera,
+      self.focusObject,
+      self.objects,
+      self.fow,
+      self.user,
+      self.count_player_objects == 0)
+
     self.resources:draw()
     self.selection:drawPanel()
     self.actionpanel:draw()
   end
 
   self.notif:draw()
-
+  self.mpdisconnect:draw()
   self.chat:draw()
 
   if self.lovernetprofiler then

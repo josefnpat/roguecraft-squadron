@@ -37,7 +37,7 @@ function minimap:getRealCoords()
   return nx,ny
 end
 
-function minimap:draw(camera,focus,objects,fow,user)
+function minimap:draw(camera,focus,objects,fow,user,disable)
 
   local fow_map = fow:getMap()
   local x,y,w,h = self.x, self.y,self.size,self.size
@@ -73,7 +73,7 @@ function minimap:draw(camera,focus,objects,fow,user)
 
   for _,object in pairs(objects) do
 
-    if user.id == object.user or fow:objectVisible(object) then
+    if disable or user.id == object.user or fow:objectVisible(object) then
       local type = libs.objectrenderer.getType(object.type)
       local color = {255,255,0,127}
       if object.user then

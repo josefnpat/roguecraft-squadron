@@ -149,6 +149,8 @@ function love.load(arg)
     sfx = require"libs.sfx",
     controlgroups = require"libs.controlgroups",
     chat = require"libs.chat",
+    button = require"libs.button",
+    mpdisconnect = require"libs.mpdisconnect",
   }
 
   libs.objectrenderer.load(true)
