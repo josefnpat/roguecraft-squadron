@@ -140,11 +140,20 @@ function server.maps.spacedpockets.generate(storage,config)
     end
   end
 
+  return pockets
+
 end
 
-function server.generatePlayer(storage,user)
-  local x = math.random(-libs.net.mapsize,libs.net.mapsize)
-  local y = math.random(-libs.net.mapsize,libs.net.mapsize)
+function server.generatePlayer(storage,user,pocket)
+  local x,y
+  if pocket then
+    local t = math.random()*math.pi*2
+    x = pocket.x + math.cos(t)*512
+    y = pocket.y + math.sin(t)*512
+  else
+    x = math.random(-libs.net.mapsize,libs.net.mapsize)
+    y = math.random(-libs.net.mapsize,libs.net.mapsize)
+  end
   server.createObject(storage,server._genPlayerFirst,x,y,user)
   for object_type,object_count in pairs(server._genPlayerDefault) do
     for i = 1,object_count do
@@ -684,15 +693,18 @@ function server:newGame()
 
   print('Server starting new game')
 
-  for _,user in pairs(self.lovernet:getUsers()) do
-    -- todo: add unique names
-    self.generatePlayer(self.lovernet:getStorage(),user)
-  end
-
   local maptype = "spacedpockets"
-  self.maps[maptype].generate(
+  local pockets = self.maps[maptype].generate(
     self.lovernet:getStorage(),
     server.maps.spacedpockets.config)
+
+  local user_count = 0
+  for peer,user in pairs(self.lovernet:getUsers()) do
+    -- todo: add unique names
+    user_count = user_count + 1
+    self.generatePlayer(self.lovernet:getStorage(),user,pockets[user_count])
+  end
+
 end
 
 -- TARGET IS
