@@ -598,21 +598,19 @@ function client:mousereleased(x,y,button)
     elseif self.chat:mouseInside(x,y) and not self.selection:selectionInProgress() then
       self.chat:setActive(true)
     else
+
+      if not love.keyboard.isDown('lshift') then
+        self.selection:clearSelected()
+      end
+
       if self.selection:isSelection(x+self:getCameraOffsetX(),y+self:getCameraOffsetY()) then
 
-        if love.keyboard.isDown('lshift') then
-          self.selection:endAdd(
-            x+self:getCameraOffsetX(),
-            y+self:getCameraOffsetY(),
-            self.objects)
-        else
-          self.selection:endSet(
-            x+self:getCameraOffsetX(),
-            y+self:getCameraOffsetY(),
-            self.objects)
-        end
+        self.selection:endAdd(
+          x+self:getCameraOffsetX(),
+          y+self:getCameraOffsetY(),
+          self.objects)
 
-      else
+      else -- not self.selection:isSelection
 
         self.selection:clearSelection()
         local closest_object,closest_object_distance = self:findNearestDraw(
@@ -620,34 +618,27 @@ function client:mousereleased(x,y,button)
           x+self:getCameraOffsetX(),
           y+self:getCameraOffsetY()
         )
-
         if self.last_selected == closest_object then
           self.last_selected = nil
           self.last_selected_timeout = nil
-
-          local new_selection = {}
-
           for _,object in pairs(self.objects) do
             if object.user == self.user.id and object.type == closest_object.type then
               self.selection:add(object)
             end
           end
-
         else
-
           self.last_selected = closest_object
           self.last_selected_timeout = 0.5 -- default for windows
-
           if closest_object then
             local type = libs.objectrenderer.getType(closest_object.type)
             if closest_object_distance <= type.size then
-              self.selection:setSingleSelected(closest_object)
+              self.selection:add(closest_object)
             end
           end
-
         end
 
-      end
+      end -- end of self.selection:isSelection
+
     end
   elseif button == 2 then
 

@@ -19,6 +19,7 @@ function selection.new(init)
   self.setSelected = selection.setSelected
   self.setSingleSelected = selection.setSingleSelected
   self.clearSelection = selection.clearSelection
+  self.clearSelected = selection.clearSelected
   self.getSelected = selection.getSelected
   self.getUnselected = selection.getUnselected
   self.isSelected = selection.isSelected
@@ -109,6 +110,9 @@ end
 
 function selection:clearSelection()
   self.sx,self.sy = nil,nil
+end
+
+function selection:clearSelected()
   self._objects = {}
   self:onChange()
 end
