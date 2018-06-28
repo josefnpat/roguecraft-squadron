@@ -18,7 +18,7 @@ return function()
     type = "station",
     names = names,
     size = 64,
-    crew_supply = math.random(25,50),
+    crew_supply = math.random(75,150),
     rotate = (math.random(0,1)*2-1)/10,
     pc = false,
   }

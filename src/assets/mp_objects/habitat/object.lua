@@ -5,7 +5,7 @@ return function()
     fow = 0.5,
     crew = 5,
     crew_gather = 10,
-    crew_generate = 2,
+    crew_generate = 1,
     size = 32,
     speed = 50,
     health = {max = 5,},
