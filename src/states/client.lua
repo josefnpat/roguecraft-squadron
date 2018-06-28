@@ -599,6 +599,12 @@ function client:mousereleased(x,y,button)
       self.chat:setActive(true)
     else
 
+      for _,object in pairs(self.selection:getSelected()) do
+        if object.user ~= self.user.id then
+          self.selection:clearSelected()
+        end
+      end
+
       if not love.keyboard.isDown('lshift') then
         self.selection:clearSelected()
       end
@@ -632,7 +638,11 @@ function client:mousereleased(x,y,button)
           if closest_object then
             local type = libs.objectrenderer.getType(closest_object.type)
             if closest_object_distance <= type.size then
-              self.selection:add(closest_object)
+              if closest_object.user == self.user.id then
+                self.selection:add(closest_object)
+              else
+                self.selection:setSingleSelected(closest_object)
+              end
             end
           end
         end
