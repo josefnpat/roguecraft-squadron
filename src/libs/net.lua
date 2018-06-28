@@ -4,6 +4,8 @@ net.op = {
   git_count =           'g',
   user_count =          'n',
   get_user =            'u',
+  get_config =          'f',
+  set_config =          'h',
   debug_create_object = 'c',
   delete_objects =      'd',
   get_new_objects =     'o',
@@ -109,6 +111,15 @@ function net.findObject(objects,index)
       return object
     end
   end
+end
+
+function net.hasUserObjects(objects)
+  for _,object in pairs(objects) do
+    if object.user then
+      return true
+    end
+  end
+  return false
 end
 
 function net.hasTarget(object,time)

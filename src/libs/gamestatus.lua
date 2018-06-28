@@ -10,6 +10,11 @@ function gamestatus.new(init)
   self.remainingPlayers = gamestatus.remainingPlayers
   self.isPlayerAlive = gamestatus.isPlayerAlive
   self.isPlayerWin = gamestatus.isPlayerWin
+  self.isPlayerLose = gamestatus.isPlayerLose
+  self._checkCanWinLose = gamestatus._checkCanWinLose
+
+  self._can_win_lose = false
+  self._start_game = false
 
   return self
 end
@@ -20,9 +25,6 @@ function gamestatus:update(dt,objects)
     if object.user then
       self.counts[object.user] = (self.counts[object.user] or 0) + 1
     end
-  end
-  if self:remainingPlayers() > 1 then
-    self._start_game = true
   end
 end
 
@@ -47,7 +49,26 @@ function gamestatus:isPlayerAlive(user)
 end
 
 function gamestatus:isPlayerWin(user)
-  return self:remainingPlayers() == 1 and self:isPlayerAlive(user)
+  if self:_checkCanWinLose(user) then
+    return self:remainingPlayers() == 1 and self:isPlayerAlive(user)
+  end
+  return false
+end
+
+function gamestatus:isPlayerLose(user)
+  if self:_checkCanWinLose(user) then
+    return not self:isPlayerAlive(user)
+  end
+  return false
+end
+
+function gamestatus:_checkCanWinLose(user)
+  if not self._can_win_lose then
+    if self.counts[user.id] ~= nil and self.counts[user.id] > 0 then
+      self._can_win_lose = true
+    end
+  end
+  return self._can_win_lose
 end
 
 return gamestatus

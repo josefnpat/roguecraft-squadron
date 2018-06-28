@@ -29,6 +29,8 @@ function client:enter()
   self.lovernet:addOp(libs.net.op.git_count)
   self.lovernet:addOp(libs.net.op.user_count)
   self.lovernet:addOp(libs.net.op.get_user)
+  self.lovernet:addOp(libs.net.op.get_config)
+  self.lovernet:addOp(libs.net.op.set_config)
   self.lovernet:addOp(libs.net.op.debug_create_object)
   self.lovernet:addOp(libs.net.op.get_new_objects)
   self.lovernet:addOp(libs.net.op.get_new_updates)
@@ -56,6 +58,7 @@ function client:enter()
   self.bullets = {}
   self.menu_enabled = false
   self.focusObject = nil
+  self.config = nil
 
   self.notif = libs.notif.new()
   self.camera = libs.hump.camera(0,0)
@@ -69,6 +72,7 @@ function client:enter()
   self.moveanim = libs.moveanim.new()
   self.controlgroups = libs.controlgroups.new()
   self.chat = libs.chat.new()
+  self.mpconnect = libs.mpconnect.new{lovernet=self.lovernet}
   self.mpdisconnect = libs.mpdisconnect.new()
   self.gamestatus = libs.gamestatus.new()
 
@@ -145,18 +149,29 @@ end
 
 function client:update(dt)
 
-  if not self.lovernet:hasData(libs.net.op.get_new_objects) then
-    self.lovernet:pushData(libs.net.op.get_new_objects,{i=self.object_index})
+  if not self.gamestatus:isStarted() then
+
+    if not self.lovernet:hasData(libs.net.op.get_config) then
+      self.lovernet:pushData(libs.net.op.get_config)
+    end
+
+  else -- not self.gamestatus:isStarted()
+
+    if not self.lovernet:hasData(libs.net.op.get_new_objects) then
+      self.lovernet:pushData(libs.net.op.get_new_objects,{i=self.object_index})
+    end
+    if not self.lovernet:hasData(libs.net.op.get_new_updates) then
+      self.lovernet:pushData(libs.net.op.get_new_updates,{u=self.update_index})
+    end
+    if not self.lovernet:hasData(libs.net.op.get_new_bullets) then
+      self.lovernet:pushData(libs.net.op.get_new_bullets,{b=self.bullet_index})
+    end
+    if not self.lovernet:hasData(libs.net.op.get_resources) then
+      self.lovernet:pushData(libs.net.op.get_resources)
+    end
+
   end
-  if not self.lovernet:hasData(libs.net.op.get_new_updates) then
-    self.lovernet:pushData(libs.net.op.get_new_updates,{u=self.update_index})
-  end
-  if not self.lovernet:hasData(libs.net.op.get_new_bullets) then
-    self.lovernet:pushData(libs.net.op.get_new_bullets,{b=self.bullet_index})
-  end
-  if not self.lovernet:hasData(libs.net.op.get_resources) then
-    self.lovernet:pushData(libs.net.op.get_resources)
-  end
+
   if not self.lovernet:hasData(libs.net.op.user_count) then
     self.lovernet:pushData(libs.net.op.user_count)
   end
@@ -165,6 +180,12 @@ function client:update(dt)
   end
   if not self.lovernet:hasData(libs.net.op.get_chat) then
     self.lovernet:pushData(libs.net.op.get_chat,{i=self.chat_index})
+  end
+
+  if not self.gamestatus:isStarted() then
+    if self.config and self.config.game_start then
+      self.gamestatus:startGame()
+    end
   end
 
   if self.lovernetprofiler then
@@ -185,6 +206,11 @@ function client:update(dt)
     self.user = self.lovernet:getCache(libs.net.op.get_user)
     self.lovernet:clearCache(libs.net.op.get_user)
     self.selection:setUser(self.user.id)
+  end
+
+  if self.lovernet:getCache(libs.net.op.get_config) then
+    self.config = self.lovernet:getCache(libs.net.op.get_config)
+    self.lovernet:clearCache(libs.net.op.get_config)
   end
 
   if self.lovernet:getCache(libs.net.op.time) then
@@ -318,14 +344,16 @@ function client:update(dt)
   self.chat:update(dt)
   self:stackSide()
 
-  self.mpdisconnect:update(dt)
   self.gamestatus:update(dt,self.objects)
   if self.gamestatus:isStarted() then
-    if not self.gamestatus:isPlayerAlive(self.user) then
+    self.mpdisconnect:update(dt)
+    if self.gamestatus:isPlayerLose(self.user) then
       self.mpdisconnect:setLose()
     elseif self.gamestatus:isPlayerWin(self.user) then
       self.mpdisconnect:setWin()
     end
+  else
+    self.mpconnect:update(dt)
   end
 
   local change = false
@@ -814,7 +842,12 @@ function client:draw()
   end
 
   self.notif:draw()
-  self.mpdisconnect:draw()
+  if self.gamestatus:isStarted() then
+    self.mpdisconnect:draw()
+  else
+    self.mpconnect:draw(self.config,self.user_count)
+  end
+
   self.chat:draw()
 
   if self.lovernetprofiler then

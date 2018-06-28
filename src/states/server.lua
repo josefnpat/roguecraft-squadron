@@ -28,8 +28,6 @@ server._genResourcesDefault = {
 
 server._maxUserUnits = math.huge
 
-server._addUpdateProfile = {}
-
 function server.setupActions(storage)
 
   server.actions = {}
@@ -324,6 +322,19 @@ function server:init()
     return {id=user.id}
   end)
 
+  self.lovernet:addOp(libs.net.op.get_config)
+  self.lovernet:addProcessOnServer(libs.net.op.get_config,function(self,peer,arg,storage)
+    return storage.config
+  end)
+
+  self.lovernet:addOp(libs.net.op.set_config)
+  self.lovernet:addValidateOnServer(libs.net.op.set_config,{d='table'})
+  self.lovernet:addProcessOnServer(libs.net.op.set_config,function(self,peer,arg,storage)
+    for i,v in pairs(arg.d) do
+      storage.config[i] = v
+    end
+  end)
+
   self.lovernet:addOp(libs.net.op.debug_create_object)
   self.lovernet:addValidateOnServer(libs.net.op.debug_create_object,{x='number',y='number',c='number'})
   self.lovernet:addProcessOnServer(libs.net.op.debug_create_object,function(self,peer,arg,storage)
@@ -614,19 +625,8 @@ function server:init()
     })
   end)
 
-  self.lovernet:getStorage().objects = {}
-  self.lovernet:getStorage().objects_index = 0
+  server:resetGame()
 
-  self.lovernet:getStorage().updates = {}
-  self.lovernet:getStorage().global_update_index = 0
-
-  self.lovernet:getStorage().bullets = {}
-  self.lovernet:getStorage().global_bullet_index = 0
-
-  self.lovernet:getStorage().chats = {}
-  self.lovernet:getStorage().global_chat_index = 0
-
-  self.last_user_index = 0
   local lovernet_scope = self
 
   self.lovernet:onAddUser(function(user)
@@ -640,9 +640,6 @@ function server:init()
     user.last_bullet = 0
     user.id = lovernet_scope.last_user_index
     lovernet_scope.last_user_index = lovernet_scope.last_user_index + 1
-    -- todo: add unique names
-    server.generatePlayer(self.lovernet:getStorage(),user)
-
   end)
 
   self.lovernet:onRemoveUser(function(user)
@@ -656,12 +653,46 @@ function server:init()
 
   server.setupActions(self.lovernet:getStorage())
 
-  local maptype = "spacedpockets"
+end
 
-  server.maps[maptype].generate(
+function server:resetGame()
+
+  print('Server resetting game')
+
+  self._addUpdateProfile = {}
+
+  self.lovernet:getStorage().config = {
+    game_start=false,
+  }
+
+  self.lovernet:getStorage().objects = {}
+  self.lovernet:getStorage().objects_index = 0
+
+  self.lovernet:getStorage().updates = {}
+  self.lovernet:getStorage().global_update_index = 0
+
+  self.lovernet:getStorage().bullets = {}
+  self.lovernet:getStorage().global_bullet_index = 0
+
+  self.lovernet:getStorage().chats = {}
+  self.lovernet:getStorage().global_chat_index = 0
+
+  self.last_user_index = 0
+end
+
+function server:newGame()
+
+  print('Server starting new game')
+
+  for _,user in pairs(self.lovernet:getUsers()) do
+    -- todo: add unique names
+    self.generatePlayer(self.lovernet:getStorage(),user)
+  end
+
+  local maptype = "spacedpockets"
+  self.maps[maptype].generate(
     self.lovernet:getStorage(),
     server.maps.spacedpockets.config)
-
 end
 
 -- TARGET IS
@@ -850,6 +881,18 @@ end
 function server:update(dt)
   self.lovernet:update(dt)
   local storage = self.lovernet:getStorage()
+
+  if storage.config.game_started then
+    if not libs.net.hasUserObjects(storage.objects) then
+      server:resetGame()
+    end
+  else
+    if storage.config.game_start then
+      storage.config.game_started = true
+      server:newGame()
+    end
+  end
+
   for object_index,object in pairs(storage.objects) do
 
     local object_type = libs.objectrenderer.getType(object.type)
@@ -999,7 +1042,6 @@ function server:update(dt)
 
       end
     end
-
   end
 
   for bullet_index,bullet in pairs(storage.bullets) do
