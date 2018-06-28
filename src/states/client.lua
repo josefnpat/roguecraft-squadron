@@ -56,7 +56,6 @@ function client:enter()
   self.bullets = {}
   self.menu_enabled = false
   self.focusObject = nil
-  self.game_start = false
 
   self.notif = libs.notif.new()
   self.camera = libs.hump.camera(0,0)
@@ -71,6 +70,7 @@ function client:enter()
   self.controlgroups = libs.controlgroups.new()
   self.chat = libs.chat.new()
   self.mpdisconnect = libs.mpdisconnect.new()
+  self.gamestatus = libs.gamestatus.new()
 
   self.music:play()
 
@@ -230,7 +230,6 @@ function client:update(dt)
     end
     if change then
       self.resources:calcCargo(self.objects,self.user)
-      self.game_start = true
     end
     self.lovernet:clearCache(libs.net.op.get_new_objects)
   end
@@ -319,10 +318,15 @@ function client:update(dt)
   self.chat:update(dt)
   self:stackSide()
 
-  if self.game_start and self.user and not self.mpdisconnect:running() and self.count_player_objects == 0 then
-    self.mpdisconnect:setLose()
-  end
   self.mpdisconnect:update(dt)
+  self.gamestatus:update(dt,self.objects)
+  if self.gamestatus:isStarted() then
+    if not self.gamestatus:isPlayerAlive(self.user) then
+      self.mpdisconnect:setLose()
+    elseif self.gamestatus:isPlayerWin(self.user) then
+      self.mpdisconnect:setWin()
+    end
+  end
 
   local change = false
 
@@ -770,8 +774,7 @@ function client:draw()
   self.selection:draw(self.camera)
 
   self.camera:detach()
-  self.count_player_objects = self.user and self:countPlayerObjects(self.user.id) or math.huge
-  if not self.user or self.count_player_objects > 0 then
+  if not self.gamestatus:isStarted() or self.gamestatus:isPlayerAlive(self.user) then
     self.fow:draw(self.objects,{},self.user)
   end
   self.camera:attach()
@@ -802,7 +805,8 @@ function client:draw()
       self.objects,
       self.fow,
       self.user,
-      self.count_player_objects == 0)
+      not self.gamestatus:isPlayerAlive(self.user)
+    )
 
     self.resources:draw()
     self.selection:drawPanel()
@@ -834,7 +838,6 @@ function client:draw()
     end
     str = str .. "time: " .. self.time .. "\n"
     str = str .. "objects: " .. #self.objects .. "\n"
-    str = str .. "count_player_objects: " .. tostring(self.count_player_objects) .. "\n"
     str = str .. "drawn_objects: " .. drawn_objects .. "\n"
     str = str .. "drawn_bullets: " .. drawn_bullets .. "\n"
     str = str .. "update_index: " .. self.update_index .. "\n"

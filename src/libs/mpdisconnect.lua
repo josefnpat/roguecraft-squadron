@@ -100,12 +100,12 @@ function mpdisconnect:draw()
 
       local width = 128
 
-      self.surrender:setX((love.graphics.getWidth()-width)/2-width*5/8)
+      self.surrender:setX((love.graphics.getWidth()-width)/2+width*5/8)
       self.surrender:setY(love.graphics.getHeight()*5/8)
       self.surrender:setWidth(width)
       self.surrender:draw()
 
-      self.spectate:setX((love.graphics.getWidth()-width)/2+width*5/8)
+      self.spectate:setX((love.graphics.getWidth()-width)/2-width*5/8)
       self.spectate:setY(love.graphics.getHeight()*5/8)
       self.spectate:setWidth(width)
       self.spectate:draw()
