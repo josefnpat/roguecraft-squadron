@@ -11,7 +11,7 @@ return function()
       reload = 0.125*1.5*10,
       damage = 4*1.5*10,
       speed = 400,
-      range = 400*1.5,
+      range = 600,
       aggression = 400,
       sfx = {
         construct = "laser",

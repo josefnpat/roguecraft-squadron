@@ -6,7 +6,7 @@ function credits:enter()
   "\n" ..
   "Josef Patoprsty (@josefnpat) — Code, Art, Design, Voice Talent\n" ..
   "Ashley Hooper (@ByteDesigning) — Code, Art\n" ..
-  "Ashley Schuster (SnowSchu) — Marketing and Testing\n" ..
+  "Ashley Schuster (SnowSchu) — Marketing and QA\n" ..
   "Elliot Krasny (@ElliotKrasny) — Composer\n" ..
   "Laura Vk (Solsforest) — Art, Voice Talent\n" ..
   "Arjan Vk (Vivid) — Code, SFX, Voice Talent\n" ..
@@ -14,7 +14,7 @@ function credits:enter()
   "Ethan Blackley — Video Marketing\n" ..
   "\n\n\n"
 
-  self.testers = {"Forer","EntranceJew","ByteDesigning","Vivid"}
+  self.testers = {"Peter Oswald","Ashley Shuster","ByteDesigning","Vivid","EntranceJew","Forer"}
   -- Thank you so much whiteland92!!! <3
   self.ibtwitch = {"icecooltea","whiteland92"}
   self.twitch = {"bartbes","whitebot_","ashlon23","unekpl","hartlomiej",
@@ -49,7 +49,7 @@ end
 
 function credits:update(dt)
 
-if not love.keyboard.isDown("space") then 
+  if not love.keyboard.isDown("space") then
     self.scroll_speed = 32
   else
     self.scroll_speed = 128

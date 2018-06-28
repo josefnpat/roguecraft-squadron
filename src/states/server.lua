@@ -93,7 +93,7 @@ server.maps.spacedpockets = {
     attemptRatio = 10,
     size = 1024/2,
     range = 1024*2,
-    count = 8,
+    count = 4,
   },
 }
 
