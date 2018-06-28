@@ -9,9 +9,9 @@ server._throttle_object_updates = math.huge
 server._throttle_bullet_updates = math.huge
 
 server._genMapDefault = {
-  scrap=50,
-  station=8,
-  asteroid=25,
+  scrap=100,
+  station=16,
+  asteroid=50,
   cat=1,
 }
 
@@ -93,7 +93,7 @@ server.maps.spacedpockets = {
     attemptRatio = 10,
     size = 1024/2,
     range = 1024*2,
-    count = 4,
+    count = 8,
   },
 }
 
