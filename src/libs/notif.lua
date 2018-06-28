@@ -40,7 +40,7 @@ function notif:update(dt)
       end
     else
       self._dt = self._dt + dt
-      if self._dt > 5 then
+      if self._dt > (self._current.dt or 5) then
         self._dt = 0
         self._current = nil
       end
@@ -55,8 +55,8 @@ function notif:update(dt)
   end
 end
 
-function notif:add(text,sfx,bgcolor,fgcolor)
-  table.insert(self._data,{text=text,sfx=sfx,bgcolor=bgcolor,fgcolor=fgcolor})
+function notif:add(text,sfx,bgcolor,fgcolor,dt)
+  table.insert(self._data,{text=text,sfx=sfx,bgcolor=bgcolor,fgcolor=fgcolor,dt=dt})
 end
 
 return notif

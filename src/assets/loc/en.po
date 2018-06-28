@@ -445,6 +445,12 @@ msgstr "Insufficient Crew"
 msgid "mission.notification.cant_afford.multiple"
 msgstr "Insufficient Resources"
 
+msgid "mission.notification.controlgroup.set"
+msgstr "Control group %{group} set"
+
+msgid "mission.notification.controlgroup.use"
+msgstr "Control group %{group} recalled"
+
 msgid "pause.continue"
 msgstr "Continue"
 
