@@ -177,7 +177,7 @@ function objectrenderer.draw(object,objects,isSelected,time)
 
 end
 
-function objectrenderer.update(object,objects,dt,time)
+function objectrenderer.update(object,objects,dt,time,user)
   local cx,cy = libs.net.getCurrentLocation(object,time)
   object.dx = (object.dx or cx) + (cx-object.dx)/2
   object.dy = (object.dy or cy) + (cy-object.dy)/2
@@ -208,7 +208,9 @@ function objectrenderer.update(object,objects,dt,time)
   if object.build_t then
     object.build_dt = (object.build_dt or object.build_t) - dt
     if object.build_dt <= 0 then
-      libs.sfx.play("action.build.end")
+      if self.user and self.user.id == object.user then
+        libs.sfx.play("action.build.end")
+      end
       object.build_t = nil
       object.build_dt = nil
     end

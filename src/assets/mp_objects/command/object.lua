@@ -6,7 +6,7 @@ return function()
     crew = 100,
     size = 64,
     speed = 150,
-    health = {max = 75,},
+    health = {max = 150,},
     material = 600,
     repair = false,
     actions = {

@@ -369,7 +369,7 @@ function client:update(dt)
       self.gather:add(object.dx,object.dy)
     end
 
-    if object.in_combat then
+    if self.user and self.user.id == object.user and object.in_combat then
       if self.player_in_combat == nil then
         self.notif:add(
           libs.i18n('mission.notification.enemy_engage'),
@@ -385,7 +385,7 @@ function client:update(dt)
       end
     end
 
-    libs.objectrenderer.update(object,self.objects,dt,self.time)
+    libs.objectrenderer.update(object,self.objects,dt,self.time,self.user)
     if object.user == self.user.id then
       self.fow:update(dt,object)
     end

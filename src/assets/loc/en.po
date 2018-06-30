@@ -458,7 +458,7 @@ msgid "mission.mpdisconnect.victory"
 msgstr "VICTORY"
 
 msgid "mission.mpdisconnect.surrender"
-msgstr "Surrender"
+msgstr "Quit"
 
 msgid "mission.mpdisconnect.spectate"
 msgstr "Spectate"

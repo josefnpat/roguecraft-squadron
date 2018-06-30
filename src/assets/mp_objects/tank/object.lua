@@ -9,9 +9,9 @@ return function()
     shoot = {
       image = "missile",
       reload = 0.125*10,
-      damage = 0.25*10,
+      damage = 0.25*20,
       speed = 200,
-      range = 100,
+      range = 50,
       aggression = 400,
       sfx = {
         construct = "laser",
