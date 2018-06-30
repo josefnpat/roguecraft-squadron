@@ -8,8 +8,8 @@ return function()
     fow = 2,
     shoot = {
       image = "missile",
-      reload = 0.25*10,
-      damage = 2*2.5,
+      reload = 0.25*2.5,
+      damage = 2*1.25,
       speed = 400,
       range = 600,
       aggression = 400,

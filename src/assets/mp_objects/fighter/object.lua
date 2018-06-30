@@ -11,7 +11,7 @@ return function()
       image = "missile",
       reload = 0.25*10,
       damage = 0.6*10,
-      speed = 400,
+      speed = 300,
       range = 150,
       aggression = 400,
       sfx = {
@@ -21,6 +21,6 @@ return function()
     },
     repair = false,
     actions = {"salvage","repair"},
-    build_time = 2,
+    build_time = 10,
   }
 end
