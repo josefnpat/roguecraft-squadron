@@ -13,9 +13,11 @@ function selection.new(init)
   self.setOnChange = selection.setOnChange
   self.selectionInProgress = selection.selectionInProgress
   self.isSelection = selection.isSelection
+  self.addOrRemove = selection.addOrRemove
   self.endAdd = selection.endAdd
   self.endSet = selection.endSet
   self.add = selection.add
+  self.remove = selection.remove
   self.setSelected = selection.setSelected
   self.setSingleSelected = selection.setSingleSelected
   self.clearSelection = selection.clearSelection
@@ -66,6 +68,18 @@ function selection:isSelection(x,y)
   return self.sx and self.sy and (math.abs(self.sx-x)>16 or math.abs(self.sy-y)>16)
 end
 
+function selection:addOrRemove(object)
+  local found
+  for i,v in pairs(self._objects) do
+    if v == object then
+      table.remove(self._objects,i)
+      self:onChange()
+      return
+    end
+  end
+  self:add(object)
+end
+
 function selection:endAdd(x,y,objects)
   if self.sx and self.sy then
     local xmin,ymin,xmax,ymax = self:_getMinMax(self.sx,self.sy,x,y)
@@ -94,8 +108,19 @@ function selection:endSet(x,y,objects)
 end
 
 function selection:add(object)
-  table.insert(self._objects,object)
-  self:onChange()
+  if not self:isSelected(object) then
+    table.insert(self._objects,object)
+    self:onChange()
+  end
+end
+
+function selection:remove(object)
+  for i,v in pairs(self._objects) do
+    if v == object then
+      table.remove(self._objects,i)
+      self:onChange()
+    end
+  end
 end
 
 function selection:setSelected(objects)

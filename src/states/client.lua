@@ -356,6 +356,14 @@ function client:update(dt)
     self.mpconnect:update(dt)
   end
 
+  if self.last_selected_timeout then
+    self.last_selected_timeout = self.last_selected_timeout - dt
+    if self.last_selected_timeout <= 0 then
+      self.last_selected_timeout = nil
+      self.last_selected = nil
+    end
+  end
+
   local change = false
 
   for object_index,object in pairs(self.objects) do
@@ -639,7 +647,7 @@ function client:mousereleased(x,y,button)
             local type = libs.objectrenderer.getType(closest_object.type)
             if closest_object_distance <= type.size then
               if closest_object.user == self.user.id then
-                self.selection:add(closest_object)
+                self.selection:addOrRemove(closest_object)
               else
                 self.selection:setSingleSelected(closest_object)
               end
