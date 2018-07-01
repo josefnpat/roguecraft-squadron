@@ -433,7 +433,7 @@ function client:update(dt)
 
   else
 
-    if love.keyboard.isDown("space") then
+    if not self.chat:getActive() and love.keyboard.isDown("space") then
       local avgx,avgy,avgc = 0,0,0
       for _,object in pairs(self.selection:getSelected()) do
         avgx = avgx + object.dx
@@ -699,7 +699,7 @@ function client:keypressed(key)
       c=love.keyboard.isDown("lshift") and 100 or 1,
     })
   end
-  if key == "`" then
+  if not self.chat:getActive() and key == "`" then
     debug_mode = not debug_mode
   end
   if debug_mode and key == "p" then
