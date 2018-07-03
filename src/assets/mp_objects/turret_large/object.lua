@@ -20,5 +20,6 @@ return function()
     repair = false,
     actions = {"salvage","repair"},
     build_time = 20,
+    subdangle_speed = 0,
   }
 end

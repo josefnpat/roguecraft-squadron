@@ -7,6 +7,7 @@ function objectrenderer.load(loadAssets)
     local dir = "assets/mp_objects/"..type
     local object_dir = dir.."/object"
     local renders_dir = dir.."/renders"
+    local subrenders_dir = dir.."/subrenders"
     local icons_dir = dir.."/icons"
 
     local object = require(object_dir)()
@@ -40,7 +41,12 @@ function objectrenderer.load(loadAssets)
       object.renders = {}
       object.icons = {}
       for _,render in pairs(renders) do
-        table.insert(object.renders,love.graphics.newImage(renders_dir.."/"..render))
+        local renderdata = {}
+        renderdata.main = love.graphics.newImage(renders_dir.."/"..render)
+        if love.filesystem.exists(subrenders_dir.."/"..render) then
+          renderdata.sub = love.graphics.newImage(subrenders_dir.."/"..render)
+        end
+        table.insert(object.renders,renderdata)
         table.insert(object.icons,love.graphics.newImage(icons_dir.."/"..render))
       end
     end
@@ -128,14 +134,26 @@ function objectrenderer.draw(object,objects,isSelected,time)
   end
 
   love.graphics.setColor(255,255,255)
+
+  if type.renders[object.render].sub then
+    love.graphics.draw(
+      type.renders[object.render].sub,
+      object.dx,
+      object.dy,
+      object.subdangle,
+      1,1,
+      type.renders[object.render].sub:getWidth()/2,
+      type.renders[object.render].sub:getHeight()/2)
+  end
+
   love.graphics.draw(
-    type.renders[object.render],
+    type.renders[object.render].main,
     object.dx,
     object.dy,
     object.dangle,
     1,1,
-    type.renders[object.render]:getWidth()/2,
-    type.renders[object.render]:getHeight()/2)
+    type.renders[object.render].main:getWidth()/2,
+    type.renders[object.render].main:getHeight()/2)
 
   love.graphics.setColor(255,255,255)
   if debug_mode then
@@ -196,7 +214,8 @@ function objectrenderer.update(object,objects,dt,time,user)
     end
   end
 
-  object.dangle = object.dangle + libs.net.shortestAngle(object.dangle,object.angle)*dt*4
+  object.dangle = object.dangle + libs.net.shortestAngle(object.dangle,object.angle)*dt*(object_type.dangle_speed or 4)
+  object.subdangle = object.subdangle + libs.net.shortestAngle(object.subdangle,object.angle)*dt*(object_type.subdangle_speed or 4)
 
   if object.anim then
     object.anim = object.anim - dt*4
