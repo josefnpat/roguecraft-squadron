@@ -794,7 +794,7 @@ function client:draw()
   for object_index,object in pairs(self.objects) do
     if self:isOnCamera(object) then
       drawn_objects = drawn_objects + 1
-      libs.objectrenderer.draw(object,self.objects,self.selection:isSelected(object),self.time)
+      libs.objectrenderer.draw(object,self.objects,self.selection,self.time)
     end
   end
 

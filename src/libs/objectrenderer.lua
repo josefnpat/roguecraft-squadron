@@ -86,7 +86,7 @@ function objectrenderer.randomNameIndex(type)
   end
 end
 
-function objectrenderer.draw(object,objects,isSelected,time)
+function objectrenderer.draw(object,objects,selection,time)
 
   local type = objectrenderer.getType(object.type)
 
@@ -98,6 +98,8 @@ function objectrenderer.draw(object,objects,isSelected,time)
       type.size+math.sin(object.anim*math.pi)*4
     )
   end
+
+  local isSelected = selection:isSelected(object)
 
   if isSelected then
     love.graphics.setColor(libs.net.getUser(object.user).selected_color)
@@ -115,11 +117,9 @@ function objectrenderer.draw(object,objects,isSelected,time)
       object.dy,
       type.size
     )
-
-    if type.shoot then
+    if type.shoot and #selection:getSelected() == 1 then
       libs.ring.draw(object.dx,object.dy,type.shoot.range)
     end
-
   end
 
   if object.health then

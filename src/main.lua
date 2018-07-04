@@ -154,6 +154,7 @@ function love.load(arg)
     mpdisconnect = require"libs.mpdisconnect",
     mpconnect = require"libs.mpconnect",
     gamestatus = require"libs.gamestatus",
+    ring = require"libs.ring",
   }
 
   libs.objectrenderer.load(true)
