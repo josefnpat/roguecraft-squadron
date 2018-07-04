@@ -1,0 +1,8 @@
+msgid "mission.object.mine.name"
+msgstr "Mine"
+
+msgid "mission.object.mine.info"
+msgstr "An immobile bomb that explodes when near enemies."
+
+msgid "mission.object.mine.build"
+msgstr ""

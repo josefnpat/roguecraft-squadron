@@ -890,6 +890,37 @@ function server:collectNearby(object)
   end
 end
 
+function server:explodeNearby(object)
+  local object_type = libs.objectrenderer.getType(object.type)
+  if object_type.explode then
+
+    local storage = self.lovernet:getStorage()
+    local explode = false
+    local nearby = {}
+
+    for _,tobject in pairs(storage.objects) do
+      if tobject.health and libs.net.distance(object,tobject,love.timer.getTime()) <= object_type.explode.range then
+        table.insert(nearby,tobject)
+        if tobject.user ~= object.user then
+          explode = true
+        end
+      end
+    end
+
+    if explode then
+      object.health = 0
+      self:addUpdate(object,{health=0,},"explodeNearby:source")
+      for _,tobject in pairs(nearby) do
+        tobject.health = math.max(0,tobject.health - object_type.explode.damage)
+        self:addUpdate(tobject,{
+          health=tobject.health,
+        },"explodeNearby:target")
+      end
+    end
+
+  end
+end
+
 function server:update(dt)
   self.lovernet:update(dt)
   local storage = self.lovernet:getStorage()
@@ -929,6 +960,7 @@ function server:update(dt)
 
     self:collectNearby(object)
     self:attackNearby(object)
+    self:explodeNearby(object)
 
     if user then
 
