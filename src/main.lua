@@ -110,6 +110,7 @@ function love.load(arg)
       camera = require "libs.camera",
     },
     healthcolor = require"libs.healthcolor",
+    healthbar = require"libs.healthbar",
     splash = require "libs.splash",
     vn = require"libs.vn",
     stars = require"libs.stars",

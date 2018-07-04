@@ -54,6 +54,17 @@ function objectrenderer.load(loadAssets)
   end
 end
 
+function objectrenderer.init(object)
+  object.dangle = object.angle
+  object.subdangle = object.angle
+  if object.health then
+    local object_type = libs.objectrenderer.getType(object.type)
+    object.healthbar = libs.healthbar.new{
+      maxHealth = object_type.health.max
+    }
+  end
+end
+
 function objectrenderer.getType(type)
   if data[type] == nil then
     print("Type `"..tostring(type).."` does not exist.")
@@ -104,25 +115,21 @@ function objectrenderer.draw(object,objects,isSelected,time)
       object.dy,
       type.size
     )
+
+    if type.shoot then
+      libs.ring.draw(object.dx,object.dy,type.shoot.range)
+    end
+
   end
 
   if object.health then
     local object_type = libs.objectrenderer.getType(object.type)
-    local percent = object.health/object_type.health.max
-    if percent < 1 or love.keyboard.isDown("lalt") then
-      local bx,by,bw,bh = object.dx-32,object.dy+object_type.size,64,6
-      love.graphics.setColor(0,0,0,127)
-      love.graphics.rectangle("fill",bx,by,bw,bh)
-      love.graphics.setColor(libs.healthcolor(percent))
-      local bw = 64/object_type.health.max*5
-      for i = 1,object_type.health.max/5*percent do
-        love.graphics.rectangle("fill",bx+bw*(i-1)+1,by+1,bw-1,bh-2)
-      end
-    end
-    local hue_change = 0.5
-    if percent < hue_change then
-      local hue = 255*percent/hue_change
-      ship_color = {255,hue,hue}
+    if object.health then
+      object.healthbar:draw(
+        object.dx-object_type.size,
+        object.dy+object_type.size,
+        object_type.size*2
+      )
     end
   end
 
@@ -196,11 +203,18 @@ function objectrenderer.draw(object,objects,isSelected,time)
 end
 
 function objectrenderer.update(object,objects,dt,time,user)
+
   local cx,cy = libs.net.getCurrentLocation(object,time)
   object.dx = (object.dx or cx) + (cx-object.dx)/2
   object.dy = (object.dy or cy) + (cy-object.dy)/2
 
   local object_type = objectrenderer.getType(object.type)
+
+  if object.health then
+    object.healthbar:update(dt)
+    object.healthbar:setPercent(object.health/object_type.health.max)
+  end
+
   if object_type.rotate then
     object.angle = object.angle + object_type.rotate*dt
   end
