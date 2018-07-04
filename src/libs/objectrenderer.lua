@@ -117,8 +117,15 @@ function objectrenderer.draw(object,objects,selection,time)
       object.dy,
       type.size
     )
-    if type.shoot and #selection:getSelected() == 1 then
-      libs.ring.draw(object.dx,object.dy,type.shoot.range)
+    if #selection:getSelected() == 1 then
+      if type.shoot then
+        love.graphics.setColor(0,255,255)
+        libs.ring.draw(object.dx,object.dy,type.shoot.range)
+      end
+      if type.explode then
+        love.graphics.setColor(255,0,0)
+        libs.ring.draw(object.dx,object.dy,type.explode.range)
+      end
     end
   end
 
