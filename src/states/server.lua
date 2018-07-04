@@ -38,13 +38,14 @@ function server.setupActions(storage)
 
       -- lazy init to prevent tons of extra tables
 
-      if parent.build_queue == nil and server.objectCanAfford(object_type,user) then
-        server.objectBuy(object_type,user)
+      if parent.build_queue == nil and server.objectCanAfford(object_type,user,storage) then
+        local build_time = storage.config.creative and 0 or object_type.build_time
+        server.objectBuy(object_type,user,storage)
         server:addUpdate(parent,{
-          build_t=object_type.build_time,
+          build_t=build_time,
         },"setupActions build_time")
         parent.build_queue = {
-          dt = object_type.build_time or 0,
+          dt = build_time or 0,
           onDone = function()
             local cx,cy = libs.net.getCurrentLocation(parent,love.timer.getTime())
             for i = 1,(object_type.count or 1) do
@@ -193,9 +194,12 @@ function server.updateCargo(storage,user)
   end
 end
 
-function server.objectCanAfford(object_type,user)
+function server.objectCanAfford(object_type,user,storage)
   if user.count >= server._maxUserUnits then
     return false
+  end
+  if storage.config.creative then
+    return true
   end
   if object_type.cost == nil then
     return true
@@ -208,7 +212,10 @@ function server.objectCanAfford(object_type,user)
   return true
 end
 
-function server.objectBuy(object_type,user)
+function server.objectBuy(object_type,user,storage)
+  if storage.config.creative then
+    return
+  end
   if object_type.cost then
     for restype,value in pairs(object_type.cost) do
       user.resources[restype] = user.resources[restype] - value
@@ -674,6 +681,7 @@ function server:resetGame()
 
   self.lovernet:getStorage().config = {
     game_start=false,
+    creative=false,
   }
 
   self.lovernet:getStorage().objects = {}
