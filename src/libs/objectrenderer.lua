@@ -125,6 +125,8 @@ function objectrenderer.draw(object,objects,selection,time)
       if type.explode then
         love.graphics.setColor(255,0,0)
         libs.ring.draw(object.dx,object.dy,type.explode.range)
+        love.graphics.setColor(0,255,255)
+        libs.ring.draw(object.dx,object.dy,type.explode.damage_range)
       end
     end
   end

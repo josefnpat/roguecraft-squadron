@@ -6,7 +6,8 @@ return function()
     build_time = 2.5,
     health = {max = 30,},
     explode = {
-      range = 200,
+      range = 100,
+      damage_range = 200,
       damage = 50,
     },
   }

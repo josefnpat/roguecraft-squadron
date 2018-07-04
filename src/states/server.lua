@@ -909,11 +909,16 @@ function server:explodeNearby(object)
     local nearby = {}
 
     for _,tobject in pairs(storage.objects) do
-      if tobject.health and libs.net.distance(object,tobject,love.timer.getTime()) <= object_type.explode.range then
-        table.insert(nearby,tobject)
-        if tobject.user ~= object.user then
-          explode = true
+      if tobject.health then
+
+        local distance = libs.net.distance(object,tobject,love.timer.getTime())
+        if distance <= object_type.explode.damage_range then
+          table.insert(nearby,tobject)
+          if tobject.user ~= object.user and distance <= object_type.explode.range then
+            explode = true
+          end
         end
+
       end
     end
 
