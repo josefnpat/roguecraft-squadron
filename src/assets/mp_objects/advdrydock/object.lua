@@ -1,10 +1,7 @@
 return function()
   return {
     type = "advdrydock",
-    cost = {
-      material=400,
-      crew=100,
-    },
+    cost = {material=400,crew=100},
     fow = 0.5,
     crew = 100,
     size = 48,
