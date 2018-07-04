@@ -11,7 +11,7 @@ return function()
     repair = false,
     actions = {
       "salvage","repair",
-      "build_turret_small",
+      "build_scout",
       "build_salvager",
       "build_habitat",
       "build_drydock",

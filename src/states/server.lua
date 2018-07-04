@@ -47,19 +47,21 @@ function server.setupActions(storage)
           dt = object_type.build_time or 0,
           onDone = function()
             local cx,cy = libs.net.getCurrentLocation(parent,love.timer.getTime())
-            local x = cx + math.random(-object_type.size,object_type.size)
-            local y = cy + math.random(-object_type.size,object_type.size)
-            local newobject = server.createObject(storage,object_type.type,x,y,user)
-            if object_type.speed then
-              newobject.tx = cx + math.random(-128,128)
-              newobject.ty = cy + math.random(-128,128)
-              newobject.tdt = love.timer.getTime()
-              local update={
-                tx=newobject.tx,
-                ty=newobject.ty,
-                tdt=newobject.tdt,
-              }
-              server:addUpdate(newobject,update,"setupActions onDone")
+            for i = 1,(object_type.count or 1) do
+              local x = cx + math.random(-object_type.size,object_type.size)
+              local y = cy + math.random(-object_type.size,object_type.size)
+              local newobject = server.createObject(storage,object_type.type,x,y,user)
+              if object_type.speed then
+                newobject.tx = cx + math.random(-128,128)
+                newobject.ty = cy + math.random(-128,128)
+                newobject.tdt = love.timer.getTime()
+                local update={
+                  tx=newobject.tx,
+                  ty=newobject.ty,
+                  tdt=newobject.tdt,
+                }
+                server:addUpdate(newobject,update,"setupActions onDone")
+              end
             end
           end
         }
