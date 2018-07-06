@@ -140,10 +140,15 @@ function mainmenu:enter()
 
   self.menump:add(
     function()
-      return libs.i18n('menu.client') .. " ["..settings:read("remote_server_address").."]"
+      return libs.i18n('menu.server')
     end,
     function()
-      states.client._remote_address = settings:read("remote_server_address")
+      states.client._remote_address = nil
+      states.server:init()
+      if states.server.run_localhost then
+        states.server:leave()
+      end
+      states.server.run_localhost = true
       self.music.title:stop()
       libs.hump.gamestate.switch(states.client)
     end
@@ -151,10 +156,10 @@ function mainmenu:enter()
 
   self.menump:add(
     function()
-      return libs.i18n('menu.client') .. ' [localhost]'
+      return libs.i18n('menu.client') .. " ["..settings:read("remote_server_address").."]"
     end,
     function()
-      states.client._remote_address = nil
+      states.client._remote_address = settings:read("remote_server_address")
       self.music.title:stop()
       libs.hump.gamestate.switch(states.client)
     end
@@ -178,10 +183,21 @@ function mainmenu:enter()
 
   self.menump:add(
     function()
-      return libs.i18n('menu.server')
+      return libs.i18n('menu.standalone_server')
     end,
     function()
       libs.hump.gamestate.switch(states.server)
+    end
+  )
+
+  self.menump:add(
+    function()
+      return libs.i18n('menu.client') .. ' [localhost]'
+    end,
+    function()
+      states.client._remote_address = nil
+      self.music.title:stop()
+      libs.hump.gamestate.switch(states.client)
     end
   )
 

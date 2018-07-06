@@ -318,7 +318,27 @@ function server:findObject(index,storage)
 end
 
 function server:init()
-  self.lovernet = libs.lovernet.new{type=libs.lovernet.mode.server,serdes=libs.bitser}
+  self.lovernet = nil
+
+  -- Just keep trying to connect until lovernet is dead
+  local temp_log_data,lovernet_log
+  local function temp_lovernet_log(self,...)
+    local args = {...}
+    table.insert(temp_log_data,args)
+  end
+  while self.lovernet == nil do
+    temp_log_data = {}
+    self.lovernet = libs.lovernet.new{
+      type=libs.lovernet.mode.server,
+      serdes=libs.bitser,
+      log=temp_lovernet_log,
+    }
+  end
+  self.lovernet.log = libs.lovernet.log
+  for _,entry in pairs(temp_log_data) do
+    self.lovernet:log(unpack(entry))
+  end
+  -- end of hack
 
   self.lovernet:addOp(libs.net.op.git_count)
   self.lovernet:addProcessOnServer(libs.net.op.git_count,function(self,peer,arg,storage)
@@ -671,6 +691,12 @@ function server:init()
 
   server.setupActions(self.lovernet:getStorage())
 
+  server.run_localhost = false
+
+end
+
+function server:leave()
+  self.lovernet:disconnect()
 end
 
 function server:resetGame()

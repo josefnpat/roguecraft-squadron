@@ -278,6 +278,9 @@ function love.update(dt)
       ) and love.window.hasFocus()
     )
   end
+  if states.server.run_localhost then
+    states.server:update(dt)
+  end
 end
 
 function love.draw()

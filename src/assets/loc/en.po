@@ -19,14 +19,17 @@ msgstr "Back"
 msgid "menu.multiplayer"
 msgstr "Multi Player (Alpha)"
 
+msgid "menu.server"
+msgstr "Host Game"
+
 msgid "menu.client"
-msgstr "Connect to Server"
+msgstr "Connect to Game"
 
 msgid "menu.remote_server_address"
-msgstr "Change Remote Server Address"
+msgstr "Change Remote Game Address"
 
-msgid "menu.server"
-msgstr "Host Server"
+msgid "menu.standalone_server"
+msgstr "Host Standalone Server"
 
 msgid "menu.debug"
 msgstr "Debug"
