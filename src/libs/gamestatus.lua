@@ -64,7 +64,7 @@ end
 
 function gamestatus:_checkCanWinLose(user)
   if not self._can_win_lose then
-    if self.counts[user.id] ~= nil and self.counts[user.id] > 0 then
+    if self.counts[user.id] ~= nil and self.counts[user.id] > 0 and self:remainingPlayers() > 1 then
       self._can_win_lose = true
     end
   end
