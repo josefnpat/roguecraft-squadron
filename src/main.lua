@@ -274,7 +274,7 @@ function love.update(dt)
     love.mouse.setGrabbed(
       (
         libs.hump.gamestate.current() == states.mission or
-        libs.hump.gamestate.current() == states.client
+        (libs.hump.gamestate.current() == states.client and not states.client.menu_enabled)
       ) and love.window.hasFocus()
     )
   end
