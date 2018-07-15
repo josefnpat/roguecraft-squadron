@@ -803,7 +803,7 @@ end
 function server:shootTarget(object,target,dt)
   local distance = libs.net.distance(object,target,love.timer.getTime())
   local object_type = libs.objectrenderer.getType(object.type)
-  if distance < object_type.shoot.range then
+  if distance <= object_type.shoot.range then
     if object.reload_dt > object_type.shoot.reload then
       object.reload_dt = 0
       local time = love.timer.getTime()
@@ -817,6 +817,36 @@ function server:shootTarget(object,target,dt)
         eta=distance/object_type.shoot.speed,
         type=object.type,
       })
+    end
+  end
+end
+
+function server:repairTarget(object,target,dt)
+  local distance = libs.net.distance(object,target,love.timer.getTime())
+  local object_type = libs.objectrenderer.getType(object.type)
+  local target_type = libs.objectrenderer.getType(target.type)
+  if distance <= server:getFollowRange(object,target) then
+    local restype = "material"
+    local amount_to_repair = object_type.repair*dt
+    local max_repair = target_type.health.max - target.health
+    if amount_to_repair > max_repair then
+      amount_to_repair = max_repair
+    end
+    local user = server:getUserById(object.user)
+    if user then
+      if amount_to_repair > user.resources[restype] then
+        amount_to_repair = user.resources[restype]
+      end
+    end
+    if amount_to_repair > 0 then
+      target.health = target.health+amount_to_repair
+      self:addUpdate(target,{
+        health_repair=target.health,
+      },"repairTarget")
+      if user then
+        self:changeResource(user,restype,-amount_to_repair)
+      end
+      server:addGather(dt,object,amount_to_repair)
     end
   end
 end
@@ -839,7 +869,7 @@ function server:getShootRange(object,target)
   return object_type.shoot.range*server._shoot_update_mult
 end
 
-function server:getUserById(id,users)
+function server:getUserById(id)
   if id == nil then return end
   for _,user in pairs(self.lovernet:getUsers()) do
     if user.id == id then
@@ -1050,6 +1080,9 @@ function server:update(dt)
           self:stopUpdateObject(object)
         elseif self:targetIsAlly(object,target) then
           self:gotoTarget(object,target,server:getFollowRange(object,target))
+          if target.health and object_type.repair then
+            self:repairTarget(object,target,dt)
+          end
         elseif self:targetIsEnemy(object,target) then
           if self:targetCanBeShot(object) and object_type.shoot then
             self:gotoTarget(object,target,server:getShootRange(object,target))

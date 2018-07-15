@@ -1,0 +1,8 @@
+msgid "mission.object.repair.name"
+msgstr "Repair Barge"
+
+msgid "mission.object.repair.info"
+msgstr "A ship used to repair other ships."
+
+msgid "mission.object.repair.build"
+msgstr ""

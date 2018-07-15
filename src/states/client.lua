@@ -267,14 +267,19 @@ function client:update(dt)
       if object then
         for i,v in pairs(sobject.u) do
           -- todo: change notifications
-          if i == "health" and v < object[i] then
+          if i == "health" and object.user == self.user.id then
             object.in_combat = 1
           end
           -- back to work
           if v == "nil" then
             object[i] = nil
           else
-            object[i] = v
+            -- exceptions
+            if i == "health_repair" then
+              object["health"] = v
+            else
+              object[i] = v
+            end
           end
         end
       else
