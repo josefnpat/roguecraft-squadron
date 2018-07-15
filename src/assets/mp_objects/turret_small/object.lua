@@ -18,8 +18,6 @@ return function()
         destruct = "collision"
       },
     },
-    repair = false,
-    actions = {"salvage","repair"},
     build_time = 20,
     subdangle_speed = 0,
     rotate = 0.5,

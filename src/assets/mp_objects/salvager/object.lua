@@ -9,9 +9,6 @@ return function()
     health = {max = 5,},
     material = 10,
     material_gather = 15,
-    repair = false,
-    actions = {"salvage","repair","collect","upgrade_salvage"},
-    collect = false,
     build_time = 5,
   }
 end

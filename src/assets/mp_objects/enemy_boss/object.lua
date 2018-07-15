@@ -17,8 +17,6 @@ return function()
         destruct = "collision"
       },
     },
-    repair = false,
-    actions = {"salvage","repair"},
     jump_disable = true,
   }
 end

@@ -7,9 +7,7 @@ return function()
     size = 16,
     speed = 150,
     health = {max = 15,},
-    repair = false,
     takeover = 0.25,
-    actions = {"salvage","repair"},
     build_time = 3,
   }
 end

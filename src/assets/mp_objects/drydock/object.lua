@@ -10,9 +10,7 @@ return function()
     size = 32,
     speed = 50,
     health = {max = 25,},
-    repair = false,
     actions = {
-      "salvage","repair",
       "build_salvager",
       "build_habitat",
       "build_mining",
@@ -20,6 +18,7 @@ return function()
       "build_cargo",
       "build_radar",
       "build_command",
+      "build_repair",
       -- "build_research",
     },
     build_time = 5,

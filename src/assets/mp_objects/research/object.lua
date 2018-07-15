@@ -7,9 +7,7 @@ return function()
     size = 32,
     speed = 50,
     health = {max = 25,},
-    repair = false,
     actions = {
-      "salvage","repair",
       "upgrade_speed",
       "upgrade_armor",
       "upgrade_damage",

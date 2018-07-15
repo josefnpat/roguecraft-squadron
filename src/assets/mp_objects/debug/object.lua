@@ -8,7 +8,6 @@ return function()
     speed = 300,
     health = {max = 75,},
     material = 1600,
-    repair = false,
     shoot = {
       image = "missile",
       reload = 2.5,
@@ -22,7 +21,6 @@ return function()
       },
     },
     actions = {
-      "salvage","repair",
       "build_command",
     },
     build_time = 60,

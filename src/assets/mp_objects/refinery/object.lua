@@ -9,9 +9,6 @@ return function()
     health = {max = 15,},
     material = 100,
     ore_convert = {rate=20,output="material"},
-    repair = false,
-    refine = false,
-    actions = {"salvage","repair","refine","upgrade_refine"},
     build_time = 5,
   }
 end

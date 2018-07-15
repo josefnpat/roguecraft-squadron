@@ -7,9 +7,7 @@ return function()
     size = 32,
     speed = 75,
     health = {max = 10,},
-    repair = false,
     actions = {
-      "salvage","repair","upgrade_fow",
       "build_satellite",
     },
     build_time = 2,

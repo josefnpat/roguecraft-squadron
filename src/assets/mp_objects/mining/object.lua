@@ -9,9 +9,6 @@ return function()
     health = {max = 10,},
     ore = 250,
     ore_gather = 25,
-    repair = false,
-    actions = {"salvage","repair","collect","upgrade_mining"},
-    collect = false,
     build_time = 5,
   }
 end

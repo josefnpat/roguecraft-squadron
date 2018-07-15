@@ -6,9 +6,7 @@ return function()
     size = 32,
     speed = 50,
     health = {max = 15,},
-    repair = false,
     actions = {
-      "salvage","repair",
       "build_mine",
     },
     build_time = 30,

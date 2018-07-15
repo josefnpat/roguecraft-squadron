@@ -6,7 +6,6 @@ return function()
     cost = {material=100,crew=10},
     crew = 10,
     health = {max=5},
-    actions = {"salvage","repair"},
     jump_disable = true,
   }
 end

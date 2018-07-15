@@ -8,9 +8,7 @@ return function()
     speed = 150,
     health = {max = 150,},
     material = 600,
-    repair = false,
     actions = {
-      "salvage","repair",
       "build_scout",
       "build_salvager",
       "build_habitat",

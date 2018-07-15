@@ -9,8 +9,6 @@ return function()
     health = {max = 40,},
     ore = 600,
     material = 1200,
-    repair = false,
-    actions = {"salvage","repair"},
     build_time = 10,
   }
 end
