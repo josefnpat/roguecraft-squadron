@@ -266,9 +266,13 @@ function client:update(dt)
       local object = self:getObjectByIndex(sobject.i)
       if object then
         for i,v in pairs(sobject.u) do
-          -- todo: change notifications
+          -- triggers
           if i == "health" and object.user == self.user.id then
             object.in_combat = 1
+          end
+          if i == "user" and v ~= object.user then
+            object.user = v
+            self.selection:onChange()
           end
           -- back to work
           if v == "nil" then

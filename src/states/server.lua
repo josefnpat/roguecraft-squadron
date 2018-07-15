@@ -825,7 +825,7 @@ function server:repairTarget(object,target,dt)
   local distance = libs.net.distance(object,target,love.timer.getTime())
   local object_type = libs.objectrenderer.getType(object.type)
   local target_type = libs.objectrenderer.getType(target.type)
-  if distance <= server:getFollowRange(object,target) then
+  if target_type.health and distance <= server:getFollowRange(object,target) then
     local restype = "material"
     local amount_to_repair = object_type.repair*dt
     local max_repair = target_type.health.max - target.health
@@ -848,6 +848,19 @@ function server:repairTarget(object,target,dt)
       end
       server:addGather(dt,object,amount_to_repair)
     end
+  end
+end
+
+function server:takeoverTarget(object,target)
+  local distance = libs.net.distance(object,target,love.timer.getTime())
+  local target_type = libs.objectrenderer.getType(target.type)
+  if target_type.health and object.user ~= target.user and distance < server:getFollowRange(object,target) then
+    target.user = object.user
+    self:addUpdate(target,{
+      user=target.user,
+    },"takeoverTarget:target")
+    object.health = 0
+    self:addUpdate(object,{health=0,},"takeoverTarget:source")
   end
 end
 
@@ -1080,7 +1093,7 @@ function server:update(dt)
           self:stopUpdateObject(object)
         elseif self:targetIsAlly(object,target) then
           self:gotoTarget(object,target,server:getFollowRange(object,target))
-          if target.health and object_type.repair then
+          if object_type.repair then
             self:repairTarget(object,target,dt)
           end
         elseif self:targetIsEnemy(object,target) then
@@ -1089,6 +1102,9 @@ function server:update(dt)
             self:shootTarget(object,target,dt)
           else
             self:gotoTarget(object,target,server:getFollowRange(object,target))
+            if object_type.takeover then
+              self:takeoverTarget(object,target)
+            end
           end
         end
 

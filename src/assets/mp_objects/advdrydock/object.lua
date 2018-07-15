@@ -16,7 +16,7 @@ return function()
       "build_turret_small",
       "build_turret_large",
       -- "build_jump",
-      -- "build_troopship",
+      "build_troopship",
     },
     build_time = 10,
   }

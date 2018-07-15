@@ -180,13 +180,27 @@ end
 
 function selection:onChange()
 
+  local has_non_ally = false
   local newobjects = {}
   for _,object in pairs(self._objects) do
     if not libs.net.objectShouldBeRemoved(object) then
       table.insert(newobjects,object)
+      if self._user ~= object.user then
+        has_non_ally = true
+      end
     end
   end
   self._objects = newobjects
+
+  if has_non_ally and #self._objects > 1 then
+    local newobjects = {}
+    for _,object in pairs(self._objects) do
+      if object.user == self._user then
+        table.insert(newobjects,object)
+      end
+    end
+    self._objects = newobjects
+  end
 
   self.panel:clearActions()
   for _,object in pairs(self:getSelected()) do
