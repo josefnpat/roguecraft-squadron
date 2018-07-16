@@ -373,6 +373,13 @@ function client:update(dt)
     end
   end
 
+  self.interruptable_move = love.keyboard.isDown("lshift")
+  if not self.interruptable_move then
+    libs.cursor.change("default")
+  else
+    libs.cursor.change("enemy")
+  end
+
   local change = false
 
   for object_index,object in pairs(self.objects) do
@@ -569,11 +576,12 @@ function client:moveSelectedObjects(x,y)
       y=ty,
     })
     curAngle = curAngle + math.pi/32
-    self.moveanim:add(love.mouse.getX(),love.mouse.getY(),self.camera)
+    local color = self.interruptable_move and {255,0,0} or {0,255,255}
+    self.moveanim:add(love.mouse.getX(),love.mouse.getY(),color,self.camera)
   end
   -- todo: do not attempt to move objects without speed
-  if send_move_command then
-    self.lovernet:sendData(libs.net.op.move_objects,{o=moves})
+  if send_move_command and #moves > 0 then
+    self.lovernet:sendData(libs.net.op.move_objects,{o=moves,int=self.interruptable_move})
     libs.sfx.loop("move")
   end
   for _,object in pairs(self.selection:getSelected()) do
@@ -816,7 +824,6 @@ function client:draw()
   end
 
   self.explosions:draw()
-  self.moveanim:draw()
   self.selection:draw(self.camera)
 
   self.camera:detach()
@@ -824,6 +831,7 @@ function client:draw()
     self.fow:draw(self.objects,{},self.user)
   end
   self.camera:attach()
+  self.moveanim:draw()
 
   if #self.selection:getSelected() == 1 then
     local object = self.selection:getSelected()[1]

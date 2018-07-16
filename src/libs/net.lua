@@ -126,6 +126,9 @@ function net.hasTarget(object,time)
   if object.target ~= nil then
     return true
   end
+  if object.tint then
+    return false
+  end
   local cx,cy = net.getCurrentLocation(object,time)
   if (object.tx ~= nil and object.ty ~= nil) and (cx ~= round(object.tx) or cy ~= round(object.ty)) then
     return true

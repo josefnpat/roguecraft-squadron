@@ -281,7 +281,7 @@ end
 function server:stopObject(object)
   local cx,cy = libs.net.getCurrentLocation(object,love.timer.getTime())
   object.x,object.y = cx,cy
-  object.tx,object.ty,object.tdt = nil,nil,nil
+  object.tx,object.ty,object.tdt,object.tint = nil,nil,nil,nil
   return cx,cy
 end
 
@@ -439,7 +439,7 @@ function server:init()
   end)
 
   self.lovernet:addOp(libs.net.op.move_objects)
-  self.lovernet:addValidateOnServer(libs.net.op.move_objects,{o=function(data)
+  self.lovernet:addValidateOnServer(libs.net.op.move_objects,{int="boolean",o=function(data)
     if type(data)~='table' then
       return false,'data.o is not a table ['..tostring(data).."]"
     end
@@ -469,6 +469,7 @@ function server:init()
           object.ty = math.min(math.max(-libs.net.mapsize,sobject.y),libs.net.mapsize)
           object.tdt = love.timer.getTime()
           object.target = nil
+          object.tint = arg.int
           local update={
             tx = round(object.tx),
             ty = round(object.ty),
@@ -907,7 +908,7 @@ function server:attackNearby(object)
       local nearby = {}
       for _,tobject in pairs(storage.objects) do
         if tobject.index ~= object.index and tobject.user ~= nil and tobject.user ~= object.user then
-          if libs.net.distance(object,tobject,love.timer.getTime()) < object_type.shoot.range then
+          if libs.net.distance(object,tobject,love.timer.getTime()) < object_type.shoot.aggression then
             table.insert(nearby,tobject)
           end
         end

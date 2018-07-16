@@ -13,10 +13,11 @@ function moveanim.new(init)
   return self
 end
 
-function moveanim:add(x,y,camera)
+function moveanim:add(x,y,color,camera)
   self.target_show = {
     x=camera.x+x-love.graphics.getWidth()/2,
     y=camera.y+y-love.graphics.getHeight()/2,
+    color=color or {0,255,0},
     anim=0.25,
   }
 end
@@ -24,7 +25,7 @@ end
 function moveanim:draw()
   if self.target_show then
     local percent = self.target_show.anim/self.target_show.anim_max
-    love.graphics.setColor(0,255,0)
+    love.graphics.setColor(self.target_show.color)
     love.graphics.draw(moveanim.image,
       self.target_show.x,self.target_show.y,
       percent*math.pi/2,
