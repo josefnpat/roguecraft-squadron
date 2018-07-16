@@ -10,5 +10,6 @@ return function()
     material = 10,
     material_gather = 15,
     build_time = 5,
+    collect = true,
   }
 end

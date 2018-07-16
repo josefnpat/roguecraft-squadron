@@ -10,5 +10,6 @@ return function()
     speed = 50,
     health = {max = 5,},
     build_time = 5,
+    collect = true,
   }
 end
