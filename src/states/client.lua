@@ -545,26 +545,26 @@ function client:moveSelectedObjects(x,y)
       send_move_command = false
     end
 
-    local tx = x+self:getCameraOffsetX()
-    local ty = y+self:getCameraOffsetY()
+    local tx = x
+    local ty = y
     if #selected > 1 then
       local cx,cy
       repeat
         cx,cy = self:CartArchSpiral(8,8,curAngle)
         local n,nd = client:findNearestTarget(
           unselected,
-          cx+love.mouse.getX()+self:getCameraOffsetX(),
-          cy+love.mouse.getY()+self:getCameraOffsetY(),
+          tx+cx,
+          ty+cy,
           function(object)
             return object.tx ~= x and object.ty ~= y
           end
         )
         curAngle = curAngle + math.pi/32
       until n == nil or nd > 48
-      object._ttx=cx+love.mouse.getX()+self:getCameraOffsetX()
-      object._tty=cy+love.mouse.getY()+self:getCameraOffsetY()
-      tx = cx+love.mouse.getX()+self:getCameraOffsetX()
-      ty = cy+love.mouse.getY()+self:getCameraOffsetY()
+      object._ttx=tx+cx
+      object._tty=ty+cy
+      tx = tx+cx
+      ty = ty+cy
     end
 
     object.anim = 1
@@ -577,7 +577,7 @@ function client:moveSelectedObjects(x,y)
     })
     curAngle = curAngle + math.pi/32
     local color = self.interruptable_move and {255,0,0} or {0,255,255}
-    self.moveanim:add(love.mouse.getX(),love.mouse.getY(),color,self.camera)
+    self.moveanim:add(x-self:getCameraOffsetX(),y-self:getCameraOffsetY(),color,self.camera)
   end
   -- todo: do not attempt to move objects without speed
   if send_move_command and #moves > 0 then
@@ -679,7 +679,7 @@ function client:mousereleased(x,y,button)
 
     if self.minimap:mouseInside() and not self.selection:selectionInProgress() then
       local nx,ny = self.minimap:getRealCoords()
-      self:moveSelectedObjects(nx-self:getCameraOffsetX(),ny-self:getCameraOffsetY())
+      self:moveSelectedObjects(nx,ny)
     else
 
       local n,nd = self:findNearestDraw(
@@ -699,7 +699,9 @@ function client:mousereleased(x,y,button)
           end
           self.lovernet:sendData(libs.net.op.target_objects,{t=targets})
         else
-          self:moveSelectedObjects(x,y)
+          self:moveSelectedObjects(
+            x+self:getCameraOffsetX(),
+            y+self:getCameraOffsetY())
         end
       end
 
