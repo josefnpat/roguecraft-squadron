@@ -1,6 +1,7 @@
 credits = {}
 
 function credits:enter()
+
   self.text =
   libs.i18n('credits.title')..":\n" ..
   "\n" ..
@@ -45,6 +46,9 @@ function credits:enter()
 
   self.escape_delay_timer = 0
   self.escape_delay_max = 0.5
+
+  self.padding = love.graphics.getWidth()/4
+
 end
 
 function credits:update(dt)
@@ -80,7 +84,7 @@ function credits:draw()
   libs.stars:drawPlanet()
 
   love.graphics.setFont(fonts.menu)
-  dropshadowf(self.text,0,self.y,love.graphics:getWidth(),"center")
+  dropshadowf(self.text,self.padding,self.y,love.graphics:getWidth()-self.padding*2,"center")
   love.graphics.setFont(fonts.default)
 end
 
