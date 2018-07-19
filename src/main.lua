@@ -15,6 +15,7 @@ function love.load(arg)
       net = require"libs.net",
       objectrenderer = require"libs.objectrenderer",
       bulletrenderer = require"libs.bulletrenderer",
+      ai = require"libs.ai",
     }
 
     libs.objectrenderer.load(false)
@@ -155,6 +156,7 @@ function love.load(arg)
     mpconnect = require"libs.mpconnect",
     gamestatus = require"libs.gamestatus",
     ring = require"libs.ring",
+    ai = require"libs.ai",
   }
 
   libs.objectrenderer.load(true)
@@ -390,4 +392,14 @@ end
 function round(num, numDecimalPlaces)
   local mult = 10^(numDecimalPlaces or 0)
   return math.floor(num * mult + 0.5) / mult
+end
+
+file = {}
+
+function file.name(url)
+  return url:match("(.+)%..+")
+end
+
+function file.extension(url)
+  return url:match("[^.]+$")
 end

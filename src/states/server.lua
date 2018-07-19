@@ -458,31 +458,12 @@ function server:init()
   end})
   self.lovernet:addProcessOnServer(libs.net.op.move_objects,function(self,peer,arg,storage)
     local user = self:getUser(peer)
-
-    for _,object in pairs(storage.objects) do
-      -- todo: cache indexes
-      for _,sobject in pairs(arg.o) do
-        local type = libs.objectrenderer.getType(object.type)
-        if object.index == sobject.i and type.speed and user.id == object.user then
-          local cx,cy = server:stopObject(object)
-          object.tx = math.min(math.max(-libs.net.mapsize,sobject.x),libs.net.mapsize)
-          object.ty = math.min(math.max(-libs.net.mapsize,sobject.y),libs.net.mapsize)
-          object.tdt = love.timer.getTime()
-          object.target = nil
-          object.tint = arg.int
-          local update={
-            tx = round(object.tx),
-            ty = round(object.ty),
-            tdt = round(object.tdt,2),
-            target = "nil",
-          }
-          if cx and cy then
-            update.x,update.y = cx,cy
-          end
-          server:addUpdate(object,update,"move_objects")
-        end
+    -- todo: cache indexes
+    for _,sobject in pairs(arg.o) do
+      local object = libs.net.getObjectByIndex(storage.objects,sobject.i)
+      if object and user.id == object.user then
+        libs.net.moveToTarget(server,object,sobject.x,sobject.y,arg.int)
       end
-
     end
   end)
 
@@ -706,6 +687,12 @@ function server:resetGame()
 
   self._addUpdateProfile = {}
 
+  if self.lovernet:getStorage().config then
+    for ai_id = 1,self.lovernet:getStorage().config.ai do
+      self.lovernet:_removeUser("ai_"..ai_id)
+    end
+  end
+
   self.lovernet:getStorage().config = {
     game_start=false,
     creative=false,
@@ -735,11 +722,28 @@ function server:newGame()
     self.lovernet:getStorage(),
     server.maps.spacedpockets.config)
 
+  if self.lovernet:getStorage().config.ai then
+    for ai_id = 1,self.lovernet:getStorage().config.ai do
+      local peer = "ai_"..ai_id
+      self.lovernet:_addUser(peer)
+      local user = self.lovernet:getUser(peer)
+      user.ai = libs.ai.new{
+        user = user,
+        pockets = pockets,
+        storage = self.lovernet:getStorage(),
+        server = server,
+      }
+    end
+  end
+
   local user_count = 0
   for peer,user in pairs(self.lovernet:getUsers()) do
     -- todo: add unique names
     user_count = user_count + 1
     self.generatePlayer(self.lovernet:getStorage(),user,pockets[user_count])
+    if user.ai then
+      user.ai:setStartPocket(pockets[user_count])
+    end
   end
 
 end
@@ -900,7 +904,7 @@ function server:changeResource(user,restype,amount)
 end
 
 function server:attackNearby(object)
-  if object.user ~= nil and not libs.net.hasTarget(object,love.timer.getTime()) then
+  if object.user ~= nil and not libs.net.hasTarget(object) then
     assert(object.target==nil)
     local object_type = libs.objectrenderer.getType(object.type)
     if object_type.shoot then
@@ -930,7 +934,7 @@ function server:attackNearby(object)
 end
 
 function server:collectNearby(object)
-  if object.user ~= nil and not libs.net.hasTarget(object,love.timer.getTime()) then
+  if object.user ~= nil and not libs.net.hasTarget(object) then
     assert(object.target==nil)
     local object_type = libs.objectrenderer.getType(object.type)
     if object_type.collect ~= nil then
@@ -1018,6 +1022,12 @@ function server:update(dt)
     if storage.config.game_start then
       storage.config.game_started = true
       server:newGame()
+    end
+  end
+
+  for peer,user in pairs(self.lovernet:getUsers()) do
+    if user.ai then
+      user.ai:update(dt)
     end
   end
 

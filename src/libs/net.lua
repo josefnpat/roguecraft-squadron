@@ -123,6 +123,7 @@ function net.hasUserObjects(objects)
 end
 
 function net.hasTarget(object,time)
+  time = time or love.timer.getTime()
   if object.target ~= nil then
     return true
   end
@@ -134,6 +135,36 @@ function net.hasTarget(object,time)
     return true
   end
   return false
+end
+
+function net.moveToTarget(server,object,x,y,int)
+  local type = libs.objectrenderer.getType(object.type)
+  if type.speed then
+    local cx,cy = server:stopObject(object)
+    object.tx = math.min(math.max(-libs.net.mapsize,x),libs.net.mapsize)
+    object.ty = math.min(math.max(-libs.net.mapsize,y),libs.net.mapsize)
+    object.tdt = love.timer.getTime()
+    object.target = nil
+    object.tint = int
+    local update={
+      tx = round(object.tx),
+      ty = round(object.ty),
+      tdt = round(object.tdt,2),
+      target = "nil",
+    }
+    if cx and cy then
+      update.x,update.y = cx,cy
+    end
+    server:addUpdate(object,update,"move_objects")
+  end
+end
+
+function net.getObjectByIndex(objects,index)
+  for _,object in pairs(objects) do
+    if object.index == index then
+      return object
+    end
+  end
 end
 
 function net.objectShouldBeRemoved(object)
