@@ -65,12 +65,15 @@ function ai:getActions()
 end
 
 function ai:update(dt)
+  for _,action in pairs(self._actions) do
+    action:update(dt,self)
+  end
   self._action_dt = self._action_dt + dt
   if self._action_dt > self._action_t then
     self._action_dt = self._action_dt - self._action_t
     -- todo: prioritize actions and only perform one
     for _,action in pairs(self._actions) do
-      action:update(dt,self)
+      action:updateFixed(self)
     end
   end
 
