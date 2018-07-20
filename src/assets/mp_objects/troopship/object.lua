@@ -5,7 +5,7 @@ return function()
     fow = 0.75,
     crew = 100,
     size = 16,
-    speed = 50,
+    speed = 100,
     health = {max = 10,},
     takeover = true,
     build_time = 10,
