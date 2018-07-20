@@ -8,6 +8,8 @@ server._gather_update_mult = 0.5
 server._throttle_object_updates = math.huge
 server._throttle_bullet_updates = math.huge
 
+server._debris_ratio = 0.5
+
 server._genMapDefault = {
   scrap=100,
   station=16,
@@ -1179,7 +1181,7 @@ function server:update(dt)
         local object_type = libs.objectrenderer.getType(object.type)
         if object_type.cost and object_type.cost.material then
           local debris = server.createObject(storage,"debris",cx,cy,nil)
-          debris.material_supply = object_type.cost.material/2
+          debris.material_supply = object_type.cost.material*server._debris_ratio
         end
 
       end
