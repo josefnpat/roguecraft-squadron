@@ -828,7 +828,7 @@ function server:shootTarget(object,target,dt)
   end
 end
 
-function server:repairTarget(object,target,dt)
+function server:repairTarget(config,object,target,dt)
   local distance = libs.net.distance(object,target,love.timer.getTime())
   local object_type = libs.objectrenderer.getType(object.type)
   local target_type = libs.objectrenderer.getType(target.type)
@@ -840,7 +840,7 @@ function server:repairTarget(object,target,dt)
       amount_to_repair = max_repair
     end
     local user = server:getUserById(object.user)
-    if user then
+    if user and not config.creative then
       if amount_to_repair > user.resources[restype] then
         amount_to_repair = user.resources[restype]
       end
@@ -850,7 +850,7 @@ function server:repairTarget(object,target,dt)
       self:addUpdate(target,{
         health_repair=target.health,
       },"repairTarget")
-      if user then
+      if user and not config.creative then
         self:changeResource(user,restype,-amount_to_repair)
       end
       server:addGather(dt,object,amount_to_repair)
@@ -1107,7 +1107,7 @@ function server:update(dt)
         elseif self:targetIsAlly(object,target) then
           self:gotoTarget(object,target,server:getFollowRange(object,target))
           if object_type.repair then
-            self:repairTarget(object,target,dt)
+            self:repairTarget(storage.config,object,target,dt)
           end
         elseif self:targetIsEnemy(object,target) then
           if self:targetCanBeShot(object) and object_type.shoot then
