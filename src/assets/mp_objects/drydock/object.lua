@@ -10,6 +10,7 @@ return function()
     size = 32,
     speed = 50,
     health = {max = 25,},
+    construction_civilian = true,
     actions = {
       "build_salvager",
       "build_habitat",

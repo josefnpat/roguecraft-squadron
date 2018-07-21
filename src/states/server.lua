@@ -605,11 +605,7 @@ function server:init()
     local user = self:getUser(peer)
     for _,object_id in pairs(arg.t) do
       local parent = server:findObject(object_id,storage)
-      if parent and parent.user == user.id then
-        if server.actions[arg.a] then
-          server.actions[arg.a](user,parent)
-        end
-      end
+      libs.net.build(server,user,parent,arg.a)
     end
   end)
 
@@ -698,6 +694,7 @@ function server:resetGame()
   self.lovernet:getStorage().config = {
     game_start=false,
     creative=false,
+    ai=1,
   }
 
   self.lovernet:getStorage().objects = {}

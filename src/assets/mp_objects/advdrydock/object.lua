@@ -7,6 +7,7 @@ return function()
     size = 48,
     speed = 50,
     health = {max = 50,},
+    construction_military = true,
     actions = {
       "build_fighter",
       "build_combat",

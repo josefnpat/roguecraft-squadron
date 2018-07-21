@@ -8,6 +8,7 @@ return function()
     speed = 150,
     health = {max = 150,},
     material = 600,
+    construction_command = true,
     actions = {
       "build_scout",
       "build_salvager",

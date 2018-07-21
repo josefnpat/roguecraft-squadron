@@ -159,6 +159,14 @@ function net.moveToTarget(server,object,x,y,int)
   end
 end
 
+function net.build(server,user,parent,action)
+  if parent and parent.user == user.id then
+    if server.actions[action] then
+      server.actions[action](user,parent)
+    end
+  end
+end
+
 function net.getObjectByIndex(objects,index)
   for _,object in pairs(objects) do
     if object.index == index then

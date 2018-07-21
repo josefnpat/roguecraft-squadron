@@ -2,7 +2,7 @@ return function()
   return {
     type = "debug",
     cost = {material=1000,crew=100},
-    fow = 2,
+    fow = 8,
     crew = 100,
     size = 64,
     speed = 300,
