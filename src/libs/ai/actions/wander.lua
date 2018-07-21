@@ -11,7 +11,7 @@ function action:new(init)
 end
 
 function action:updateFixed(ai)
-  self.currentPocket = self.currentPocket or ai:getStartPocket()
+  local currentPocket = ai:getCurrentPocket()
   local user_id = ai:getUser().id
   for _,object in pairs(ai:getStorage().objects) do
     if object.user == user_id then
@@ -20,8 +20,8 @@ function action:updateFixed(ai)
         libs.net.moveToTarget(
           ai:getServer(),
           object,
-          self.currentPocket.x+math.random(-512,512),
-          self.currentPocket.y+math.random(-512,512),
+          currentPocket.x+math.random(-512,512),
+          currentPocket.y+math.random(-512,512),
           true)
       end
     end

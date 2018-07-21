@@ -30,6 +30,7 @@ function action:new(init)
   self.max_count = {
     material_gather = 4,
     ore_gather = 4,
+    construction_command = 1,
     construction_civilian = 2,
     construction_military = 4,
     ore_convert = 1,

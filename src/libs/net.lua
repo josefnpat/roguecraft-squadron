@@ -92,6 +92,7 @@ function net.shortestAngle(c,t)
 end
 
 function net.getCurrentLocation(object,time)
+  time = time or love.timer.getTime()
   local type = libs.objectrenderer.getType(object.type)
   if object.tdt and object.tx and object.ty then
     local dt = math.max(0,time - object.tdt)

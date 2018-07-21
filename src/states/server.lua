@@ -741,7 +741,7 @@ function server:newGame()
     user_count = user_count + 1
     self.generatePlayer(self.lovernet:getStorage(),user,pockets[user_count])
     if user.ai then
-      user.ai:setStartPocket(pockets[user_count])
+      user.ai:setCurrentPocket(pockets[user_count])
     end
   end
 

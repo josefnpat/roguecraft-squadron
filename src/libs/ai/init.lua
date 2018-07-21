@@ -38,8 +38,8 @@ function ai.new(init)
   end
 
   self.update = ai.update
-  self.setStartPocket = ai.setStartPocket
-  self.getStartPocket = ai.getStartPocket
+  self.setCurrentPocket = ai.setCurrentPocket
+  self.getCurrentPocket = ai.getCurrentPocket
 
   return self
 end
@@ -79,11 +79,11 @@ function ai:update(dt)
 
 end
 
-function ai:setStartPocket(pocket)
+function ai:setCurrentPocket(pocket)
   self._startPocket = pocket
 end
 
-function ai:getStartPocket()
+function ai:getCurrentPocket()
   return self._startPocket
 end
 
