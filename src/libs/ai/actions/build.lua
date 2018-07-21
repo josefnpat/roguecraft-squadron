@@ -14,29 +14,27 @@ function action:new(init)
 
   -- todo: add max unit count
   self.priority = {
-    material_gather = 5,
+    material_gather = 4,
     ore_gather = 3,
     construction_civilian = 3,
     construction_military = 1,
     ore_convert = 2,
     crew_gather = 3,
-    material = 2,
-    ore = 2,
-    shoot = 0,
+    shoot = 1,
+    cargo = 2,
     repair = -math.huge,
     takeover = -math.huge,
   }
 
   self.max_count = {
-    material_gather = 4,
-    ore_gather = 4,
+    material_gather = 6,
+    ore_gather = 6,
     construction_command = 1,
-    construction_civilian = 2,
-    construction_military = 4,
-    ore_convert = 1,
+    construction_civilian = 4,
+    construction_military = 8,
+    ore_convert = 4,
     crew_gather = 5,
-    material = 2,
-    ore = 2,
+    cargo = 8,
   }
 
   self.owned_pockets = 1
