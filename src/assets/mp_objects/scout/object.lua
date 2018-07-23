@@ -1,6 +1,7 @@
 return function()
   return {
     type = "scout",
+    military_small = true,
     cost = {material=50,crew=10},
     count = 2,
     crew = 5,

@@ -1,6 +1,7 @@
 return function()
   return {
     type = "fighter",
+    military_small = true,
     cost = {material=80,crew=15},
     fow = 0.75,
     crew = 15,

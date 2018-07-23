@@ -1,6 +1,7 @@
 return function()
   return {
     type = "tank",
+    military_large = true,
     cost = {material=125,crew=25},
     crew = 25,
     size = 32,

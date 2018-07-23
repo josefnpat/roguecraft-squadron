@@ -1,6 +1,7 @@
 return function()
   return {
     type = "turret_large",
+    military_large = true,
     cost = {material=500,crew=100},
     crew = 100,
     size = 64,

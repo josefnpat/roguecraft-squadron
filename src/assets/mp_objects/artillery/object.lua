@@ -1,6 +1,7 @@
 return function()
   return {
     type = "artillery",
+    military_large = true,
     cost = {material=375,crew=50},
     crew = 50,
     size = 32,

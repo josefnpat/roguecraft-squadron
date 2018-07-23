@@ -1,5 +1,7 @@
 local action = {}
 
+local _build_string = "build_"
+
 function action:new(init)
   init = init or {}
   local self = {}
@@ -10,17 +12,21 @@ function action:new(init)
   self.getPriority = action.getPriority
   self.getMaxCount = action.getMaxCount
   self.getTopPriority = action.getTopPriority
+  self.getTypeFromAction = action.getTypeFromAction
   self.actionBuildsPriority = action.actionBuildsPriority
+  self.canAffordMaxCost = action.canAffordMaxCost
 
   -- todo: add max unit count
   self.priority = {
+    construction_command = 5,
     material_gather = 4,
     ore_gather = 3,
     construction_civilian = 3,
     construction_military = 1,
     ore_convert = 2,
     crew_gather = 3,
-    shoot = 1,
+    military_small = 5,
+    military_large = 0,
     cargo = 2,
     repair = -math.huge,
     takeover = -math.huge,
@@ -35,6 +41,8 @@ function action:new(init)
     ore_convert = 4,
     crew_gather = 5,
     cargo = 8,
+    military_small = 16,
+    military_large = math.huge,
   }
 
   self.owned_pockets = 1
@@ -93,13 +101,17 @@ function action:getTopPriority(objects)
   return top_priority
 end
 
+function action:getTypeFromAction(action)
+  local type_string = string.sub(action,#_build_string+1)
+  local object_type = libs.objectrenderer.getType(type_string)
+  return object_type
+end
+
 function action:actionBuildsPriority(action,top_priority)
-  local build_string = "build_"
-  if not starts_with(action,build_string) then
+  if not starts_with(action,_build_string) then
     return false
   end
-  local type_string = string.sub(action,#build_string+1)
-  local object_type = libs.objectrenderer.getType(type_string)
+  local object_type = self:getTypeFromAction(action)
   for _,priority in pairs(top_priority) do
     if object_type[priority] then
       return true
@@ -108,7 +120,17 @@ function action:actionBuildsPriority(action,top_priority)
   return false
 end
 
+function action:canAffordMaxCost(user,max_cost)
+  for _,restype in pairs(libs.net.resourceTypes) do
+    if user.resources[restype] < max_cost[restype] then
+      return false
+    end
+  end
+  return true
+end
+
 function action:updateFixed(ai)
+
   -- print('>>>start build ai:')
   local user = ai:getUser()
   local server = ai:getServer()
@@ -125,25 +147,39 @@ function action:updateFixed(ai)
   -- print(">>>top_priority:")
   -- for i,v in pairs(top_priority) do print(i,v) end
 
-  for _,parent in pairs(ai:getStorage().objects) do
+  if true then --self:canAffordMaxCost(user,max_cost) then
+    for _,parent in pairs(ai:getStorage().objects) do
 
-    local parent_type = libs.objectrenderer.getType(parent.type)
-    local can_build = {}
-    if parent_type.actions then
+      local parent_type = libs.objectrenderer.getType(parent.type)
+      local can_build = {}
+      if parent_type.actions then
 
-      for action_index,action in pairs(parent_type.actions) do
-        if self:actionBuildsPriority(action,top_priority) then
-          table.insert(can_build,action)
+        for action_index,action in pairs(parent_type.actions) do
+          if self:actionBuildsPriority(action,top_priority) then
+            table.insert(can_build,action)
+          end
         end
-      end
 
-      if #can_build > 0 then
-        local action = can_build[math.random(#can_build)]
-        libs.net.build(server,user,parent,action)
+        local max_cost = {}
+        for _,action in pairs(can_build) do
+          local object_type = self:getTypeFromAction(action)
+          for _,restype in pairs(libs.net.resourceTypes) do
+            max_cost[restype] = math.max(
+              max_cost[restype] or 0,
+              object_type.cost[restype] or 0)
+          end
+        end
+
+        if #can_build > 0 and self:canAffordMaxCost(user,max_cost) then
+          local action = can_build[math.random(#can_build)]
+          libs.net.build(server,user,parent,action)
+        end
+
       end
 
     end
   end
+
 end
 
 function action:update(dt,ai)

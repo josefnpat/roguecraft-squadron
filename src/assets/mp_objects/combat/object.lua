@@ -1,6 +1,7 @@
 return function()
   return {
     type = "combat",
+    military_large = true,
     cost = {material=250,crew=50},
     crew = 50,
     size = 32,
