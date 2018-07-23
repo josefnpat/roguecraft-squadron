@@ -390,7 +390,7 @@ function client:update(dt)
       if object.gather <= 0 then
         object.gather = nil
       end
-      self.gather:add(object.dx,object.dy)
+      self.gather:add(object.dx,object.dy,object.user)
     end
 
     if self.user and self.user.id == object.user and object.in_combat then

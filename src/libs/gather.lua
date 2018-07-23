@@ -21,12 +21,13 @@ function gather.new(init)
   return self
 end
 
-function gather:add(x,y)
+function gather:add(x,y,user_id)
   table.insert(self.data,{
     x = x + math.random(-32,32),
     y = y + math.random(-32,32),
     angle = math.random()*math.pi*2,
     dt = 0,
+    user = user_id,
   })
 end
 
@@ -36,6 +37,8 @@ function gather:draw()
     local index = math.floor(effect.dt)+1
     local img = gather.images[index]
     if img then
+      local user = libs.net.getUser(effect.user)
+      love.graphics.setColor(user.color)
       love.graphics.draw(img,
         effect.x,effect.y,
         effect.angle,1,1,
