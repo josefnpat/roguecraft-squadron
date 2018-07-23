@@ -143,7 +143,8 @@ function objectrenderer.draw(object,objects,selection,time)
   end
 
   if object.build_t and object.build_dt then
-    love.graphics.setColor(0,255,255,isSelected and 127 or 63)
+    local user = libs.net.getUser(object.user)
+    love.graphics.setColor(user.color[1],user.color[2],user.color[3],isSelected and 127 or 63)
     local object_type = libs.objectrenderer.getType(object.type)
     local percent = 1-object.build_dt/object.build_t
     libs.pcb(object.dx,object.dy,object_type.size*1.5,0.75,percent,0)
