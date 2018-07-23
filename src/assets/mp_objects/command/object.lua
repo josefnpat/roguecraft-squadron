@@ -5,8 +5,8 @@ return function()
     fow = 0.5,
     crew = 100,
     size = 64,
-    speed = 150,
-    health = {max = 150,},
+    speed = 50,
+    health = {max = 300,},
     material = 600,
     construction_command = true,
     actions = {
