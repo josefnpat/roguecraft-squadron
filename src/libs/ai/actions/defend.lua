@@ -65,7 +65,6 @@ function action:updateFixed(ai)
           ai:getServer():stopUpdateObjectTarget(object)
         end
       end
-      --libs.net.setObjectTarget(ai:getServer(),attack.object,"nil")
       self.attack_list[attackindex] = nil
     end
   end
