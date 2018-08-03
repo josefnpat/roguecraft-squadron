@@ -1,6 +1,6 @@
 local action = {}
 
-local attack_timeout = 5
+local attack_timeout = 2
 
 function action:new(init)
   init = init or {}
