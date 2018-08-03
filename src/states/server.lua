@@ -491,10 +491,7 @@ function server:init()
       -- todo: cache indexes
       for _,sobject in pairs(arg.t) do
         if object.index == sobject.i and object.user == user.id then
-          object.target = sobject.t
-          server:addUpdate(object,{
-            target = object.target,
-          },"target_objects")
+          libs.net.setObjectTarget(server,object,sobject.t)
         end
       end
     end

@@ -160,6 +160,13 @@ function net.moveToTarget(server,object,x,y,int)
   end
 end
 
+function net.setObjectTarget(server,object,target)
+  object.target = target
+  server:addUpdate(object,{
+    target = target,
+  },"target_objects")
+end
+
 function net.build(server,user,parent,action)
   if parent and parent.user == user.id then
     if server.actions[action] then
