@@ -29,6 +29,7 @@ server._genResourcesDefault = {
 }
 
 server._maxUserUnits = math.huge
+server.maxPlayers = 8
 
 function server.setupActions(storage)
 
@@ -319,6 +320,21 @@ function server:findObject(index,storage)
   end
 end
 
+function server:generatePlayers(users,storage)
+  local players = {}
+  for _,real_player in pairs(users) do
+    real_player.config = real_player.config or {id=real_player.id}
+    table.insert(players,real_player.config)
+  end
+  if storage.config.ai then
+    for ai_index = 1,storage.config.ai do
+      storage.ai_players[ai_index] = storage.ai_players[ai_index] or {ai=ai_index}
+      table.insert(players,storage.ai_players[ai_index])
+    end
+  end
+  return players
+end
+
 function server:init()
   self.lovernet = nil
 
@@ -372,6 +388,23 @@ function server:init()
   self.lovernet:addProcessOnServer(libs.net.op.set_config,function(self,peer,arg,storage)
     for i,v in pairs(arg.d) do
       storage.config[i] = v
+    end
+    server:validateConfig()
+  end)
+
+  self.lovernet:addOp(libs.net.op.get_players)
+  self.lovernet:addProcessOnServer(libs.net.op.get_players,function(self,peer,arg,storage)
+    return server:generatePlayers(self:getUsers(),storage)
+  end)
+
+  self.lovernet:addOp(libs.net.op.set_players)
+  self.lovernet:addValidateOnServer(libs.net.op.set_players,{p='number',d='table'})
+  self.lovernet:addProcessOnServer(libs.net.op.set_players,function(self,peer,arg,storage)
+    local players = server:generatePlayers(self:getUsers(),storage)
+    if players[arg.p] then
+      for i,v in pairs(arg.d) do
+        players[arg.p][i] = v
+      end
     end
   end)
 
@@ -691,8 +724,10 @@ function server:resetGame()
   self.lovernet:getStorage().config = {
     game_start=false,
     creative=false,
-    ai=1,
+    ai=0,
   }
+
+  self.lovernet:getStorage().ai_players = {}
 
   self.lovernet:getStorage().objects = {}
   self.lovernet:getStorage().objects_index = 0
@@ -1007,6 +1042,16 @@ function server:explodeNearby(object)
   end
 end
 
+function server:validateConfig()
+  local storage = self.lovernet:getStorage()
+  storage.config.ai = math.max(0,storage.config.ai)
+  local user_count = 0
+  for _,_ in pairs(self.lovernet:getUsers()) do
+    user_count = user_count + 1
+  end
+  storage.config.ai = math.min(server.maxPlayers-user_count,storage.config.ai)
+end
+
 function server:update(dt)
   self.lovernet:update(dt)
   local storage = self.lovernet:getStorage()
@@ -1016,6 +1061,7 @@ function server:update(dt)
       server:resetGame()
     end
   else
+    self:validateConfig()
     if storage.config.game_start then
       storage.config.game_started = true
       server:newGame()

@@ -28,6 +28,9 @@ msgstr "Connect to Game"
 msgid "menu.remote_server_address"
 msgstr "Change Remote Game Address"
 
+msgid "menu.user_name"
+msgstr "Change User Name"
+
 msgid "menu.standalone_server"
 msgstr "Host Standalone Server"
 

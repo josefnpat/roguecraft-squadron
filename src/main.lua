@@ -154,6 +154,7 @@ function love.load(arg)
     button = require"libs.button",
     mpdisconnect = require"libs.mpdisconnect",
     mpconnect = require"libs.mpconnect",
+    mpconnectplayer = require"libs.mpconnectplayer",
     gamestatus = require"libs.gamestatus",
     ring = require"libs.ring",
     ai = require"libs.ai",

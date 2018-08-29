@@ -18,6 +18,7 @@ settings:define("tree_points",0)
 settings:define("tree_levels",{})
 settings:define("diff","new")
 settings:define("remote_server_address","50.116.63.25")
+settings:define("user_name","Player")
 settings:define("mouse_draw_mode","software")
 
 game_name = "RogueCraft Squadron"

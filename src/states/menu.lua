@@ -183,6 +183,22 @@ function mainmenu:enter()
 
   self.menump:add(
     function()
+      return libs.i18n('menu.user_name').." ["..settings:read("user_name").."]"
+    end,
+    function()
+      self.chooser = libs.stringchooser.new{
+        prompt = "user_name:",
+        string = settings:read("user_name"),
+        callback = function(string)
+          self.chooser = nil
+          settings:write("user_name",string)
+        end,
+      }
+    end
+  )
+
+  self.menump:add(
+    function()
       return libs.i18n('menu.standalone_server')
     end,
     function()

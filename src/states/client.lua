@@ -31,6 +31,8 @@ function client:enter()
   self.lovernet:addOp(libs.net.op.get_user)
   self.lovernet:addOp(libs.net.op.get_config)
   self.lovernet:addOp(libs.net.op.set_config)
+  self.lovernet:addOp(libs.net.op.set_players)
+  self.lovernet:addOp(libs.net.op.get_players)
   self.lovernet:addOp(libs.net.op.debug_create_object)
   self.lovernet:addOp(libs.net.op.get_new_objects)
   self.lovernet:addOp(libs.net.op.get_new_updates)
@@ -155,6 +157,20 @@ function client:update(dt)
       self.lovernet:pushData(libs.net.op.get_config)
     end
 
+    if not self.lovernet:hasData(libs.net.op.get_players) then
+      self.lovernet:pushData(libs.net.op.get_players)
+    end
+
+    if self.players and self.user then
+      local pid = libs.net.getPlayerId(self.players,self.user)
+      if not self.players[pid].user_name then
+        self.lovernet:pushData(libs.net.op.set_players,{
+          p=pid,
+          d={user_name=settings:read("user_name")},
+        })
+      end
+    end
+
   else -- not self.gamestatus:isStarted()
 
     if not self.lovernet:hasData(libs.net.op.get_new_objects) then
@@ -211,6 +227,11 @@ function client:update(dt)
   if self.lovernet:getCache(libs.net.op.get_config) then
     self.config = self.lovernet:getCache(libs.net.op.get_config)
     self.lovernet:clearCache(libs.net.op.get_config)
+  end
+
+  if self.lovernet:getCache(libs.net.op.get_players) then
+    self.players = self.lovernet:getCache(libs.net.op.get_players)
+    self.lovernet:clearCache(libs.net.op.get_players)
   end
 
   if self.lovernet:getCache(libs.net.op.time) then
@@ -363,6 +384,9 @@ function client:update(dt)
     end
   else
     self.mpconnect:update(dt)
+    if self.config then
+      self.mpconnect:setAiCount(self.config.ai)
+    end
   end
 
   if self.last_selected_timeout then
@@ -873,7 +897,7 @@ function client:draw()
   if self.gamestatus:isStarted() then
     self.mpdisconnect:draw()
   else
-    self.mpconnect:draw(self.config,self.user_count)
+    self.mpconnect:draw(self.config,self.players,self.user_count)
   end
 
   self.chat:draw()

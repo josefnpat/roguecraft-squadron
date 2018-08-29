@@ -6,6 +6,8 @@ net.op = {
   get_user =            'u',
   get_config =          'f',
   set_config =          'h',
+  get_players =         'i',
+  set_players =         'j',
   debug_create_object = 'c',
   delete_objects =      'd',
   get_new_objects =     'o',
@@ -214,6 +216,14 @@ function net.distance(a,b,time)
   local ax,ay = net.getCurrentLocation(a,time)
   local bx,by = net.getCurrentLocation(b,time)
   return math.sqrt( (ax-bx)^2 + (ay-by)^2 )
+end
+
+function net.getPlayerId(users,user)
+  for player_index,player in pairs(users) do
+    if user.id == player.id then
+      return player_index
+    end
+  end
 end
 
 return net
