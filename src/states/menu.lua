@@ -171,7 +171,7 @@ function mainmenu:enter()
     end,
     function()
       self.chooser = libs.stringchooser.new{
-        prompt = "remote_server_address:",
+        prompt = "Set Remote Server Address:",
         string = settings:read("remote_server_address"),
         callback = function(string)
           self.chooser = nil
@@ -187,7 +187,7 @@ function mainmenu:enter()
     end,
     function()
       self.chooser = libs.stringchooser.new{
-        prompt = "user_name:",
+        prompt = "Set User Name:",
         string = settings:read("user_name"),
         callback = function(string)
           self.chooser = nil

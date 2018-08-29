@@ -22,18 +22,32 @@ end
 
 function stringchooser:draw()
 
+  love.graphics.setColor(0,0,0,127)
+  love.graphics.rectangle("fill",0,0,love.graphics.getWidth(),love.graphics.getHeight())
+
   local font = love.graphics.getFont()
-  local w = font:getWidth(self._asset)
+  local wa = font:getWidth(self._asset)
+  local wp = font:getWidth(self._prompt)
+  local w = math.max(wa,wp)
   local h = font:getHeight()
   local x = (love.graphics.getWidth()-w)/2
-  local y = (love.graphics.getHeight()-h)/8
+  local y = (love.graphics.getHeight()-h)/2
   local old_color = {love.graphics.getColor()}
 
+  local padding = 8
+
+  tooltipbg(
+    x-padding*2,
+    y-font:getHeight()*2,
+    w+padding*2*2,
+    h+font:getHeight()*2+padding*2
+  )
+
   love.graphics.setColor(255,255,255)
-  love.graphics.print(self._prompt,x,y-font:getHeight()*2)
+  love.graphics.print(self._prompt,x,y-font:getHeight()*2+padding)
 
   love.graphics.setColor(0,0,0,127)
-  local padding = 8
+
   love.graphics.rectangle("fill",x-padding,y-padding,w+padding*2,h+padding*2)
   if string.len(self._asset) > 0 then
     love.graphics.setColor(0,255,0)
