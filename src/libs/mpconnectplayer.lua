@@ -14,6 +14,7 @@ function mpconnectplayer.new(init)
   self.getHeight = mpconnectplayer.getHeight
   self._type = init.type or "user"
   self._user_name = init.user_name or "Loading ..."
+  self._user_id = init.user_id or 0
   self._inner_padding = 8
   self._outer_padding = 4
 
@@ -33,7 +34,9 @@ function mpconnectplayer:draw(x,y)
     x+self._inner_padding+self._outer_padding,
     y+self._inner_padding+self._outer_padding,
     0,scale,scale)
-  love.graphics.printf(self._user_name,x,y+image:getHeight()*scale+32,self:getWidth(),"center")
+  local user = libs.net.getUser(self._user_id-1)
+  love.graphics.setColor(user.selected_color)
+  dropshadowf(self._user_name,x,y+image:getHeight()*scale+32,self:getWidth(),"center")
 
 end
 

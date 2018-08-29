@@ -76,10 +76,11 @@ function mpconnect:draw(config,players,user_count)
   if players then
     for player_index,player in pairs(players) do
       local type = player.ai == nil and "user" or "ai"
-      local user_name = player.ai == nil and player.user_name or "AI"
+      local user_name = player.ai == nil and player.user_name or "[AI]"
       local lol = libs.mpconnectplayer.new{
         type=type,
         user_name=user_name,
+        user_id=player_index,
       }
       local total_width = lol:getWidth() * #players
       lol:draw(

@@ -226,4 +226,12 @@ function net.getPlayerId(users,user)
   end
 end
 
+function net.getPlayerById(users,id)
+  for _,player in pairs(users) do
+    if id == player.id then
+      return player
+    end
+  end
+end
+
 return net

@@ -63,18 +63,28 @@ function chat:draw()
   love.graphics.printf(text,
     self._x+self._padding,self._y+self._height-offset+self._padding,
     self._width-self._padding*2,self._active and "left" or "center")
-  love.graphics.setColor(255,255,255)
-  for _,line in pairs(self._data) do
+  for _,data in pairs(self._data) do
+    local line = data.user_name..": "..data.text
     local adjw,sublines = font:getWrap(line,self._width-self._padding*2)
     local h = font:getHeight(line) * #sublines
     offset = offset + h + self._padding*2
-    love.graphics.printf(line,
-      self._x+self._padding,self._y+self._height-offset+self._padding,
-      self._width-self._padding*2,"left")
+    local text_x = self._x+self._padding
+    local text_y = self._y+self._height-offset+self._padding
+    local text_w = self._width-self._padding*2
+    local text_align = "left"
+    love.graphics.setColor(0,0,0,127)
+    for _,x in pairs({-1,1}) do
+      for _,y in pairs({-1,1}) do
+        love.graphics.printf(line,text_x+x,text_y+y,text_w,text_align)
+      end
+    end
+    love.graphics.setColor(data.selected_color)
+    love.graphics.printf(line,text_x,text_y,text_w,text_align)
     if offset > self._height then
       break
     end
   end
+  love.graphics.setColor(255,255,255)
   love.graphics.setScissor()
 end
 
@@ -105,9 +115,14 @@ function chat:mouseInside()
     my >= self._y and my <= self._y + self._height
 end
 
-function chat:addData(user,data)
-  local user = libs.net.getUser(user)
-  table.insert(self._data,1,user.name..": "..data)
+function chat:addData(user_id,text,user_name)
+  local user_data = libs.net.getUser(user_id)
+  table.insert(self._data,1,{
+    user_name=user_name or user_data.name,
+    text=text,
+    color=user_data.color,
+    selected_color=user_data.selected_color,
+  })
 end
 
 function chat:setX(val)
