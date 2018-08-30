@@ -815,9 +815,8 @@ function client:resize()
 end
 
 function client:lookAtObject(object)
-  self.camera:move(
-    self.focusObject.x+self.camera.x,
-    self.focusObject.y+self.camera.y)
+  self.camera.x = object.dx or object.x
+  self.camera.y = object.dy or object.y
 end
 
 function client:isOnCamera(ent)
