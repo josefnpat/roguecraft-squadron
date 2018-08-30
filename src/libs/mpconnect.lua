@@ -7,9 +7,13 @@ function mpconnect.new(init)
   self.lovernet = init.lovernet
   self.ai_count = init.ai_count or 0
 
+  self.updateData = mpconnect.updateData
   self.update = mpconnect.update
   self.draw = mpconnect.draw
   self.setAiCount = mpconnect.setAiCount
+
+  self._players = {}
+  self._data = {}
 
   self.start = libs.button.new{
     text="Start Battle",
@@ -37,10 +41,34 @@ function mpconnect.new(init)
   return self
 end
 
+function mpconnect:updateData(config,players)
+  if not compareIndexed(players,self._players) then
+    self._players = players
+    self._data = {}
+    for player_index,player in pairs(players) do
+      local type = player.ai == nil and "user" or "ai"
+      local user_name = player.ai == nil and player.user_name or "[AI]"
+      local player_type_id = player.ai == nil and player.id or player.ai
+      local player_data = libs.mpconnectplayer.new{
+        type=type,
+        user_name=user_name,
+        user_id=player_type_id,
+        player_index=player_index,
+        team=player.team,
+        lovernet = self.lovernet,
+      }
+      table.insert(self._data,player_data)
+    end
+  end
+end
+
 function mpconnect:update(dt)
   self.start:update(dt)
   for _,button in pairs(self.buttons) do
     button:update(dt)
+  end
+  for _,player_data in pairs(self._data) do
+    player_data:update(dt)
   end
 end
 
@@ -73,21 +101,12 @@ function mpconnect:draw(config,players,user_count)
     love.graphics.print(s,32,256)
   end
 
-  if players then
-    for player_index,player in pairs(players) do
-      local type = player.ai == nil and "user" or "ai"
-      local user_name = player.ai == nil and player.user_name or "[AI]"
-      local lol = libs.mpconnectplayer.new{
-        type=type,
-        user_name=user_name,
-        user_id=player_index,
-      }
-      local total_width = lol:getWidth() * #players
-      lol:draw(
-        (love.graphics.getWidth()-total_width)/2 + lol:getWidth()*(player_index-1),
-        love.graphics.getHeight()/2 - lol:getHeight()
-      )
-    end
+  for player_index,player_data in pairs(self._data) do
+    local total_width = player_data:getWidth() * #self._data
+    player_data:draw(
+      (love.graphics.getWidth()-total_width)/2 + player_data:getWidth()*(player_index-1),
+      love.graphics.getHeight()/2 - player_data:getHeight()
+    )
   end
 
   self.start:setX( (love.graphics.getWidth()-self.start:getWidth())/2 )

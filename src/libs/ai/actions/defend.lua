@@ -28,13 +28,14 @@ function action:updateFixed(ai)
   local user_objects_shoot = {}
   local other_objects_with_targets = {}
   for _,object in pairs(ai:getStorage().objects) do
-    if object.user == user_id then
+    if libs.net.userOwnsObject(ai:getUser(),object) then
       user_objects[object.index] = object
       local object_type = libs.objectrenderer.getType(object.type)
       if object_type.shoot then
         table.insert(user_objects_shoot,object)
       end
-    else
+    end
+    if object.user and not ai:getServer():objectIsAlly(ai:getUser(),object) then
       if object.target then
         table.insert(other_objects_with_targets,object)
       end

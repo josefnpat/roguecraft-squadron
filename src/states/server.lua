@@ -178,7 +178,7 @@ function server.updateCargo(storage,user)
     end
 
     for _,object in pairs(storage.objects) do
-      if object.user == user.id then
+      if libs.net.userOwnsObject(user,object) then
         local object_type = libs.objectrenderer.getType(object.type)
         for _,restype in pairs(libs.net.resourceTypes) do
           if object_type[restype] then
@@ -322,14 +322,20 @@ end
 
 function server:generatePlayers(users,storage)
   local players = {}
-  for _,real_player in pairs(users) do
-    real_player.config = real_player.config or {id=real_player.id}
-    table.insert(players,real_player.config)
+  for index_player,real_player in pairs(users) do
+    real_player.config = real_player.config or {id=real_player.id,team=#players+1}
+    if string.sub(index_player,1,3) == "ai_" then
+      if not storage.ai_are_connected then
+        table.insert(players,real_player.config)
+      end
+    else
+      table.insert(players,real_player.config)
+    end
   end
   if storage.config.ai then
     for ai_index = 1,storage.config.ai do
-      storage.ai_players[ai_index] = storage.ai_players[ai_index] or {ai=ai_index}
-      table.insert(players,storage.ai_players[ai_index])
+      storage.ai_players[ai_index] = storage.ai_players[ai_index] or {config={ai=ai_index,team=#players+1}}
+      table.insert(players,storage.ai_players[ai_index].config)
     end
   end
   return players
@@ -398,14 +404,25 @@ function server:init()
   end)
 
   self.lovernet:addOp(libs.net.op.set_players)
-  self.lovernet:addValidateOnServer(libs.net.op.set_players,{p='number',d='table'})
+  self.lovernet:addValidateOnServer(libs.net.op.set_players,{t='string',p='number',d='table'})
   self.lovernet:addProcessOnServer(libs.net.op.set_players,function(self,peer,arg,storage)
-    local players = server:generatePlayers(self:getUsers(),storage)
-    if players[arg.p] then
-      for i,v in pairs(arg.d) do
-        players[arg.p][i] = v
-      end
+
+    local player
+    if arg.t == "u" then
+      player = libs.net.getPlayerById(self:getUsers(),arg.p)
+    else -- arg.t == "ai"
+      player = libs.net.getPlayerByAi(self:getStorage().ai_players,arg.p)
     end
+
+    if player then
+      for i,v in pairs(arg.d) do
+        player.config[i] = v
+      end
+      server:validatePlayerConfig(player.config)
+    else
+      print("Could not find player",arg.t,arg.p)
+    end
+
   end)
 
   self.lovernet:addOp(libs.net.op.debug_create_object)
@@ -437,7 +454,7 @@ function server:init()
     for _,object in pairs(storage.objects) do
       -- todo: cache indexes
       for _,sobject_index in pairs(arg.d) do
-        if object.index == sobject_index and object.user == user.id then
+        if object.index == sobject_index and libs.net.userOwnsObject(user,object) then
           server:addUpdate(object,{remove=true},"delete_objects")
           object.remove = true
         end
@@ -496,7 +513,7 @@ function server:init()
     -- todo: cache indexes
     for _,sobject in pairs(arg.o) do
       local object = libs.net.getObjectByIndex(storage.objects,sobject.i)
-      if object and user.id == object.user then
+      if object and libs.net.userOwnsObject(user,object) then
         libs.net.moveToTarget(server,object,sobject.x,sobject.y,arg.int)
       end
     end
@@ -523,7 +540,7 @@ function server:init()
     for _,object in pairs(storage.objects) do
       -- todo: cache indexes
       for _,sobject in pairs(arg.t) do
-        if object.index == sobject.i and object.user == user.id then
+        if object.index == sobject.i and libs.net.userOwnsObject(user,object) then
           libs.net.setObjectTarget(server,object,sobject.t)
         end
       end
@@ -692,7 +709,7 @@ function server:init()
 
   self.lovernet:onRemoveUser(function(user)
     for _,object in pairs(self.lovernet:getStorage().objects) do
-      if object.user == user.id then
+      if libs.net.userOwnsObject(user,object) then
         server:addUpdate(object,{remove=true},"delete_objects")
         object.remove = true
       end
@@ -719,6 +736,7 @@ function server:resetGame()
     for ai_id = 1,self.lovernet:getStorage().config.ai do
       self.lovernet:_removeUser("ai_"..ai_id)
     end
+    self.lovernet:getStorage().ai_are_connected = nil
   end
 
   self.lovernet:getStorage().config = {
@@ -727,7 +745,21 @@ function server:resetGame()
     ai=0,
   }
 
+  local ai_players = self.lovernet:getStorage().ai_players
+  if ai_players then
+    for _,ai_player in pairs(ai_players) do
+      ai_players.config = nil
+    end
+  end
   self.lovernet:getStorage().ai_players = {}
+
+  local players = self.lovernet:getStorage().players
+  if players then
+    for _,player in pairs(players) do
+      player.config = nil
+    end
+  end
+  self.lovernet:getStorage().players = {}
 
   self.lovernet:getStorage().objects = {}
   self.lovernet:getStorage().objects_index = 0
@@ -754,10 +786,11 @@ function server:newGame()
     server.maps.spacedpockets.config)
 
   if self.lovernet:getStorage().config.ai then
-    for ai_id = 1,self.lovernet:getStorage().config.ai do
-      local peer = "ai_"..ai_id
+    for _,ai in pairs(self.lovernet:getStorage().ai_players) do
+      local peer = "ai_"..ai.config.ai
       self.lovernet:_addUser(peer)
       local user = self.lovernet:getUser(peer)
+      user.config = ai.config
       user.ai = libs.ai.new{
         user = user,
         pockets = pockets,
@@ -766,6 +799,7 @@ function server:newGame()
       }
     end
   end
+  self.lovernet:getStorage().ai_are_connected = true
 
   local user_count = 0
   for peer,user in pairs(self.lovernet:getUsers()) do
@@ -787,11 +821,11 @@ function server:targetIsSelf(object,target)
 end
 
 function server:targetIsAlly(object,target)
-  return object.user == target.user
+  return self:objectsAreAllies(object,target)
 end
 
 function server:targetIsEnemy(object,target)
-  return target.user ~= nil and object.user ~= target.user
+  return target.user ~= nil and not self:objectsAreAllies(object,target)
 end
 
 function server:targetCanBeShot(object)
@@ -891,7 +925,7 @@ end
 function server:takeoverTarget(object,target)
   local distance = libs.net.distance(object,target,love.timer.getTime())
   local target_type = libs.objectrenderer.getType(target.type)
-  if target_type.health and object.user ~= target.user and distance < server:getFollowRange(object,target) then
+  if target_type.health and not self:objectsAreAllies(object,target) and distance < server:getFollowRange(object,target) then
     target.user = object.user
     self:addUpdate(target,{
       user=target.user,
@@ -928,6 +962,36 @@ function server:getUserById(id)
   end
 end
 
+function server:objectsAreAllies(obj1,obj2)
+  local user1 = self:getUserById(obj1.user)
+  local user2 = self:getUserById(obj2.user)
+  if user1 and user2 then
+    return user1.config.team == user2.config.team
+  else
+    if user1 == nil then
+      print("server:objectsAreAllies(obj1,obj2):user1==nil")
+    end
+    if user2 == nil then
+      print("server:objectsAreAllies(obj1,obj2):user2==nil")
+    end
+  end
+  return true
+end
+
+function server:objectIsAlly(user1,obj)
+  local user2 = self:getUserById(obj.user)
+  if user1 and user2 then
+    return user1.config.team == user2.config.team
+  else
+    if user1 == nil then
+      print("server:objectIsAlly(user1,obj):user1==nil")
+    end
+    if user2 == nil then
+      print("server:objectIsAlly(user1,obj):user2==nil")
+    end
+  end
+end
+
 function server:changeResource(user,restype,amount)
   user.resources[restype] = user.resources[restype] + amount
   local cargo = user.cargo[restype]
@@ -943,7 +1007,7 @@ function server:attackNearby(object)
       local storage = self.lovernet:getStorage()
       local nearby = {}
       for _,tobject in pairs(storage.objects) do
-        if tobject.index ~= object.index and tobject.user ~= nil and tobject.user ~= object.user then
+        if tobject.index ~= object.index and tobject.user ~= nil and not self:objectsAreAllies(tobject,object) then
           if libs.net.distance(object,tobject,love.timer.getTime()) < object_type.shoot.aggression then
             table.insert(nearby,tobject)
           end
@@ -1020,7 +1084,7 @@ function server:explodeNearby(object)
         local distance = libs.net.distance(object,tobject,love.timer.getTime())
         if distance <= object_type.explode.damage_range then
           table.insert(nearby,tobject)
-          if tobject.user ~= object.user and distance <= object_type.explode.range then
+          if not self:objectsAreAllies(tobject,object) and distance <= object_type.explode.range then
             explode = true
           end
         end
@@ -1052,6 +1116,12 @@ function server:validateConfig()
   storage.config.ai = math.min(server.maxPlayers-user_count,storage.config.ai)
 end
 
+function server:validatePlayerConfig(player)
+  if player.team > server.maxPlayers then
+    player.team = 1
+  end
+end
+
 function server:update(dt)
   self.lovernet:update(dt)
   local storage = self.lovernet:getStorage()
@@ -1062,6 +1132,11 @@ function server:update(dt)
     end
   else
     self:validateConfig()
+    for _,user in pairs(self.lovernet:getUsers()) do
+      if user.config then
+        self:validatePlayerConfig(user.config)
+      end
+    end
     if storage.config.game_start then
       storage.config.game_started = true
       server:newGame()

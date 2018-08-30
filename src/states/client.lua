@@ -165,8 +165,9 @@ function client:update(dt)
       local pid = libs.net.getPlayerId(self.players,self.user)
       if not self.players[pid].user_name then
         self.lovernet:pushData(libs.net.op.set_players,{
-          p=pid,
+          p=self.players[pid].id,
           d={user_name=settings:read("user_name")},
+          t="u",
         })
       end
     end
@@ -387,6 +388,9 @@ function client:update(dt)
     self.mpconnect:update(dt)
     if self.config then
       self.mpconnect:setAiCount(self.config.ai)
+    end
+    if self.config and self.players then
+      self.mpconnect:updateData(self.config,self.players)
     end
   end
 
@@ -932,6 +936,11 @@ function client:draw()
     str = str .. "camera: "..math.floor(self.camera.x)..","..math.floor(self.camera.y).."\n"
     if self.server_git_count ~= git_count then
       str = str .. "mismatch: " .. git_count .. " ~= " .. tostring(self.server_git_count) .. "\n"
+    end
+    if self.players then
+      for player_index,player in pairs(self.players) do
+        str = str .. player_index .. "-" .. (player.user_name or "AI") .. " [team ".. player.team .. "]" .. "\n"
+      end
     end
     love.graphics.printf(str,32,32,love.graphics.getWidth()-64,"right")
     libs.version.draw()

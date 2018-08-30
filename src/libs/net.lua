@@ -237,4 +237,16 @@ function net.getPlayerById(users,id)
   end
 end
 
+function net.getPlayerByAi(users,ai)
+  for _,player in pairs(users) do
+    if ai == player.config.ai then
+      return player
+    end
+  end
+end
+
+function net.userOwnsObject(user,object)
+  return object.user == user.id
+end
+
 return net

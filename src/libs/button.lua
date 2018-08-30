@@ -49,7 +49,9 @@ function button:mouseInside()
 end
 
 function button:draw()
-  self._draw(self._text,self._x,self._y,self._width,self._height,self._hover,self._depress)
+  self._draw(
+    type(self._text)=="function" and self._text() or self._text,
+    self._x,self._y,self._width,self._height,self._hover,self._depress)
 end
 
 function button._default_onClick()

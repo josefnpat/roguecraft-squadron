@@ -9,20 +9,37 @@ function mpconnectplayer.new(init)
   init = init or {}
   local self = {}
 
+  self.lovernet = init.lovernet
+
   self.draw = mpconnectplayer.draw
+  self.update = mpconnectplayer.update
   self.getWidth = mpconnectplayer.getWidth
   self.getHeight = mpconnectplayer.getHeight
   self._type = init.type or "user"
   self._user_name = init.user_name or "Loading ..."
   self._user_id = init.user_id or 0
+  self._player_index = init.player_index or 0
+  self._team = init.team or 1
   self._inner_padding = 8
   self._outer_padding = 4
+
+  self._changeTeam = libs.button.new{
+    text=function()
+      return self._team
+    end,
+    onClick=function()
+      self.lovernet:pushData(libs.net.op.set_players,{
+        d={team=self._team+1},
+        p=self._user_id,
+        t=self._type=="user" and "u" or "ai"})
+    end,
+  }
 
   return self
 end
 
 function mpconnectplayer:draw(x,y)
-  local user = libs.net.getUser(self._user_id-1)
+  local user = libs.net.getUser(self._player_index-1)
   --love.graphics.rectangle("line",x,y,self:getWidth(),self:getHeight())
   tooltipbg(x+self._outer_padding,y+self._outer_padding,
     self:getWidth()-self._outer_padding*2,self:getHeight()-self._outer_padding*2,
@@ -32,12 +49,22 @@ function mpconnectplayer:draw(x,y)
   local image = mpconnectplayer.img[self._type]
   local target_width = self:getWidth()-self._inner_padding*2-self._outer_padding*2
   local scale = target_width/image:getWidth()
+  local target_height = image:getHeight()*scale
+  local target_x = x+self._inner_padding+self._outer_padding
+  local target_y = y+self._inner_padding+self._outer_padding
   love.graphics.draw(image,
-    x+self._inner_padding+self._outer_padding,
-    y+self._inner_padding+self._outer_padding,
+    target_x,
+    target_y,
     0,scale,scale)
   dropshadowf(self._user_name,x,y+image:getHeight()*scale+32,self:getWidth(),"center")
+  self._changeTeam:setX(target_x)
+  self._changeTeam:setY(target_y + target_height - self._changeTeam:getHeight())
+  self._changeTeam:setWidth(self._changeTeam:getHeight())
+  self._changeTeam:draw()
+end
 
+function mpconnectplayer:update(dt)
+  self._changeTeam:update(dt)
 end
 
 function mpconnectplayer:getWidth()

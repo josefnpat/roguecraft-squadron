@@ -395,6 +395,32 @@ function round(num, numDecimalPlaces)
   return math.floor(num * mult + 0.5) / mult
 end
 
+function compareIndexed(t1,t2)
+  local t1_count = 0
+  for _,_ in pairs(t1) do t1_count = t1_count + 1 end
+  local t2_count = 0
+  for _,_ in pairs(t2) do t2_count = t2_count + 1 end
+  if t1_count ~= t2_count then
+    return false
+  end
+  for i,v in pairs(t1) do
+    if type(v) == "table" then
+      if type(t2[i]) ~= "table" then
+        return false
+      end
+      local valid_left = compareIndexed(v,t2[i])
+      if not valid_left then
+        return false
+      end
+    else -- numbers, strings, functions, etc
+      if t2[i] ~= v then
+        return false
+      end
+    end
+  end
+  return true
+end
+
 file = {}
 
 function file.name(url)
