@@ -61,8 +61,11 @@ local selected_alpha = 127
 
 net._users = {}
 local names = {"Alberto","Beryl","Chris","Debby","Ernesto","Florence","Gordon","Helene"}
+local full_offset = -0.2
 for i,v in pairs(names) do
-  local r,g,b = HSVToRGB(math.mod(i*0.618033988749895,1)*255,255,255)
+  local scalar = 1/8
+  local offset = i%2==0 and full_offset or full_offset+0.5
+  local r,g,b = HSVToRGB(math.mod(i*scalar+offset,1)*255,255,255)
   table.insert(net._users,{
     name = v,
     color = {r,g,b,selected_alpha},

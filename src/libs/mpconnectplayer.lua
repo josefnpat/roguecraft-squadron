@@ -22,9 +22,11 @@ function mpconnectplayer.new(init)
 end
 
 function mpconnectplayer:draw(x,y)
+  local user = libs.net.getUser(self._user_id-1)
   --love.graphics.rectangle("line",x,y,self:getWidth(),self:getHeight())
   tooltipbg(x+self._outer_padding,y+self._outer_padding,
-    self:getWidth()-self._outer_padding*2,self:getHeight()-self._outer_padding*2)
+    self:getWidth()-self._outer_padding*2,self:getHeight()-self._outer_padding*2,
+    user.color,user.selected_color)
   love.graphics.setColor(255,255,255)
 
   local image = mpconnectplayer.img[self._type]
@@ -34,8 +36,6 @@ function mpconnectplayer:draw(x,y)
     x+self._inner_padding+self._outer_padding,
     y+self._inner_padding+self._outer_padding,
     0,scale,scale)
-  local user = libs.net.getUser(self._user_id-1)
-  love.graphics.setColor(user.selected_color)
   dropshadowf(self._user_name,x,y+image:getHeight()*scale+32,self:getWidth(),"center")
 
 end
