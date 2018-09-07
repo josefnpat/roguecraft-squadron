@@ -5,6 +5,8 @@ server._follow_update_mult = 1.2
 server._shoot_update_mult = 0.8
 server._gather_update_mult = 0.5
 
+server._gather_refresh = 2
+
 server._throttle_object_updates = math.huge
 server._throttle_bullet_updates = math.huge
 
@@ -263,10 +265,14 @@ end
 
 function server:addGather(dt,object,amount)
   if amount > 0 then
-    object.gather_dt = (object.gather_dt or 0) + dt
-    if object.gather_dt > 1 then
-      object.gather_dt = nil
+    if object.gather_dt == nil then
       server:addUpdate(object,{gather=1},"addGather")
+      object.gather_dt = 0
+    else
+      object.gather_dt = object.gather_dt + dt
+      if object.gather_dt >= server._gather_refresh then
+        object.gather_dt = nil
+      end
     end
   end
 end
