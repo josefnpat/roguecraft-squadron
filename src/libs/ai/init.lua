@@ -12,12 +12,6 @@ function ai.new(init)
 
   local self = {}
 
-  --self._action_t = 1
-  self._aps = 250/60 -- actions per second
-  self._current_aps = 0
-  --self._action_dt = self._action_t*math.random()
-  self._queue = {}
-
   self.getUser = ai.getUser
   self._user = init.user
   assert(self._user)
@@ -33,6 +27,11 @@ function ai.new(init)
   self.getServer = ai.getServer
   self._server = init.server
   assert(self._server)
+
+  local diff = libs.net.aiDifficulty[self._user.config.diff]
+  self._aps = diff.apm()/60 -- actions per second
+  self._current_aps = 0
+  self._queue = {}
 
   self.getActions = ai.getActions
   self._actions = {}

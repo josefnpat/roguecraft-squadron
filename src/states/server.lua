@@ -329,7 +329,10 @@ end
 function server:generatePlayers(users,storage)
   local players = {}
   for index_player,real_player in pairs(users) do
-    real_player.config = real_player.config or {id=real_player.id,team=#players+1}
+    real_player.config = real_player.config or {
+      id=real_player.id,
+      team=#players+1
+    }
     if string.sub(index_player,1,3) == "ai_" then
       if not storage.ai_are_connected then
         table.insert(players,real_player.config)
@@ -340,7 +343,13 @@ function server:generatePlayers(users,storage)
   end
   if storage.config.ai then
     for ai_index = 1,storage.config.ai do
-      storage.ai_players[ai_index] = storage.ai_players[ai_index] or {config={ai=ai_index,team=#players+1}}
+      storage.ai_players[ai_index] = storage.ai_players[ai_index] or {
+        config={
+          ai=ai_index,
+          team=#players+1,
+          diff=1,
+        }
+      }
       table.insert(players,storage.ai_players[ai_index].config)
     end
   end
@@ -1125,6 +1134,9 @@ end
 function server:validatePlayerConfig(player)
   if player.team > server.maxPlayers then
     player.team = 1
+  end
+  if player.diff and player.diff > #libs.net.aiDifficulty then
+    player.diff = 1
   end
 end
 

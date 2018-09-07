@@ -55,6 +55,7 @@ function mpconnect:updateData(config,players)
         user_id=player_type_id,
         player_index=player_index,
         team=player.team,
+        diff=player.diff,
         lovernet = self.lovernet,
       }
       table.insert(self._data,player_data)

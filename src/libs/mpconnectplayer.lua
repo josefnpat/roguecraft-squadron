@@ -20,6 +20,7 @@ function mpconnectplayer.new(init)
   self._user_id = init.user_id or 0
   self._player_index = init.player_index or 0
   self._team = init.team or 1
+  self._diff = init.diff or 1
   self._inner_padding = 8
   self._outer_padding = 4
 
@@ -34,6 +35,21 @@ function mpconnectplayer.new(init)
         t=self._type=="user" and "u" or "ai"})
     end,
   }
+
+  if self._type ~= "user" then
+    self._changeDiff = libs.button.new{
+      text=function()
+        local diff = libs.net.aiDifficulty[self._diff]
+        return diff.text--.." ["..diff.apm().."]"
+      end,
+      onClick=function()
+        self.lovernet:pushData(libs.net.op.set_players,{
+          d={diff=self._diff+1},
+          p=self._user_id,
+          t="ai"})
+      end,
+    }
+  end
 
   return self
 end
@@ -61,10 +77,21 @@ function mpconnectplayer:draw(x,y)
   self._changeTeam:setY(target_y + target_height - self._changeTeam:getHeight())
   self._changeTeam:setWidth(self._changeTeam:getHeight())
   self._changeTeam:draw()
+
+  if self._changeDiff then
+    self._changeDiff:setX(target_x)
+    self._changeDiff:setY(128+target_y + target_height - self._changeDiff:getHeight())
+    self._changeDiff:setWidth(target_width)
+    self._changeDiff:draw()
+  end
+
 end
 
 function mpconnectplayer:update(dt)
   self._changeTeam:update(dt)
+  if self._changeDiff then
+    self._changeDiff:update(dt)
+  end
 end
 
 function mpconnectplayer:getWidth()
@@ -72,7 +99,7 @@ function mpconnectplayer:getWidth()
 end
 
 function mpconnectplayer:getHeight()
-  return 128+64+self._inner_padding*2
+  return 192+64+self._inner_padding*2
 end
 
 return mpconnectplayer

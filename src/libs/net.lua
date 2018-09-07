@@ -31,6 +31,36 @@ net.resourceStrings = {
   crew="Crew",
 }
 
+net.aiDifficultyBase = 20
+net.aiDifficultyScale = 50
+
+net.aiDifficulty = {
+  {
+    text = "Chew Toy",
+    apm = function() return net.aiDifficultyBase+net.aiDifficultyScale*0 end,
+  },
+  {
+    text = "Scrub",
+    apm = function() return net.aiDifficultyBase+net.aiDifficultyScale*1 end,
+  },
+  {
+    text = "Awkward",
+    apm = function() return net.aiDifficultyBase+net.aiDifficultyScale*2 end,
+  },
+  {
+    text = "Bananas",
+    apm = function() return net.aiDifficultyBase+net.aiDifficultyScale*3 end,
+  },
+  {
+    text = "Ragequit",
+    apm = function() return net.aiDifficultyBase+net.aiDifficultyScale*4 end,
+  },
+  {
+    text = "No Ice Cream",
+    apm = function() return net.aiDifficultyBase+net.aiDifficultyScale*5 end,
+  },
+}
+
 -- https://love2d.org/wiki/HSV_color
 -- Converts HSV to RGB. (input and output range: 0 - 255)
 function HSVToRGB(h, s, v)
