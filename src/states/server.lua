@@ -801,7 +801,6 @@ function server:newGame()
     server.maps.spacedpockets.config)
 
   if self.lovernet:getStorage().config.ai then
-    --for _,ai in pairs(self.lovernet:getStorage().ai_players) do
     local ai_players = self.lovernet:getStorage().ai_players
     for ai_index = 1,self.lovernet:getStorage().config.ai do
       local ai = ai_players[ai_index]
