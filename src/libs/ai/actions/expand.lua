@@ -1,7 +1,6 @@
 local action = {}
 
 action.pocket_cache_lifespan = 5
-action.pocket_cache_age = action.pocket_cache_lifespan
 
 function action:new(init)
   init = init or {}
@@ -9,6 +8,8 @@ function action:new(init)
   self.ai = init.ai
   self.updateFixed = action.updateFixed
   self.update = action.update
+
+  self._pocket_cache_age = action.pocket_cache_lifespan*math.random()
 
   self.isValidPocket = action.isValidPocket
   self.isValidPocketFull = action.isValidPocketFull
@@ -86,12 +87,13 @@ function action:updateFixed(ai)
       ai:setCurrentPocket(new_pocket)
     end
   end
+  return {},0
 end
 
 function action:update(dt,ai)
-  action.pocket_cache_age = action.pocket_cache_age + dt
-  if action.pocket_cache_age > action.pocket_cache_lifespan then
-    action.pocket_cache_age = 0
+  self._pocket_cache_age = self._pocket_cache_age + dt
+  if self._pocket_cache_age > action.pocket_cache_lifespan then
+    self._pocket_cache_age = 0
     action:buildGlobalPocketCache(ai)
   end
 end

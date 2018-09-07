@@ -23,6 +23,7 @@ local function makeAuxIndexedTable(t)
 end
 
 function action:updateFixed(ai)
+  local actions,actions_count = {},0
   local user_id = ai:getUser().id
   local user_objects = {}
   local user_objects_shoot = {}
@@ -54,7 +55,10 @@ function action:updateFixed(ai)
     for _,object in pairs(user_objects_shoot) do
       if object.target == nil then
         local target = indexedAttackList[math.random(#indexedAttackList)].object
-        libs.net.setObjectTarget(ai:getServer(),object,target.index)
+        table.insert(actions,function()
+          libs.net.setObjectTarget(ai:getServer(),object,target.index)
+        end)
+        actions_count = actions_count + 1
       end
     end
   end
@@ -63,12 +67,17 @@ function action:updateFixed(ai)
     if attack.dt <= 0 or libs.net.objectShouldBeRemoved(attack.object) then
       for _,object in pairs(user_objects_shoot) do
         if object.target == attack.object.index then
-          ai:getServer():stopUpdateObjectTarget(object)
+          table.insert(actions,function()
+            ai:getServer():stopUpdateObjectTarget(object)
+          end)
+          actions_count = actions_count + 1
         end
       end
       self.attack_list[attackindex] = nil
     end
   end
+
+  return actions,actions_count
 
 end
 

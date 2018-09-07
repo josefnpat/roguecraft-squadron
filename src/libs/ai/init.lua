@@ -12,8 +12,11 @@ function ai.new(init)
 
   local self = {}
 
-  self._action_t = 1
-  self._action_dt = self._action_t*math.random()
+  --self._action_t = 1
+  self._aps = 250/60 -- actions per second
+  self._current_aps = 0
+  --self._action_dt = self._action_t*math.random()
+  self._queue = {}
 
   self.getUser = ai.getUser
   self._user = init.user
@@ -68,13 +71,33 @@ function ai:update(dt)
   for _,action in pairs(self._actions) do
     action:update(dt,self)
   end
-  self._action_dt = self._action_dt + dt
-  if self._action_dt > self._action_t then
-    self._action_dt = self._action_dt - self._action_t
-    -- todo: prioritize actions and only perform one
-    for _,action in pairs(self._actions) do
-      action:updateFixed(self)
+
+  self._current_aps = math.max(0,self._current_aps - self._aps * dt)
+
+  if self._current_aps <= 0 then
+
+    if #self._queue == 0 then
+      local actions_count = 0
+      for action_index,sub_action in pairs(self._actions) do
+        local sub_actions,sub_actions_count = sub_action:updateFixed(self)
+        for _,sub_action in pairs(sub_actions) do
+          table.insert(self._queue,sub_action)
+        end
+        actions_count = actions_count + sub_actions_count
+      end
     end
+
+    local new_queue = {}
+    for action_index,action in pairs(self._queue) do
+      if self._current_aps <= 0 then
+        action()
+        self._current_aps = self._current_aps + 1
+      else
+        table.insert(new_queue,action)
+      end
+    end
+    self._queue = new_queue
+
   end
 
 end

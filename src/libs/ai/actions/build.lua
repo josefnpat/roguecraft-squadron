@@ -131,6 +131,8 @@ end
 
 function action:updateFixed(ai)
 
+  local actions,actions_count = {},0
+
   -- print('>>>start build ai:')
   local user = ai:getUser()
   local server = ai:getServer()
@@ -172,13 +174,18 @@ function action:updateFixed(ai)
 
         if #can_build > 0 and self:canAffordMaxCost(user,max_cost) then
           local action = can_build[math.random(#can_build)]
-          libs.net.build(server,user,parent,action)
+          table.insert(actions,function()
+            libs.net.build(server,user,parent,action)
+          end)
+          actions_count = actions_count + 1
         end
 
       end
 
     end
   end
+
+  return actions,actions_count
 
 end
 

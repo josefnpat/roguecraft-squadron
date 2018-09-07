@@ -11,21 +11,26 @@ function action:new(init)
 end
 
 function action:updateFixed(ai)
+  local actions,actions_count = {},0
   local currentPocket = ai:getCurrentPocket()
   local user_id = ai:getUser().id
   for _,object in pairs(ai:getStorage().objects) do
     if object.user == user_id then
       if self.last_wander[object.index] == nil and not libs.net.hasTarget(object) then
         self.last_wander[object.index] = math.random()*5+5
-        libs.net.moveToTarget(
-          ai:getServer(),
-          object,
-          currentPocket.x+math.random(-512,512),
-          currentPocket.y+math.random(-512,512),
-          true)
+        table.insert(actions,function()
+          libs.net.moveToTarget(
+            ai:getServer(),
+            object,
+            currentPocket.x+math.random(-512,512),
+            currentPocket.y+math.random(-512,512),
+            true)
+        end)
+        actions_count = actions_count + 1
       end
     end
   end
+  return actions,actions_count
 end
 
 function action:update(dt,ai)
