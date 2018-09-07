@@ -918,7 +918,7 @@ function client:draw()
       love.graphics.setColor(255,255,255)
     end
 
-    local str = ""
+    local str = love.timer.getFPS( ).." FPS\n"
     if self.user then
       str = str .. "user.id: " .. libs.net.getUser(self.user.id).name .. "["..self.user.id.."]\n"
       love.graphics.setColor(255,255,255)
