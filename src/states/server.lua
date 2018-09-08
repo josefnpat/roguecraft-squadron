@@ -19,12 +19,6 @@ server._genMapDefault = {
   cat=1,
 }
 
-server._genPlayerFirst = "command"
-server._genPlayerDefault = {
-  habitat=1,
-  salvager=1,
-}
-
 server._genResourcesDefault = {
   material = math.huge,
   crew = math.huge,
@@ -162,8 +156,9 @@ function server.generatePlayer(storage,user,pocket)
     x = math.random(-libs.net.mapsize,libs.net.mapsize)
     y = math.random(-libs.net.mapsize,libs.net.mapsize)
   end
-  server.createObject(storage,server._genPlayerFirst,x,y,user)
-  for object_type,object_count in pairs(server._genPlayerDefault) do
+  local preset = libs.mppresets.getPresets()[storage.config.preset]
+  server.createObject(storage,preset.gen.first,x,y,user)
+  for object_type,object_count in pairs(preset.gen.default) do
     for i = 1,object_count do
       local cx = math.random(-128,128)
       local cy = math.random(-128,128)
@@ -756,6 +751,7 @@ function server:resetGame()
 
   self.lovernet:getStorage().config = {
     game_start=false,
+    preset=#libs.mppresets.getPresets(),
     creative=false,
     ai=0,
   }
@@ -1131,6 +1127,9 @@ function server:validateConfig()
     user_count = user_count + 1
   end
   storage.config.ai = math.min(server.maxPlayers-user_count,storage.config.ai)
+  if storage.config.preset > #libs.mppresets.getPresets() then
+    storage.config.preset = 1
+  end
 end
 
 function server:validatePlayerConfig(player)

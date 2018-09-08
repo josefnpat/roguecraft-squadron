@@ -1,0 +1,8 @@
+msgid "mission.object.advdrydock_demo.name"
+msgstr "Military Drydock"
+
+msgid "mission.object.advdrydock_demo.info"
+msgstr "A construction ship builds ships focused on defense and destruction."
+
+msgid "mission.object.advdrydock_demo.build"
+msgstr "At one point in history, humans created a self-replicating drydock. They ran out of materials rather quickly. Regardless, if you want bigger ships, you're going to have to build bigger drydocks."

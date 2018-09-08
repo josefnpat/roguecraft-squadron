@@ -6,11 +6,13 @@ function mpconnect.new(init)
 
   self.lovernet = init.lovernet
   self.ai_count = init.ai_count or 0
+  self.preset = init.preset or #libs.mppresets.getPresets()
 
   self.updateData = mpconnect.updateData
   self.update = mpconnect.update
   self.draw = mpconnect.draw
   self.setAiCount = mpconnect.setAiCount
+  self.setPreset = mpconnect.setPreset
 
   self._players = {}
   self._data = {}
@@ -37,6 +39,14 @@ function mpconnect.new(init)
       self.lovernet:pushData(libs.net.op.set_config,{d={ai=self.ai_count-1}})
     end,
   })
+
+  self.presetButton = libs.button.new{
+    text="Preset",
+    onClick=function()
+      self.lovernet:pushData(libs.net.op.set_config,{d={preset=self.preset+1}})
+    end,
+  }
+  table.insert(self.buttons,self.presetButton)
 
   return self
 end
@@ -75,6 +85,12 @@ end
 
 function mpconnect:setAiCount(count)
   self.ai_count = count
+end
+
+function mpconnect:setPreset(preset_value)
+  self.preset = preset_value
+  local preset = libs.mppresets.getPresets()[preset_value]
+  self.presetButton:setText(preset.name)
 end
 
 function mpconnect:draw(config,players,user_count)

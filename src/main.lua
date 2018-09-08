@@ -16,6 +16,7 @@ function love.load(arg)
       objectrenderer = require"libs.objectrenderer",
       bulletrenderer = require"libs.bulletrenderer",
       ai = require"libs.ai",
+      mppresets = require"libs.mppresets",
     }
 
     libs.objectrenderer.load(false)
@@ -158,6 +159,7 @@ function love.load(arg)
     gamestatus = require"libs.gamestatus",
     ring = require"libs.ring",
     ai = require"libs.ai",
+    mppresets = require"libs.mppresets",
   }
 
   libs.objectrenderer.load(true)
