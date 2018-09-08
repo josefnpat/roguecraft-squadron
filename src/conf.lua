@@ -32,7 +32,7 @@ function love.conf(t)
       headless = true
     end
   end
-  t.identity = "rcs"
+  t.identity = "RogueCraftSquadron"
 
   if headless then
     t.window = false
