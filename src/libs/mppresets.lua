@@ -12,13 +12,14 @@ function mppresets.getPresets()
   return mppresets._presets
 end
 
--- maybe this works?
-function mppresets.getPreset(id)
-  for _,preset in pairs(mppresets._presets) do
-    if preset.id == id then
-      return preset
-    end
-  end
+function mppresets.getBuildPriority(id)
+  local preset = mppresets._presets[id]
+  return preset.build.priority
+end
+
+function mppresets.getBuildMaxCount(id)
+  local preset = mppresets._presets[id]
+  return preset.build.max_count
 end
 
 return mppresets
