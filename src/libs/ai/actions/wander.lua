@@ -1,6 +1,6 @@
 local action = {}
 
-function action:new(init)
+function action.new(init)
   init = init or {}
   local self = {}
   self.ai = init.ai

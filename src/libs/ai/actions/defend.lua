@@ -2,7 +2,7 @@ local action = {}
 
 local attack_timeout = 2
 
-function action:new(init)
+function action.new(init)
   init = init or {}
   local self = {}
   self.ai = init.ai

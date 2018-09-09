@@ -2,13 +2,14 @@ local action = {}
 
 action.pocket_cache_lifespan = 5
 
-function action:new(init)
+function action.new(init)
   init = init or {}
   local self = {}
   self.ai = init.ai
   self.updateFixed = action.updateFixed
   self.update = action.update
 
+  self._preset = init.preset
   self._pocket_cache_age = action.pocket_cache_lifespan*math.random()
 
   self.isValidPocket = action.isValidPocket
@@ -24,7 +25,17 @@ end
 function action:isValidPocket(ai,pocket,objects)
   for _,object in pairs(objects) do
     local object_type = libs.objectrenderer.getType(object.type)
-    if object_type.material_supply or object_type.ore_supply then
+
+    local preset = libs.mppresets.getPresets()[self._preset]
+    local objvalid = false
+    if preset.build.priority.material_gather and object_type.material_supply then
+      objvalid = true
+    end
+    if preset.build.priority.ore_gather and object_type.ore_supply then
+      objvalid = true
+    end
+
+    if objvalid then
       local ax,ay = libs.net.getCurrentLocation(object)
       local nearest_pocket = self:getNearestPocket(ai,ai:getPockets(),ax,ay)
       if pocket == nearest_pocket then
@@ -94,7 +105,7 @@ function action:update(dt,ai)
   self._pocket_cache_age = self._pocket_cache_age + dt
   if self._pocket_cache_age > action.pocket_cache_lifespan then
     self._pocket_cache_age = 0
-    action:buildGlobalPocketCache(ai)
+    self:buildGlobalPocketCache(ai)
   end
 end
 

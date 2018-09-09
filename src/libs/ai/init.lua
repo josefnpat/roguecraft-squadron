@@ -36,7 +36,7 @@ function ai.new(init)
   self.getActions = ai.getActions
   self._actions = {}
   for action_index,action in pairs(ai.actions) do
-    self._actions[action_index] = action.new()
+    self._actions[action_index] = action.new{preset=self._storage.config.preset}
   end
 
   self.update = ai.update

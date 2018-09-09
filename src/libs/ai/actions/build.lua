@@ -2,7 +2,7 @@ local action = {}
 
 local _build_string = "build_"
 
-function action:new(init)
+function action.new(init)
   init = init or {}
   local self = {}
   self.ai = init.ai
@@ -16,36 +16,8 @@ function action:new(init)
   self.actionBuildsPriority = action.actionBuildsPriority
   self.canAffordMaxCost = action.canAffordMaxCost
 
-  -- todo: add max unit count
-  self.priority = {
-    construction_command = 5,
-    material_gather = 4,
-    ore_gather = 3,
-    construction_civilian = 3,
-    construction_military = 1,
-    ore_convert = 2,
-    crew_gather = 3,
-    military_small = 5,
-    military_large = 0,
-    cargo = 2,
-    repair = -math.huge,
-    takeover = -math.huge,
-  }
-
-  self.max_count = {
-    material_gather = 6,
-    ore_gather = 6,
-    construction_command = 1,
-    construction_civilian = 4,
-    construction_military = 8,
-    ore_convert = 4,
-    crew_gather = 5,
-    cargo = 8,
-    military_small = 16,
-    military_large = math.huge,
-  }
-
-  self.owned_pockets = 1
+  self.priority = libs.mppresets.getBuildPriority(init.preset)
+  self.max_count = libs.mppresets.getBuildMaxCount(init.preset)
 
   return self
 end
@@ -67,7 +39,7 @@ function action:getPriority(objects)
   end
 
   for priority,priority_count in pairs(priority_count) do
-    if self.max_count[priority] and priority_count >= self.max_count[priority]*self.owned_pockets then
+    if self.max_count[priority] and priority_count >= self.max_count[priority] then
       current_priority[priority] = nil
     end
   end
