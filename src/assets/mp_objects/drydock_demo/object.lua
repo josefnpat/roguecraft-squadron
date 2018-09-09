@@ -10,7 +10,7 @@ return function()
     "build_radar",
     --"build_command_demo",
     --"build_repair",
-    -- "build_research",
+    --"build_research",
   }
   return ship
 end
