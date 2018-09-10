@@ -376,7 +376,7 @@ function client:update(dt)
   self.chat:update(dt)
   self:stackSide()
 
-  self.gamestatus:update(dt,self.objects)
+  self.gamestatus:update(dt,self.objects,self.players or {})
   if self.gamestatus:isStarted() then
     self.mpdisconnect:update(dt)
     if self.gamestatus:isPlayerLose(self.user) then
