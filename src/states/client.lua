@@ -388,7 +388,7 @@ function client:update(dt)
     self.mpconnect:update(dt)
     if self.config then
       self.mpconnect:setAiCount(self.config.ai)
-      self.mpconnect:setPreset(self.config.preset)
+      self.mpconnect:setPreset(self.config.preset or 1)
     end
     if self.config and self.players then
       self.mpconnect:updateData(self.config,self.players)
