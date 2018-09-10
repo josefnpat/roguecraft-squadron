@@ -213,6 +213,12 @@ function state:init()
 
 end
 
+function state:keypressed(key)
+  if key == "escape" then
+    libs.hump.gamestate.switch(previousState)
+  end
+end
+
 function state:update(dt)
   self.menu:update(dt)
 end

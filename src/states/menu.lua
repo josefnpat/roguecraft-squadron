@@ -307,7 +307,11 @@ end
 function mainmenu:keypressed(key)
 
   if key == "escape" then
-    self.chooser = nil
+    if self.chooser then
+      self.chooser = nil
+    elseif self.menu ~= self.menum then
+      self.menu = self.menum
+    end
   end
 
   if self.chooser then
