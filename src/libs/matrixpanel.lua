@@ -6,6 +6,7 @@ function matrixpanel.new(init)
   init = init or {}
   local self = {}
 
+  self._drawbg = init.drawbg == nil and true or init.drawbg
   self._x = init.x or 32
   self._y = init.y or 32
   self._width = init.width or 256
@@ -35,6 +36,8 @@ function matrixpanel.new(init)
 end
 
 function matrixpanel:mouseInside(x,y)
+  x = x or love.mouse.getX()
+  y = y or love.mouse.getY()
   return x >= self._x and y >= self._y and
     x <= self:getWidth() + self._x and
     y <= self:getHeight() + self._y
@@ -75,7 +78,9 @@ function matrixpanel:getWidth()
 end
 
 function matrixpanel:draw(bg,fg)
-  tooltipbg(self._x,self._y,self._width,self:getHeight(),bg,fg)
+  if self._drawbg then
+    tooltipbg(self._x,self._y,self._width,self:getHeight(),bg,fg)
+  end
   for ai,action in pairs(self._actions) do
     local x,y,w,h = self:getIconArea(ai)
     local ix,iy = x + self._padding, y + self._padding

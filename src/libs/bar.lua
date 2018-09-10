@@ -8,11 +8,12 @@ barlib.img = {
 function barlib.new(init)
   init = init or {}
   local self = {}
+  self._drawbg = init.drawbg == nil and true or init.drawbg
   self._text = init.text or "Bar Lib"
   self._hoverText = init.hoverText or "Bar Lib Hover"
   self._x = init.x or 32
   self._y = init.y or 32
-  self._padding = init.padding or 8
+  self._padding = init.padding or 12
   self._width = init.width or 256
   self._height = init.height or barlib.img.corner:getHeight()+self._padding*2
   self._color = init.color or {0,255,255}
@@ -34,7 +35,9 @@ function barlib.new(init)
   self.setY = barlib.setY
   self.setPadding = barlib.setPadding
   self.setWidth = barlib.setWidth
+  self.getWidth = barlib.getWidth
   self.setHeight = barlib.setHeight
+  self.getHeight = barlib.getHeight
   self.setColor = barlib.setColor
   self.setBarColor = barlib.setBarColor
   self.setTextColor = barlib.setTextColor
@@ -54,7 +57,9 @@ end
 function barlib:draw()
   if not self._barEnable then return end
   local old_color = {love.graphics.getColor()}
-  tooltipbg(self._x,self._y,self._width,self._height)
+  if self._drawbg then
+    tooltipbg(self._x,self._y,self._width,self._height)
+  end
   if debug_mode then
     love.graphics.rectangle("line",self._x,self._y,self._width,self._height)
   end
@@ -128,8 +133,16 @@ function barlib:setWidth(width)
   self._width = width
 end
 
+function barlib:getWidth()
+  return self._width
+end
+
 function barlib:setHeight(height)
   self._height = height
+end
+
+function barlib:getHeight()
+  return self._height
 end
 
 function barlib:setColor(color)

@@ -51,6 +51,7 @@ function server.setupActions(storage)
               local x = cx + math.random(-object_type.size,object_type.size)
               local y = cy + math.random(-object_type.size,object_type.size)
               local newobject = server.createObject(storage,object_type.type,x,y,user)
+              newobject.unqueue_parent = parent.index
               if object_type.speed then
                 newobject.tx = cx + math.random(-128,128)
                 newobject.ty = cy + math.random(-128,128)

@@ -75,7 +75,7 @@ function actionpanel:getSelectedActions(selected,user)
   return valid
 end
 
-function actionpanel:process(selection,lovernet,user,resources)
+function actionpanel:process(selection,user,resources,buildqueue)
 
   local selected = selection:getSelected()
   self.panel:clearActions()
@@ -90,13 +90,10 @@ function actionpanel:process(selection,lovernet,user,resources)
     if valid then
       self.panel:addAction(
         object_type.icons[1],
-        function(object)
-          if resources:canAfford(object_type) then
-            libs.sfx.loop("action.build.start")
-          else
-            resources:cantAffordNotif(object_type)
+        function()
+          for _,selected_object in pairs(selection:getSelected()) do
+            buildqueue:add(selected_object,object_type,action)
           end
-          lovernet:pushData(libs.net.op.action,{a=action,t=selection:getSelectedIndexes()})
         end,
         function(hover)
           local alpha = hover and 255 or 191

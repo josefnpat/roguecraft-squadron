@@ -56,6 +56,7 @@ function client:enter()
   self.time = 0
   self.chat_index = 0
   self.selection = libs.selection.new{onChange=client.selectionOnChange,onChangeScope=self}
+  self.buildqueue = libs.buildqueue.new()
   self.objects = {}
   self.bullets = {}
   self.menu_enabled = false
@@ -87,7 +88,7 @@ function client:leave()
 end
 
 function client:selectionOnChange()
-  self.actionpanel:process(self.selection,self.lovernet,self.user,self.resources)
+  self.actionpanel:process(self.selection,self.user,self.resources,self.buildqueue)
   local selection = self.selection:getSelected()
   local selection_is_users = false
   for _,object in pairs(selection) do
@@ -138,6 +139,11 @@ function client:stackSide()
   self.resources.x = cx
   self.resources.y = cy
   cy = cy + self.resources:getHeight()
+  if self:showBuildQueue() then
+    self.buildqueue:setX(cx)
+    self.buildqueue:setY(cy)
+    cy = cy + self.buildqueue:getHeight()
+  end
   self.actionpanel:setX(cx)
   self.actionpanel:setY(cy)
   cy = cy + self.actionpanel:getHeight()
@@ -261,6 +267,7 @@ function client:update(dt)
         sobject.dx = sobject.x
         sobject.dy = sobject.y
         sobject.angle = math.random()*2*math.pi
+        sobject.queue = {}
         if sobject.user == self.user.id then
           sobject.anim = 1
         end
@@ -270,6 +277,16 @@ function client:update(dt)
           self.focusObject = sobject
           self:lookAtObject(sobject)
           self.selection:setSingleSelected(sobject)
+        end
+
+        if sobject.unqueue_parent then
+          local parent = self:getObjectByIndex(sobject.unqueue_parent)
+          if parent then
+            parent.build_current = nil
+            self.buildqueue:doFullUpdate()
+          else
+            print('warning: parent is missing')
+          end
         end
 
         table.insert(self.objects,sobject)
@@ -369,6 +386,10 @@ function client:update(dt)
   self.resources:update(dt)
   self.actionpanel:update(dt)
   self.selection:update(dt)
+  self.buildqueue:update(dt,self.user,self.objects,self.resources,self.lovernet)
+  if self:showBuildQueue() then
+    self.buildqueue:updateData(self.selection:getSelected()[1],self.resources)
+  end
   self.fow:updateAll(dt,self.objects,self.user)
   self.explosions:update(dt)
   self.moveanim:update(dt)
@@ -515,8 +536,8 @@ end
 
 function client:mouseInsideUI()
   return self.minimap:mouseInside() or self.resources:mouseInside() or
-      self.actionpanel:mouseInside() or self.selection:mouseInside() or
-      self.chat:mouseInside()
+      self.actionpanel:mouseInside() or self.buildqueue:mouseInside() or
+      self.selection:mouseInside() or self.chat:mouseInside()
 end
 
 function client:CartArchSpiral(initRad,turnDistance,angle)
@@ -626,6 +647,8 @@ function client:mousepressed(x,y,button)
       -- nop
     elseif self.actionpanel:mouseInside(x,y) then
       -- nop
+    elseif self.buildqueue:mouseInside(x,y) then
+      -- nop
     elseif self.selection:mouseInside(x,y) then
       -- nop
     elseif self.chat:mouseInside(x,y) then
@@ -648,6 +671,8 @@ function client:mousereleased(x,y,button)
       -- nop
     elseif self.actionpanel:mouseInside(x,y) and not self.selection:selectionInProgress() then
       self.actionpanel:runHoverAction()
+    elseif self.buildqueue:mouseInside(x,y) and not self.selection:selectionInProgress() then
+      self.buildqueue:runHoverAction()
     elseif self.selection:mouseInside(x,y) and not self.selection:selectionInProgress() then
       self.selection:runHoverAction()
     elseif self.chat:mouseInside(x,y) and not self.selection:selectionInProgress() then
@@ -830,6 +855,22 @@ function client:isOnCamera(ent)
     ent.dy > y and ent.dy < y + h
 end
 
+function client:showBuildQueue()
+  local selection = self.selection:getSelected()
+  local object = selection[1]
+  if #selection == 1 and object.user == self.user.id then
+    local object_type = libs.objectrenderer.getType(object.type)
+    if object_type.actions == nil then
+      return
+    end
+    for _,action in pairs(object_type.actions) do
+      if starts_with(action,"build_") then
+        return true
+      end
+    end
+  end
+end
+
 function client:draw()
 
   libs.stars:draw(self.camera.x/2,self.camera.y/2)
@@ -896,6 +937,9 @@ function client:draw()
     self.resources:draw()
     self.selection:drawPanel()
     self.actionpanel:draw()
+    if self:showBuildQueue() then
+      self.buildqueue:drawPanel()
+    end
   end
 
   self.notif:draw()

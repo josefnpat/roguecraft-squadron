@@ -136,6 +136,7 @@ function love.load(arg)
     lovernetprofiler = require"libs.lovernetprofiler",
     bitser = require"libs.lovernet.bitser",
     selection = require"libs.selection",
+    buildqueue = require"libs.buildqueue",
     net = require"libs.net",
     objectrenderer = require"libs.objectrenderer",
     bulletrenderer = require"libs.bulletrenderer",
