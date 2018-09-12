@@ -21,18 +21,21 @@ function stringchooser.new(init)
 end
 
 function stringchooser:draw()
+  local old_color = {love.graphics.getColor()}
+  local old_font = love.graphics.getFont()
 
   love.graphics.setColor(0,0,0,127)
-  love.graphics.rectangle("fill",0,0,love.graphics.getWidth(),love.graphics.getHeight())
+  love.graphics.rectangle("fill",0,0,love.graphics.getWidth(),
+    love.graphics.getHeight())
 
-  local font = love.graphics.getFont()
+  local font = fonts.menu
+  love.graphics.setFont(font)
   local wa = font:getWidth(self._asset)
   local wp = font:getWidth(self._prompt)
   local w = math.max(wa,wp)
   local h = font:getHeight()
   local x = (love.graphics.getWidth()-w)/2
   local y = (love.graphics.getHeight()-h)/2
-  local old_color = {love.graphics.getColor()}
 
   local padding = 8
 
@@ -58,6 +61,7 @@ function stringchooser:draw()
   love.graphics.print(self._asset,x,y)
 
   love.graphics.setColor(old_color)
+  love.graphics.setFont(old_font)
 end
 
 function stringchooser:textinput(t)
