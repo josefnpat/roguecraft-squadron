@@ -392,7 +392,7 @@ function server:init()
   self.lovernet:addOp(libs.net.op.get_user)
   self.lovernet:addProcessOnServer(libs.net.op.get_user,function(self,peer,arg,storage)
     local user = self:getUser(peer)
-    return {id=user.id}
+    return {id=user.id,np=user.not_playing}
   end)
 
   self.lovernet:addOp(libs.net.op.get_config)
@@ -706,6 +706,7 @@ function server:init()
   local lovernet_scope = self
 
   self.lovernet:onAddUser(function(user)
+
     user.resources = {}
     user.cargo = {}
     for _,restype in pairs(libs.net.resourceTypes) do
@@ -716,6 +717,12 @@ function server:init()
     user.last_bullet = 0
     user.id = lovernet_scope.last_user_index
     lovernet_scope.last_user_index = lovernet_scope.last_user_index + 1
+
+    local storage = lovernet_scope.lovernet:getStorage()
+    if storage.config.game_started then
+      user.not_playing = true
+    end
+
   end)
 
   self.lovernet:onRemoveUser(function(user)

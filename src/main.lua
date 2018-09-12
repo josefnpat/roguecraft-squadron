@@ -161,6 +161,8 @@ function love.load(arg)
     ring = require"libs.ring",
     ai = require"libs.ai",
     mppresets = require"libs.mppresets",
+    loading = require"libs.loading",
+    picocam = require"libs.picocam",
   }
 
   libs.objectrenderer.load(true)

@@ -122,8 +122,7 @@ function mpconnect:draw(config,players,user_count)
 
   if #self._data == 0 then
 
-    love.graphics.printf("Waiting for server to respond ...",
-      0,love.graphics.getHeight()/2,love.graphics.getWidth(),"center")
+    libs.loading.draw("Waiting for server to respond ...")
 
   else
 

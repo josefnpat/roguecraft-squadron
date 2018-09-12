@@ -54,6 +54,7 @@ function client:enter()
   self.bullet_index = 0
   self.user_count = 0
   self.time = 0
+  self.last_time = 0
   self.chat_index = 0
   self.selection = libs.selection.new{onChange=client.selectionOnChange,onChangeScope=self}
   self.buildqueue = libs.buildqueue.new()
@@ -157,6 +158,8 @@ end
 
 function client:update(dt)
 
+  libs.loading.update(dt)
+
   if not self.gamestatus:isStarted() then
 
     if not self.lovernet:hasData(libs.net.op.get_config) then
@@ -243,6 +246,8 @@ function client:update(dt)
 
   if self.lovernet:getCache(libs.net.op.time) then
     self.time = self.lovernet:getCache(libs.net.op.time)
+    self.last_time = self.time
+    self.lovernet:clearCache(libs.net.op.time)
   else
     self.time = self.time + dt
   end
@@ -953,6 +958,13 @@ function client:draw()
     self.lovernetprofiler:draw()
   end
 
+  local time_delta = self.time - self.last_time
+  if self.last_time ~= 0 and time_delta > 1 then
+    libs.loading.draw("Server is not responding ... ["..math.floor(time_delta).."s]")
+  elseif self.user and self.user.np then
+    libs.loading.draw("Game currently in progress ...")
+  end
+
   if debug_mode then
 
     for i,v in pairs(libs.net._users) do
@@ -964,11 +976,13 @@ function client:draw()
     local str = love.timer.getFPS( ).." FPS\n"
     if self.user then
       str = str .. "user.id: " .. libs.net.getUser(self.user.id).name .. "["..self.user.id.."]\n"
+      str = str .. "not playing: " .. tostring(self.user.np) .. "\n"
       love.graphics.setColor(255,255,255)
     else
       str = str .. "loading user ... \n"
     end
     str = str .. "time: " .. self.time .. "\n"
+    str = str .. "last_time: " .. self.last_time .. "\n"
     str = str .. "objects: " .. #self.objects .. "\n"
     str = str .. "drawn_objects: " .. drawn_objects .. "\n"
     str = str .. "drawn_bullets: " .. drawn_bullets .. "\n"
