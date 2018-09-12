@@ -5,6 +5,7 @@ function mpconnect.new(init)
   local self = {}
 
   self.lovernet = init.lovernet
+  self.chat = init.chat
   self.ai_count = init.ai_count or 0
   self.preset = init.preset or #libs.mppresets.getPresets()
 
@@ -75,6 +76,7 @@ end
 
 function mpconnect:update(dt)
   self.start:update(dt)
+  self.chat:smallHeight()
   for _,button in pairs(self.buttons) do
     button:update(dt)
   end
@@ -118,24 +120,34 @@ function mpconnect:draw(config,players,user_count)
     love.graphics.print(s,32,256)
   end
 
-  for player_index,player_data in pairs(self._data) do
-    local total_width = player_data:getWidth() * #self._data
-    player_data:draw(
-      (love.graphics.getWidth()-total_width)/2 + player_data:getWidth()*(player_index-1),
-      love.graphics.getHeight()/2 - player_data:getHeight()
-    )
+  if #self._data == 0 then
+
+    love.graphics.printf("Waiting for server to respond ...",
+      0,love.graphics.getHeight()/2,love.graphics.getWidth(),"center")
+
+  else
+
+    for player_index,player_data in pairs(self._data) do
+      local total_width = player_data:getWidth() * #self._data
+      player_data:draw(
+        (love.graphics.getWidth()-total_width)/2 + player_data:getWidth()*(player_index-1),
+        love.graphics.getHeight()/2 - player_data:getHeight()
+      )
+    end
+
+    self.start:setX( (love.graphics.getWidth()-self.start:getWidth())/2 )
+    self.start:setY( love.graphics.getHeight()/2 + self.start:getHeight() )
+    self.start:draw()
+
+    for button_index,button in pairs(self.buttons) do
+      button:setX(32)
+      button:setY(32+(button:getHeight()+16)*(button_index-1))
+      button:setWidth(128)
+      button:draw()
+    end
+
   end
 
-  self.start:setX( (love.graphics.getWidth()-self.start:getWidth())/2 )
-  self.start:setY( love.graphics.getHeight()/2 + self.start:getHeight() )
-  self.start:draw()
-
-  for button_index,button in pairs(self.buttons) do
-    button:setX(32)
-    button:setY(32+(button:getHeight()+16)*(button_index-1))
-    button:setWidth(128)
-    button:draw()
-  end
 end
 
 return mpconnect

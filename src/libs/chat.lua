@@ -13,6 +13,8 @@ function chat.new(init)
   self._data = {}
   self._padding = 4
   self._dt = 0
+  self._height_small = init.height or 240
+  self._height_large = init.height_large or 640
 
   self.draw = chat.draw
   self.update = chat.update
@@ -22,7 +24,9 @@ function chat.new(init)
   self.setBuffer = chat.setBuffer
   self.mouseInside = chat.mouseInside
   self.addData = chat.addData
-  self.setUser = chat.setUser
+  self.toggleHeight = chat.toggleHeight
+  self.smallHeight = chat.smallHeight
+  self.largeHeight = chat.largeHeight
 
   self.setX = chat.setX
   self.getX = chat.getX
@@ -111,8 +115,10 @@ end
 function chat:mouseInside()
   if self._active then return true end
   local mx,my = love.mouse.getPosition()
-  return mx >= self._x and mx <= self._x + self._width and
-    my >= self._y and my <= self._y + self._height
+  local font = love.graphics.getFont()
+  local offset = font:getHeight()+self._padding*2
+  local x,y,w,h = self._x,self._y+self._height-offset,self._width,offset
+  return mx >= x and mx <= x + w and my >= y and my <= y + h
 end
 
 function chat:addData(user_id,text,user_name)
@@ -123,6 +129,19 @@ function chat:addData(user_id,text,user_name)
     color=user_data.color,
     selected_color=user_data.selected_color,
   })
+end
+
+function chat:toggleHeight()
+  self._height = (self._height == self._height_small) and
+    self._height_large or self._height_small
+end
+
+function chat:smallHeight()
+  self._height = self._height_small
+end
+
+function chat:largeHeight()
+  self._height = self._height_large
 end
 
 function chat:setX(val)

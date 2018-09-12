@@ -75,7 +75,7 @@ function client:enter()
   self.moveanim = libs.moveanim.new()
   self.controlgroups = libs.controlgroups.new()
   self.chat = libs.chat.new()
-  self.mpconnect = libs.mpconnect.new{lovernet=self.lovernet}
+  self.mpconnect = libs.mpconnect.new{lovernet=self.lovernet,chat=self.chat}
   self.mpdisconnect = libs.mpdisconnect.new()
   self.gamestatus = libs.gamestatus.new()
 
@@ -819,7 +819,7 @@ function client:keypressed(key)
     end
   else
     if key == "z" then
-      self.chat:setHeight( self.chat:getHeight() == 240 and 640 or 240)
+      self.chat:toggleHeight()
     end
     if key == "delete" then
       self.lovernet:sendData(libs.net.op.delete_objects,{
@@ -924,7 +924,6 @@ function client:draw()
   self.camera:detach()
 
   if self.focusObject then
-
     self.minimap:draw(
       self.camera,
       self.focusObject,
@@ -933,7 +932,6 @@ function client:draw()
       self.user,
       not self.gamestatus:isPlayerAlive(self.user)
     )
-
     self.resources:draw()
     self.selection:drawPanel()
     self.actionpanel:draw()
