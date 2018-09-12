@@ -87,6 +87,7 @@ function buildqueue:updateData(object,resources)
         qobject_type.icons[1],
         function(cobject)
           table.remove(object.queue,qobject_index)
+          object.queue_blocked = nil
           self:doFullUpdate()
         end,
         function(hover)
@@ -130,10 +131,11 @@ function buildqueue:update(dt,user,objects,resources,lovernet)
 
   for _,object in pairs(objects) do
 
-    if object.user == user.id and #object.queue > 0 and object.build_current == nil then --and object.build_dt == nil and object.build_t == nil then
+    if object.user == user.id and #object.queue > 0 and object.build_current == nil then
       local qobject = object.queue[1].type
       local qobject_type = libs.objectrenderer.getType(qobject.type)
       if resources:canAfford(qobject_type) then
+        object.queue_blocked = nil
         libs.sfx.loop("action.build.start")
         lovernet:pushData(libs.net.op.action,{
           a=object.queue[1].action,
@@ -144,7 +146,10 @@ function buildqueue:update(dt,user,objects,resources,lovernet)
         table.remove(object.queue,1)
         self:doFullUpdate()
       else
-        resources:cantAffordNotif(qobject_type)
+        if not object.queue_blocked then
+          object.queue_blocked = true
+          resources:cantAffordNotif(qobject_type)
+        end
       end
     end
   end
