@@ -1,10 +1,10 @@
 local gather = {}
 
 gather.images = {}
-for i = 1,4 do
+for i = 0,9 do
   table.insert(
     gather.images,
-    love.graphics.newImage("assets/effects/"..i..".png")
+    love.graphics.newImage("assets/gather/tile00"..i..".png")
   )
 end
 
@@ -23,8 +23,8 @@ end
 
 function gather:add(x,y,user_id)
   table.insert(self.data,{
-    x = x + math.random(-32,32),
-    y = y + math.random(-32,32),
+    x = x + math.random(-16,16),
+    y = y + math.random(-16,16),
     angle = math.random()*math.pi*2,
     dt = 0,
     user = user_id,
