@@ -60,7 +60,7 @@ function resources.new(init)
 end
 
 function resources:updateBars(dt)
-  local blep = 0
+  local current = 0
   for _,restype in pairs(libs.net.resourceTypes) do
     self.resourceBars[restype]:update(dt)
     local enabled = self._cargo[restype] > 0
@@ -69,8 +69,8 @@ function resources:updateBars(dt)
       local barValue = self._value_tween[restype]/self._cargo[restype]
       self.resourceBars[restype]:setBarValue(barValue)
       self.resourceBars[restype]:setX(self.x)
-      self.resourceBars[restype]:setY(self.y+(blep)*48)
-      blep = blep + 1
+      self.resourceBars[restype]:setY(self.y+current)
+      current = current + self.resourceBars[restype]:getHeight()
     end
   end
 end
@@ -175,13 +175,14 @@ function resources:mouseInside()
 end
 
 function resources:getHeight()
-  local enabled = 0
+  --local enabled = 0
+  local height = 0
   for _,bar in pairs(self.resourceBars) do
     if bar:getBarEnable() then
-      enabled = enabled + 1
+      height = height + bar:getHeight()
     end
   end
-  return enabled*48
+  return height
 end
 
 return resources
