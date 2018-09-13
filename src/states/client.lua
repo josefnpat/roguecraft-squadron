@@ -103,6 +103,7 @@ function client:selectionOnChange()
   if selection_is_users and #selection > 0 then
     libs.sfx.loop("select")
   end
+  self.buildqueue:doFullUpdate()
 end
 
 function client:getCameraOffsetX()
