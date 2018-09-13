@@ -558,9 +558,12 @@ function client:update(dt)
 end
 
 function client:mouseInsideUI()
-  return self.minimap:mouseInside() or self.points:mouseInside() or
-    self.resources:mouseInside() or self.actionpanel:mouseInside() or
-    self.buildqueue:mouseInside() or self.selection:mouseInside() or
+  return self.minimap:mouseInside() or
+    self.points:mouseInside() or
+    self.resources:mouseInside() or
+    self.actionpanel:mouseInside() or
+    self.buildqueue:mouseInside() or
+    self.selection:mouseInside() or
     self.chat:mouseInside()
 end
 
@@ -689,9 +692,7 @@ function client:mousereleased(x,y,button)
   if self.menu_enabled then return end
   self.chat:setActive(false)
   if button == 1 then
-    if self.minimap:mouseInside() and not self.selection:selectionInProgress() then
-      -- nop
-    elseif self.minimap:mouseInside(x,y) and not self.selection:selectionInProgress() then
+    if self.minimap:mouseInside(x,y) and not self.selection:selectionInProgress() then
       -- nop
     elseif self.actionpanel:mouseInside(x,y) and not self.selection:selectionInProgress() then
       self.actionpanel:runHoverAction()
