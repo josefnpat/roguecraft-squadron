@@ -58,7 +58,7 @@ function client:enter()
   self.last_time = 0
   self.chat_index = 0
   self.selection = libs.selection.new{onChange=client.selectionOnChange,onChangeScope=self}
-  self.buildqueue = libs.buildqueue.new()
+  self.buildqueue = libs.buildqueue.new{selection=self.selection}
   self.objects = {}
   self.bullets = {}
   self.menu_enabled = false
@@ -148,14 +148,16 @@ function client:stackSide()
   self.resources.x = cx
   self.resources.y = cy
   cy = cy + self.resources:getHeight()
-  if self:showBuildQueue() then
+  if self.buildqueue:showPanel() then
     self.buildqueue:setX(cx)
     self.buildqueue:setY(cy)
     cy = cy + self.buildqueue:getHeight()
   end
-  self.actionpanel:setX(cx)
-  self.actionpanel:setY(cy)
-  cy = cy + self.actionpanel:getHeight()
+  if self.actionpanel:showPanel() then
+    self.actionpanel:setX(cx)
+    self.actionpanel:setY(cy)
+    cy = cy + self.actionpanel:getHeight()
+  end
   self.selection:setX(cx)
   self.selection:setY(cy)
   cy = cy + self.selection:getHeight()
@@ -242,6 +244,7 @@ function client:update(dt)
     self.user = self.lovernet:getCache(libs.net.op.get_user)
     self.lovernet:clearCache(libs.net.op.get_user)
     self.selection:setUser(self.user.id)
+    self.buildqueue:setUser(self.user.id)
   end
 
   if self.lovernet:getCache(libs.net.op.get_config) then
@@ -408,7 +411,7 @@ function client:update(dt)
   self.actionpanel:update(dt)
   self.selection:update(dt)
   self.buildqueue:update(dt,self.user,self.objects,self.resources,self.points,self.lovernet)
-  if self:showBuildQueue() then
+  if self.buildqueue:showPanel() then
     self.buildqueue:updateData(self.selection:getSelected()[1],self.resources)
   end
   self.fow:updateAll(dt,self.objects,self.user)
@@ -881,22 +884,6 @@ function client:isOnCamera(ent)
     ent.dy > y and ent.dy < y + h
 end
 
-function client:showBuildQueue()
-  local selection = self.selection:getSelected()
-  local object = selection[1]
-  if #selection == 1 and object.user == self.user.id then
-    local object_type = libs.objectrenderer.getType(object.type)
-    if object_type.actions == nil then
-      return
-    end
-    for _,action in pairs(object_type.actions) do
-      if starts_with(action,"build_") then
-        return true
-      end
-    end
-  end
-end
-
 function client:draw()
 
   libs.stars:draw(self.camera.x/2,self.camera.y/2)
@@ -961,8 +948,10 @@ function client:draw()
     self.points:draw()
     self.resources:draw()
     self.selection:drawPanel()
-    self.actionpanel:draw()
-    if self:showBuildQueue() then
+    if self.actionpanel:showPanel() then
+      self.actionpanel:draw()
+    end
+    if self.buildqueue:showPanel() then
       self.buildqueue:drawPanel()
     end
   end

@@ -12,12 +12,16 @@ function buildqueue.new(init)
   self.runHoverAction = buildqueue.runHoverAction
   self.drawPanel = buildqueue.drawPanel
   self.add = buildqueue.add
+  self.showPanel = buildqueue.showPanel
+  self.setUser = buildqueue.setUser
 
   self._width = init.width or 192
   self.setWidth = buildqueue.setWidth
   self.getWidth = buildqueue.getWidth
 
   self.getHeight = buildqueue.getHeight
+
+  self._selection = init.selection
 
   self._x = init.x or 32
   self.setX = buildqueue.setX
@@ -164,6 +168,7 @@ end
 function buildqueue:mouseInside(x,y)
   x = x or love.mouse.getX()
   y = y or love.mouse.getY()
+  if not self:showPanel() then return false end
   return self.progress:mouseInside(x,y) or self.queue:mouseInside(x,y)
 end
 
@@ -190,6 +195,26 @@ function buildqueue:add(object,object_type,action)
     table.insert(object.queue,{type=object_type,action=action})
     self:doFullUpdate()
   end
+end
+
+function buildqueue:showPanel()
+  local selected = self._selection:getSelected()
+  local object = selected[1]
+  if #selected == 1 and object.user == self._user_id then
+    local object_type = libs.objectrenderer.getType(object.type)
+    if object_type.actions == nil then
+      return
+    end
+    for _,action in pairs(object_type.actions) do
+      if starts_with(action,"build_") then
+        return true
+      end
+    end
+  end
+end
+
+function buildqueue:setUser(user_id)
+  self._user_id = user_id
 end
 
 function buildqueue:setWidth(val)

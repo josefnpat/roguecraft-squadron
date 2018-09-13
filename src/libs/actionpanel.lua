@@ -16,6 +16,7 @@ function actionpanel.new(init)
   self.getHeight = actionpanel.getHeight
   self.setX = actionpanel.setX
   self.setY = actionpanel.setY
+  self.showPanel = actionpanel.showPanel
 
   self.panel = libs.matrixpanel.new{
     x=self._x,
@@ -32,9 +33,7 @@ function actionpanel:update(dt)
 end
 
 function actionpanel:draw()
-  if self.panel:hasActions() then
-    self.panel:draw()
-  end
+  self.panel:draw()
 end
 
 function actionpanel:setX(val)
@@ -45,6 +44,10 @@ end
 function actionpanel:setY(val)
   self._y = val
   self.panel:setY(val)
+end
+
+function actionpanel:showPanel()
+  return self.panel:hasActions()
 end
 
 function actionpanel:makeCostString(costs)
@@ -120,7 +123,10 @@ end
 function actionpanel:mouseInside(x,y)
   x = x or love.mouse.getX()
   y = y or love.mouse.getY()
-  return self.panel:mouseInside(x,y)
+  if self:showPanel() then
+    return self.panel:mouseInside(x,y)
+  end
+  return false
 end
 
 function actionpanel:runHoverAction()
