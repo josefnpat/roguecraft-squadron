@@ -329,6 +329,15 @@ function tooltipbg(ox,oy,width,oh,c1,c2)
   love.graphics.draw(tooltipf_edge,ox,oy+oh,-math.pi/2)
 end
 
+function debugrect(x,y,w,h)
+  local old_color = {love.graphics.getColor()}
+  love.graphics.setColor(255,0,0)
+  love.graphics.rectangle("line",x+0.5,y+0.5,w,h)
+  love.graphics.line(x,y,x+w,y+h)
+  love.graphics.line(x+w,y,x,y+h)
+  love.graphics.setColor(old_color)
+end
+
 function tooltipf(text,ox,oy,ow,align)
   local padding = 8
 

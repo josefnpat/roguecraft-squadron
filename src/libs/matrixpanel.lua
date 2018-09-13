@@ -101,6 +101,13 @@ function matrixpanel:draw(bg,fg)
   if self._hover then
     tooltipf(self._hover_text,self._hover_x,self._hover_y,320,true)
   end
+  if debug_mode then
+    debugrect(self._x,self._y,self._width,self:getHeight())
+    for ai,action in pairs(self._actions) do
+      local x,y,w,h = self:getIconArea(ai)
+      debugrect(x,y,w,h)
+    end
+  end
 end
 
 function matrixpanel:update(dt)

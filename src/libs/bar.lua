@@ -101,6 +101,9 @@ function barlib:draw()
   love.graphics.printf(ttext,tx,ty+thoff,tw,"center")
   love.graphics.setScissor()
   love.graphics.setColor(old_color)
+  if debug_mode then
+    debugrect(self._x,self._y,self._width,self._height)
+  end
 end
 
 function barlib:update(dt)
