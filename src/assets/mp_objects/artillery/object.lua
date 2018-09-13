@@ -3,6 +3,7 @@ return function()
     type = "artillery",
     military_large = true,
     cost = {material=375,crew=50},
+    points = 20,
     crew = 50,
     size = 32,
     speed = 50,

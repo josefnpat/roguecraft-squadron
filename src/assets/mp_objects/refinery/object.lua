@@ -2,6 +2,7 @@ return function()
   return {
     type = "refinery",
     cost = {material=125,crew=10},
+    points = 3,
     fow = 0.5,
     crew = 10,
     size = 32,

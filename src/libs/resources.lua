@@ -145,7 +145,7 @@ function resources:canAfford(object_type)
 end
 
 function resources:cantAffordNotif(object_type)
-  local trestype
+  local trestype = "multiple"
   for restype,value in pairs(object_type.cost) do
     if self._value[restype] < value then
       if trestype then

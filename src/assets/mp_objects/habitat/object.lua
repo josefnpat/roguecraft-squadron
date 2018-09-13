@@ -2,6 +2,7 @@ return function()
   return {
     type = "habitat",
     cost = {material=100},
+    points = 2,
     fow = 0.5,
     crew = 5,
     crew_gather = 10,

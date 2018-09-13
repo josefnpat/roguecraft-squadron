@@ -120,7 +120,7 @@ function buildqueue:updateData(object,resources)
 
 end
 
-function buildqueue:update(dt,user,objects,resources,lovernet)
+function buildqueue:update(dt,user,objects,resources,points,lovernet)
   self.progress:update(dt)
   self.progress:setX(self._x)
   self.progress:setY(self._y)
@@ -134,7 +134,11 @@ function buildqueue:update(dt,user,objects,resources,lovernet)
     if object.user == user.id and #object.queue > 0 and object.build_current == nil then
       local qobject = object.queue[1].type
       local qobject_type = libs.objectrenderer.getType(qobject.type)
-      if resources:canAfford(qobject_type) then
+
+      local canAfford = resources:canAfford(qobject_type)
+      local hasPoints = points:hasPoints(qobject_type)
+
+      if canAfford and hasPoints then
         object.queue_blocked = nil
         libs.sfx.loop("action.build.start")
         lovernet:pushData(libs.net.op.action,{
@@ -151,6 +155,7 @@ function buildqueue:update(dt,user,objects,resources,lovernet)
           resources:cantAffordNotif(qobject_type)
         end
       end
+
     end
   end
 

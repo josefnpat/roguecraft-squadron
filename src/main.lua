@@ -163,6 +163,7 @@ function love.load(arg)
     mppresets = require"libs.mppresets",
     loading = require"libs.loading",
     picocam = require"libs.picocam",
+    points = require"libs.points",
   }
 
   libs.objectrenderer.load(true)

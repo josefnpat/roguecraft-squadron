@@ -7,13 +7,17 @@ function mpconnect.new(init)
   self.lovernet = init.lovernet
   self.chat = init.chat
   self.ai_count = init.ai_count or 0
+  self.creative = false
   self.preset = init.preset or #libs.mppresets.getPresets()
+  self.points = init.points or 1
 
   self.updateData = mpconnect.updateData
   self.update = mpconnect.update
   self.draw = mpconnect.draw
   self.setAiCount = mpconnect.setAiCount
+  self.setCreative = mpconnect.setCreative
   self.setPreset = mpconnect.setPreset
+  self.setPoints = mpconnect.setPoints
 
   self._players = {}
   self._data = {}
@@ -41,6 +45,13 @@ function mpconnect.new(init)
     end,
   })
 
+  table.insert(self.buttons,libs.button.new{
+    text=function() return self.creative and "Creative" or "Normal" end,
+    onClick=function()
+      self.lovernet:pushData(libs.net.op.set_config,{d={creative=not self.creative}})
+    end,
+  })
+
   self.presetButton = libs.button.new{
     text="Preset",
     onClick=function()
@@ -48,6 +59,14 @@ function mpconnect.new(init)
     end,
   }
   table.insert(self.buttons,self.presetButton)
+
+  self.pointsButton = libs.button.new{
+    text="Points",
+    onClick=function()
+      self.lovernet:pushData(libs.net.op.set_config,{d={points=self.points+1}})
+    end,
+  }
+  table.insert(self.buttons,self.pointsButton)
 
   return self
 end
@@ -89,10 +108,19 @@ function mpconnect:setAiCount(count)
   self.ai_count = count
 end
 
+function mpconnect:setCreative(creative)
+  self.creative = creative
+end
+
 function mpconnect:setPreset(preset_value)
   self.preset = preset_value
   local preset = libs.mppresets.getPresets()[preset_value]
   self.presetButton:setText(preset.name)
+end
+
+function mpconnect:setPoints(points_value)
+  self.points = points_value
+  self.pointsButton:setText(libs.net.points[points_value].text)
 end
 
 function mpconnect:draw(config,players,user_count)
@@ -140,8 +168,8 @@ function mpconnect:draw(config,players,user_count)
 
     for button_index,button in pairs(self.buttons) do
       button:setX(32)
-      button:setY(32+(button:getHeight()+16)*(button_index-1))
-      button:setWidth(128)
+      button:setY(32+(button:getHeight()+4)*(button_index-1))
+      button:setWidth(192)
       button:draw()
     end
 

@@ -121,7 +121,7 @@ function action:updateFixed(ai)
   -- print(">>>top_priority:")
   -- for i,v in pairs(top_priority) do print(i,v) end
 
-  if true then --self:canAffordMaxCost(user,max_cost) then
+  if true then
     for _,parent in pairs(ai:getStorage().objects) do
 
       local parent_type = libs.objectrenderer.getType(parent.type)

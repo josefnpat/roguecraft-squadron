@@ -2,6 +2,7 @@ return function()
   return {
     type = "repair",
     cost = {material=150,crew=100},
+    points = 6,
     fow = 0.5,
     crew = 100,
     size = 32,

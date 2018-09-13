@@ -3,6 +3,7 @@ return function()
     type = "fighter",
     military_small = true,
     cost = {material=80,crew=15},
+    points = 5,
     fow = 0.75,
     crew = 15,
     size = 16,

@@ -40,6 +40,7 @@ function client:enter()
   self.lovernet:addOp(libs.net.op.move_objects)
   self.lovernet:addOp(libs.net.op.target_objects)
   self.lovernet:addOp(libs.net.op.get_resources)
+  self.lovernet:addOp(libs.net.op.get_points)
   self.lovernet:addOp(libs.net.op.time)
   self.lovernet:addOp(libs.net.op.action)
   self.lovernet:addOp(libs.net.op.delete_objects)
@@ -69,6 +70,7 @@ function client:enter()
   self.minimap = libs.minimap.new()
   self.fow = libs.fow.new{camera=self.camera}
   self.resources = libs.resources.new{notif=self.notif}
+  self.points = libs.points.new()
   self.planets = libs.planets.new{camera=self.camera}
   self.actionpanel = libs.actionpanel.new()
   self.explosions = libs.explosions.new()
@@ -137,6 +139,11 @@ function client:stackSide()
   self.minimap.x = cx
   self.minimap.y = cy
   cy = cy + self.minimap.size
+  if self.points:panelShown() then
+    self.points:setX(cx)
+    self.points:setY(cy)
+    cy = cy + self.points:getHeight()
+  end
   self.resources.x = cx
   self.resources.y = cy
   cy = cy + self.resources:getHeight()
@@ -195,7 +202,9 @@ function client:update(dt)
     if not self.lovernet:hasData(libs.net.op.get_resources) then
       self.lovernet:pushData(libs.net.op.get_resources)
     end
-
+    if not self.lovernet:hasData(libs.net.op.get_points) then
+      self.lovernet:pushData(libs.net.op.get_points)
+    end
   end
 
   if not self.lovernet:hasData(libs.net.op.user_count) then
@@ -387,11 +396,17 @@ function client:update(dt)
     self.lovernet:clearCache(libs.net.op.get_resources)
   end
 
+  if self.lovernet:getCache(libs.net.op.get_points) then
+    self.points:setPointsValue(self.lovernet:getCache(libs.net.op.get_points))
+    self.lovernet:clearCache(libs.net.op.get_points)
+  end
+
   self.gather:update(dt)
+  self.points:update(dt)
   self.resources:update(dt)
   self.actionpanel:update(dt)
   self.selection:update(dt)
-  self.buildqueue:update(dt,self.user,self.objects,self.resources,self.lovernet)
+  self.buildqueue:update(dt,self.user,self.objects,self.resources,self.points,self.lovernet)
   if self:showBuildQueue() then
     self.buildqueue:updateData(self.selection:getSelected()[1],self.resources)
   end
@@ -414,7 +429,10 @@ function client:update(dt)
     self.mpconnect:update(dt)
     if self.config then
       self.mpconnect:setAiCount(self.config.ai)
+      self.mpconnect:setCreative(self.config.creative)
       self.mpconnect:setPreset(self.config.preset or 1)
+      self.mpconnect:setPoints(self.config.points or 1)
+      self.points:setPoints(self.config.points or 1)
     end
     if self.config and self.players then
       self.mpconnect:updateData(self.config,self.players)
@@ -540,9 +558,10 @@ function client:update(dt)
 end
 
 function client:mouseInsideUI()
-  return self.minimap:mouseInside() or self.resources:mouseInside() or
-      self.actionpanel:mouseInside() or self.buildqueue:mouseInside() or
-      self.selection:mouseInside() or self.chat:mouseInside()
+  return self.minimap:mouseInside() or self.points:mouseInside() or
+    self.resources:mouseInside() or self.actionpanel:mouseInside() or
+    self.buildqueue:mouseInside() or self.selection:mouseInside() or
+    self.chat:mouseInside()
 end
 
 function client:CartArchSpiral(initRad,turnDistance,angle)
@@ -937,6 +956,7 @@ function client:draw()
       self.user,
       not self.gamestatus:isPlayerAlive(self.user)
     )
+    self.points:draw()
     self.resources:draw()
     self.selection:drawPanel()
     self.actionpanel:draw()

@@ -2,6 +2,7 @@ return function()
   return {
     type = "mining",
     cost = {material=75,crew=10},
+    points = 2,
     fow = 0.5,
     crew = 10,
     size = 32,

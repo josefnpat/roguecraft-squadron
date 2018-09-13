@@ -2,6 +2,7 @@ return function()
   return {
     type = "command",
     cost = {material=1000,crew=100},
+    points = 25,
     fow = 0.5,
     crew = 100,
     size = 64,

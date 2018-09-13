@@ -1,5 +1,5 @@
 return {
-  name="Full",
+  name="Full Game",
   gen = {
     first = "command",
     default = {

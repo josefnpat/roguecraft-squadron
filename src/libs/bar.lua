@@ -14,7 +14,7 @@ function barlib.new(init)
   self._x = init.x or 32
   self._y = init.y or 32
   self._padding = init.padding or 12
-  self._width = init.width or 256
+  self._width = init.width or 192
   self._height = init.height or barlib.img.corner:getHeight()+self._padding*2
   self._color = init.color or {0,255,255}
   self._barColor = init.color or {246,197,42}

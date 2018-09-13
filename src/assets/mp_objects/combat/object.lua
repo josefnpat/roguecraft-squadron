@@ -3,6 +3,7 @@ return function()
     type = "combat",
     military_large = true,
     cost = {material=250,crew=50},
+    points = 15,
     crew = 50,
     size = 32,
     speed = 75,

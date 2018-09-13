@@ -3,6 +3,7 @@ return function()
     type = "scout",
     military_small = true,
     cost = {material=50,crew=10},
+    points = 1,
     count = 2,
     crew = 5,
     size = 16,

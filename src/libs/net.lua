@@ -16,6 +16,7 @@ net.op = {
   move_objects =        'm',
   target_objects =      'y',
   get_resources =       'r',
+  get_points =          'q',
   time =                't',
   action =              'a',
   add_chat =            'k',
@@ -60,6 +61,30 @@ net.aiDifficulty = {
     apm = function() return net.aiDifficultyBase+net.aiDifficultyScale*5 end,
   },
 }
+
+-- Command Capacity
+net.points = {
+  {
+    text = "Low (200)",
+    value = 200,
+  },
+  {
+    text = "Medium (600)",
+    value = 600,
+  },
+  {
+    text = "High (1000)",
+    value = 1000,
+  },
+  {
+    text = "Infinite (∞)",
+    value = math.huge,
+  },
+}
+
+function net.hasPoints(pointsValue,points,object_type)
+  return pointsValue + (object_type.points or 1) <= libs.net.points[points].value
+end
 
 -- https://love2d.org/wiki/HSV_color
 -- Converts HSV to RGB. (input and output range: 0 - 255)

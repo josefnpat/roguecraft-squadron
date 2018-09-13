@@ -199,6 +199,9 @@ function server.objectCanAfford(object_type,user,storage)
   if user.count >= server._maxUserUnits then
     return false
   end
+  if not libs.net.hasPoints(user.points,storage.config.points,object_type) then
+    return false
+  end
   if storage.config.creative then
     return true
   end
@@ -242,6 +245,7 @@ function server.createObject(storage,type_index,x,y,user)
   table.insert(storage.objects,object)
   if user then
     user.count = (user.count or 0) + 1
+    user.points = (user.points or 0) + (object_type.points or 1)
     server.updateCargo(storage,user)
   end
   return object
@@ -644,6 +648,12 @@ function server:init()
     return res
   end)
 
+  self.lovernet:addOp(libs.net.op.get_points)
+  self.lovernet:addProcessOnServer(libs.net.op.get_points,function(self,peer,arg,storage)
+    local user = self:getUser(peer)
+    return user.points
+  end)
+
   self.lovernet:addOp(libs.net.op.action)
   self.lovernet:addValidateOnServer(libs.net.op.action,{
     a='string',
@@ -760,6 +770,7 @@ function server:resetGame()
   self.lovernet:getStorage().config = {
     game_start=false,
     preset=#libs.mppresets.getPresets(),
+    points=1,
     creative=false,
     ai=0,
   }
@@ -1138,6 +1149,9 @@ function server:validateConfig()
   if storage.config.preset > #libs.mppresets.getPresets() then
     storage.config.preset = 1
   end
+  if storage.config.points > #libs.net.points then
+    storage.config.points = 1
+  end
 end
 
 function server:validatePlayerConfig(player)
@@ -1316,12 +1330,12 @@ function server:update(dt)
     if libs.net.objectShouldBeRemoved(object) then
       table.remove(storage.objects,object_index)
       if user then
-
+        local object_type = libs.objectrenderer.getType(object.type)
         user.count = user.count - 1
+        user.points = (user.points or 0) - (object_type.points or 1)
         assert(user.count>=0)
         self.updateCargo(storage,user)
         local cx,cy = libs.net.getCurrentLocation(object,love.timer.getTime())
-        local object_type = libs.objectrenderer.getType(object.type)
         if object_type.cost and object_type.cost.material then
           local debris = server.createObject(storage,"debris",cx,cy,nil)
           debris.material_supply = object_type.cost.material*server._debris_ratio

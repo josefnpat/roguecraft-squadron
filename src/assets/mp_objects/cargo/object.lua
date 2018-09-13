@@ -2,6 +2,7 @@ return function()
   return {
     type = "cargo",
     cost = {material=200,crew=10},
+    points = 5,
     fow = 0.5,
     crew = 10,
     size = 32,

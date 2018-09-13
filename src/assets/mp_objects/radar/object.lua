@@ -2,6 +2,7 @@ return function()
   return {
     type = "radar",
     cost = {material=125,crew=5},
+    points = 3,
     fow = 2,
     crew = 5,
     size = 32,
