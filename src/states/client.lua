@@ -945,7 +945,9 @@ function client:draw()
       self.user,
       not self.gamestatus:isPlayerAlive(self.user)
     )
-    self.points:draw()
+    if self.points:panelShown() then
+      self.points:draw()
+    end
     self.resources:draw()
     self.selection:drawPanel()
     if self.actionpanel:showPanel() then
