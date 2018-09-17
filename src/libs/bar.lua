@@ -18,6 +18,7 @@ function barlib.new(init)
   self._height = init.height or barlib.img.corner:getHeight()+self._padding*2
   self._color = init.color or {0,255,255}
   self._barColor = init.color or {246,197,42}
+  self._barColorFull = init.colorFull or {0,255,255}
   self._textColor = init.textColor or {0,0,0}
   self._textInverseColor = init.textInverseColor or {255,255,255}
   self._icon = init.icon
@@ -94,7 +95,11 @@ function barlib:draw()
 
   love.graphics.setColor(self._textInverseColor)
   love.graphics.printf(ttext,tx,ty+thoff,tw,"center")
-  love.graphics.setColor(self._barColor)
+  if self._barValue >= 1 then
+    love.graphics.setColor(self._barColorFull)
+  else
+    love.graphics.setColor(self._barColor)
+  end
   love.graphics.rectangle("fill",bx,by,bw,bh)
   love.graphics.setScissor(bx,by,bw,bh)
   love.graphics.setColor(self._textColor)
