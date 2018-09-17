@@ -496,7 +496,15 @@ function client:update(dt)
         change = true
       end
       local object_type = libs.objectrenderer.getType(object.type)
-      self.explosions:add(object,object_type.size)
+      local explosion_count = 1
+      local explosion_range = object_type.size
+      if object_type.explode then
+        explosion_count = 50
+        explosion_range = object_type.explode.damage_range
+      end
+      for i = 1,explosion_count do
+        self.explosions:add(object,explosion_range)
+      end
       table.remove(self.objects,object_index)
     end
   end
