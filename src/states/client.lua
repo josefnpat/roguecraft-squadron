@@ -816,7 +816,7 @@ function client:keypressed(key)
       }
     end
   end
-  if key == "return" then
+  if key == "return" or key == "kpenter" then
     if self.chat:getActive() then
       if self.chat:getBuffer() ~= "" then
         self.lovernet:sendData(libs.net.op.add_chat,{
