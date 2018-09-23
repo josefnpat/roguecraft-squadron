@@ -414,7 +414,7 @@ function client:update(dt)
   if self.buildqueue:showPanel() then
     self.buildqueue:updateData(self.selection:getSelected()[1],self.resources)
   end
-  self.fow:updateAll(dt,self.objects,self.user)
+  self.fow:updateAll(dt,self.objects,self.user,self.players)
   self.explosions:update(dt)
   self.moveanim:update(dt)
   self.notif:update(dt)
@@ -921,7 +921,7 @@ function client:draw()
 
   self.camera:detach()
   if not self.gamestatus:isStarted() or self.gamestatus:isPlayerAlive(self.user) then
-    self.fow:draw(self.objects,{},self.user)
+    self.fow:draw(self.objects,{},self.user,self.players)
   end
   self.camera:attach()
   self.moveanim:draw()
@@ -944,12 +944,13 @@ function client:draw()
 
   self.camera:detach()
 
-  if self.focusObject then
+  if self.focusObject and self.user then
     self.minimap:draw(
       self.camera,
       self.focusObject,
       self.objects,
       self.fow,
+      self.players,
       self.user,
       not self.gamestatus:isPlayerAlive(self.user)
     )

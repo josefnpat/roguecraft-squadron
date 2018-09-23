@@ -304,4 +304,25 @@ function net.userOwnsObject(user,object)
   return object.user == user.id
 end
 
+function net.getPlayersAbstract(players,a)
+  if type(a) == "number" then
+    for i,v in pairs(players) do
+      if i == a + 1 then
+        return v
+      end
+    end
+  end
+  return a
+end
+
+function net.isOnSameTeam(players,a,b)
+  if a == nil then return false end
+  if b == nil then return false end
+  local user_a = net.getPlayersAbstract(players,a)
+  local user_b = net.getPlayersAbstract(players,b)
+  assert(user_a.team)
+  assert(user_b.team)
+  return user_a.team == user_b.team
+end
+
 return net

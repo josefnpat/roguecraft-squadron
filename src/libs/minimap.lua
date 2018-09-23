@@ -37,7 +37,7 @@ function minimap:getRealCoords()
   return nx,ny
 end
 
-function minimap:draw(camera,focus,objects,fow,user,disable)
+function minimap:draw(camera,focus,objects,fow,players,user,disable)
 
   local fow_map = fow:getMap()
   local x,y,w,h = self.x, self.y,self.size,self.size
@@ -73,7 +73,7 @@ function minimap:draw(camera,focus,objects,fow,user,disable)
 
   for _,object in pairs(objects) do
 
-    if disable or user.id == object.user or fow:objectVisible(object) then
+    if disable or libs.net.isOnSameTeam(players,object.user,user.id) or fow:objectVisible(object) then
       local type = libs.objectrenderer.getType(object.type)
       local color = {255,255,0,127}
       if object.user then
@@ -96,6 +96,7 @@ function minimap:draw(camera,focus,objects,fow,user,disable)
           6+math.sin(love.timer.getTime()*4))
       end
     end
+
   end
   love.graphics.setColor(255,255,255)
   local cx = (camera.x-love.graphics.getWidth()/2)/scale

@@ -78,7 +78,7 @@ function fow:isOnCamera(dx,dy,fow_scale)
   return dx > x and dx < x + w and dy > y and dy < y + h
 end
 
-function fow:draw(objects,explosions,user)
+function fow:draw(objects,explosions,user,players)
 
   if debug_mode then
     for fow_obj_x,fow_obj_row in pairs(self.fow_map) do
@@ -107,7 +107,7 @@ function fow:draw(objects,explosions,user)
     love.graphics.setColor(255,255,255)
 
     for _,object in pairs(objects) do
-      if object.user == user.id then
+      if libs.net.isOnSameTeam(players,object.user,user.id) then
         local object_type = libs.objectrenderer.getType(object.type)
         local fow = self.fow_mult*(object_type.fow or 1)--*(1+(self.upgrades.fow or 0)*0.25)
         self:drawSingle(object.dx,object.dy,fow,object.fow_rot)
@@ -143,7 +143,7 @@ function fow:draw(objects,explosions,user)
 
 end
 
-function fow:updateAll(dt,objects,user)
+function fow:updateAll(dt,objects,user,players)
   local size = math.floor(libs.net.mapsize/self.resolution+0.5)--*self.resolution
   for x = -size,size do
     for y = -size,size do
@@ -151,7 +151,7 @@ function fow:updateAll(dt,objects,user)
       self.fow_map[rx] = self.fow_map[rx] or {}
       if self.fow_map[rx][ry] == nil then
         for _,object in pairs(objects) do
-          if object.user == user.id then
+          if libs.net.isOnSameTeam(players,object.user,user.id) then
             local object_type = libs.objectrenderer.getType(object.type)
             local distance = math.sqrt( (rx-object.dx)^2 + (ry-object.dy)^2 )
             if distance < (object_type.fow or 1)*512 then
