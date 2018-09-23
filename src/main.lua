@@ -185,9 +185,7 @@ function love.load(arg)
     server = require"states.server",
   }
 
-  local loc_data = libs.gettext._decode(function()
-    return love.filesystem.lines("assets/loc/en.po")
-  end)
+  local loc_data = libs.gettext.decode(love.filesystem.read("assets/loc/en.po"))
 
   --local loc_i18n = {}
   for i,v in pairs(loc_data) do
