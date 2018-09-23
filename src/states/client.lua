@@ -590,7 +590,7 @@ function client:distanceDraw(a,b)
 end
 
 function client:findNearestDraw(objects,x,y,include)
-  local nearest,nearest_distance = nil,math.huge
+  local nearest,nearest_distance = objects[1],math.huge
   for _,object in pairs(objects) do
     if include == nil or include(object) then
       local distance = self:distanceDraw({dx=x,dy=y},object)
