@@ -125,6 +125,9 @@ end
 
 function mpconnect:draw(config,players,user_count)
 
+  libs.stars:draw()
+  libs.stars:drawPlanet()
+
   if debug_mode then
     local s = ""
     s = s .. "user_count: " .. user_count .. "\n"
