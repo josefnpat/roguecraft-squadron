@@ -741,12 +741,14 @@ function client:mousereleased(x,y,button)
           x+self:getCameraOffsetX(),
           y+self:getCameraOffsetY()
         )
-        if self.last_selected == closest_object then
-          self.last_selected = nil
-          self.last_selected_timeout = nil
-          for _,object in pairs(self.objects) do
-            if object.user == self.user.id and object.type == closest_object.type then
-              self.selection:add(object)
+        if self.last_selected and self.last_selected == closest_object then
+          if self.last_selected.user == self.user.id then
+            self.last_selected = nil
+            self.last_selected_timeout = nil
+            for _,object in pairs(self.objects) do
+              if object.user == self.user.id and object.type == closest_object.type then
+                self.selection:add(object)
+              end
             end
           end
         else
