@@ -157,16 +157,27 @@ function mpconnect:draw(config,players,user_count)
 
   else
 
+    local rows = {}
     for player_index,player_data in pairs(self._data) do
-      local total_width = player_data:getWidth() * #self._data
-      player_data:draw(
-        (love.graphics.getWidth()-total_width)/2 + player_data:getWidth()*(player_index-1),
-        love.graphics.getHeight()/2 - player_data:getHeight()
-      )
+      local row = math.floor(player_index/5)%5
+      rows[row] = rows[row] or {}
+      table.insert(rows[row],player_data)
+    end
+
+    for row_index,row_data in pairs(rows) do
+      for player_index,player_data in pairs(row_data) do
+
+        local total_width = player_data:getWidth() * #row_data
+        player_data:draw(
+          (love.graphics.getWidth()-total_width)/2 + player_data:getWidth()*(player_index-1),
+          love.graphics.getHeight()/2 + player_data:getHeight()*(row_index-1)
+        )
+
+      end
     end
 
     self.start:setX( (love.graphics.getWidth()-self.start:getWidth())/2 )
-    self.start:setY( love.graphics.getHeight()/2 + self.start:getHeight() )
+    self.start:setY( love.graphics.getHeight()-self.start:getHeight()-32 )
     self.start:draw()
 
     for button_index,button in pairs(self.buttons) do
