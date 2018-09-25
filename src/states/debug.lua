@@ -59,6 +59,15 @@ function state:init()
     end
   )
 
+  self.menu:add(
+    function()
+      return "Everything is "..(libs.objectrenderer.pizza and "pizza" or "fine")
+    end,
+    function()
+      libs.objectrenderer.pizza = not libs.objectrenderer.pizza
+    end
+  )
+
   self.menu:add("Back",function()
     libs.hump.gamestate.switch(states.menu)
   end)

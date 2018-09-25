@@ -1,5 +1,8 @@
 local objectrenderer = {}
 
+objectrenderer.pizza = false
+objectrenderer.pizza_img = love.graphics.newImage("assets/pizza.png")
+
 local data = {}
 
 function objectrenderer.load(loadAssets)
@@ -163,14 +166,19 @@ function objectrenderer.draw(object,objects,selection,time)
       type.renders[object.render].sub:getHeight()/2)
   end
 
+  local render = type.renders[object.render].main
+  if objectrenderer.pizza then
+    render = objectrenderer.pizza_img
+  end
+
   love.graphics.draw(
-    type.renders[object.render].main,
+    render,
     object.dx,
     object.dy,
     object.dangle,
     1,1,
-    type.renders[object.render].main:getWidth()/2,
-    type.renders[object.render].main:getHeight()/2)
+    render:getWidth()/2,
+    render:getHeight()/2)
 
   love.graphics.setColor(255,255,255)
   if debug_mode then
