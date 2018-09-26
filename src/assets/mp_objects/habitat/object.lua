@@ -10,6 +10,7 @@ return function()
     size = 32,
     speed = 50,
     health = {max = 5,},
+    default_level = 1,
     build_time = 5,
     collect = true,
   }

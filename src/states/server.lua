@@ -440,6 +440,22 @@ function server:init()
 
   end)
 
+  self.lovernet:addOp(libs.net.op.get_research)
+  self.lovernet:addProcessOnServer(libs.net.op.get_research,function(self,peer,arg,storage)
+    local user = self:getUser(peer)
+    return user.research or {
+      points=libs.researchrenderer.getPoints(user)
+    }
+  end)
+
+  self.lovernet:addOp(libs.net.op.set_research)
+  self.lovernet:addValidateOnServer(libs.net.op.set_research,{o='string',r='string',v="number"})
+  self.lovernet:addProcessOnServer(libs.net.op.set_research,function(self,peer,arg,storage)
+    local user = self:getUser(peer)
+
+    libs.researchrenderer.buyLevel(user,arg.o,arg.r,arg.v)
+  end)
+
   self.lovernet:addOp(libs.net.op.debug_create_object)
   self.lovernet:addValidateOnServer(libs.net.op.debug_create_object,{x='number',y='number',c='number'})
   self.lovernet:addProcessOnServer(libs.net.op.debug_create_object,function(self,peer,arg,storage)

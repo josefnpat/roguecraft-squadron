@@ -33,6 +33,8 @@ function client:enter()
   self.lovernet:addOp(libs.net.op.set_config)
   self.lovernet:addOp(libs.net.op.set_players)
   self.lovernet:addOp(libs.net.op.get_players)
+  self.lovernet:addOp(libs.net.op.set_research)
+  self.lovernet:addOp(libs.net.op.get_research)
   self.lovernet:addOp(libs.net.op.debug_create_object)
   self.lovernet:addOp(libs.net.op.get_new_objects)
   self.lovernet:addOp(libs.net.op.get_new_updates)
@@ -50,6 +52,7 @@ function client:enter()
   -- init
   self.lovernet:pushData(libs.net.op.git_count)
   self.lovernet:pushData(libs.net.op.get_user)
+  self.lovernet:pushData(libs.net.op.get_research)
   self.object_index = 0
   self.update_index = 0
   self.bullet_index = 0
@@ -79,6 +82,7 @@ function client:enter()
   self.controlgroups = libs.controlgroups.new()
   self.chat = libs.chat.new()
   self.mpconnect = libs.mpconnect.new{lovernet=self.lovernet,chat=self.chat}
+  self.mpresearch = libs.mpresearch.new{lovernet=self.lovernet}
   self.mpdisconnect = libs.mpdisconnect.new()
   self.gamestatus = libs.gamestatus.new()
 
@@ -245,6 +249,7 @@ function client:update(dt)
     self.lovernet:clearCache(libs.net.op.get_user)
     self.selection:setUser(self.user.id)
     self.buildqueue:setUser(self.user.id)
+    self.mpresearch:buildData(self.user)
   end
 
   if self.lovernet:getCache(libs.net.op.get_config) then
@@ -255,6 +260,12 @@ function client:update(dt)
   if self.lovernet:getCache(libs.net.op.get_players) then
     self.players = self.lovernet:getCache(libs.net.op.get_players)
     self.lovernet:clearCache(libs.net.op.get_players)
+  end
+
+  if self.lovernet:getCache(libs.net.op.get_research) then
+    self.user.research = self.lovernet:getCache(libs.net.op.get_research)
+    self.mpresearch:buildData(self.user)
+    self.lovernet:clearCache(libs.net.op.get_research)
   end
 
   if self.lovernet:getCache(libs.net.op.time) then
@@ -533,6 +544,10 @@ function client:update(dt)
 
     self.menu:update(dt)
 
+  elseif self.mpresearch:active() then
+
+    self.mpresearch:update(dt)
+
   else
 
     if not self.chat:getActive() and love.keyboard.isDown("space") then
@@ -681,7 +696,9 @@ end
 
 function client:mousepressed(x,y,button)
   if self.menu_enabled then return end
-  if button == 1 then
+  if self.mpresearch:active() then
+    self.mpresearch:mousepressed(x,y,button)
+  elseif button == 1 then
     if self.minimap:mouseInside(x,y) then
       -- nop
     elseif self.actionpanel:mouseInside(x,y) then
@@ -703,7 +720,9 @@ end
 function client:mousereleased(x,y,button)
   if self.menu_enabled then return end
   self.chat:setActive(false)
-  if button == 1 then
+  if self.mpresearch:active() then
+    self.mpresearch:mousereleased(x,y,button)
+  elseif button == 1 then
     if self.minimap:mouseInside(x,y) and not self.selection:selectionInProgress() then
       -- nop
     elseif self.actionpanel:mouseInside(x,y) and not self.selection:selectionInProgress() then
@@ -805,68 +824,86 @@ function client:mousereleased(x,y,button)
 end
 
 function client:keypressed(key)
-  if debug_mode and key == "c" then
-    self.lovernet:sendData(libs.net.op.debug_create_object,{
-      x=love.mouse.getX()+self:getCameraOffsetX(),
-      y=love.mouse.getY()+self:getCameraOffsetY(),
-      c=love.keyboard.isDown("lshift") and 100 or 1,
-    })
-  end
+
   if not self.chat:getActive() and key == "`" then
     debug_mode = not debug_mode
   end
-  if debug_mode and key == "p" then
-    if self.lovernetprofiler then
-      self.lovernetprofiler = nil
-    else
-      self.lovernetprofiler = libs.lovernetprofiler.new{
-        lovernet=self.lovernet,
-          x=256,
-          y=32,
-      }
+  if debug_mode then
+    if key == "c" then
+      self.lovernet:sendData(libs.net.op.debug_create_object,{
+        x=love.mouse.getX()+self:getCameraOffsetX(),
+        y=love.mouse.getY()+self:getCameraOffsetY(),
+        c=love.keyboard.isDown("lshift") and 100 or 1,
+      })
     end
-  end
-  if key == "return" or key == "kpenter" then
-    if self.chat:getActive() then
-      if self.chat:getBuffer() ~= "" then
-        self.lovernet:sendData(libs.net.op.add_chat,{
-          t=self.chat:getBuffer(),
-        })
-        self.chat:setBuffer("")
+    if key == "p" then
+      if self.lovernetprofiler then
+        self.lovernetprofiler = nil
+      else
+        self.lovernetprofiler = libs.lovernetprofiler.new{
+          lovernet=self.lovernet,
+            x=256,
+            y=32,
+        }
       end
-      self.chat:setActive(false)
-    else
-      self.chat:setActive(true)
     end
   end
+
   if key == "escape" then
-    if self.chat:getActive() then
+    if self.mpresearch:active() then
+      self.mpresearch:setActive(false)
+    elseif self.chat:getActive() then
       self.chat:setActive(false)
       self.chat:setBuffer("")
     else
       self.menu_enabled = not self.menu_enabled
     end
   end
-  if self.chat:getActive() then
-    if key == "backspace" then
-      local buffer = self.chat:getBuffer()
-      local byteoffset = utf8.offset(buffer, -1)
-      if byteoffset then
-        buffer = string.sub(buffer, 1, byteoffset - 1)
-      end
-      self.chat:setBuffer(buffer)
-    end
-  else
-    if key == "z" then
-      self.chat:toggleHeight()
-    end
-    if key == "delete" then
-      self.lovernet:sendData(libs.net.op.delete_objects,{
-        d=self.selection:getSelectedIndexes(),
-      })
-    end
-    self.controlgroups:keypressed(key,self.selection,self.notif)
+
+  if debug_mode and key == "r" then -- todo: remove for prod
+    self.mpresearch:setActive(true)
   end
+
+  if self.mpresearch:active() then
+
+  else
+
+    if key == "return" or key == "kpenter" then
+      if self.chat:getActive() then
+        if self.chat:getBuffer() ~= "" then
+          self.lovernet:sendData(libs.net.op.add_chat,{
+            t=self.chat:getBuffer(),
+          })
+          self.chat:setBuffer("")
+        end
+        self.chat:setActive(false)
+      else
+        self.chat:setActive(true)
+      end
+    end
+
+    if self.chat:getActive() then
+      if key == "backspace" then
+        local buffer = self.chat:getBuffer()
+        local byteoffset = utf8.offset(buffer, -1)
+        if byteoffset then
+          buffer = string.sub(buffer, 1, byteoffset - 1)
+        end
+        self.chat:setBuffer(buffer)
+      end
+    else
+      if key == "z" then
+        self.chat:toggleHeight()
+      end
+      if key == "delete" then
+        self.lovernet:sendData(libs.net.op.delete_objects,{
+          d=self.selection:getSelectedIndexes(),
+        })
+      end
+      self.controlgroups:keypressed(key,self.selection,self.notif)
+    end
+  end
+
 end
 
 function client:textinput(char)
@@ -972,6 +1009,9 @@ function client:draw()
   self.notif:draw()
   if self.gamestatus:isStarted() then
     self.mpdisconnect:draw()
+    if self.mpresearch:active() then
+      self.mpresearch:draw(self.user)
+    end
   else
     self.mpconnect:draw(self.config,self.players,self.user_count)
   end

@@ -10,6 +10,7 @@ return function()
     health = {max = 5,},
     material = 10,
     material_gather = 15,
+    default_level = 1,
     build_time = 5,
     collect = true,
   }

@@ -21,6 +21,7 @@ return function()
         destruct = "collision"
       },
     },
+    default_level = 1,
     build_time = 5,
   }
 end

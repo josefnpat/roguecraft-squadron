@@ -10,6 +10,7 @@ return function()
     health = {max = 300,},
     material = 600,
     construction_command = true,
+    default_level = 1,
     actions = {
       "build_scout",
       "build_salvager",

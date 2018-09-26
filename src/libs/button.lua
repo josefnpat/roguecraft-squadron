@@ -27,6 +27,7 @@ function button.new(init)
   self.getHeight = button.getHeight
   self.setHeight = button.setHeight
   self.setText = button.setText
+  self.setIcon = button.setIcon
   self.setOnClick = button.setOnClick
 
   return self
@@ -51,6 +52,7 @@ end
 function button:draw()
   self._draw(
     type(self._text)=="function" and self._text() or self._text,
+    self._icon,
     self._x,self._y,self._width,self._height,self._hover,self._depress)
 end
 
@@ -58,7 +60,7 @@ function button._default_onClick()
   print('button pressed')
 end
 
-function button._default_draw_rcs(text,x,y,width,height,hover,depress)
+function button._default_draw_rcs(text,icon,x,y,width,height,hover,depress)
   local old_color = {love.graphics.getColor()}
   local old_font = love.graphics.getFont()
   local bg = hover and {127,127,127,256*7/8} or nil
@@ -67,6 +69,10 @@ function button._default_draw_rcs(text,x,y,width,height,hover,depress)
   local offset = (height-fonts.menu:getHeight())/2
   love.graphics.setColor(fg or {0,255,255})
   love.graphics.setFont(fonts.menu)
+  if icon then
+    local icon_padding = (height - icon:getHeight()) / 2
+    love.graphics.draw(icon,x+icon_padding,y+icon_padding)
+  end
   if not fg then
     dropshadowf(text,x,y+offset,width,"center")
   else
@@ -76,7 +82,7 @@ function button._default_draw_rcs(text,x,y,width,height,hover,depress)
   love.graphics.setFont(old_font)
 end
 
-function button._default_draw(text,x,y,width,height,hover,depress)
+function button._default_draw(text,icon,x,y,width,height,hover,depress)
   local old_color = {love.graphics.getColor()}
   love.graphics.setColor(hover and {255,255,255} or {191,191,191})
   love.graphics.rectangle("fill",x,y,width,height)
@@ -124,6 +130,10 @@ end
 
 function button:setText(val)
   self._text = val
+end
+
+function button:setIcon(val)
+  self._icon = val
 end
 
 function button:setOnClick(val)

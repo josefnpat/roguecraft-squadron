@@ -14,12 +14,14 @@ function love.load(arg)
       bitser = require"libs.lovernet.bitser",
       net = require"libs.net",
       objectrenderer = require"libs.objectrenderer",
+      researchrenderer = require"libs.researchrenderer",
       bulletrenderer = require"libs.bulletrenderer",
       ai = require"libs.ai",
       mppresets = require"libs.mppresets",
     }
 
     libs.objectrenderer.load(false)
+    libs.researchrenderer.load(false)
     libs.bulletrenderer.load(false)
 
     states = {
@@ -92,6 +94,8 @@ function love.load(arg)
   function makeFonts()
     fonts = {
       default = love.graphics.newFont("assets/fonts/Yantramanav-Regular.ttf",16),
+      small = love.graphics.newFont("assets/fonts/Yantramanav-Regular.ttf",12),
+      large = love.graphics.newFont("assets/fonts/Yantramanav-Regular.ttf",24),
       window_title = love.graphics.newFont("assets/fonts/ExpletusSans-Bold.ttf",20),
       title = love.graphics.newFont("assets/fonts/ExpletusSans-Bold.ttf",64),
       menu = love.graphics.newFont("assets/fonts/Yantramanav-Regular.ttf",20),
@@ -139,6 +143,7 @@ function love.load(arg)
     buildqueue = require"libs.buildqueue",
     net = require"libs.net",
     objectrenderer = require"libs.objectrenderer",
+    researchrenderer = require"libs.researchrenderer",
     bulletrenderer = require"libs.bulletrenderer",
     minimap = require"libs.minimap",
     resources = require"libs.resources",
@@ -156,6 +161,7 @@ function love.load(arg)
     button = require"libs.button",
     mpdisconnect = require"libs.mpdisconnect",
     mpconnect = require"libs.mpconnect",
+    mpresearch = require"libs.mpresearch",
     mpconnectplayer = require"libs.mpconnectplayer",
     gamestatus = require"libs.gamestatus",
     ring = require"libs.ring",
@@ -167,6 +173,7 @@ function love.load(arg)
   }
 
   libs.objectrenderer.load(true)
+  libs.researchrenderer.load(true)
   libs.bulletrenderer.load(true)
   libs.sfx.load()
 
