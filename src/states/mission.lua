@@ -76,12 +76,7 @@ function mission:init()
 
   self.selected_row_max = 16
 
-  for i = 1,6 do
-    table.insert(
-      self.explosion_images,
-      love.graphics.newImage("assets/explosions/b"..i..".png")
-    )
-  end
+  self.explosoion_images = libs.explosions.assets[1]
 
   for i = 1,4 do
     table.insert(
