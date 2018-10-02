@@ -931,6 +931,12 @@ function client:isOnCamera(ent)
     ent.dy > y and ent.dy < y + h
 end
 
+client.drawOrder = {
+  function(object_user,user_id) return object_user == nil end,
+  function(object_user,user_id) return object_user ~= user_id end,
+  function(object_user,user_id) return object_user == user_id end,
+}
+
 function client:draw()
 
   libs.stars:draw(self.camera.x/2,self.camera.y/2)
@@ -940,10 +946,18 @@ function client:draw()
   self.gather:draw()
 
   local drawn_objects = 0
-  for object_index,object in pairs(self.objects) do
+  local drawable_objects = {}
+  for _,object in pairs(self.objects) do
     if self:isOnCamera(object) then
       drawn_objects = drawn_objects + 1
-      libs.objectrenderer.draw(object,self.objects,self.selection,self.time)
+      table.insert(drawable_objects,object)
+    end
+  end
+  for _,drawLayer in pairs(client.drawOrder) do
+    for _,object in pairs(drawable_objects) do
+      if drawLayer(object.user,self.user.id) then
+        libs.objectrenderer.draw(object,self.objects,self.selection,self.time)
+      end
     end
   end
 
