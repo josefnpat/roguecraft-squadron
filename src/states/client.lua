@@ -900,7 +900,7 @@ function client:keypressed(key)
           d=self.selection:getSelectedIndexes(),
         })
       end
-      self.controlgroups:keypressed(key,self.selection,self.notif)
+      self.controlgroups:keypressed(key,self.selection,self.notif,self.user)
     end
   end
 
