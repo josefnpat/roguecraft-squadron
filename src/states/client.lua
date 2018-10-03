@@ -59,6 +59,7 @@ function client:enter()
   self.user_count = 0
   self.time = 0
   self.last_time = 0
+  self.start_time = 0
   self.chat_index = 0
   self.selection = libs.selection.new{onChange=client.selectionOnChange,onChangeScope=self}
   self.buildqueue = libs.buildqueue.new{selection=self.selection}
@@ -85,6 +86,7 @@ function client:enter()
   self.mpresearch = libs.mpresearch.new{lovernet=self.lovernet}
   self.mpdisconnect = libs.mpdisconnect.new()
   self.gamestatus = libs.gamestatus.new()
+  self.matchstats = libs.matchstats.new()
 
   self.music:play()
 
@@ -194,6 +196,8 @@ function client:update(dt)
         })
       end
     end
+
+    self.start_time = self.time
 
   else -- not self.gamestatus:isStarted()
 
@@ -431,6 +435,7 @@ function client:update(dt)
   self.notif:update(dt)
   self.chat:update(dt)
   self:stackSide()
+  self.matchstats:update(dt)
 
   self.gamestatus:update(dt,self.objects,self.players or {})
   if self.gamestatus:isStarted() then
@@ -1041,6 +1046,10 @@ function client:draw()
     libs.loading.draw("Server is not responding ... ["..math.floor(time_delta).."s]")
   elseif self.user and self.user.np then
     libs.loading.draw("Game currently in progress ...")
+  end
+
+  if love.keyboard.isDown("tab") and self.gamestatus:isStarted() then
+    self.matchstats:draw(self.players,self.user,math.floor(self.time-self.start_time))
   end
 
   if debug_mode then

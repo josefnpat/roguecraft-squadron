@@ -170,6 +170,7 @@ function love.load(arg)
     loading = require"libs.loading",
     picocam = require"libs.picocam",
     points = require"libs.points",
+    matchstats = require"libs.matchstats",
   }
 
   libs.objectrenderer.load(true)
@@ -457,4 +458,11 @@ end
 
 function ends_with(str, ending)
    return ending == "" or str:sub(-#ending) == ending
+end
+
+function seconds_to_clock(time)
+  local hours = math.floor(time/3600)
+  local minutes = math.floor(math.mod(time,3600)/60)
+  local seconds = math.floor(math.mod(time,60))
+  return string.format("%02d:%02d:%02d",hours,minutes,seconds)
 end
