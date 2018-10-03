@@ -43,7 +43,7 @@ function dynamicaudio:update(dt)
 
       track.audio:setVolume(self._master*track.volume)
 
-      if current_track <= target_track then
+      if current_track == target_track then
         track.volume = math.min(1,track.volume + dt / track.fadeIn)
       else
         track.volume = math.max(0,track.volume - dt / track.fadeOut)
@@ -55,10 +55,9 @@ function dynamicaudio:update(dt)
 end
 
 function dynamicaudio:drawDebug()
-  local s = "master: " .. self._master .. "\n"
-  s = s .. "target track: " .. self:getTargetTrack() .. "\n"
+  local s = ""
   for track_index,track in pairs(self._tracks) do
-    s = s .. "\t["..track_index.."] vol: " .. track.volume .. "\n"
+    s = s .. "\tTrack "..track_index.." volume: " .. math.floor(track.volume*100) .. "%\n"
   end
   love.graphics.print(s,64,64)
 end
@@ -100,6 +99,7 @@ end
 function dynamicaudio:addTrack(audio_fn,fadeIn,fadeOut)
   local audio = love.audio.newSource(audio_fn)
   audio:setLooping(true)
+  audio:setVolume(0)
   table.insert(self._tracks,{
     audio = audio,
     fadeIn = fadeIn or 1,
