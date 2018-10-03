@@ -159,6 +159,8 @@ function love.load(arg)
     controlgroups = require"libs.controlgroups",
     chat = require"libs.chat",
     button = require"libs.button",
+    slider = require"libs.slider",
+    dynamicaudio = require"libs.dynamicaudio",
     mpdisconnect = require"libs.mpdisconnect",
     mpconnect = require"libs.mpconnect",
     mpresearch = require"libs.mpresearch",
@@ -189,6 +191,7 @@ function love.load(arg)
     credits = require "states.credits",
     disclaimer = require "states.disclaimer",
     debug = require "states.debug",
+    dynamicmusic = require "states.dynamicmusic",
     client = require"states.client",
     server = require"states.server",
   }

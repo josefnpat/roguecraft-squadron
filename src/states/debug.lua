@@ -68,6 +68,12 @@ function state:init()
     end
   )
 
+  self.menu:add("Dynamic Music Manager",function()
+    states.menu.music.title:stop()
+    states.menu.music.game:stop()
+    libs.hump.gamestate.switch(states.dynamicmusic)
+  end)
+
   self.menu:add("Back",function()
     libs.hump.gamestate.switch(states.menu)
   end)
