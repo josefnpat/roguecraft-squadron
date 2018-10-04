@@ -8,7 +8,7 @@ function credits:enter()
   "Josef Patoprsty (@josefnpat) — Code, Art, Design, Voice Talent\n" ..
   "Ashley Hooper (@ByteDesigning) — Code, Art\n" ..
   "Ashley Schuster (SnowSchu) — Marketing and QA\n" ..
-  "Ran Schonewille — Music Composer\n" ..
+  "Ran Schonewille (audio-interactive.com) — Music Composer\n" ..
   "Laura Vk (Solsforest) — Art, Voice Talent\n" ..
   "Arjan Vk (Vivid) — Code, SFX, Voice Talent\n" ..
   "Mauricyo Furtado (@eternalnightpro) — SFX\n" ..
