@@ -89,6 +89,22 @@ function objectrenderer.randomNameIndex(type)
   end
 end
 
+function objectrenderer.drawChevron(object,selection)
+
+  local isSelected = selection:isSelected(object)
+
+  if isSelected then
+    love.graphics.setColor(libs.net.getUser(object.user).selected_color)
+  else
+    love.graphics.setColor(libs.net.getUser(object.user).color)
+  end
+
+  love.graphics.draw(objectrenderer.chevron,
+    object.dx,object.dy,0,1,1,
+    objectrenderer.chevron:getWidth()/2,objectrenderer.chevron:getHeight()/2)
+
+end
+
 function objectrenderer.draw(object,objects,selection,time)
 
   local type = objectrenderer.getType(object.type)
@@ -109,10 +125,6 @@ function objectrenderer.draw(object,objects,selection,time)
   else
     love.graphics.setColor(libs.net.getUser(object.user).color)
   end
-
-  love.graphics.draw(objectrenderer.chevron,
-    object.dx,object.dy,0,1,1,
-    objectrenderer.chevron:getWidth()/2,objectrenderer.chevron:getHeight()/2)
 
   if isSelected then
     love.graphics.circle("line",

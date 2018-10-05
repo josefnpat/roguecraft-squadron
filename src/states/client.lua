@@ -956,6 +956,7 @@ function client:draw()
     if self:isOnCamera(object) then
       drawn_objects = drawn_objects + 1
       table.insert(drawable_objects,object)
+      libs.objectrenderer.drawChevron(object,self.selection)
     end
   end
   for _,drawLayer in pairs(client.drawOrder) do
