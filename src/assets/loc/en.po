@@ -40,6 +40,9 @@ msgstr "Debug"
 msgid "menu.credits"
 msgstr "Credits"
 
+msgid "menu.feedback"
+msgstr "Player Feedback"
+
 msgid "menu.exit"
 msgstr "Exit"
 

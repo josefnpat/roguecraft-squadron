@@ -87,7 +87,7 @@ function mainmenu:enter()
     libs.hump.gamestate.switch(states.credits)
   end)
 
-  self.menum:add(libs.i18n('menu.exit'),function()
+  self.menum:add(libs.i18n('menu.feedback'),function()
     self.feedback = libs.window.new{
       x = (love.graphics.getWidth()-320)/2,
       title = libs.i18n('menu.survey.title'),
@@ -103,12 +103,16 @@ function mainmenu:enter()
         {
           text=libs.i18n('menu.survey.no'),
           callback=function()
-            love.event.quit()
+            self.feedback = nil
           end,
         },
       },
     }
     self.feedback.y = (love.graphics.getHeight()-self.feedback.h)/2
+  end)
+
+  self.menum:add(libs.i18n('menu.exit'),function()
+    love.event.quit()
   end)
 
   self.menusp = libs.menu.new()
