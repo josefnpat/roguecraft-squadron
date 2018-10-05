@@ -770,7 +770,7 @@ function client:mousereleased(x,y,button)
             self.last_selected = nil
             self.last_selected_timeout = nil
             for _,object in pairs(self.objects) do
-              if object.user == self.user.id and object.type == closest_object.type then
+              if object.user == self.user.id and object.type == closest_object.type and self:isOnCamera(object) then
                 self.selection:add(object)
               end
             end
