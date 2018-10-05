@@ -17,7 +17,7 @@ function client:init()
     self.menu_enabled = false
   end)
 
-  self.music = love.audio.newSource("assets/music/Astrogator_v2.ogg","stream")
+  self.music = love.audio.newSource("assets/music/Menu.ogg","stream")
   self.music:setVolume(settings:read("music_vol"))
   self.music:setLooping(true)
 
