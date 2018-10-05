@@ -11,19 +11,20 @@ function menu.new(init)
   self._entry_font = init.entry_font or fonts.menu
   self._title_font = init.title_font or fonts.title
   self._printf = dropshadowf or love.graphics.printf
-  self._wait_on_release = false
 
   self.draw = menu.draw
   self.update = menu.update
-  self.add = menu.add
+
+  self.add = menu.addButton
+  self.addButton = menu.addButton
+  self.addSlider = menu.addSlider
 
   self.onChange = menu.onChange
   self.onCallback = menu.onCallback
 
   self.getEntryArea = menu.getEntryArea
 
-  self._dt = 0
-  self._data = {}
+  self._widgets = {}
 
   return self
 end
@@ -41,7 +42,7 @@ function menu:getEntryArea(i)
   local x = love.graphics.getWidth()*11/16
   local w = love.graphics.getWidth()*2/8
   local h = 40
-  local y = (love.graphics.getHeight()-(h+p)*#self._data)/2+(h+p)*(i-1)
+  local y = (love.graphics.getHeight()-(h+p)*#self._widgets)/2+(h+p)*(i-1)
   return x,y,w,h
 end
 
@@ -58,18 +59,13 @@ function menu:draw()
 
   love.graphics.setFont(self._entry_font)
 
-  for i,v in pairs(self._data) do
+  for i,widget in pairs(self._widgets) do
     local x,y,w,h = self:getEntryArea(i)
-    --love.graphics.rectangle(self._selected == i  and "fill" or "line",x,y,w,h)
-    if self._selected == i then
-      tooltipbg(x,y,w,h,{127,127,127,256*7/8},{255,255,255})
-    else
-      tooltipbg(x,y,w,h)
-    end
-    local font = love.graphics.getFont()
-    local text_y_offset = (h-font:getHeight())/2
-    local text = type(v.text) == "function" and v.text() or v.text
-    self._printf(text,x,y+text_y_offset,w,"center")
+    widget:setX(x)
+    widget:setY(y)
+    widget:setWidth(w)
+    widget:setHeight(h)
+    widget:draw()
   end
 
   love.graphics.setFont(old_font)
@@ -77,36 +73,31 @@ function menu:draw()
 end
 
 function menu:update(dt)
-  self._dt = self._dt + dt
-  local mx,my = love.mouse.getPosition()
-  self._previous_selected = self._selected
-  self._selected = nil
-  for i,v in pairs(self._data) do
-    local x,y,w,h = self:getEntryArea(i)
-    if mx >= x and mx <= x+w and my >= y and my <= y+h then
-      self._selected = i
-      if self._previous_selected ~= self._selected then
-        self:onChange()
-      end
-    end
-  end
-  if love.mouse.isDown(1) then
-    if self._data[self._selected] and self._wait_on_release then
-      self._data[self._selected].callback()
-      self:onCallback()
-    end
-    self._wait_on_release = false
-  else
-    self._wait_on_release = true
+  for i,widget in pairs(self._widgets) do
+    widget:update(dt)
   end
 
 end
 
-function menu:add(text,callback)
-  table.insert(self._data,{
+function menu:addButton(text,callback)
+  table.insert(self._widgets,libs.button.new{
     text=text,
-    callback=callback,
+    onClick=callback,
   })
+end
+
+function menu:addSlider(text,callback,value,range)
+  local slider = libs.slider.new{
+    text=text,
+    onChange=callback,
+    range=range,
+  }
+  if range then
+    slider:setRangeValue(value)
+  else
+    slider:setValue(value)
+  end
+  table.insert(self._widgets,slider)
 end
 
 return menu

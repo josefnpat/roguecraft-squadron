@@ -80,57 +80,49 @@ function state:init()
     end
   )
 
-   self.menu:add(
+  self.menu:addSlider(
     function()
-      return libs.i18n('options.camera_speed',{camera_speed=settings:read("camera_speed")})
+      return libs.i18n('options.camera_speed',{
+        camera_speed=math.floor(settings:read("camera_speed")*10+0.5)/10,
+      })
     end,
-    function()
-      local cam_speed = settings:read("camera_speed") + 0.25
-      if cam_speed > 3 then
-        cam_speed = 0.5
-      end
-      settings:write("camera_speed", cam_speed)
-    end
+    function(value,rangeValue)
+      settings:write("camera_speed", rangeValue)
+    end,
+    settings:read("camera_speed"),{1,3}
   )
 
-  self.menu:add(
+  self.menu:addSlider(
     function()
       return libs.i18n('options.sfx_vol',{sfx_vol=math.floor(settings:read("sfx_vol")*100)})
     end,
-    function()
-      local vol = settings:read("sfx_vol") - 0.1
-      if vol <= 0 then
-        vol = 1
-      end
-      settings:write("sfx_vol",vol)
-    end
+    function(value,rangeValue)
+      settings:write("sfx_vol",value)
+    end,
+    settings:read("sfx_vol")
   )
 
-  self.menu:add(
+  self.menu:addSlider(
     function()
       return libs.i18n('options.music_vol',{music_vol=math.floor(settings:read("music_vol")*100)})
     end,
-    function()
-      local vol = settings:read("music_vol") - 0.1
-      if vol <= 0 then
-        vol = 1
-      end
-      settings:write("music_vol",vol)
-      states.menu.music.title:setVolume(vol)
-      states.menu.music.game:setVolume(vol)
-    end)
+    function(value,rangeValue)
+      settings:write("music_vol",value)
+      states.menu.music.title:setVolume(value)
+      states.menu.music.game:setVolume(value)
+    end,
+    settings:read("music_vol")
+  )
 
-  self.menu:add(
+  self.menu:addSlider(
     function()
       return libs.i18n('options.voiceover_vol',{voiceover_vol=math.floor(settings:read("voiceover_vol")*100)})
     end,
-    function()
-      local vol = settings:read("voiceover_vol") - 0.1
-      if vol <= 0 then
-        vol = 1
-      end
-      settings:write("voiceover_vol",vol)
-    end)
+    function(value,rangeValue)
+      settings:write("voiceover_vol",value)
+    end,
+    settings:read("voiceover_vol")
+  )
 
   self.menu:add(
     function()
