@@ -14,6 +14,12 @@ function slider.new(init)
   self.setValue = slider.setValue
   self.getValue = slider.getValue
 
+  self._range = init.range or {0,1}
+  self.setRange = slider.setRange
+  self.getRange = slider.getRange
+  self.setRangeValue = slider.setRangeValue
+  self.getRangeValue = slider.getRangeValue
+
   self._text = init.text or slider.defaultText
   self.setText = slider.setText
   self.getText = slider.getText
@@ -36,6 +42,8 @@ function slider.new(init)
   self.setHeight = slider.setHeight
   self.getHeight = slider.getHeight
 
+  self._ready = false
+
   return self
 end
 
@@ -44,12 +52,18 @@ function slider:defaultText()
 end
 
 function slider:update(dt)
-  if love.mouse.isDown(1) and self:mouseInside() then
-    local mx = love.mouse.getX()
-    self._value = (mx - self._x)/self._width
-    if self._onChange then
-      self._onChange(self._value)
+  if self:mouseInside() then
+    if not love.mouse.isDown(1) then
+      self._ready = true
+    elseif self._ready then
+      local mx = love.mouse.getX()
+      self._value = (mx - self._x)/self._width
+      if self._onChange then
+        self._onChange(self._value,self:getRangeValue())
+      end
     end
+  else
+    self._ready = false
   end
 end
 
@@ -74,7 +88,7 @@ function slider:draw()
     barwidth,
     self._height-self._barPadding*2)
 
-  love.graphics.setScissor(self._x,self._y,barwidth,self._height)
+  love.graphics.setScissor(self._x,self._y,barwidth+self._barPadding,self._height)
   love.graphics.setColor(self._textColor)
   love.graphics.printf(text,self._x,self._y+tvoff,self._width,"center")
   love.graphics.setScissor()
@@ -96,6 +110,22 @@ end
 
 function slider:getValue()
   return self._value
+end
+
+function slider:setRange(min,max)
+  self._range = {min,max}
+end
+
+function slider:getRange(min,max)
+  return self._range[1],self._range[2]
+end
+
+function slider:setRangeValue(val)
+  self._value = (val - self._range[1]) / (self._range[2]-self._range[1])
+end
+
+function slider:getRangeValue()
+  return self._range[1] + (self._range[2]-self._range[1])*self._value
 end
 
 function slider:setX(val)
