@@ -973,7 +973,8 @@ end
 function server:takeoverTarget(object,target)
   local distance = libs.net.distance(object,target,love.timer.getTime())
   local target_type = libs.objectrenderer.getType(target.type)
-  if target_type.health and not self:objectsAreAllies(object,target) and distance < server:getFollowRange(object,target) then
+  local valid_allegiance = target.user == nil or not self:objectsAreAllies(object,target)
+  if target_type.health and valid_allegiance and distance < server:getFollowRange(object,target) then
     target.user = object.user
     self:addUpdate(target,{
       user=target.user,
@@ -1274,7 +1275,12 @@ function server:update(dt)
       if object_type.speed then
 
         if self:targetIsNeutral(object,target) then
-          self:gotoTarget(object,target,server:getGatherRange(object,target))
+          if object_type.takeover then
+            self:gotoTarget(object,target,server:getFollowRange(object,target))
+            self:takeoverTarget(object,target)
+          else
+            self:gotoTarget(object,target,server:getGatherRange(object,target))
+          end
         elseif self:targetIsSelf(object,target) then
           self:stopUpdateObject(object)
         elseif self:targetIsAlly(object,target) then
