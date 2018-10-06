@@ -1,9 +1,4 @@
-# RogueCraft Squadron Campaign Script
-
-## Timeline:
-
-1. Ruby Patton receives message from Grace Patton
-2. 19:30 Ruby Patton contacts Miho Takeda.
+# RogueCraft Squadron Campaign
 
 ## Script:
 
