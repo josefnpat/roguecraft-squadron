@@ -11,6 +11,7 @@ function button.new(init)
   self._draw = init.draw or button._default_draw_rcs
   self._text = init.text or "OK"
   self._onClick = init.onClick or button._default_onClick
+  self._disabled = init.disabled or false
 
   self._hover = false
   self._depress = false
@@ -18,6 +19,8 @@ function button.new(init)
   self.update = button.update
   self.mouseInside = button.mouseInside
   self.draw = button.draw
+  self.getDisabled = button.getDisabled
+  self.setDisabled = button.setDisabled
   self.getX = button.getX
   self.setX = button.setX
   self.getY = button.getY
@@ -36,7 +39,7 @@ end
 function button:update(dt)
   local new_hover = self:mouseInside()
   local new_depress = new_hover and love.mouse.isDown(1)
-  if new_hover and self._hover and not new_depress and self._depress then
+  if new_hover and self._hover and not new_depress and self._depress and not self._disabled then
     self._onClick()
   end
   self._hover = new_hover
@@ -53,18 +56,26 @@ function button:draw()
   self._draw(
     type(self._text)=="function" and self._text() or self._text,
     self._icon,
-    self._x,self._y,self._width,self._height,self._hover,self._depress)
+    self._x,self._y,
+    self._width,self._height,
+    self._hover,self._depress,self._disabled)
 end
 
 function button._default_onClick()
   print('button pressed')
 end
 
-function button._default_draw_rcs(text,icon,x,y,width,height,hover,depress)
+function button._default_draw_rcs(text,icon,x,y,width,height,hover,depress,disabled)
   local old_color = {love.graphics.getColor()}
   local old_font = love.graphics.getFont()
-  local bg = hover and {127,127,127,256*7/8} or nil
-  local fg = depress and {255,255,255} or nil
+  local bg,fg
+  if disabled then
+    bg = {63,63,63,255*7/8}
+    fg = {127,127,127,255*7/8}
+  else
+    bg = hover and {127,127,127,256*7/8} or nil
+    fg = depress and {255,255,255} or nil
+  end
   tooltipbg(x,y,width,height,bg,fg)
   local offset = (height-fonts.menu:getHeight())/2
   love.graphics.setColor(fg or {0,255,255})
@@ -82,7 +93,7 @@ function button._default_draw_rcs(text,icon,x,y,width,height,hover,depress)
   love.graphics.setFont(old_font)
 end
 
-function button._default_draw(text,icon,x,y,width,height,hover,depress)
+function button._default_draw(text,icon,x,y,width,height,hover,depress,disabled)
   local old_color = {love.graphics.getColor()}
   love.graphics.setColor(hover and {255,255,255} or {191,191,191})
   love.graphics.rectangle("fill",x,y,width,height)
@@ -94,6 +105,14 @@ function button._default_draw(text,icon,x,y,width,height,hover,depress)
   local offset = (height-love.graphics.getFont():getHeight())/2
   love.graphics.printf(text,x,y+offset,width,"center")
   love.graphics.setColor(old_color)
+end
+
+function button:getDisabled()
+  return self._disabled
+end
+
+function button:setDisabled()
+  return self._disabled
 end
 
 function button:getX()

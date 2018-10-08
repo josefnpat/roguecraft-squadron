@@ -54,6 +54,7 @@ function mpconnect.new(init)
   })
 
   table.insert(self.buttons,libs.button.new{
+    disabled=not isRelease(),
     text=function() return self.creative and "Creative" or "Normal" end,
     onClick=function()
       self.lovernet:pushData(libs.net.op.set_config,{d={creative=not self.creative}})
@@ -61,6 +62,7 @@ function mpconnect.new(init)
   })
 
   self.presetButton = libs.button.new{
+    disabled=not isRelease(),
     text="Preset",
     onClick=function()
       self.lovernet:pushData(libs.net.op.set_config,{d={preset=self.preset+1}})
@@ -69,6 +71,7 @@ function mpconnect.new(init)
   table.insert(self.buttons,self.presetButton)
 
   self.pointsButton = libs.button.new{
+    disabled=not isRelease(),
     text="Points",
     onClick=function()
       self.lovernet:pushData(libs.net.op.set_config,{d={points=self.points+1}})
