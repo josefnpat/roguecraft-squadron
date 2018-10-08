@@ -20,6 +20,7 @@ settings:define("diff","new")
 settings:define("remote_server_address","50.116.63.25")
 settings:define("user_name","Player")
 settings:define("mouse_draw_mode","software")
+settings:define("object_shaders",false)
 
 game_name = "RogueCraft Squadron"
 git_hash,git_count = "missing git.lua",-1

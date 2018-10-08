@@ -105,80 +105,22 @@ function objectrenderer.drawChevron(object,selection)
 
 end
 
-function objectrenderer.draw(object,objects,selection,time)
+function objectrenderer.drawShip(object)
 
-  local type = objectrenderer.getType(object.type)
+  local object_type = objectrenderer.getType(object.type)
 
-  if object.anim then
-    love.graphics.setColor(255,255,255,127)
-    love.graphics.circle("line",
-      object.dx,
-      object.dy,
-      type.size+math.sin(object.anim*math.pi)*4
-    )
-  end
-
-  local isSelected = selection:isSelected(object)
-
-  if isSelected then
-    love.graphics.setColor(libs.net.getUser(object.user).selected_color)
-  else
-    love.graphics.setColor(libs.net.getUser(object.user).color)
-  end
-
-  if isSelected then
-    love.graphics.circle("line",
-      object.dx,
-      object.dy,
-      type.size
-    )
-    if #selection:getSelected() == 1 then
-      if type.shoot then
-        love.graphics.setColor(0,255,255)
-        libs.ring.draw(object.dx,object.dy,type.shoot.range)
-      end
-      if type.explode then
-        love.graphics.setColor(255,0,0)
-        libs.ring.draw(object.dx,object.dy,type.explode.range)
-        love.graphics.setColor(0,255,255)
-        libs.ring.draw(object.dx,object.dy,type.explode.damage_range)
-      end
-    end
-  end
-
-  if object.health then
-    local object_type = libs.objectrenderer.getType(object.type)
-    if object.health then
-      object.healthbar:draw(
-        object.dx-object_type.size,
-        object.dy+object_type.size,
-        object_type.size*2
-      )
-    end
-  end
-
-  if object.build_t and object.build_dt then
-    local user = libs.net.getUser(object.user)
-    love.graphics.setColor(user.color[1],user.color[2],user.color[3],isSelected and 127 or 63)
-    local object_type = libs.objectrenderer.getType(object.type)
-    local percent = 1-object.build_dt/object.build_t
-    libs.pcb(object.dx,object.dy,object_type.size*1.5,0.75,percent,0)
-  end
-
-  love.graphics.setColor(255,255,255)
-
-  if type.renders[object.render].sub then
+  if object_type.renders[object.render].sub then
     love.graphics.draw(
-      type.renders[object.render].sub,
+      object_type.renders[object.render].sub,
       object.dx,
       object.dy,
       object.subdangle,
       1,1,
-      type.renders[object.render].sub:getWidth()/2,
-      type.renders[object.render].sub:getHeight()/2)
+      object_type.renders[object.render].sub:getWidth()/2,
+      object_type.renders[object.render].sub:getHeight()/2)
   end
 
-  local render = type.renders[object.render].main
+  local render = object_type.renders[object.render].main
   if objectrenderer.pizza then
     render = objectrenderer.pizza_img
   end
@@ -192,6 +134,92 @@ function objectrenderer.draw(object,objects,selection,time)
     render:getWidth()/2,
     render:getHeight()/2)
 
+end
+
+function objectrenderer.draw(object,objects,selection,time)
+
+  local object_type = objectrenderer.getType(object.type)
+
+  if settings:read("object_shaders") then
+    if not objectrenderer.outline_shader then
+      objectrenderer.outline_shader = love.graphics.newShader( "assets/shaders/outline.glsl")
+    end
+  end
+
+  if object.anim then
+    love.graphics.setColor(255,255,255,127)
+    love.graphics.circle("line",
+      object.dx,
+      object.dy,
+      object_type.size+math.sin(object.anim*math.pi)*4
+    )
+  end
+
+  local isSelected = selection:isSelected(object)
+
+  if isSelected then
+    love.graphics.setColor(libs.net.getUser(object.user).selected_color)
+  else
+    love.graphics.setColor(libs.net.getUser(object.user).color)
+  end
+
+  if isSelected then
+    if not settings:read("object_shaders") then
+      love.graphics.circle("line",
+        object.dx,
+        object.dy,
+        object_type.size
+      )
+    end
+    if #selection:getSelected() == 1 then
+      if object_type.shoot then
+        love.graphics.setColor(0,255,255)
+        libs.ring.draw(object.dx,object.dy,object_type.shoot.range)
+      end
+      if object_type.explode then
+        love.graphics.setColor(255,0,0)
+        libs.ring.draw(object.dx,object.dy,object_type.explode.range)
+        love.graphics.setColor(0,255,255)
+        libs.ring.draw(object.dx,object.dy,object_type.explode.damage_range)
+      end
+    end
+  end
+
+  if object.health then
+    if object.health then
+      object.healthbar:draw(
+        object.dx-object_type.size,
+        object.dy+object_type.size,
+        object_type.size*2
+      )
+    end
+  end
+
+  if object.build_t and object.build_dt then
+    local user = libs.net.getUser(object.user)
+    love.graphics.setColor(user.color[1],user.color[2],user.color[3],isSelected and 127 or 63)
+    local percent = 1-object.build_dt/object.build_t
+    libs.pcb(object.dx,object.dy,object_type.size*1.5,0.75,percent,0)
+  end
+
+  love.graphics.setColor(255,255,255)
+
+  if isSelected and settings:read("object_shaders") then
+    local anim_size = 2
+    if object.anim then
+      anim_size = anim_size + math.sin(object.anim*math.pi)*2
+    end
+    anim_size = anim_size/object_type.size
+    objectrenderer.outline_shader:send("outline",{anim_size,anim_size} )
+    local user = libs.net.getUser(object.user)
+    local color = {user.selected_color[1]/255,user.selected_color[2]/255,user.selected_color[3]/255}
+    objectrenderer.outline_shader:send("color",color)
+    love.graphics.setShader(objectrenderer.outline_shader)
+    objectrenderer.drawShip(object)
+    love.graphics.setShader()
+  end
+  objectrenderer.drawShip(object)
+
   love.graphics.setColor(255,255,255)
   if debug_mode then
 
@@ -201,8 +229,8 @@ function objectrenderer.draw(object,objects,selection,time)
       love.graphics.circle('line',cx,cy,8)
     end
 
-    if type.shoot then
-      love.graphics.circle('line',object.dx,object.dy,type.shoot.range)
+    if object_type.shoot then
+      love.graphics.circle('line',object.dx,object.dy,object_type.shoot.range)
     end
 
     local str = ""

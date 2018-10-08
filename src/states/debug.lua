@@ -68,6 +68,15 @@ function state:init()
     end
   )
 
+  self.menu:add(
+    function()
+      return "ObjectRenderer Shader [".. (settings:read("object_shaders") and "Enabled" or "Disabled").."]"
+    end,
+    function()
+      settings:write("object_shaders",not settings:read("object_shaders"))
+    end
+  )
+
   self.menu:add("Dynamic Music Manager",function()
     states.menu.music.title:stop()
     states.menu.music.game:stop()
