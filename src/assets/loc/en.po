@@ -17,7 +17,7 @@ msgid "menu.back"
 msgstr "Back"
 
 msgid "menu.multiplayer"
-msgstr "Multi Player (Alpha)"
+msgstr "Multi Player"
 
 msgid "menu.server"
 msgstr "Host Game"

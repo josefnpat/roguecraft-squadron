@@ -9,6 +9,7 @@ GIT_TARGET=${SRC_DIR}/git.lua
 WORKING_DIRECTORY=$(shell pwd)
 
 LOVE_TARGET=${PROJECT_SHORTNAME}.love
+LOVE_TARGET_DEMO=${PROJECT_SHORTNAME}_demo.love
 
 DEPS_DATA=dev/build_data
 DEPS_DOWNLOAD_TARGET=https://bitbucket.org/rude/love/downloads/
@@ -21,11 +22,18 @@ DEPS_LINUX_TARGET=love-${LOVE_VERSION}\-amd64.tar.gz
 BUILD_INFO=v${GIT_COUNT}-[${GIT_HASH}]
 BUILD_BIN_NAME=${PROJECT_SHORTNAME}_${BUILD_INFO}
 BUILD_DIR=builds
+
 BUILD_LOVE=${PROJECT_SHORTNAME}_${BUILD_INFO}
 BUILD_WIN32=${PROJECT_SHORTNAME}_win32_${BUILD_INFO}
 BUILD_WIN64=${PROJECT_SHORTNAME}_win64_${BUILD_INFO}
 BUILD_MACOS=${PROJECT_SHORTNAME}_macosx_${BUILD_INFO}
 BUILD_LINUX=${PROJECT_SHORTNAME}_linux64_${BUILD_INFO}
+
+BUILD_LOVE_DEMO=${PROJECT_SHORTNAME}_${BUILD_INFO}_demo
+BUILD_WIN32_DEMO=${PROJECT_SHORTNAME}_win32_${BUILD_INFO}_demo
+BUILD_WIN64_DEMO=${PROJECT_SHORTNAME}_win64_${BUILD_INFO}_demo
+BUILD_MACOS_DEMO=${PROJECT_SHORTNAME}_macosx_${BUILD_INFO}_demo
+BUILD_LINUX_DEMO=${PROJECT_SHORTNAME}_linux64_${BUILD_INFO}_demo
 
 BUTLER=butler
 BUTLER_VERSION=${GIT_COUNT}[git:${GIT_HASH}]
@@ -48,6 +56,7 @@ clean:
 .PHONY: cleanlove
 cleanlove:
 	rm -f ${LOVE_TARGET}
+	rm -f ${LOVE_TARGET_DEMO}
 
 .PHONY: love
 love: clean
@@ -64,9 +73,28 @@ love: clean
 	zip --filesync -x "*.swp" -r ../${LOVE_TARGET} *;\
 	cd ..
 
+.PHONY: love_demo
+love_demo: clean
+	#Writing ${GIT_TARGET}
+	echo "git_hash,git_count = '${GIT_HASH}',${GIT_COUNT}" > ${GIT_TARGET}
+	#Make Icons
+	mkdir -p ${ICON_DIR}
+	$(foreach var,\
+		$(IMAGE_FILES),\
+		convert $(var) -modulate 300% -thumbnail 32x32 +dither -colors 8\
+			-colorspace gray -normalize $(subst objects,objects_icon,$(var));)
+	#Make love file
+	cd ${SRC_DIR};\
+	zip --filesync -x "release*" -x "*.swp" -r ../${LOVE_TARGET_DEMO} *;\
+	cd ..
+
 .PHONY: run
 run: love
 	exec ${LOVE} --fused ${LOVE_TARGET} ${loveargs}
+
+.PHONY: run_demo
+run_demo: love_demo
+	exec ${LOVE} --fused ${LOVE_TARGET_DEMO} ${loveargs}
 
 .PHONY: debug
 debug: love
@@ -100,6 +128,11 @@ build_love: love
 	mkdir -p ${BUILD_DIR}
 	cp ${LOVE_TARGET} ${BUILD_DIR}/${BUILD_LOVE}.love
 
+.PHONY: build_love_demo
+build_love_demo: love_demo
+	mkdir -p ${BUILD_DIR}
+	cp ${LOVE_TARGET_DEMO} ${BUILD_DIR}/${BUILD_LOVE_DEMO}.love
+
 .PHONY: build_win32
 build_win32: love
 	mkdir -p ${BUILD_DIR}
@@ -107,6 +140,15 @@ build_win32: love
 	cat ${DEPS_DATA}/love-${LOVE_VERSION}\-win32/love.exe ${LOVE_TARGET} > ${TMP}/${BUILD_BIN_NAME}.exe
 	cp ${DEPS_DATA}/love-${LOVE_VERSION}\-win32/*.dll ${TMP}
 	zip -rj ${BUILD_DIR}/${BUILD_WIN32} $(TMP)/*
+	rm -rf $(TMP)
+
+.PHONY: build_win32_demo
+build_win32_demo: love_demo
+	mkdir -p ${BUILD_DIR}
+	$(eval TMP := $(shell mktemp -d))
+	cat ${DEPS_DATA}/love-${LOVE_VERSION}\-win32/love.exe ${LOVE_TARGET_DEMO} > ${TMP}/${BUILD_BIN_NAME}_demo.exe
+	cp ${DEPS_DATA}/love-${LOVE_VERSION}\-win32/*.dll ${TMP}
+	zip -rj ${BUILD_DIR}/${BUILD_WIN32_DEMO} $(TMP)/*
 	rm -rf $(TMP)
 
 .PHONY: build_win64
@@ -118,6 +160,15 @@ build_win64: love
 	zip -rj ${BUILD_DIR}/${BUILD_WIN64} $(TMP)/*
 	rm -rf $(TMP)
 
+.PHONY: build_win64_demo
+build_win64_demo: love_demo
+	mkdir -p ${BUILD_DIR}
+	$(eval TMP := $(shell mktemp -d))
+	cat ${DEPS_DATA}/love-${LOVE_VERSION}\-win64/love.exe ${LOVE_TARGET_DEMO} > ${TMP}/${BUILD_BIN_NAME}_demo.exe
+	cp ${DEPS_DATA}/love-${LOVE_VERSION}\-win64/*.dll ${TMP}
+	zip -rj ${BUILD_DIR}/${BUILD_WIN64_DEMO} $(TMP)/*
+	rm -rf $(TMP)
+
 .PHONY: build_macos
 build_macos: love
 	mkdir -p ${BUILD_DIR}
@@ -126,6 +177,17 @@ build_macos: love
 	cp ${LOVE_TARGET} ${TMP}/${BUILD_BIN_NAME}.app/Contents/Resources/${BUILD_BIN_NAME}.love
 	cd ${TMP}; \
 	zip -ry ${WORKING_DIRECTORY}/${BUILD_DIR}/${BUILD_MACOS}.zip ${BUILD_BIN_NAME}.app/
+	cd ${WORKING_DIRECTORY}
+	rm -rf $(TMP)
+
+.PHONY: build_macos_demo
+build_macos_demo: love_demo
+	mkdir -p ${BUILD_DIR}
+	$(eval TMP := $(shell mktemp -d))
+	cp ${DEPS_DATA}/love.app/ ${TMP}/${BUILD_BIN_NAME}_demo.app -Rv
+	cp ${LOVE_TARGET_DEMO} ${TMP}/${BUILD_BIN_NAME}_demo.app/Contents/Resources/${BUILD_BIN_NAME}.love
+	cd ${TMP}; \
+	zip -ry ${WORKING_DIRECTORY}/${BUILD_DIR}/${BUILD_MACOS_DEMO}.zip ${BUILD_BIN_NAME}_demo.app/
 	cd ${WORKING_DIRECTORY}
 	rm -rf $(TMP)
 
@@ -141,22 +203,34 @@ build_linux64: love
 	zip -ry ${WORKING_DIRECTORY}/${BUILD_DIR}/${BUILD_LINUX}.zip *
 	rm -rf $(TMP)
 
+.PHONY: build_linux64_demo
+build_linux64_demo: love_demo
+	mkdir -p ${BUILD_DIR}
+	$(eval TMP := $(shell mktemp -d))
+	cp -r ${DEPS_DATA}/love-${LOVE_VERSION}\-amd64/* ${TMP}
+	mv ${TMP}/love ${TMP}/${BUILD_BIN_NAME}_demo
+	cp ${TMP}/usr/bin/love ${TMP}/usr/bin/love_bin
+	cat ${TMP}/usr/bin/love_bin ${LOVE_TARGET_DEMO} > ${TMP}/usr/bin/love
+	cd ${TMP}; \
+	zip -ry ${WORKING_DIRECTORY}/${BUILD_DIR}/${BUILD_LINUX_DEMO}.zip *
+	rm -rf $(TMP)
+
 .PHONY: all
-all: build_love build_win32 build_win64 build_macos build_linux64
+all: build_love build_love_demo build_win32 build_win32_demo build_win64 build_win64_demo build_macos build_macos_demo build_linux64 build_linux64_demo
 
 .PHONY: deploy
 deploy: all
 	${BUTLER} login
-	${BUTLER} push ${BUILD_DIR}/${BUILD_LOVE}.love ${BUTLER_ITCHUSERNAME}/${BUTLER_ITCHNAME}:love\
-		--userversion ${BUTLER_VERSION}
-	${BUTLER} push ${BUILD_DIR}/${BUILD_WIN32}.zip ${BUTLER_ITCHUSERNAME}/${BUTLER_ITCHNAME}:win32\
-		--userversion ${BUTLER_VERSION}
-	${BUTLER} push ${BUILD_DIR}/${BUILD_WIN64}.zip ${BUTLER_ITCHUSERNAME}/${BUTLER_ITCHNAME}:win64\
-		--userversion ${BUTLER_VERSION}
-	${BUTLER} push ${BUILD_DIR}/${BUILD_MACOS}.zip ${BUTLER_ITCHUSERNAME}/${BUTLER_ITCHNAME}:macosx\
-		--userversion ${BUTLER_VERSION}
-	${BUTLER} push ${BUILD_DIR}/${BUILD_LINUX}.zip ${BUTLER_ITCHUSERNAME}/${BUTLER_ITCHNAME}:linux64\
-		--userversion ${BUTLER_VERSION}
+	${BUTLER} push ${BUILD_DIR}/${BUILD_LOVE}.love ${BUTLER_ITCHUSERNAME}/${BUTLER_ITCHNAME}:love --userversion ${BUTLER_VERSION}
+	${BUTLER} push ${BUILD_DIR}/${BUILD_WIN32}.zip ${BUTLER_ITCHUSERNAME}/${BUTLER_ITCHNAME}:win32 --userversion ${BUTLER_VERSION}
+	${BUTLER} push ${BUILD_DIR}/${BUILD_WIN64}.zip ${BUTLER_ITCHUSERNAME}/${BUTLER_ITCHNAME}:win64 --userversion ${BUTLER_VERSION}
+	${BUTLER} push ${BUILD_DIR}/${BUILD_MACOS}.zip ${BUTLER_ITCHUSERNAME}/${BUTLER_ITCHNAME}:macosx --userversion ${BUTLER_VERSION}
+	${BUTLER} push ${BUILD_DIR}/${BUILD_LINUX}.zip ${BUTLER_ITCHUSERNAME}/${BUTLER_ITCHNAME}:linux64 --userversion ${BUTLER_VERSION}
+	${BUTLER} push ${BUILD_DIR}/${BUILD_LOVE_DEMO}.love ${BUTLER_ITCHUSERNAME}/${BUTLER_ITCHNAME}:love_demo --userversion ${BUTLER_VERSION}
+	${BUTLER} push ${BUILD_DIR}/${BUILD_WIN32_DEMO}.zip ${BUTLER_ITCHUSERNAME}/${BUTLER_ITCHNAME}:win32_demo --userversion ${BUTLER_VERSION}
+	${BUTLER} push ${BUILD_DIR}/${BUILD_WIN64_DEMO}.zip ${BUTLER_ITCHUSERNAME}/${BUTLER_ITCHNAME}:win64_demo --userversion ${BUTLER_VERSION}
+	${BUTLER} push ${BUILD_DIR}/${BUILD_MACOS_DEMO}.zip ${BUTLER_ITCHUSERNAME}/${BUTLER_ITCHNAME}:macosx_demo --userversion ${BUTLER_VERSION}
+	${BUTLER} push ${BUILD_DIR}/${BUILD_LINUX_DEMO}.zip ${BUTLER_ITCHUSERNAME}/${BUTLER_ITCHNAME}:linux64_demo --userversion ${BUTLER_VERSION}
 	${BUTLER} status ${BUTLER_ITCHUSERNAME}/${BUTLER_ITCHNAME}
 
 .PHONY: status

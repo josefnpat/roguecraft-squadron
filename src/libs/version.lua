@@ -49,6 +49,11 @@ function version.draw()
         git_hash=git_hash
       }).."\n"
   end
+
+  if not isRelease() then
+    vs_info = vs_info .. "Demo Version" .. "\n"
+  end
+
   dropshadowf(vs_info,
     32,32,love.graphics.getWidth()-64,"left")
 end

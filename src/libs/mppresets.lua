@@ -2,9 +2,8 @@ local mppresets = {}
 
 mppresets._presets = {}
 mppresets._dir = "assets/mp_presets/"
-for _,filename in pairs(love.filesystem.getDirectoryItems(mppresets._dir)) do
-  local preset = require(mppresets._dir..file.name(filename))
-  preset.id = fn
+for _,filename in pairs(file.getAllDirectoryItems(mppresets._dir)) do
+  local preset = require(file.name(filename))
   table.insert(mppresets._presets,preset)
 end
 

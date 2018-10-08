@@ -455,6 +455,24 @@ function file.extension(url)
   return url:match("[^.]+$")
 end
 
+function file.getAllDirectoryItems(dir)
+  local items = {}
+  for _,item in pairs(love.filesystem.getDirectoryItems(dir)) do
+    table.insert(items,dir..item)
+  end
+  local release_dir = "release/"..dir
+  if love.filesystem.isDirectory(release_dir) then
+    for _,item in pairs(love.filesystem.getDirectoryItems(release_dir)) do
+      table.insert(items,release_dir..item)
+    end
+  end
+  return items
+end
+
+function isRelease()
+  return love.filesystem.isDirectory("release")
+end
+
 function starts_with(str, start)
    return str:sub(1, #start) == start
 end
