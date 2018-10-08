@@ -7,6 +7,7 @@ function matrixpanel.new(init)
   local self = {}
 
   self._drawbg = init.drawbg == nil and true or init.drawbg
+  self._icon_bg = init.icon_bg or matrixpanel.icon_bg
   self._x = init.x or 32
   self._y = init.y or 32
   self._width = init.width or 256
@@ -94,7 +95,7 @@ function matrixpanel:draw(bg,fg)
         love.graphics.setColor(action.color)
       end
     end
-    love.graphics.draw(matrixpanel.icon_bg,ix,iy)
+    love.graphics.draw(self._icon_bg,ix,iy)
     love.graphics.draw(action.image,ix,iy)
   end
   love.graphics.setColor(255,255,255)
@@ -120,8 +121,8 @@ function matrixpanel:update(dt)
     local x,y,w,h = self:getIconArea(ai)
     if mx >= x and mx <= x + w and my >= y and my <= y + h then
       found = action
-      self._hover_x = x + self._iconSize*2
-      self._hover_y = y + self._iconSize*2
+      self._hover_x = x + self._iconSize+16
+      self._hover_y = y + self._iconSize+16
       self._hover_text = type(action.text) == "function" and action.text() or tostring(action.text)
       break
     end

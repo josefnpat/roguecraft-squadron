@@ -21,6 +21,8 @@ function mainmenu:init()
   self.debug_menu = {"up","up","down","down","left","right","left","right","b","a"}
   self.debug_menu_index = 1
 
+  self.social = libs.social.new()
+
 end
 
 function mainmenu:textinput(t)
@@ -277,6 +279,7 @@ function mainmenu:update(dt)
     self.menu:update(dt)
   end
   libs.demo:update(dt)
+  self.social:update(dt)
 end
 
 function mainmenu:draw()
@@ -299,6 +302,8 @@ function mainmenu:draw()
   if self.chooser then
     self.chooser:draw()
   end
+
+  self.social:draw()
 
   libs.demo:draw()
 

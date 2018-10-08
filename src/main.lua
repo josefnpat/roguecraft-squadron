@@ -173,6 +173,7 @@ function love.load(arg)
     picocam = require"libs.picocam",
     points = require"libs.points",
     matchstats = require"libs.matchstats",
+    social = require"libs.social",
   }
 
   libs.objectrenderer.load(true)

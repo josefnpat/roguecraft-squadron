@@ -55,7 +55,7 @@ function version.draw()
   end
 
   dropshadowf(vs_info,
-    32,32,love.graphics.getWidth()-64,"left")
+    love.graphics.getWidth()-256-32,32,256,"right")
 end
 
 return version
