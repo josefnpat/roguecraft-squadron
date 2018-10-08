@@ -254,6 +254,7 @@ function client:update(dt)
     self.selection:setUser(self.user.id)
     self.buildqueue:setUser(self.user.id)
     self.mpresearch:buildData(self.user)
+    self.mpconnect:setUser(self.user.id)
   end
 
   if self.lovernet:getCache(libs.net.op.get_config) then

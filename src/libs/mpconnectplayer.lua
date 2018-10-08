@@ -18,6 +18,7 @@ function mpconnectplayer.new(init)
   self._type = init.type or "user"
   self._user_name = init.user_name or "Loading ..."
   self._user_id = init.user_id or 0
+  self._ready = init.ready
   self._player_index = init.player_index or 0
   self._team = init.team or 1
   self._diff = init.diff or 1
@@ -72,7 +73,8 @@ function mpconnectplayer:draw(x,y)
     target_x,
     target_y,
     0,scale,scale)
-  dropshadowf(self._user_name,x,y+image:getHeight()*scale+32,self:getWidth(),"center")
+  local text = self._user_name.."\n"..(self._ready and "[Ready]" or "")
+  dropshadowf(text,x,y+image:getHeight()*scale+32,self:getWidth(),"center")
   self._changeTeam:setX(target_x)
   self._changeTeam:setY(target_y + target_height - self._changeTeam:getHeight())
   self._changeTeam:setWidth(self._changeTeam:getHeight())

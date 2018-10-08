@@ -1178,6 +1178,14 @@ function server:validatePlayerConfig(player)
   if player.diff and player.diff > #libs.net.aiDifficulty then
     player.diff = 1
   end
+  local all_ready = true
+  for _,user in pairs(self.lovernet:getUsers()) do
+    if user.config == nil or user.config.ready ~= true then
+      all_ready = false
+      break
+    end
+  end
+  self.lovernet:getStorage().config.game_start = all_ready
 end
 
 function server:update(dt)

@@ -18,14 +18,22 @@ function mpconnect.new(init)
   self.setCreative = mpconnect.setCreative
   self.setPreset = mpconnect.setPreset
   self.setPoints = mpconnect.setPoints
+  self.setUser = mpconnect.setUser
 
   self._players = {}
   self._data = {}
 
   self.start = libs.button.new{
-    text="Start Battle",
+    text=function()
+      local player = libs.net.getPlayerById(self._players,self._user_id)
+      return player.ready and "Ready" or "Not Ready"
+    end,
     onClick=function()
-      self.lovernet:pushData(libs.net.op.set_config,{d={game_start=true}})
+      local player = libs.net.getPlayerById(self._players,self._user_id)
+      self.lovernet:pushData(libs.net.op.set_players,{
+        d={ready=not player.ready},
+        p=self._user_id,
+        t="u"})
     end,
   }
 
@@ -83,6 +91,7 @@ function mpconnect:updateData(config,players)
         type=type,
         user_name=user_name,
         user_id=player_type_id,
+        ready=player.ready,
         player_index=player_index,
         team=player.team,
         diff=player.diff,
@@ -121,6 +130,10 @@ end
 function mpconnect:setPoints(points_value)
   self.points = points_value
   self.pointsButton:setText(libs.net.points[points_value].text)
+end
+
+function mpconnect:setUser(user_id)
+  self._user_id = user_id
 end
 
 function mpconnect:draw(config,players,user_count)
