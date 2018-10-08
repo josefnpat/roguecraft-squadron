@@ -5,10 +5,10 @@ function state:init()
   self._maxFade = 10
 
   self.da = libs.dynamicaudio.new()
-  self.da:addTrack("assets/dynamicaudio/1.ogg")
-  self.da:addTrack("assets/dynamicaudio/2.ogg")
-  self.da:addTrack("assets/dynamicaudio/3.ogg")
-  self.da:addTrack("assets/dynamicaudio/4.ogg")
+  self.da:addTrack("assets/dynamicaudio/AsteroidMining/1.ogg")
+  self.da:addTrack("assets/dynamicaudio/AsteroidMining/2.ogg")
+  self.da:addTrack("assets/dynamicaudio/AsteroidMining/3.ogg")
+  self.da:addTrack("assets/dynamicaudio/AsteroidMining/4.ogg")
 
   self.sliders = {}
 
