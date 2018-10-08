@@ -62,7 +62,7 @@ function mpconnect.new(init)
   })
 
   self.presetButton = libs.button.new{
-    disabled=not isRelease(),
+    disabled=#libs.mppresets.getPresets()<=1,
     text="Preset",
     onClick=function()
       self.lovernet:pushData(libs.net.op.set_config,{d={preset=self.preset+1}})

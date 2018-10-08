@@ -61,33 +61,33 @@ function mainmenu:enter()
 
   self.menum = libs.menu.new()--{title=game_name}
 
-  self.menum:add(libs.i18n('menu.singleplayer'),function()
+  self.menum:addButton(libs.i18n('menu.singleplayer'),function()
       self.menu = self.menusp
-    end
+    end,not isRelease()
   )
 
-  self.menum:add(libs.i18n('menu.multiplayer'),function()
+  self.menum:addButton(libs.i18n('menu.multiplayer'),function()
       self.menu = self.menump
     end
   )
 
-  self.menum:add(libs.i18n('menu.options'),function()
+  self.menum:addButton(libs.i18n('menu.options'),function()
     libs.hump.gamestate.switch(states.options)
     previousState = states.menu
   end)
 
 
   if self.debug_menu_enabled then
-    self.menum:add(libs.i18n('menu.debug'),function()
+    self.menum:addButton(libs.i18n('menu.debug'),function()
       libs.hump.gamestate.switch(states.debug)
     end)
   end
 
-  self.menum:add(libs.i18n('menu.credits'),function()
+  self.menum:addButton(libs.i18n('menu.credits'),function()
     libs.hump.gamestate.switch(states.credits)
   end)
 
-  self.menum:add(libs.i18n('menu.feedback'),function()
+  self.menum:addButton(libs.i18n('menu.feedback'),function()
     self.feedback = libs.window.new{
       x = (love.graphics.getWidth()-320)/2,
       title = libs.i18n('menu.survey.title'),
@@ -111,7 +111,7 @@ function mainmenu:enter()
     self.feedback.y = (love.graphics.getHeight()-self.feedback.h)/2
   end)
 
-  self.menum:add(libs.i18n('menu.exit'),function()
+  self.menum:addButton(libs.i18n('menu.exit'),function()
     love.event.quit()
   end)
 
@@ -119,7 +119,7 @@ function mainmenu:enter()
 
   if settings:read("diff") ~= "new" then
     --TODO: i18n
-    self.menusp:add(
+    self.menusp:addButton(
       libs.i18n('menu.continue_game').." ("..settings:read("diff")..")",
       function()
         mainmenu:setDifficulty(settings:read("diff"))
@@ -129,20 +129,20 @@ function mainmenu:enter()
     )
   end
 
-  self.menusp:add(libs.i18n('menu.new_game'),function()
+  self.menusp:addButton(libs.i18n('menu.new_game'),function()
     settings:write("tree_points",0)
     settings:write("tree_levels",{})
     self.menu = self.menud
   end)
 
-  self.menusp:add(libs.i18n('menu.back'),function()
+  self.menusp:addButton(libs.i18n('menu.back'),function()
       self.menu = self.menum
     end
   )
 
   self.menump = libs.menu.new()
 
-  self.menump:add(
+  self.menump:addButton(
     function()
       return libs.i18n('menu.server')
     end,
@@ -158,7 +158,7 @@ function mainmenu:enter()
     end
   )
 
-  self.menump:add(
+  self.menump:addButton(
     function()
       return libs.i18n('menu.client') .. " ["..settings:read("remote_server_address").."]"
     end,
@@ -169,7 +169,7 @@ function mainmenu:enter()
     end
   )
 
-  self.menump:add(
+  self.menump:addButton(
     function()
       return libs.i18n('menu.remote_server_address')
     end,
@@ -185,7 +185,7 @@ function mainmenu:enter()
     end
   )
 
-  self.menump:add(
+  self.menump:addButton(
     function()
       return libs.i18n('menu.user_name').." ["..settings:read("user_name").."]"
     end,
@@ -201,7 +201,7 @@ function mainmenu:enter()
     end
   )
 
-  self.menump:add(
+  self.menump:addButton(
     function()
       return libs.i18n('menu.standalone_server')
     end,
@@ -210,7 +210,7 @@ function mainmenu:enter()
     end
   )
 
-  self.menump:add(
+  self.menump:addButton(
     function()
       return libs.i18n('menu.client') .. ' [localhost]'
     end,
@@ -221,7 +221,7 @@ function mainmenu:enter()
     end
   )
 
-  self.menump:add(libs.i18n('menu.back'),function()
+  self.menump:addButton(libs.i18n('menu.back'),function()
       self.chooser = nil
       self.menu = self.menum
     end
@@ -230,35 +230,35 @@ function mainmenu:enter()
   self.menud = libs.menu.new()
 
   -- TODO: i18n
-  self.menud:add("Ensign (Easy)",function()
+  self.menud:addButton("Ensign (Easy)",function()
     mainmenu:setDifficulty("easy")
     settings:write("diff","easy")
     states.mission.newGame = true
     libs.hump.gamestate.switch(states.disclaimer)
   end)
 
-  self.menud:add("Captain (Medium)",function()
+  self.menud:addButton("Captain (Medium)",function()
     mainmenu:setDifficulty("medium")
     settings:write("diff","medium")
     states.mission.newGame = true
     libs.hump.gamestate.switch(states.disclaimer)
   end)
 
-  self.menud:add("Colonel (Hard)",function()
+  self.menud:addButton("Colonel (Hard)",function()
     mainmenu:setDifficulty("hard")
     settings:write("diff","hard")
     states.mission.newGame = true
     libs.hump.gamestate.switch(states.disclaimer)
   end)
 
-  self.menud:add("Admiral (Impossible)",function()
+  self.menud:addButton("Admiral (Impossible)",function()
     mainmenu:setDifficulty("impossible")
     settings:write("diff","immpossible")
     states.mission.newGame = true
     libs.hump.gamestate.switch(states.disclaimer)
   end)
 
-  self.menud:add(libs.i18n('menu.back'),function()
+  self.menud:addButton(libs.i18n('menu.back'),function()
     self.menu = self.menum
   end)
 

@@ -79,10 +79,11 @@ function menu:update(dt)
 
 end
 
-function menu:addButton(text,callback)
+function menu:addButton(text,callback,disabled)
   table.insert(self._widgets,libs.button.new{
     text=text,
     onClick=callback,
+    disabled=disabled,
   })
 end
 
