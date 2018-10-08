@@ -244,6 +244,7 @@ end
 function selection:draw(camera)
   if self.sx and self.sy then
     local mx,my = love.mouse.getPosition()
+    love.graphics.setColor(0,255,255)
     love.graphics.rectangle("line",
       self.sx,
       self.sy,
