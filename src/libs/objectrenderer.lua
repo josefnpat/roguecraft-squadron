@@ -205,9 +205,9 @@ function objectrenderer.draw(object,objects,selection,time)
   love.graphics.setColor(255,255,255)
 
   if isSelected and settings:read("object_shaders") then
-    local anim_size = 2
+    local anim_size = 1
     if object.anim then
-      anim_size = anim_size + math.sin(object.anim*math.pi)*2
+      anim_size = anim_size + math.sin(object.anim*math.pi)*1
     end
     anim_size = anim_size/object_type.size
     objectrenderer.outline_shader:send("outline",{anim_size,anim_size} )
