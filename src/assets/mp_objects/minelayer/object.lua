@@ -2,7 +2,7 @@ return function()
   return {
     type = "minelayer",
     cost = {material=150,crew=15},
-    points = 8,
+    points = 2,
     crew = 15,
     size = 32,
     speed = 50,

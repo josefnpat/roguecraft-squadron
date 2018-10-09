@@ -3,7 +3,7 @@ return function()
     type = "turret_large",
     military_large = true,
     cost = {material=500,crew=100},
-    points = 30,
+    points = 8,
     crew = 100,
     size = 64,
     health = {max = 200,},
