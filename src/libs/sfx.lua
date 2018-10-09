@@ -34,7 +34,7 @@ end
 function sfx.add(name,fsloc)
   fsloc = fsloc or name
   sfx._data[name] = sfx._data[name] or {}
-  table.insert(sfx._data[name],love.audio.newSource("assets/mp_sfx/"..fsloc..".ogg","static"))
+  table.insert(sfx._data[name],love.audio.newSource("assets/mp_vo/"..fsloc..".ogg","static"))
 end
 
 function sfx.get(name)
