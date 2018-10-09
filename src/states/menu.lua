@@ -334,6 +334,7 @@ function mainmenu:keypressed(key)
       self.debug_menu_index = 1
       self:enter()
       print(libs.i18n('menu.debug_enabled'))
+      libs.sfx.play("silly")
     end
   else
     self.debug_menu_index = 1
