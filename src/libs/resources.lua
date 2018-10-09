@@ -119,10 +119,11 @@ function resources:set(restype,value)
     if self._value[restype] ~= self._cargo[restype] and value == self._cargo[restype] then
       self.notif:add(
         libs.i18n('mission.notification.cargo_full.'..restype),
-        libs.sfx.get("cargo_full."..restype),
+        nil,
         {63,63,15,256*7/8},
         {255,255,0}
       )
+      libs.sfx.loopGroup("cargo_full."..restype)
     end
     self._value[restype] = value
   end
@@ -156,7 +157,7 @@ function resources:cantAffordNotif(object_type)
     end
   end
   assert(trestype)
-  libs.sfx.loop("cant_afford."..trestype)
+  libs.sfx.loopGroup("cant_afford."..trestype)
   self.notif:add(
     libs.i18n('mission.notification.cant_afford.'..trestype),
     nil,

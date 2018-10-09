@@ -107,7 +107,7 @@ function client:selectionOnChange()
     object.anim = 1
   end
   if selection_is_users and #selection > 0 then
-    libs.sfx.loop("select")
+    libs.sfx.loopGroup("select")
   end
   self.buildqueue:doFullUpdate()
 end
@@ -693,7 +693,7 @@ function client:moveSelectedObjects(x,y)
   -- todo: do not attempt to move objects without speed
   if send_move_command and #moves > 0 then
     self.lovernet:sendData(libs.net.op.move_objects,{o=moves,int=self.interruptable_move})
-    libs.sfx.loop("move")
+    libs.sfx.loopGroup("move")
   end
   for _,object in pairs(self.selection:getSelected()) do
     object._ttx,object._tty = nil,nil

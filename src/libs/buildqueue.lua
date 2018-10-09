@@ -144,7 +144,7 @@ function buildqueue:update(dt,user,objects,resources,points,lovernet)
 
       if canAfford and hasPoints then
         object.queue_blocked = nil
-        libs.sfx.loop("action.build.start")
+        libs.sfx.loopGroup("action.build.start")
         lovernet:pushData(libs.net.op.action,{
           a=object.queue[1].action,
           t={object.index},

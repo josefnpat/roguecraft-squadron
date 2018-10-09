@@ -300,7 +300,7 @@ function objectrenderer.update(object,objects,dt,time,user)
     object.build_dt = (object.build_dt or object.build_t) - dt
     if object.build_dt <= 0 then
       if user and user.id == object.user then
-        libs.sfx.play("action.build.end")
+        libs.sfx.loopGroup("action.build.end")
       end
       object.build_t = nil
       object.build_dt = nil
