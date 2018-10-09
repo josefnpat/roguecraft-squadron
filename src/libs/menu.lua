@@ -55,7 +55,7 @@ function menu:draw()
   self._printf(self._title,
     0,
     (love.graphics.getHeight()-self._title_font:getHeight())/2,
-    love.graphics.getWidth()*3/4,"center")
+    love.graphics.getWidth(),"center")
 
   love.graphics.setFont(self._entry_font)
 
@@ -70,6 +70,14 @@ function menu:draw()
 
   love.graphics.setFont(old_font)
   love.graphics.setColor(old_color)
+
+  if debug_mode then
+    for i = 1,15 do
+      local x = love.graphics.getWidth()*i/16
+      love.graphics.line(x,0,x,love.graphics.getHeight())
+    end
+  end
+
 end
 
 function menu:update(dt)
