@@ -3,7 +3,6 @@ local action = {}
 function action.new(init)
   init = init or {}
   local self = {}
-  self.ai = init.ai
   self.updateFixed = action.updateFixed
   self.update = action.update
   self.last_wander = {}

@@ -5,7 +5,6 @@ action.pocket_cache_lifespan = 5
 function action.new(init)
   init = init or {}
   local self = {}
-  self.ai = init.ai
   self.updateFixed = action.updateFixed
   self.update = action.update
 

@@ -5,7 +5,6 @@ local attack_timeout = 2
 function action.new(init)
   init = init or {}
   local self = {}
-  self.ai = init.ai
   self.updateFixed = action.updateFixed
   self.update = action.update
   self.attack_list = {}
