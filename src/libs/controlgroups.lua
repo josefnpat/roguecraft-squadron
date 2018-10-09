@@ -9,7 +9,12 @@ function controlgroups.new(init)
 end
 
 function controlgroups:keypressed(key,selection,notif,user)
-  local key_number = tonumber(key)
+  local key_number
+  if key:sub(1,2) == "kp" then
+    key_number = tonumber(key:sub(3))
+  else
+    key_number = tonumber(key)
+  end
   if key_number ~= nil and key_number >= 0 and key_number <= 9 then
     if love.keyboard.isDown("lctrl") then
 
