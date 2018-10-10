@@ -126,6 +126,8 @@ function client:enter()
   self.gamestatus = libs.gamestatus.new()
   self.matchstats = libs.matchstats.new()
 
+  self.combat_per_second = 0
+
   self.soundtrack:setVolume(settings:read("music_vol"))
   self.soundtrack:play()
 
@@ -212,10 +214,31 @@ function client:stackSide()
   self.chat:setY(love.graphics:getHeight() - self.chat:getHeight() - 32)
 end
 
+function client:updateSoundtrackIntensity()
+  local intensity
+  if self.combat_per_second > 5 then
+    intensity = 1
+  else
+    local rate
+    if not self.gamestatus:isStarted() then
+      rate = 0
+    else
+      rate = self.points:getRate()
+    end
+    if rate == 0 then
+      rate = math.min(1,(self.time-self.start_time)/600)
+    end
+    intensity = rate*0.75
+  end
+  self.soundtrack:setIntensity(intensity)
+end
+
 function client:update(dt)
 
   libs.loading.update(dt)
 
+  self.combat_per_second = math.max(0,self.combat_per_second - dt)
+  self:updateSoundtrackIntensity()
   self.soundtrack:update(dt)
 
   if not self.gamestatus:isStarted() then
@@ -385,6 +408,7 @@ function client:update(dt)
           -- triggers
           if i == "health" and object.user == self.user.id then
             object.in_combat = 1
+            self.combat_per_second = self.combat_per_second + 1
           end
           if i == "user" and v ~= object.user then
             object.user = v
@@ -1124,6 +1148,7 @@ function client:draw()
     str = str .. "bullet_index: " .. self.bullet_index .. "\n"
     str = str .. "connected users: " .. self.user_count .. "\n"
     str = str .. "camera: "..math.floor(self.camera.x)..","..math.floor(self.camera.y).."\n"
+    str = str .. "combat_per_second: "..self.combat_per_second.."\n"
     if self.server_git_count ~= git_count then
       str = str .. "mismatch: " .. git_count .. " ~= " .. tostring(self.server_git_count) .. "\n"
     end

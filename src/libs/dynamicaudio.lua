@@ -61,6 +61,7 @@ end
 
 function dynamicaudio:debugInfo()
   local s = "Dynamicaudio Value: " .. self._value .. "\n"
+  local s = "Target Track: " .. self:getTargetTrack() .. "\n"
   for track_index,track in pairs(self._tracks) do
     s = s .. "\tTrack "..track_index.." volume: " .. math.floor(track.volume*100) .. "%\n"
   end
@@ -68,7 +69,7 @@ function dynamicaudio:debugInfo()
 end
 
 function dynamicaudio:getTargetTrack()
-  return math.floor(self._targetValue*#self._tracks)+1
+  return math.min(#self._tracks,math.floor(self._targetValue*#self._tracks)+1)
 end
 
 function dynamicaudio:setMaster(val)

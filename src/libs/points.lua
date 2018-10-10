@@ -8,6 +8,7 @@ function points.new(init)
 
   self.panelShown = points.panelShown
   self.setPointsValue = points.setPointsValue
+  self.getRate = points.getRate
   self._points = init.points or 1
   self._pointsValue = math.huge
   self.setPoints = points.setPoints
@@ -40,6 +41,15 @@ function points:setPointsValue(val)
   self._bar:setText("Capacity: "..percent.."%")
   self._bar:setHoverText(val.."/"..tostring(libs.net.points[self._points].value) .. " ["..percent.."%]")
   self._bar:setBarValue(rate)
+end
+
+function points:getRate()
+  local max = libs.net.points[self._points].value
+  if max == math.huge then
+    return 0
+  else
+    return math.min(1,self._pointsValue/max)
+  end
 end
 
 function points:setPoints(points)
