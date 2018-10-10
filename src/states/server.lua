@@ -165,10 +165,12 @@ function server.generatePlayer(storage,user,pocket)
   if server._genEveryObjectOverride then
     genlist = libs.objectrenderer.getTypes()
   end
-  for object_type,_ in pairs(genlist) do
-    local cx = math.random(-128,128)
-    local cy = math.random(-128,128)
-    server.createObject(storage,object_type,x+cx,y+cy,user)
+  for object_type,count in pairs(genlist) do
+    for _ = 1,type(count) == "number" and count or 1 do
+      local cx = math.random(-128,128)
+      local cy = math.random(-128,128)
+      server.createObject(storage,object_type,x+cx,y+cy,user)
+    end
   end
 
 end
