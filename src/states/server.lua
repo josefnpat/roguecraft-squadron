@@ -1391,10 +1391,14 @@ function server:update(dt)
       if distance < target_type.size/2 then
         remove_bullet = true
         local object_type = libs.objectrenderer.getType(bullet.bullet.type)
-        target.health = math.max(0,target.health - object_type.shoot.damage)
-        self:addUpdate(target,{
-          health=target.health,
-        },"bullet damage")
+        if target.health then
+          target.health = math.max(0,target.health - object_type.shoot.damage)
+          self:addUpdate(target,{
+            health=target.health,
+          },"bullet damage")
+        else
+          print('Warning: bullet[type='..(bullet.bullet.type)..'] cannot damage target[type='..target.type..'] as target does not have health.')
+        end
       end
     else
       remove_bullet = true
