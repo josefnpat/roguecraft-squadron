@@ -1132,6 +1132,8 @@ function client:draw()
     end
 
     local str = love.timer.getFPS( ).." FPS\n"
+    str = str .. "Lua: "..math.floor(collectgarbage('count')).." kB\n"
+    str = str .. "Love Texture: "..math.floor(love.graphics.getStats().texturememory/1000).." kB\n"
     if self.user then
       str = str .. "user.id: " .. libs.net.getUser(self.user.id).name .. "["..self.user.id.."]\n"
       str = str .. "not playing: " .. tostring(self.user.np) .. "\n"
