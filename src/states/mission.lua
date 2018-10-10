@@ -2,7 +2,7 @@ local mission = {}
 
 function mission:enter()
   states.menu.music.title:stop()
-  states.menu.music.game:play()
+  --states.menu.music.game:play()
 end
 
 --TODO: use init/enter correctly and refactor with newgame
@@ -2005,7 +2005,7 @@ function mission:update(dt)
   end
   if states.menu.music then
     states.menu.music.title:setVolume(settings:read("music_vol")*game_music_vol)
-    states.menu.music.game:setVolume(settings:read("music_vol")*game_music_vol)
+    --states.menu.music.game:setVolume(settings:read("music_vol")*game_music_vol)
   end
 
   if not love.window.hasFocus() then
