@@ -14,10 +14,14 @@ end
 function bulletrenderer.draw(bullet,objects,time)
   local object_type = libs.objectrenderer.getType(bullet.type)
   local image = bulletrenderer.images[object_type.shoot.image]
-  local alpha = math.min(1,(time - bullet.tdt)/bullet.eta*4)
-  love.graphics.setColor(255,255,255,alpha*255)
-  love.graphics.draw(image,bullet.dx,bullet.dy,bullet.dangle or 0,
-    1,1,image:getWidth()/2,image:getHeight()/2)
+  if image then
+    local alpha = math.min(1,(time - bullet.tdt)/bullet.eta*4)
+    love.graphics.setColor(255,255,255,alpha*255)
+    love.graphics.draw(image,bullet.dx,bullet.dy,bullet.dangle or 0,
+      1,1,image:getWidth()/2,image:getHeight()/2)
+  else
+    print('Warning: '..object_type.type..' has invalid shoot.image['..tostring(object_type.shoot.image)..']')
+  end
   if debug_mode then
     love.graphics.circle("line",bullet.dx,bullet.dy,16)
   end
