@@ -18,6 +18,10 @@ function dynamicaudio.new(init)
   self.setTargetValue = dynamicaudio.setTargetValue
   self.getTargetValue = dynamicaudio.getTargetValue
 
+  self._name = init.name or "N/A"
+  self.setName = dynamicaudio.setName
+  self.getName = dynamicaudio.getName
+
   self._tracks = {}
   self.addTrack = dynamicaudio.addTrack
   self.setTrackFadeIn = dynamicaudio.setTrackFadeIn
@@ -60,10 +64,14 @@ function dynamicaudio:drawDebug()
 end
 
 function dynamicaudio:debugInfo()
-  local s = "Dynamicaudio Value: " .. self._value .. "\n"
-  local s = "Target Track: " .. self:getTargetTrack() .. "\n"
+  local s = "Soundtrack System:\n"
+  if self:getName() then
+    s = s .. "\tDynamic Audio Name: " .. self:getName() .. "\n"
+  end
+  s = s .. "\tTarget Track: " .. self:getTargetTrack() .. "\n"
+  s = s .. "\tTarget Value: " .. math.floor(1000*self:getTargetValue())/10 .. "%\n"
   for track_index,track in pairs(self._tracks) do
-    s = s .. "\tTrack "..track_index.." volume: " .. math.floor(track.volume*100) .. "%\n"
+    s = s .. "\t\tTrack "..track_index.." volume: " .. math.floor(track.volume*100) .. "%\n"
   end
   return s
 end
@@ -100,6 +108,15 @@ end
 
 function dynamicaudio:getTargetValue(val)
   return self._targetValue
+end
+
+function dynamicaudio:setName(val)
+  assert(type(val)=="string")
+  self._name = val
+end
+
+function dynamicaudio:getName(val)
+  return self._name
 end
 
 function dynamicaudio:addTrack(audio_fn,fadeIn,fadeOut)

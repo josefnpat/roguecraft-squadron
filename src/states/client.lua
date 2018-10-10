@@ -43,14 +43,14 @@ function client:init()
 
   local da
 
-  da = libs.dynamicaudio.new()
+  da = libs.dynamicaudio.new{name="Asteroid Mining"}
   da:addTrack("assets/dynamicaudio/AsteroidMining/1.ogg")
   da:addTrack("assets/dynamicaudio/AsteroidMining/2.ogg")
   da:addTrack("assets/dynamicaudio/AsteroidMining/3.ogg")
   da:addTrack("assets/dynamicaudio/AsteroidMining/4.ogg")
   self.soundtrack:addDynamicAudio(da,updateaDynamicAudio)
 
-  da = libs.dynamicaudio.new()
+  da = libs.dynamicaudio.new{name="Final Frontier"}
   da:addTrack("assets/dynamicaudio/FinalFrontier/1.ogg")
   da:addTrack("assets/dynamicaudio/FinalFrontier/2.ogg")
   da:addTrack("assets/dynamicaudio/FinalFrontier/3.ogg")
@@ -1127,7 +1127,7 @@ function client:draw()
 
     for i,v in pairs(libs.net._users) do
       love.graphics.setColor(v.selected_color)
-      love.graphics.rectangle("fill",16*i+256,16,16,16)
+      love.graphics.rectangle("fill",16*(i-1)+256,16,16,16)
       love.graphics.setColor(255,255,255)
     end
 
@@ -1158,7 +1158,7 @@ function client:draw()
         str = str .. player_index .. "-" .. (player.user_name or "AI") .. " [team ".. player.team .. "]" .. "\n"
       end
     end
-    love.graphics.printf(str,32,32,love.graphics.getWidth()-64,"right")
+    dropshadowf(str,256,32,love.graphics.getWidth()/2,"left")
     libs.version.draw()
   end
 
