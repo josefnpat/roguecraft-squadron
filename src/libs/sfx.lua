@@ -67,7 +67,11 @@ end
 
 function sfx.playVariation(name,variation)
   local current_source = sfx._data[name].sources[math.random(#sfx._data[name].sources)]
-  current_source:setVolume(settings:read("sfx_vol"))
+  if sfx._data[name].group == "vo" then
+    current_source:setVolume(settings:read("voiceover_vol"))
+  else
+    current_source:setVolume(settings:read("sfx_vol"))
+  end
   if variation then
     current_source:setPitch( (1-variation)+math.random()*variation*2 )
   else

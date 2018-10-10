@@ -27,7 +27,7 @@ function slider.new(init)
   self._barPadding = 4
   self._barColor = init.color or {246,197,42}
   self._textColor = init.textColor or {0,0,0}
-  self._textInverseColor = init.textInverseColor or {255,255,255}
+  self._textInverseColor = init.textInverseColor
 
   self._x = init.x or 32
   self.setX = slider.setX
@@ -54,15 +54,28 @@ end
 function slider:update(dt)
   if self:mouseInside() then
     if not love.mouse.isDown(1) then
+      if self._depressed then
+        self._depressed = false
+        if self._onChange then
+          self._onChange(self._value,self:getRangeValue(),true)
+        end
+      end
       self._ready = true
     elseif self._ready then
+      self._depressed = true
       local mx = love.mouse.getX()
       self._value = (mx - self._x)/self._width
       if self._onChange then
-        self._onChange(self._value,self:getRangeValue())
+        self._onChange(self._value,self:getRangeValue(),false)
       end
     end
   else
+    if self._depressed then
+      self._depressed = false
+      if self._onChange then
+        self._onChange(self._value,self:getRangeValue(),true)
+      end
+    end
     self._ready = false
   end
 end
@@ -77,7 +90,9 @@ function slider:draw()
   tooltipbg(self._x,self._y,self._width,self._height)
   local tvoff = (self._height-love.graphics.getFont():getHeight())/2
   local text = type(self._text)=="function" and self._text(self) or tostring(self._text)
-  love.graphics.setColor(self._textInverseColor)
+  if self._textInverseColor then
+    love.graphics.setColor(self._textInverseColor)
+  end
   love.graphics.printf(text,self._x,self._y+tvoff,self._width,"center")
   love.graphics.setColor(self._barColor)
   local barwidth = (self._width-self._barPadding*2)*self._value

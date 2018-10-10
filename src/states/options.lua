@@ -96,8 +96,11 @@ function state:init()
     function()
       return libs.i18n('options.sfx_vol',{sfx_vol=math.floor(settings:read("sfx_vol")*100)})
     end,
-    function(value,rangeValue)
+    function(value,rangeValue,released)
       settings:write("sfx_vol",value)
+      if released then
+        libs.sfx.play("widget.click")
+      end
     end,
     settings:read("sfx_vol")
   )
@@ -109,7 +112,6 @@ function state:init()
     function(value,rangeValue)
       settings:write("music_vol",value)
       states.menu.music.title:setVolume(value)
-      states.menu.music.game:setVolume(value)
     end,
     settings:read("music_vol")
   )
@@ -118,8 +120,11 @@ function state:init()
     function()
       return libs.i18n('options.voiceover_vol',{voiceover_vol=math.floor(settings:read("voiceover_vol")*100)})
     end,
-    function(value,rangeValue)
+    function(value,rangeValue,released)
       settings:write("voiceover_vol",value)
+      if released then
+        libs.sfx.play("move")
+      end
     end,
     settings:read("voiceover_vol")
   )
