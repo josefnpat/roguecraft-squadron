@@ -57,6 +57,13 @@ function client:init()
   da:addTrack("assets/dynamicaudio/FinalFrontier/4.ogg")
   self.soundtrack:addDynamicAudio(da,updateaDynamicAudio)
 
+  da = libs.dynamicaudio.new{name="Planetoid Android"}
+  da:addTrack("assets/dynamicaudio/PlanetoidAndroid/1.ogg")
+  da:addTrack("assets/dynamicaudio/PlanetoidAndroid/2.ogg")
+  da:addTrack("assets/dynamicaudio/PlanetoidAndroid/3.ogg")
+  da:addTrack("assets/dynamicaudio/PlanetoidAndroid/4.ogg")
+  self.soundtrack:addDynamicAudio(da,updateaDynamicAudio)
+
   self.soundtrack:play()
 
 end
