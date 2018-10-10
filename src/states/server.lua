@@ -18,6 +18,7 @@ server._genMapDefault = {
   asteroid=50,
   cat=1,
 }
+server._genEveryObjectOverride = false
 
 server._genResourcesDefault = {
   material = math.huge,
@@ -159,13 +160,17 @@ function server.generatePlayer(storage,user,pocket)
   end
   local preset = libs.mppresets.getPresets()[storage.config.preset]
   server.createObject(storage,preset.gen.first,x,y,user)
-  for object_type,object_count in pairs(preset.gen.default) do
-    for i = 1,object_count do
-      local cx = math.random(-128,128)
-      local cy = math.random(-128,128)
-      server.createObject(storage,object_type,x+cx,y+cy,user)
-    end
+
+  local genlist = preset.gen.default
+  if server._genEveryObjectOverride then
+    genlist = libs.objectrenderer.getTypes()
   end
+  for object_type,_ in pairs(genlist) do
+    local cx = math.random(-128,128)
+    local cy = math.random(-128,128)
+    server.createObject(storage,object_type,x+cx,y+cy,user)
+  end
+
 end
 
 function server.updateCargo(storage,user)
