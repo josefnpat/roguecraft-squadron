@@ -6,6 +6,7 @@ function dynamicaudio.new(init)
 
   self.update = dynamicaudio.update
   self.drawDebug = dynamicaudio.drawDebug
+  self.debugInfo = dynamicaudio.debugInfo
   self.getTargetTrack = dynamicaudio.getTargetTrack
 
   self._master = init.master or 1
@@ -55,11 +56,15 @@ function dynamicaudio:update(dt)
 end
 
 function dynamicaudio:drawDebug()
-  local s = ""
+  love.graphics.print(self:debugInfo(),64,64)
+end
+
+function dynamicaudio:debugInfo()
+  local s = "Dynamicaudio Value: " .. self._value .. "\n"
   for track_index,track in pairs(self._tracks) do
     s = s .. "\tTrack "..track_index.." volume: " .. math.floor(track.volume*100) .. "%\n"
   end
-  love.graphics.print(s,64,64)
+  return s
 end
 
 function dynamicaudio:getTargetTrack()

@@ -8,14 +8,6 @@ function mainmenu:init()
   self.music.title:setVolume(settings:read("music_vol"))
   self.music.title:setLooping(true)
 
-  self.music.title:play()
-
-  self.music.game = love.audio.newSource("assets/music/Menu.ogg","stream")
-  self.music.game:setVolume(settings:read("music_vol"))
-  self.music.game:setLooping(true)
-
-  self.music.game:stop()
-
   self.logo = love.graphics.newImage("assets/logo.png")
 
   self.debug_menu = {"up","up","down","down","left","right","left","right","b","a"}
@@ -58,6 +50,8 @@ end
 function mainmenu:enter()
 
   libs.cursor.change("default")
+
+  self.music.title:play()
 
   libs.demo:check()
 

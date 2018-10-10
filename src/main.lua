@@ -174,6 +174,7 @@ function love.load(arg)
     points = require"libs.points",
     matchstats = require"libs.matchstats",
     social = require"libs.social",
+    soundtrack = require"libs.soundtrack",
   }
 
   libs.objectrenderer.load(true)

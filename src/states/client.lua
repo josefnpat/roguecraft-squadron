@@ -17,9 +17,47 @@ function client:init()
     self.menu_enabled = false
   end)
 
-  self.music = love.audio.newSource("assets/music/Menu.ogg","stream")
-  self.music:setVolume(settings:read("music_vol"))
-  self.music:setLooping(true)
+  self.soundtrack = libs.soundtrack.new()
+
+  local updateaDynamicAudio = function(da)
+    if da:getTargetTrack() == 4 then
+      da:setTrackFadeIn(1,6)
+      da:setTrackFadeOut(1,1)
+      da:setTrackFadeIn(2,6)
+      da:setTrackFadeOut(2,1)
+      da:setTrackFadeIn(3,6)
+      da:setTrackFadeOut(3,1)
+      da:setTrackFadeIn(4,1)
+      da:setTrackFadeOut(4,6)
+    else
+      da:setTrackFadeIn(1,6)
+      da:setTrackFadeOut(1,6)
+      da:setTrackFadeIn(2,6)
+      da:setTrackFadeOut(2,6)
+      da:setTrackFadeIn(3,6)
+      da:setTrackFadeOut(3,6)
+      da:setTrackFadeIn(4,6)
+      da:setTrackFadeOut(4,6)
+    end
+  end
+
+  local da
+
+  da = libs.dynamicaudio.new()
+  da:addTrack("assets/dynamicaudio/AsteroidMining/1.ogg")
+  da:addTrack("assets/dynamicaudio/AsteroidMining/2.ogg")
+  da:addTrack("assets/dynamicaudio/AsteroidMining/3.ogg")
+  da:addTrack("assets/dynamicaudio/AsteroidMining/4.ogg")
+  self.soundtrack:addDynamicAudio(da,updateaDynamicAudio)
+
+  da = libs.dynamicaudio.new()
+  da:addTrack("assets/dynamicaudio/FinalFrontier/1.ogg")
+  da:addTrack("assets/dynamicaudio/FinalFrontier/2.ogg")
+  da:addTrack("assets/dynamicaudio/FinalFrontier/3.ogg")
+  da:addTrack("assets/dynamicaudio/FinalFrontier/4.ogg")
+  self.soundtrack:addDynamicAudio(da,updateaDynamicAudio)
+
+  self.soundtrack:play()
 
 end
 
@@ -88,12 +126,14 @@ function client:enter()
   self.gamestatus = libs.gamestatus.new()
   self.matchstats = libs.matchstats.new()
 
-  self.music:play()
+  self.soundtrack:setVolume(settings:read("music_vol"))
+  self.soundtrack:play()
 
 end
 
 function client:leave()
-  self.music:stop()
+  self.soundtrack:stop()
+  self.soundtrack:update(0)
 end
 
 function client:selectionOnChange()
@@ -175,6 +215,8 @@ end
 function client:update(dt)
 
   libs.loading.update(dt)
+
+  self.soundtrack:update(dt)
 
   if not self.gamestatus:isStarted() then
 
@@ -853,6 +895,9 @@ function client:keypressed(key)
         }
       end
     end
+    if key == "a" then
+      self.soundtrack:nextTrack()
+    end
   end
 
   if key == "escape" then
@@ -1082,6 +1127,7 @@ function client:draw()
     if self.server_git_count ~= git_count then
       str = str .. "mismatch: " .. git_count .. " ~= " .. tostring(self.server_git_count) .. "\n"
     end
+    str = str .. self.soundtrack:debugInfo()
     if self.players then
       for player_index,player in pairs(self.players) do
         str = str .. player_index .. "-" .. (player.user_name or "AI") .. " [team ".. player.team .. "]" .. "\n"
