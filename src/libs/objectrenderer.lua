@@ -46,9 +46,17 @@ function objectrenderer.load(loadAssets)
       object.icons = {}
       for _,render in pairs(renders) do
         local renderdata = {}
-        renderdata.main = love.graphics.newImage(renders_dir.."/"..render)
+
+        function newImagePad(image_uri,pad)
+          local orig = love.image.newImageData( image_uri )
+          local new = love.image.newImageData( orig:getWidth()+pad*2, orig:getHeight()+pad*2 )
+          new:paste(orig,pad,pad,0,0,orig:getWidth(),orig:getHeight())
+          return love.graphics.newImage(new)
+        end
+
+        renderdata.main = newImagePad(renders_dir.."/"..render,32)
         if love.filesystem.exists(subrenders_dir.."/"..render) then
-          renderdata.sub = love.graphics.newImage(subrenders_dir.."/"..render)
+          renderdata.sub = newImagePad(subrenders_dir.."/"..render,32)
         end
         table.insert(object.renders,renderdata)
         table.insert(object.icons,love.graphics.newImage(icons_dir.."/"..render))

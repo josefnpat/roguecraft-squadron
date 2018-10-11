@@ -4,7 +4,7 @@ extern vec3  color;
 
 number alpha;
 
-#define LAYERS 3
+#define LAYERS 4
 #define ALPHA_MULT (3*3-1)*LAYERS
 
 vec4 effect( vec4 col, Image texture, vec2 texturePos, vec2 screenPos )
