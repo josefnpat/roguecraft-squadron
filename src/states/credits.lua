@@ -4,6 +4,7 @@ function credits:init()
   self.mss = love.graphics.newImage("assets/credits/mss.png")
   self.enp = love.graphics.newImage("assets/credits/enp.png")
   self.bd = love.graphics.newImage("assets/credits/bd.png")
+  self.delmun = love.graphics.newImage("assets/credits/delmun.png")
 
   self.vivid = {
     init = function(self)
@@ -79,6 +80,7 @@ function credits:enter()
 Ashley Hooper (@ByteDesigning) — Code, Art
 Ashley Schuster (SnowSchu) — Marketing and QA
 Ran Schonewille (audio-interactive.com) — Music Composer
+Noyemi Karlaite (@NoyemiK) — Character Art
 Laura Vk (Solsforest) — Art, Voice Talent
 Arjan Vk (Vivid) — Code, SFX, Voice Talent
 Mauricyo Furtado (@eternalnightpro) — SFX
@@ -119,6 +121,7 @@ Ethan Blackley — Video Marketing]]
   table.insert(self.data,{data = self.enp,})
   table.insert(self.data,{data = self.bd,})
   table.insert(self.data,{data = self.vivid,})
+  table.insert(self.data,{data = self.delmun,})
   table.insert(self.data,{data = self.mss,})
   table.insert(self.data,{data = libs.i18n('credits.thanks'),})
 
