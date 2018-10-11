@@ -1039,7 +1039,7 @@ function client:draw()
   for _,drawLayer in pairs(client.drawOrder) do
     for _,object in pairs(drawable_objects) do
       if drawLayer(object.user,self.user.id) then
-        libs.objectrenderer.draw(object,self.objects,self.selection,self.time)
+        libs.objectrenderer.draw(object,self.objects,self.selection,self.time,self.user.id,self.players)
       end
     end
   end

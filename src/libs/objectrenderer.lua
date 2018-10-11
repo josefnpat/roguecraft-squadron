@@ -2,6 +2,7 @@ local objectrenderer = {}
 
 objectrenderer.pizza = false
 objectrenderer.pizza_img = love.graphics.newImage("assets/pizza.png")
+objectrenderer.circle_padding = 4
 
 local data = {}
 
@@ -136,7 +137,7 @@ function objectrenderer.drawShip(object)
 
 end
 
-function objectrenderer.draw(object,objects,selection,time)
+function objectrenderer.draw(object,objects,selection,time,user_id,players)
 
   local object_type = objectrenderer.getType(object.type)
 
@@ -148,10 +149,19 @@ function objectrenderer.draw(object,objects,selection,time)
 
   if object.anim then
     love.graphics.setColor(255,255,255,127)
+    if object.user == nil then
+      love.graphics.setColor(255,255,0)
+    elseif object.user == user_id then
+      love.graphics.setColor(0,255,255)
+    elseif libs.net.isOnSameTeam(players,user_id,object.user) then
+      love.graphics.setColor(0,255,0)
+    else
+      love.graphics.setColor(255,0,0)
+    end
     love.graphics.circle("line",
       object.dx,
       object.dy,
-      object_type.size+math.sin(object.anim*math.pi)*4
+      object_type.size+objectrenderer.circle_padding+math.sin(object.anim*math.pi)*4
     )
   end
 
@@ -168,7 +178,7 @@ function objectrenderer.draw(object,objects,selection,time)
       love.graphics.circle("line",
         object.dx,
         object.dy,
-        object_type.size
+        object_type.size+objectrenderer.circle_padding
       )
     end
     if #selection:getSelected() == 1 then
