@@ -21,27 +21,6 @@ function splash:enter()
   mss:setDuration( mss_sound:getDuration() )
   table.insert(self._splashes,mss)
 
-  local enp = splashclass.new()
-  enp:setImage(love.graphics.newImage("assets/splash/enp.png"))
-  table.insert(self._splashes,enp)
-
-  local bd = splashclass.new()
-  bd:setImage(love.graphics.newImage("assets/splash/bd.png"))
-  table.insert(self._splashes,bd)
-
-  local vivid = splashclass.new()
-  vivid:setImages({
-    love.graphics.newImage("assets/splash/vivid1.png"),
-    love.graphics.newImage("assets/splash/vivid2.png"),
-    love.graphics.newImage("assets/splash/vivid1.png"),
-    love.graphics.newImage("assets/splash/vivid3.png")
-  },(170 / 60) * 2) --animationspeed is based on BPM (170)
-  local vivid_sound = love.sound.newSoundData("assets/splash/vivid.mp3")
-  local vivid_audio = love.audio.newSource(vivid_sound)
-  vivid:setSound( vivid_audio )
-  vivid:setDuration( vivid_sound:getDuration() )
-  table.insert(self._splashes,vivid)
-
   self._current = 1
 
 end
