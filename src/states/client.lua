@@ -146,7 +146,7 @@ function client:leave()
 end
 
 function client:selectionOnChange()
-  self.actionpanel:process(self.selection,self.user,self.resources,self.buildqueue)
+  self.actionpanel:process(self.selection,self.user,self.points,self.resources,self.buildqueue)
   local selection = self.selection:getSelected()
   local selection_is_users = false
   for _,object in pairs(selection) do
@@ -1065,17 +1065,7 @@ function client:draw()
   if #self.selection:getSelected() == 1 then
     local object = self.selection:getSelected()[1]
     local object_type = libs.objectrenderer.getType(object.type)
-
-    local name = object_type.loc.name or ""
-    if object_type.names then
-      name = object_type.names[object.name]
-    end
-
-    tooltipf(
-      name.." — "..(object_type.loc.info or ""),
-      object.dx+object_type.size,
-      object.dy+object_type.size,
-      320,"right")
+    libs.objectrenderer.tooltip(object,object_type,object.dx+object_type.size,object.dy+object_type.size)
   end
 
   self.camera:detach()

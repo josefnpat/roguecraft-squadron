@@ -100,7 +100,11 @@ function matrixpanel:draw(bg,fg)
   end
   love.graphics.setColor(255,255,255)
   if self._hover then
-    tooltipf(self._hover_text,self._hover_x,self._hover_y,320,true)
+    if type(self._hover_text) == "function" then
+      self._hover_text()
+    else
+      tooltipf(self._hover_text,self._hover_x,self._hover_y,320,true)
+    end
   end
   if debug_mode then
     debugrect(self._x,self._y,self._width,self:getHeight())
@@ -123,7 +127,11 @@ function matrixpanel:update(dt)
       found = action
       self._hover_x = x + self._iconSize+16
       self._hover_y = y + self._iconSize+16
-      self._hover_text = type(action.text) == "function" and action.text() or tostring(action.text)
+      if type(action.text) == "function" then
+        self._hover_text = action.text(self._hover_x,self._hover_y)
+      else
+        self._hover_text = tostring(action.text)
+      end
       break
     end
   end

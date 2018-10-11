@@ -78,7 +78,7 @@ function actionpanel:getSelectedActions(selected,user)
   return valid
 end
 
-function actionpanel:process(selection,user,resources,buildqueue)
+function actionpanel:process(selection,user,points,resources,buildqueue)
 
   local selected = selection:getSelected()
   self.panel:clearActions()
@@ -102,14 +102,10 @@ function actionpanel:process(selection,user,resources,buildqueue)
           local alpha = hover and 255 or 191
           return resources:canAfford(object_type) and {0,255,255,alpha} or {255,0,0,alpha}
         end,
-        function()
-          local build_name = object_type.loc.name
-          local build_cost = self:makeCostString(object_type.cost)
-          local info = object_type.loc.info
-          return libs.i18n(
-            'mission.build_status.ready',
-            {build_name=build_name,build_cost=build_cost}
-          ) .. "\n" .. info
+        function(x,y)
+          return function() -- override tooltip
+            libs.objectrenderer.tooltipBuild(object_type,x,y,points,resources)
+          end
         end,
         object_type.cost and object_type.cost.material or 0
       )

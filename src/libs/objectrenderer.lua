@@ -7,6 +7,15 @@ objectrenderer.circle_padding = 4
 local data = {}
 
 function objectrenderer.load(loadAssets)
+
+  if loadAssets then
+    objectrenderer.tooltip_icons = {}
+    local dir = "assets/hud/tooltip_icons/"
+    for _,tooltip_file in pairs(love.filesystem.getDirectoryItems(dir)) do
+      objectrenderer.tooltip_icons[file.name(tooltip_file)] = love.graphics.newImage(dir..tooltip_file)
+    end
+  end
+
   for _,type in pairs(love.filesystem.getDirectoryItems("assets/mp_objects")) do
     local dir = "assets/mp_objects/"..type
     local object_dir = dir.."/object"
@@ -75,6 +84,139 @@ function objectrenderer.init(object)
       maxHealth = object_type.health.max
     }
   end
+end
+
+function objectrenderer.tooltip(object,object_type,x,y)
+  local name = object_type.loc.name or ""
+  if object_type.names then
+    name = object_type.names[object.name]
+  end
+  tooltipf(name.." — "..(object_type.loc.info or ""),
+    x,y,320,"right")
+end
+
+function objectrenderer.tooltipBuild(object_type,x,y,points,resources)
+  local data = {}
+
+  table.insert(data,{text="Build "..object_type.loc.name})
+
+  --table.insert(data,{text=object_type.loc.info})
+
+  if object_type.points and object_type.points > 0 then
+    table.insert(data,{
+      image=objectrenderer.tooltip_icons.points,
+      text=object_type.points .. " command point(s)",
+      afford=object_type.points + points:getPointsValue() <= points:getMax(),
+    })
+  end
+
+  if object_type.cost then
+    if object_type.cost.material then
+      table.insert(data,{
+        image=objectrenderer.tooltip_icons.material,
+        text=object_type.cost.material .. " material",
+        afford=resources:canAffordResType(object_type,"material"),
+      })
+    end
+    if object_type.cost.crew then
+      table.insert(data,{
+        image=objectrenderer.tooltip_icons.crew,
+        text=object_type.cost.crew .. " crew",
+        afford=resources:canAffordResType(object_type,"crew"),
+      })
+    end
+    if object_type.cost.ore then
+      table.insert(data,{
+        image=objectrenderer.tooltip_icons.ore,
+        text=object_type.cost.ore .. " ore",
+        afford=resources:canAffordResType(object_type,"ore"),
+      })
+    end
+  end
+
+  if object_type.build_time then
+    table.insert(data,{
+      image=objectrenderer.tooltip_icons.build_time,
+      text=object_type.build_time .. " second(s)",
+    })
+  end
+
+  table.insert(data,{text="Stats:"})
+
+  if object_type.health then
+    table.insert(data,{
+      image=objectrenderer.tooltip_icons.health_max,
+      text=object_type.health.max .. " health",
+    })
+  end
+
+  if object_type.shoot then
+    table.insert(data,{
+      image=objectrenderer.tooltip_icons.shoot_dps,
+      text=math.floor(object_type.shoot.damage/object_type.shoot.reload*10)/10 .. " dps",
+    })
+    table.insert(data,{
+      image=objectrenderer.tooltip_icons.shoot_range,
+      text=object_type.shoot.range .. " range",
+    })
+  end
+
+  if object_type.explode then
+    table.insert(data,{
+      image=objectrenderer.tooltip_icons.explode_damage,
+      text=object_type.explode.damage .. " damage",
+    })
+    table.insert(data,{
+      image=objectrenderer.tooltip_icons.explode_range,
+      text=object_type.explode.range .. "/" .. object_type.explode.damage_range .. " range",
+    })
+  end
+
+  if object_type.speed then
+    table.insert(data,{
+      image=objectrenderer.tooltip_icons.speed,
+      text=object_type.speed .. " kph",
+    })
+  end
+
+  table.insert(data,{
+    image=objectrenderer.tooltip_icons.fow,
+    text=math.floor((object_type.fow or 1)*512) .. " vision",
+  })
+
+  local padding = 8
+  local width = 0
+  local font = love.graphics.getFont()
+  for _,v in pairs(data) do
+    if v.image then
+      width = math.max(width,font:getWidth(v.text)+v.image:getWidth()+padding)
+    else
+      width = math.max(width,font:getWidth(v.text))
+    end
+  end
+  tooltipbg(x,y,width+padding*2,#data*font:getHeight()+padding*2)
+
+  for i,v in pairs(data) do
+    local yoff = y+(i-1)*font:getHeight()+padding
+    love.graphics.setColor(255,255,255)
+    if v.image then
+      local yimageoff = math.floor((font:getHeight()-v.image:getHeight())/2+0.5)
+      dropshadow(v.text,x+padding*2+v.image:getWidth(),yoff)
+      if v.afford == true then
+        love.graphics.setColor(0,255,0)
+      elseif v.afford == false then
+        love.graphics.setColor(255,0,0)
+      else
+        love.graphics.setColor(0,255,255)
+      end
+      love.graphics.draw(objectrenderer.tooltip_icons.bg,x+padding,yoff+yimageoff)
+      love.graphics.draw(v.image,x+padding,yoff+yimageoff)
+    else
+      dropshadow(v.text,x+padding,yoff)
+    end
+
+  end
+
 end
 
 function objectrenderer.getType(type)

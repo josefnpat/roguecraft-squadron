@@ -17,6 +17,7 @@ function resources.new(init)
   self.set = resources.set
   self.setFull = resources.setFull
   self.canAfford = resources.canAfford
+  self.canAffordResType = resources.canAffordResType
   self.cantAffordNotif = resources.cantAffordNotif
   self.mouseInside = resources.mouseInside
   self.getHeight = resources.getHeight
@@ -143,6 +144,10 @@ function resources:canAfford(object_type)
     end
   end
   return true
+end
+
+function resources:canAffordResType(object_type,restype)
+  return self._value[restype] >= object_type.cost[restype]
 end
 
 function resources:cantAffordNotif(object_type)
