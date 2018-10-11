@@ -102,8 +102,7 @@ end
 
 function dynamicaudio:setTargetValue(val)
   assert(type(val)=="number")
-  assert(val>=0 and val<=1)
-  self._targetValue = val
+  self._targetValue = math.max(0,math.min(1,val))
 end
 
 function dynamicaudio:getTargetValue(val)
