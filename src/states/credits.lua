@@ -3,6 +3,7 @@ credits = {}
 function credits:init()
   self.mss = love.graphics.newImage("assets/credits/mss.png")
   self.enp = love.graphics.newImage("assets/credits/enp.png")
+  self.ai = love.graphics.newImage("assets/credits/ai.png")
   self.bd = love.graphics.newImage("assets/credits/bd.png")
   self.delmun = love.graphics.newImage("assets/credits/delmun.png")
 
@@ -118,6 +119,7 @@ Ethan Blackley — Video Marketing]]
     data = table.concat(self.twitch," - "),
   })
 
+  table.insert(self.data,{data = self.ai,})
   table.insert(self.data,{data = self.enp,})
   table.insert(self.data,{data = self.bd,})
   table.insert(self.data,{data = self.vivid,})
