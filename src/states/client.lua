@@ -128,7 +128,7 @@ function client:enter()
   self.controlgroups = libs.controlgroups.new()
   self.chat = libs.chat.new()
   self.mpconnect = libs.mpconnect.new{lovernet=self.lovernet,chat=self.chat}
-  self.mpresearch = libs.mpresearch.new{lovernet=self.lovernet}
+  self.mpresearch = libs.mpresearch.new{lovernet=self.lovernet,onChange=client.selectionOnChange,onChangeScope=self}
   self.mpdisconnect = libs.mpdisconnect.new()
   self.gamestatus = libs.gamestatus.new()
   self.matchstats = libs.matchstats.new()
@@ -513,6 +513,9 @@ function client:update(dt)
 
   self.gamestatus:update(dt,self.objects,self.players or {})
   if self.gamestatus:isStarted() then
+    if self.gamestatus:isStartedTrigger() then
+      self.lovernet:pushData(libs.net.op.get_research)
+    end
     self.mpdisconnect:update(dt)
     if self.gamestatus:isPlayerLose(self.user) then
       self.mpdisconnect:setLose()

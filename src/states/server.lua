@@ -19,6 +19,7 @@ server._genMapDefault = {
   cat=1,
 }
 server._genEveryObjectOverride = false
+server._everyShipUnlocked = true
 
 server._genResourcesDefault = {
   material = math.huge,
@@ -459,7 +460,7 @@ function server:init()
   self.lovernet:addValidateOnServer(libs.net.op.set_research,{o='string',r='string',v="number"})
   self.lovernet:addProcessOnServer(libs.net.op.set_research,function(self,peer,arg,storage)
     local user = self:getUser(peer)
-
+    -- todo: check if object is unlockable
     libs.researchrenderer.buyLevel(user,arg.o,arg.r,arg.v)
   end)
 
@@ -857,6 +858,7 @@ function server:newGame()
   self.lovernet:getStorage().ai_are_connected = true
 
   local user_count = 0
+  local researchableObjects
   for peer,user in pairs(self.lovernet:getUsers()) do
     -- todo: add unique names
     user_count = user_count + 1
@@ -864,6 +866,12 @@ function server:newGame()
     if user.ai then
       -- todo: balance players on pockets after 8
       user.ai:setCurrentPocket(pockets[user_count])
+    end
+    if server._everyShipUnlocked then
+      researchableObjects = researchableObjects or libs.researchrenderer.getResearchableObjects()
+      for _,researchableObject in pairs(researchableObjects) do
+        libs.researchrenderer.setUnlocked(user,researchableObject.type)
+      end
     end
   end
 

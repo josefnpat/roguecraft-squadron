@@ -5,6 +5,8 @@ function mpresearch.new(init)
   local self = {}
 
   self.lovernet = init.lovernet
+  self._onChange = init.onChange or function() end
+  self._onChangeScope = init.onChangeScope or function() end
 
   self.update = mpresearch.update
   self.draw = mpresearch.draw
@@ -154,7 +156,7 @@ end
 
 function mpresearch:buildData(user)
 
-  self._object_types = libs.researchrenderer.getResearchableObjects()
+  self._object_types = libs.researchrenderer.getUnlockedObjects(user)
   self._objects_select = libs.matrixpanel.new{
     width=self._objectsSelectWidth,
     drawbg=false,
@@ -167,7 +169,11 @@ function mpresearch:buildData(user)
         self:buildData(user)
       end,
       function(hover)
-        return {0,255,0,hover and 255 or 191}
+        if libs.researchrenderer.isUnlocked(user,object_type) then
+          return {0,255,0,hover and 255 or 191}
+        else
+          return {127,127,127,hover and 255 or 191}
+        end
       end,
       function()
         return object_type.loc.name
@@ -179,7 +185,7 @@ function mpresearch:buildData(user)
 
   local current_object_type = libs.objectrenderer.getType(self._currentObject)
 
-  local valid_research = libs.researchrenderer.getValidTypes(current_object_type,current_research)
+  local valid_research = libs.researchrenderer.getValidTypes(current_object_type,user)
   for _,research in pairs(valid_research) do
     local current_level = libs.researchrenderer.getLevel(user,self._currentObject,research.type)
     local button = libs.button.new{
@@ -204,6 +210,8 @@ function mpresearch:buildData(user)
     button:setIcon(research.icon)
     table.insert(self._current_research_buttons,button)
   end
+
+  self._onChange(self._onChangeScope)
 
 end
 

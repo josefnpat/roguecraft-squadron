@@ -6,10 +6,14 @@ researchrenderer._startObject = "command"
 
 local data = {}
 
+function researchrenderer.getUnlockName(type)
+  return "_unlock_"..type
+end
+
 function researchrenderer.load(loadAssets)
 
   for _,current_object_type in pairs(researchrenderer.getResearchableObjects()) do
-    local type = "_unlock_"..current_object_type.type
+    local type = researchrenderer.getUnlockName(current_object_type.type)
     local object = {
       type = type,
       icon = current_object_type.icons[1],
@@ -81,16 +85,70 @@ function researchrenderer.getResearchableObjects(list,startObject)
   end
   if not in_list then
     table.insert(list,object)
-    if object.actions then
-      for _,action in pairs(object.actions) do
-        if starts_with(action,researchrenderer._build_string) then
-          local newObject = action:sub(#researchrenderer._build_string+1)
-          researchrenderer.getResearchableObjects(list,newObject)
+    for _,newObject in pairs(researchrenderer.getBuildObjects(object)) do
+      researchrenderer.getResearchableObjects(list,newObject)
+    end
+  end
+  return list
+end
+
+function researchrenderer.getBuildObjects(object)
+  local objects = {}
+  if object.actions then
+    for _,action in pairs(object.actions) do
+      if starts_with(action,researchrenderer._build_string) then
+        local newObject = action:sub(#researchrenderer._build_string+1)
+        table.insert(objects,newObject)
+      end
+    end
+  end
+  return objects
+end
+
+function researchrenderer.isUnlockable(user,objects,testObject)
+  for _,object in pairs(objects) do
+    for _,buildObject in pairs(researchrenderer.getBuildObjects(object)) do
+      if testObject.type == buildObject then
+        local currentLevel = researchrenderer.getLevel(
+          user,
+          object.type,researchrenderer.getUnlockName(object.type)
+        )
+        if currentLevel > 0  then
+          return true
         end
       end
     end
   end
-  return list
+  return false
+end
+
+function researchrenderer.isUnlocked(user,object)
+  return researchrenderer.getLevel(user,object.type,researchrenderer.getUnlockName(object.type)) > 0
+end
+
+function researchrenderer.getUnlockedObjects(user)
+  local objects = researchrenderer.getResearchableObjects()
+  local activeObjects = {}
+  for _,object in pairs(objects) do
+    if researchrenderer.isUnlocked(user,object)  then
+      table.insert(activeObjects,object)
+    else
+      if researchrenderer.isUnlockable(user,objects,object) then
+        table.insert(activeObjects,object)
+      end
+    end
+  end
+  return activeObjects
+end
+
+function researchrenderer.setUnlocked(user,object_type,value)
+  assert(type(user)=="table")
+  assert(type(object_type)=="string")
+  libs.researchrenderer.setLevel(
+    user,
+    object_type,
+    researchrenderer.getUnlockName(object_type),
+    value == false and 0 or 1)
 end
 
 function researchrenderer.getType(type)
@@ -115,6 +173,10 @@ function researchrenderer.getLevel(user,object_type,research_type)
 end
 
 function researchrenderer.setLevel(user,object_type,research_type,value)
+  assert(type(user)=="table")
+  assert(type(object_type)=="string")
+  assert(type(research_type)=="string")
+  assert(type(value)=="number")
   user.research = user.research or {}
   user.research[object_type] = user.research[object_type] or {}
   user.research[object_type][research_type] = value
@@ -158,10 +220,10 @@ function researchrenderer.setPoints(user,points)
   user.research.points = points
 end
 
-function researchrenderer.getValidTypes(object_type,current_research)
+function researchrenderer.getValidTypes(object_type,user)
   local valid = {}
   for _,research in pairs(data) do
-    if research.valid(object_type,current_research) then
+    if research.valid(object_type,user) then
       table.insert(valid,research)
     end
   end

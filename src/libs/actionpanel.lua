@@ -50,6 +50,7 @@ function actionpanel:showPanel()
   return self.panel:hasActions()
 end
 
+-- no longer used, I think - check out objectrenderer's tooltip system
 function actionpanel:makeCostString(costs)
   if costs == nil then return "Free" end
   local s = {}
@@ -89,7 +90,7 @@ function actionpanel:process(selection,user,points,resources,buildqueue)
   for _,object_type in pairs(libs.objectrenderer.getTypes()) do
 
     local action = "build_"..object_type.type
-    local valid = selected_actions[action]
+    local valid = selected_actions[action] and libs.researchrenderer.isUnlocked(user,object_type)
     if valid then
       self.panel:addAction(
         object_type.icons[1],

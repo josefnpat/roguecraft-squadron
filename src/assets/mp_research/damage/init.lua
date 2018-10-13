@@ -1,5 +1,5 @@
 return {
-  valid = function(object_type,current_research)
+  valid = function(object_type,user)
     return object_type.shoot ~= nil
   end,
   max_level = 5,

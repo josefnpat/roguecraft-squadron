@@ -7,6 +7,7 @@ function gamestatus.new(init)
   self.update = gamestatus.update
   self.startGame = gamestatus.startGame
   self.isStarted = gamestatus.isStarted
+  self.isStartedTrigger = gamestatus.isStartedTrigger
   self.remainingPlayers = gamestatus.remainingPlayers
   self.remainingTeams = gamestatus.remainingTeams
   self.isPlayerAlive = gamestatus.isPlayerAlive
@@ -44,6 +45,12 @@ end
 
 function gamestatus:isStarted()
   return self._start_game
+end
+
+function gamestatus:isStartedTrigger()
+  local started = self._start_game and self._start_game_trigger == nil
+  self._start_game_trigger = true
+  return started
 end
 
 function gamestatus:remainingPlayers()
