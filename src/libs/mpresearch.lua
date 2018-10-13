@@ -181,20 +181,20 @@ function mpresearch:buildData(user)
 
   local valid_research = libs.researchrenderer.getValidTypes(current_object_type,current_research)
   for _,research in pairs(valid_research) do
-    local current_research = libs.researchrenderer.getLevel(user,self._currentObject,research.type)
+    local current_level = libs.researchrenderer.getLevel(user,self._currentObject,research.type)
     local button = libs.button.new{
       onClick=function()
         self.lovernet:pushData(libs.net.op.set_research,{
           o=self._currentObject,
           r=research.type,
-          v=current_research+1,
+          v=current_level+1,
         })
         self.lovernet:pushData(libs.net.op.get_research)
       end,
+      disabled = current_level == research.max_level
     }
-    local current_level = libs.researchrenderer.getLevel(user,self._currentObject,research.type)
     local cost = ""
-    local level = research.max_level == 1 and " (done)" or " (max)"
+    local level = research.max_level == 1 and " " or " (max)"
     if current_level ~= research.max_level then
       cost = " ("..research.cost(current_level)..")"
       level = " "..current_level.."/"..research.max_level
