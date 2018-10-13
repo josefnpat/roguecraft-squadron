@@ -89,7 +89,7 @@ msgid "credits.thanks"
 msgstr "Thanks for playing!"
 
 msgid "disclaimer.pre"
-msgstr "DISCLAIMER:\nRogueCraft Squadron is still in active development and may not represent the final product."
+msgstr "DISCLAIMER"
 
 msgid "disclaimer.1"
 msgstr "In the event you are mauled by bears, I am very sorry. Please avoid that if you can."
@@ -104,7 +104,7 @@ msgid "disclaimer.4"
 msgstr "I must not fear. Fear is the mind-killer. Fear is the little-death that brings total obliteration. I will face my fear. I will permit it to pass over me and through me. And when my fear is gone I will turn and face fear's path, and only I will remain."
 
 msgid "disclaimer.5"
-msgstr "In case you listen to the new Blank Banshee album please tell @eternalnightpro how much you love it. He is a huge fan of Vaporwave."
+msgstr "I've been thinking of new band names; tell me what you think: 'Erotic Crowbar', 'YOU^R[E]', 'Detective Cat Sounds', 'Horsecarriage', 'We Have Silly Hats' and 'Dudelsack'"
 
 msgid "disclaimer.6"
 msgstr "If you ever confused Dutch with a drunk version of German, please do not hesitate to contact us. We can help you."
