@@ -51,6 +51,8 @@ function love.conf(t)
     t.window.window_display = settings:read("window_display")
     t.window.vsync = settings:read("window_vsync")
     t.window.msaa = settings:read("window_msaa")
+    t.window.minwidth = 1280
+    t.window.minheight = 720
   end
 
 end
