@@ -25,7 +25,49 @@ function state:init()
     self:updateWindowMode()
   end)
 
-  --todo: add resolution setter
+  self._modes = {}
+  for _,mode in pairs(love.window.getFullscreenModes()) do
+    if mode.width >= 1280 and mode.height >= 720 then
+      table.insert(self._modes,mode)
+    end
+  end
+  table.sort(self._modes,function(a,b)
+    if a.width == b.width then
+      return a.height < b.height
+    end
+    return a.width < b.width
+  end)
+  self._currentMode = 1
+  for mode_index,mode in pairs(self._modes) do
+    if mode.width == love.graphics.getWidth() and
+      mode.height == love.graphics.getHeight() then
+      self._currentMode = mode_index
+    end
+  end
+
+  self.menu:addSlider(
+    function(s)
+      local mode = self._modes[math.floor(s:getRangeValue()+0.5)]
+      if mode then
+        return mode.width.."x"..mode.height
+      else
+        return love.graphics.getWidth().."x"..love.graphics.getHeight().." (custom)"
+      end
+    end,
+    function(value,rangeValue,released)
+      if released then
+        local targetMode = math.floor(rangeValue+0.5)
+        if self._modes[targetMode] then
+          self._currentMode = targetMode
+          local mode = self._modes[self._currentMode]
+          love.window.setMode(mode.width,mode.height)
+        end
+      end
+    end,
+    self._currentMode,
+    {1,#self._modes}
+  )
+
   self.menu:add(
     function()
       return libs.i18n('options.fullscreen_type.pre')..": "..
