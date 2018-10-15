@@ -11,6 +11,7 @@ function actionpanel.new(init)
   self.process = actionpanel.process
   self.mouseInside = actionpanel.mouseInside
   self.runHoverAction = actionpanel.runHoverAction
+  self.runAction = actionpanel.runAction
   self.makeCostString = actionpanel.makeCostString
   self.getSelectedActions = actionpanel.getSelectedActions
   self.getHeight = actionpanel.getHeight
@@ -128,6 +129,10 @@ end
 
 function actionpanel:runHoverAction()
   self.panel:runHoverAction()
+end
+
+function actionpanel:runAction(index)
+  self.panel:runAction(index)
 end
 
 function actionpanel:getHeight()

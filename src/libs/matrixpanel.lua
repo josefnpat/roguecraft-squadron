@@ -31,6 +31,7 @@ function matrixpanel.new(init)
   self.sort = matrixpanel.sort
   self.mouseInside = matrixpanel.mouseInside
   self.runHoverAction = matrixpanel.runHoverAction
+  self.runAction = matrixpanel.runAction
   self.hasActions = matrixpanel.hasActions
 
   return self
@@ -176,6 +177,12 @@ end
 function matrixpanel:runHoverAction()
   if self._hover then
     self._hover.callback()
+  end
+end
+
+function matrixpanel:runAction(index)
+  if self._actions[index] then
+    self._actions[index].callback()
   end
 end
 

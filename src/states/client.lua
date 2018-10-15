@@ -975,15 +975,26 @@ function client:keypressed(key)
         self.chat:setBuffer(buffer)
       end
     else
-      if key == "z" then
+
+      if key == "rshift" then
         self.chat:toggleHeight()
       end
+
       if key == "delete" then
         self.lovernet:sendData(libs.net.op.delete_objects,{
           d=self.selection:getSelectedIndexes(),
         })
       end
+
       self.controlgroups:keypressed(key,self.selection,self.notif,self.user)
+
+      for akey_index,akey in pairs(settings:read("action_keys")) do
+        if key == akey then
+          self.actionpanel:runAction(akey_index)
+          break
+        end
+      end
+
     end
   end
 
