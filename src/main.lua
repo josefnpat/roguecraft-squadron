@@ -129,6 +129,7 @@ function love.load(arg)
       camera = require "libs.camera",
     },
     cursor = require"libs.cursor",
+    pcb = require"libs.progresscirclebar",
   }
 
   loader:add("lib dependencies",function()
