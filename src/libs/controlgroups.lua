@@ -4,11 +4,22 @@ function controlgroups.new(init)
   init = init or {}
   local self = {}
   self._data = {}
+  self.update = controlgroups.update
   self.keypressed = controlgroups.keypressed
   return self
 end
 
-function controlgroups:keypressed(key,selection,notif,user)
+function controlgroups:update(dt)
+  if self.last_selected_timeout then
+    self.last_selected_timeout = self.last_selected_timeout - dt
+    if self.last_selected_timeout <= 0 then
+      self.last_selected_timeout = nil
+      self.last_selected = nil
+    end
+  end
+end
+
+function controlgroups:keypressed(key,selection,notif,user,onDoubleSelect)
   local key_number
   if key:sub(1,2) == "kp" then
     key_number = tonumber(key:sub(3))
@@ -34,6 +45,12 @@ function controlgroups:keypressed(key,selection,notif,user)
     else
       -- change to controlgroup
       if self._data[key_number] then
+        if self.last_selected == nil or self.last_selected ~= key_number then
+          self.last_selected = key_number
+          self.last_selected_timeout = 0.5 -- default for windows
+        else
+          onDoubleSelect()
+        end
         selection:setSelected(self._data[key_number])
         notif:add(libs.i18n('mission.notification.controlgroup.use',{group=key_number}),nil,nil,nil,1)
       end

@@ -499,6 +499,7 @@ function client:update(dt)
   self.resources:update(dt)
   self.actionpanel:update(dt)
   self.selection:update(dt)
+  self.controlgroups:update(dt)
   self.buildqueue:update(dt,self.user,self.objects,self.resources,self.points,self.lovernet)
   if self.buildqueue:showPanel() then
     self.buildqueue:updateData(self.selection:getSelected()[1],self.resources)
@@ -631,18 +632,7 @@ function client:update(dt)
   else
 
     if not self.chat:getActive() and love.keyboard.isDown("space") then
-      local avgx,avgy,avgc = 0,0,0
-      for _,object in pairs(self.selection:getSelected()) do
-        avgx = avgx + object.dx
-        avgy = avgy + object.dy
-        avgc = avgc + 1
-      end
-      if avgc > 0 then
-        self.camera.x,self.camera.y = avgx/avgc,avgy/avgc
-      elseif self.focusObject then
-        self.camera.x = self.focusObject.dx
-        self.camera.y = self.focusObject.dy
-      end
+      self:centerCamera()
     end
 
     local dx,dy =0,0
@@ -662,6 +652,21 @@ function client:update(dt)
     end
   end
 
+end
+
+function client:centerCamera()
+  local avgx,avgy,avgc = 0,0,0
+  for _,object in pairs(self.selection:getSelected()) do
+    avgx = avgx + object.dx
+    avgy = avgy + object.dy
+    avgc = avgc + 1
+  end
+  if avgc > 0 then
+    self.camera.x,self.camera.y = avgx/avgc,avgy/avgc
+  elseif self.focusObject then
+    self.camera.x = self.focusObject.dx
+    self.camera.y = self.focusObject.dy
+  end
 end
 
 function client:mouseInsideUI()
@@ -986,7 +991,15 @@ function client:keypressed(key)
         })
       end
 
-      self.controlgroups:keypressed(key,self.selection,self.notif,self.user)
+      self.controlgroups:keypressed(
+        key,
+        self.selection,
+        self.notif,
+        self.user,
+        function()
+          self:centerCamera()
+        end
+      )
 
       for akey_index,akey in pairs(settings:read("action_keys")) do
         if key == akey then
