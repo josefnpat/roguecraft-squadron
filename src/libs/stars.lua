@@ -7,16 +7,16 @@ end
 
 function stars:loadSpace(quality)
   self.img = self.img or {}
-  if self.img.space == nil then
-    quality = quality or settings:read("bg_quality")
+  quality = quality or settings:read("bg_quality")
+  if self.img.space == nil and quality ~= "none" then
     self.img.space = love.graphics.newImage("assets/stars/"..quality.."/space.png")
   end
 end
 
 function stars:loadStars0(quality)
   self.img = self.img or {}
-  if self.img.stars0 == nil then
-    quality = quality or settings:read("bg_quality")
+  quality = quality or settings:read("bg_quality")
+  if self.img.stars0 == nil and quality ~= "none" then
     self.img.stars0 = love.graphics.newImage("assets/stars/"..quality.."/stars0.png")
     self.img.stars0:setWrap("repeat","repeat")
     self.stars0_quad = love.graphics.newQuad(0,0,
@@ -28,8 +28,8 @@ end
 
 function stars:loadStars1(quality)
   self.img = self.img or {}
-  if self.img.stars1 == nil then
-    quality = quality or settings:read("bg_quality")
+  quality = quality or settings:read("bg_quality")
+  if self.img.stars1 == nil and quality ~= "none" then
     self.img.stars1 = love.graphics.newImage("assets/stars/"..quality.."/stars1.png")
     self.img.stars1:setWrap("repeat","repeat")
     self.stars1_quad = love.graphics.newQuad(0, 0,
