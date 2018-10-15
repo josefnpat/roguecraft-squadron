@@ -1,23 +1,18 @@
 local stars = {}
 
-function stars:loadPlanet()
-  self.img = self.img or {}
-  self.planet = self.planet or love.graphics.newImage("assets/planets/BubblegumPlanet.png")
-end
+stars.planet = love.graphics.newImage("assets/planets/BubblegumPlanet.png")
 
-function stars:loadSpace(quality)
+function stars:loadSpace()
   self.img = self.img or {}
-  quality = quality or settings:read("bg_quality")
-  if self.img.space == nil and quality ~= "none" then
-    self.img.space = love.graphics.newImage("assets/stars/"..quality.."/space.png")
+  if settings:read("bg_quality") ~= "none" then
+    self.img.space = love.graphics.newImage("assets/stars/"..settings:read("bg_quality").."/space.png")
   end
 end
 
-function stars:loadStars0(quality)
+function stars:loadStars0()
   self.img = self.img or {}
-  quality = quality or settings:read("bg_quality")
-  if self.img.stars0 == nil and quality ~= "none" then
-    self.img.stars0 = love.graphics.newImage("assets/stars/"..quality.."/stars0.png")
+  if settings:read("bg_quality") ~= "none" then
+    self.img.stars0 = love.graphics.newImage("assets/stars/"..settings:read("bg_quality").."/stars0.png")
     self.img.stars0:setWrap("repeat","repeat")
     self.stars0_quad = love.graphics.newQuad(0,0,
       love.graphics.getWidth()+self.img.stars0:getWidth(),
@@ -26,11 +21,10 @@ function stars:loadStars0(quality)
   end
 end
 
-function stars:loadStars1(quality)
+function stars:loadStars1()
   self.img = self.img or {}
-  quality = quality or settings:read("bg_quality")
-  if self.img.stars1 == nil and quality ~= "none" then
-    self.img.stars1 = love.graphics.newImage("assets/stars/"..quality.."/stars1.png")
+  if settings:read("bg_quality") ~= "none" then
+    self.img.stars1 = love.graphics.newImage("assets/stars/"..settings:read("bg_quality").."/stars1.png")
     self.img.stars1:setWrap("repeat","repeat")
     self.stars1_quad = love.graphics.newQuad(0, 0,
       love.graphics.getWidth()+self.img.stars1:getWidth(),
@@ -39,26 +33,27 @@ function stars:loadStars1(quality)
   end
 end
 
-function stars:load()
-  stars:loadPlanet()
+function stars:load(loadAssets)
   local quality = settings:read("bg_quality")
   if quality == "none" then
     self.img = nil
   else
-    self.img = self.img or {}
-    stars:loadSpace(quality)
-    stars:loadStars0(quality)
-    stars:loadStars1(quality)
+    if loadAssets then
+      self.img = {}
+      stars:loadSpace(quality)
+      stars:loadStars0(quality)
+      stars:loadStars1(quality)
+    end
     self.background_scroll_speed = 10
   end
 end
 
 function stars:reload()
-  self:load()
+  self:load(true)
 end
 
 function stars:draw(x,y)
-  if self.img then
+  if settings:read("bg_quality") ~= "none" then
     x = x and -x or love.timer.getTime()*self.background_scroll_speed
     y = y and -y or love.timer.getTime()*self.background_scroll_speed
     love.graphics.setColor(255,255,255)
