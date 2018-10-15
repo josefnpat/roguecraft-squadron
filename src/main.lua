@@ -290,8 +290,8 @@ end
 
 function love.resize()
   if libs.stars then libs.stars:reload() end
-  states.mission:resize()
-  states.client:resize()
+  if states.mission then states.mission:resize() end
+  if states.client then states.client:resize() end
 end
 
 function love.update(dt)
