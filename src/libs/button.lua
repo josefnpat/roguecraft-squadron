@@ -1,5 +1,8 @@
 local button = {}
 
+button.change_sound = love.audio.newSource("assets/sfx/hover.ogg","static")
+button.callback_sound = love.audio.newSource("assets/sfx/select.ogg","static")
+
 function button.new(init)
   init = init or {}
   local self = {}
@@ -11,6 +14,8 @@ function button.new(init)
   self._draw = init.draw or button._default_draw_rcs
   self._text = init.text or "OK"
   self._onClick = init.onClick or button._default_onClick
+  self._onHoverIn = init.onHoverIn or function() playSFX(button.change_sound) end
+  self._onHoverOut = init.onHoverOut or function() end
   self._disabled = init.disabled or false
 
   self._hover = false
@@ -38,8 +43,15 @@ end
 
 function button:update(dt)
   local new_hover = self:mouseInside()
+  if self._hover == false and new_hover == true then
+    self._onHoverIn()
+  end
+  if self._hover == true and new_hover == false then
+    self._onHoverOut()
+  end
   local new_depress = new_hover and love.mouse.isDown(1)
   if new_hover and self._hover and not new_depress and self._depress and not self._disabled then
+    playSFX(button.callback_sound)
     self._onClick()
   end
   self._hover = new_hover

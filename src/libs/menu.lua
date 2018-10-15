@@ -1,8 +1,5 @@
 local menu = {}
 
-menu.change_sound = love.audio.newSource("assets/sfx/hover.ogg","static")
-menu.callback_sound = love.audio.newSource("assets/sfx/select.ogg","static")
-
 function menu.new(init)
   init = init or {}
   local self = {}
@@ -27,14 +24,6 @@ function menu.new(init)
   self._widgets = {}
 
   return self
-end
-
-function menu:onChange()
-  playSFX(menu.change_sound)
-end
-
-function menu:onCallback()
-  playSFX(menu.callback_sound)
 end
 
 function menu:getEntryArea(i)
