@@ -1,7 +1,6 @@
 local objectrenderer = {}
 
 objectrenderer.pizza = false
-objectrenderer.pizza_img = love.graphics.newImage("assets/pizza.png")
 objectrenderer.circle_padding = 4
 
 local data = {}
@@ -273,6 +272,7 @@ function objectrenderer.drawShip(object)
 
   local render = object_type.renders[object.render].main
   if objectrenderer.pizza then
+    objectrenderer.pizza_img = objectrenderer.pizza_img or love.graphics.newImage("assets/pizza.png")
     render = objectrenderer.pizza_img
   end
 
