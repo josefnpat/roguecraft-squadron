@@ -21,7 +21,6 @@ function love.load(arg)
     }
 
     libs.objectrenderer.load(false)
-    libs.researchrenderer.load(false)
     libs.bulletrenderer.load(false)
 
     states = {
@@ -153,7 +152,6 @@ function love.load(arg)
 
   loader:add("renderers",function()
     libs.objectrenderer.load(true)
-    libs.researchrenderer.load(true)
     libs.bulletrenderer.load(true)
   end)
 

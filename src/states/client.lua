@@ -325,7 +325,6 @@ function client:update(dt)
     self.lovernet:clearCache(libs.net.op.get_user)
     self.selection:setUser(self.user.id)
     self.buildqueue:setUser(self.user.id)
-    self.mpresearch:buildData(self.user)
     self.mpconnect:setUser(self.user.id)
   end
 
@@ -341,7 +340,8 @@ function client:update(dt)
 
   if self.lovernet:getCache(libs.net.op.get_research) then
     self.user.research = self.lovernet:getCache(libs.net.op.get_research)
-    self.mpresearch:buildData(self.user)
+    --todo: figure out why this breaks everything
+    --self.mpresearch:buildData(self.user,self.config.preset)
     self.lovernet:clearCache(libs.net.op.get_research)
   end
 
@@ -485,7 +485,11 @@ function client:update(dt)
   end
 
   if self.lovernet:getCache(libs.net.op.get_resources) then
-    self.resources:setFull(self.lovernet:getCache(libs.net.op.get_resources))
+    local resources = self.lovernet:getCache(libs.net.op.get_resources)
+    self.resources:setFull(resources)
+    if resources.research then
+      libs.researchrenderer.setPoints(self.user,resources.research)
+    end
     self.lovernet:clearCache(libs.net.op.get_resources)
   end
 
@@ -515,6 +519,8 @@ function client:update(dt)
   self.gamestatus:update(dt,self.objects,self.players or {})
   if self.gamestatus:isStarted() then
     if self.gamestatus:isStartedTrigger() then
+      libs.researchrenderer.load(headless,self.config.preset)
+      self.mpresearch:buildData(self.user)
       self.lovernet:pushData(libs.net.op.get_research)
     end
     self.mpdisconnect:update(dt)
@@ -529,6 +535,7 @@ function client:update(dt)
       self.mpconnect:setAiCount(self.config.ai)
       self.mpconnect:setCreative(self.config.creative)
       self.mpconnect:setPreset(self.config.preset or 1)
+      self.mpresearch:setPreset(self.config.preset or 1)
       self.mpconnect:setPoints(self.config.points or 1)
       self.points:setPoints(self.config.points or 1)
     end

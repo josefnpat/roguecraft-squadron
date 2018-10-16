@@ -868,7 +868,9 @@ function server:newGame()
       user.ai:setCurrentPocket(pockets[user_count])
     end
     if server._everyShipUnlocked then
-      researchableObjects = researchableObjects or libs.researchrenderer.getResearchableObjects()
+      local preset_value = self.lovernet:getStorage().config.preset
+      local preset = libs.mppresets.getPresets()[preset_value]
+      researchableObjects = researchableObjects or libs.researchrenderer.getResearchableObjects(nil,preset.gen.first)
       for _,researchableObject in pairs(researchableObjects) do
         libs.researchrenderer.setUnlocked(user,researchableObject.type)
       end

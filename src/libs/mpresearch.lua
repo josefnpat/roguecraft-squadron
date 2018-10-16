@@ -16,6 +16,10 @@ function mpresearch.new(init)
   self.setActive = mpresearch.setActive
   self._active = false
 
+  self._preset = init.preset or 1
+  self.setPreset = mpresearch.setPreset
+  self.getPreset = mpresearch.getPreset
+
   self.getWidth = mpresearch.getWidth
   self.getHeight = mpresearch.getHeight
 
@@ -137,6 +141,14 @@ function mpresearch:setActive(val)
   self._active = val
 end
 
+function mpresearch:setPreset(val)
+  self._preset = val
+end
+
+function mpresearch:getPreset(val)
+  return self._preset
+end
+
 function mpresearch:getWidth()
   return self._objects_select:getWidth()+self._drawSize+32+self._buttonWidth
 end
@@ -156,7 +168,7 @@ end
 
 function mpresearch:buildData(user)
 
-  self._object_types = libs.researchrenderer.getUnlockedObjects(user)
+  self._object_types = libs.researchrenderer.getUnlockedObjects(user,self._preset)
   self._objects_select = libs.matrixpanel.new{
     width=self._objectsSelectWidth,
     drawbg=false,

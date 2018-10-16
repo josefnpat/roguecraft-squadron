@@ -2,18 +2,14 @@ return function()
   return {
     type = "research",
     cost = {material=400,crew=25},
+    points = 10,
     fow = 0.5,
     crew = 25,
+    research = 100,
+    research_generate = 1,
     size = 32,
     speed = 50,
     health = {max = 25,},
-    actions = {
-      "upgrade_speed",
-      "upgrade_armor",
-      "upgrade_damage",
-      "upgrade_repair",
-      "upgrade_range",
-    },
     build_time = 20,
   }
 end

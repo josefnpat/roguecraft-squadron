@@ -442,6 +442,9 @@ msgstr "Your material cargo bays are full"
 msgid "mission.notification.cargo_full.crew"
 msgstr "Your crew quarters are full"
 
+msgid "mission.notification.cargo_full.research"
+msgstr "Your research databanks are full"
+
 msgid "mission.notification.cant_afford.ore"
 msgstr "Insufficient Ore"
 

@@ -1,8 +1,7 @@
 local researchrenderer = {}
 
-researchrenderer.defaultPoints = 9000
+researchrenderer.defaultPoints = 0
 researchrenderer._build_string = "build_"
-researchrenderer._startObject = "command"
 
 local data = {}
 
@@ -10,9 +9,13 @@ function researchrenderer.getUnlockName(type)
   return "_unlock_"..type
 end
 
-function researchrenderer.load(loadAssets)
+function researchrenderer.load(loadAssets,preset_value)
 
-  for _,current_object_type in pairs(researchrenderer.getResearchableObjects()) do
+  --print("researchrenderer.load:"..preset_value)
+
+  local preset = libs.mppresets.getPresets()[preset_value]
+
+  for _,current_object_type in pairs(researchrenderer.getResearchableObjects(nil,preset.gen.first)) do
     local type = researchrenderer.getUnlockName(current_object_type.type)
     local object = {
       type = type,
@@ -74,7 +77,7 @@ end
 
 function researchrenderer.getResearchableObjects(list,startObject)
   list = list or {}
-  startObject = startObject or researchrenderer._startObject
+  assert(startObject)
   local object = libs.objectrenderer.getType(startObject)
   local in_list = false
   for _,listObject in pairs(list) do
@@ -126,8 +129,10 @@ function researchrenderer.isUnlocked(user,object)
   return researchrenderer.getLevel(user,object.type,researchrenderer.getUnlockName(object.type)) > 0
 end
 
-function researchrenderer.getUnlockedObjects(user)
-  local objects = researchrenderer.getResearchableObjects()
+function researchrenderer.getUnlockedObjects(user,preset_value)
+
+  local preset = libs.mppresets.getPresets()[preset_value]
+  local objects = researchrenderer.getResearchableObjects(nil,preset.gen.first)
   local activeObjects = {}
   for _,object in pairs(objects) do
     if researchrenderer.isUnlocked(user,object)  then

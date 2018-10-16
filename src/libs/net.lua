@@ -24,7 +24,7 @@ net.op = {
   add_chat =            'k',
   get_chat =            'l',
 }
-net.resourceTypes = {"ore","material","crew"}
+net.resourceTypes = {"ore","material","crew","research"}
 net.mapsize = 32*192/2
 
 -- todo: i18n
@@ -32,6 +32,7 @@ net.resourceStrings = {
   ore="Ore",
   material="Material",
   crew="Crew",
+  research="Research",
 }
 
 net.aiDifficultyBase = 20
