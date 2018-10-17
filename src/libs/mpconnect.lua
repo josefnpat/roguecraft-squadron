@@ -19,6 +19,7 @@ function mpconnect.new(init)
   self.setPreset = mpconnect.setPreset
   self.setPoints = mpconnect.setPoints
   self.setUser = mpconnect.setUser
+  self.validateVersion = mpconnect.validateVersion
 
   self._players = {}
   self._data = {}
@@ -139,6 +140,17 @@ function mpconnect:setUser(user_id)
   self._user_id = user_id
 end
 
+function mpconnect:validateVersion(server_git_hash,server_git_count)
+  self._valid = git_hash==server_git_hash and git_count==server_git_count
+  if self._valid == false then
+    self._valid_msg = ""
+    self._valid_msg = self._valid_msg .. "Client Hash: "..tostring(git_hash) .. "\n"
+    self._valid_msg = self._valid_msg .. "Client Version: "..tostring(git_count) .. "\n"
+    self._valid_msg = self._valid_msg .. "Server Hash: "..tostring(server_git_hash) .. "\n"
+    self._valid_msg = self._valid_msg .. "Server Version: "..tostring(server_git_count) .. "\n"
+  end
+end
+
 function mpconnect:draw(config,players,user_count)
 
   libs.stars:draw()
@@ -167,40 +179,52 @@ function mpconnect:draw(config,players,user_count)
     love.graphics.print(s,32,256)
   end
 
-  if #self._data == 0 then
+  if self._valid == nil then
 
-    libs.loading.draw("Waiting for server to respond ...")
+    libs.loading.draw("Checking client and server version config ...")
 
-  else
+  elseif self._valid == false then
 
-    local rows = {}
-    for player_index,player_data in pairs(self._data) do
-      local row = math.floor(player_index/5)%5
-      rows[row] = rows[row] or {}
-      table.insert(rows[row],player_data)
-    end
+    libs.loading.draw("Error: Client and server version do not match.\n"..self._valid_msg)
 
-    for row_index,row_data in pairs(rows) do
-      for player_index,player_data in pairs(row_data) do
+  elseif self._valid == true then
 
-        local total_width = player_data:getWidth() * #row_data
-        player_data:draw(
-          (love.graphics.getWidth()-total_width)/2 + player_data:getWidth()*(player_index-1),
-          love.graphics.getHeight()/2 + player_data:getHeight()*(row_index-1)
-        )
+    if #self._data == 0 then
 
+      libs.loading.draw("Waiting for server to respond ...")
+
+    else
+
+      local rows = {}
+      for player_index,player_data in pairs(self._data) do
+        local row = math.floor(player_index/5)%5
+        rows[row] = rows[row] or {}
+        table.insert(rows[row],player_data)
       end
-    end
 
-    self.start:setX( (love.graphics.getWidth()-self.start:getWidth())/2 )
-    self.start:setY( love.graphics.getHeight()-self.start:getHeight()-32 )
-    self.start:draw()
+      for row_index,row_data in pairs(rows) do
+        for player_index,player_data in pairs(row_data) do
 
-    for button_index,button in pairs(self.buttons) do
-      button:setX(32)
-      button:setY(32+(button:getHeight()+4)*(button_index-1))
-      button:setWidth(192)
-      button:draw()
+          local total_width = player_data:getWidth() * #row_data
+          player_data:draw(
+            (love.graphics.getWidth()-total_width)/2 + player_data:getWidth()*(player_index-1),
+            love.graphics.getHeight()/2 + player_data:getHeight()*(row_index-1)
+          )
+
+        end
+      end
+
+      self.start:setX( (love.graphics.getWidth()-self.start:getWidth())/2 )
+      self.start:setY( love.graphics.getHeight()-self.start:getHeight()-32 )
+      self.start:draw()
+
+      for button_index,button in pairs(self.buttons) do
+        button:setX(32)
+        button:setY(32+(button:getHeight()+4)*(button_index-1))
+        button:setWidth(192)
+        button:draw()
+      end
+
     end
 
   end

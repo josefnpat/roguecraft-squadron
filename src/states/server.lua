@@ -792,6 +792,8 @@ function server:resetGame()
   end
 
   self.lovernet:getStorage().config = {
+    git_hash = git_hash,
+    git_count = git_count,
     game_start=false,
     preset=#libs.mppresets.getPresets(),
     points=1,

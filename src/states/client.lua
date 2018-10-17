@@ -330,6 +330,7 @@ function client:update(dt)
 
   if self.lovernet:getCache(libs.net.op.get_config) then
     self.config = self.lovernet:getCache(libs.net.op.get_config)
+    self.mpconnect:validateVersion(self.config.git_hash,self.config.git_count)
     self.lovernet:clearCache(libs.net.op.get_config)
   end
 
