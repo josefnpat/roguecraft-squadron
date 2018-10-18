@@ -83,6 +83,10 @@ net.points = {
     text = "Infinite (∞)",
     value = math.huge,
   },
+  {
+    text = "Minimal (100)",
+    value = 100,
+  }
 }
 
 function net.hasPoints(pointsValue,points,object_type)
