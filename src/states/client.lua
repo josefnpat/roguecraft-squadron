@@ -594,7 +594,12 @@ function client:update(dt)
       self.fow:update(dt,object)
     end
     if libs.net.objectShouldBeRemoved(object) then
-      change = true
+      local selected = self.selection:getSelected()
+      if #selected == 1 and object == selected[1] then
+        change = true
+      elseif object.user == self.user.id then
+        change = true
+      end
       local object_type = libs.objectrenderer.getType(object.type)
       local explosion_count = 1
       local explosion_range = object_type.size
