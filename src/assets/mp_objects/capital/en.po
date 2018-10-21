@@ -1,0 +1,8 @@
+msgid "mission.object.capital.name"
+msgstr "Capital Ship"
+
+msgid "mission.object.capital.info"
+msgstr "A huge ship to defend your squadron with."
+
+msgid "mission.object.capital.build"
+msgstr "The largest warship class is the Capital class warship. This design exceeds every specification."
