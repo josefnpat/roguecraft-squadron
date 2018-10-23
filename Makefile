@@ -40,8 +40,6 @@ BUTLER_VERSION=${GIT_COUNT}[git:${GIT_HASH}]
 BUTLER_ITCHNAME=roguecraft-squadron
 BUTLER_ITCHUSERNAME=josefnpat
 
-ICON_DIR=src/assets/objects_icon
-
 IMAGE_FILES := $(wildcard src/assets/objects/*.png)
 
 -include Makefile.config
@@ -50,8 +48,6 @@ IMAGE_FILES := $(wildcard src/assets/objects/*.png)
 clean:
 	#Remove generated `${GIT_TARGET}`
 	rm -f ${GIT_TARGET}
-	#Remove ganerated icons
-	rm -rf ${ICON_DIR}
 
 .PHONY: cleanlove
 cleanlove:
@@ -62,12 +58,6 @@ cleanlove:
 love: clean
 	#Writing ${GIT_TARGET}
 	echo "git_hash,git_count = '${GIT_HASH}',${GIT_COUNT}" > ${GIT_TARGET}
-	#Make Icons
-	mkdir -p ${ICON_DIR}
-	$(foreach var,\
-		$(IMAGE_FILES),\
-		convert $(var) -modulate 300% -thumbnail 32x32 +dither -colors 8\
-			-colorspace gray -normalize $(subst objects,objects_icon,$(var));)
 	#Make love file
 	cd ${SRC_DIR};\
 	zip --filesync -x "*.swp" -r ../${LOVE_TARGET} *;\
@@ -77,12 +67,6 @@ love: clean
 love_demo: clean
 	#Writing ${GIT_TARGET}
 	echo "git_hash,git_count = '${GIT_HASH}',${GIT_COUNT}" > ${GIT_TARGET}
-	#Make Icons
-	mkdir -p ${ICON_DIR}
-	$(foreach var,\
-		$(IMAGE_FILES),\
-		convert $(var) -modulate 300% -thumbnail 32x32 +dither -colors 8\
-			-colorspace gray -normalize $(subst objects,objects_icon,$(var));)
 	#Make love file
 	cd ${SRC_DIR};\
 	zip --filesync -x "release*" -x "*.swp" -r ../${LOVE_TARGET_DEMO} *;\
