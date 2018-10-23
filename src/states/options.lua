@@ -223,18 +223,6 @@ function state:init()
 
   self.menu:add(
     function()
-      return libs.i18n('options.tutorial.pre')..": "..
-        libs.i18n(settings:read("tutorial") == true and
-          "options.tutorial.enabled" or
-          "options.tutorial.disabled")
-    end,
-    function()
-      local tut = not settings:read("tutorial")
-      settings:write("tutorial",tut)
-    end)
-
-  self.menu:add(
-    function()
       return libs.i18n('options.mouse_draw_mode.pre')..": "..
         libs.i18n(settings:read("mouse_draw_mode") == "software" and
           "options.mouse_draw_mode.software" or

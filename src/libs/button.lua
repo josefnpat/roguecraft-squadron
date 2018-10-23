@@ -1,7 +1,7 @@
 local button = {}
 
-button.change_sound = love.audio.newSource("assets/sfx/hover.ogg","static")
-button.callback_sound = love.audio.newSource("assets/sfx/select.ogg","static")
+button.change_sound = love.audio.newSource("assets/mp_sfx/widget.hover/1.ogg","static")
+button.callback_sound = love.audio.newSource("assets/mp_sfx/widget.click/1.ogg","static")
 
 function button.new(init)
   init = init or {}

@@ -43,65 +43,6 @@ function love.load(arg)
     tooltipf_edge = love.graphics.newImage("assets/hud/tooltip_edge.png")
   end)
 
-  loader:add("mission vn images",function()
-    vn = {
-      adj = {
-        default = love.graphics.newImage("assets/vn/adj/default.png"),
-        overlay = {
-          love.graphics.newImage("assets/vn/adj/shine1.png"),
-          love.graphics.newImage("assets/vn/adj/shine2.png")
-        },
-      },
-      com = {
-        default = love.graphics.newImage("assets/vn/com/default.png"),
-      }
-    }
-  end)
-
-  loader:add("mission vn audio",function()
-    vn_audio = {
-      adj = {
-        correct = love.audio.newSource("assets/vn/adj/audio/correct.ogg","stream"),
-        incorrect = love.audio.newSource("assets/vn/adj/audio/incorrect.ogg","stream"),
-        warning = love.audio.newSource("assets/vn/adj/audio/warning.ogg","stream"),
-        line1 = love.audio.newSource("assets/vn/adj/audio/line1.ogg","stream"),
-        line2 = love.audio.newSource("assets/vn/adj/audio/line2.ogg","stream"),
-        line3 = love.audio.newSource("assets/vn/adj/audio/line3.ogg","stream"),
-        line4 = love.audio.newSource("assets/vn/adj/audio/line4.ogg","stream"),
-        line5 = love.audio.newSource("assets/vn/adj/audio/line5.ogg","stream"),
-        line6 = love.audio.newSource("assets/vn/adj/audio/line6.ogg","stream"),
-        line7 = love.audio.newSource("assets/vn/adj/audio/line7.ogg","stream"),
-        line8 = love.audio.newSource("assets/vn/adj/audio/line8.ogg","stream"),
-        --line9 = love.audio.newSource("assets/vn/adj/audio/line9.ogg","stream"),
-      },
-      com = {
-        line1 = love.audio.newSource("assets/vn/com/audio/line1.ogg","stream"),
-        line2 = love.audio.newSource("assets/vn/com/audio/line2.ogg","stream"),
-        line3 = love.audio.newSource("assets/vn/com/audio/line3.ogg","stream"),
-        line4 = love.audio.newSource("assets/vn/com/audio/line4.ogg","stream"),
-        line5 = love.audio.newSource("assets/vn/com/audio/line5.ogg","stream"),
-        line6 = love.audio.newSource("assets/vn/com/audio/line6.ogg","stream"),
-        line7 = love.audio.newSource("assets/vn/com/audio/line7.ogg","stream"),
-        line8 = love.audio.newSource("assets/vn/com/audio/line8.ogg","stream"),
-        line9 = love.audio.newSource("assets/vn/com/audio/line9.ogg","stream"),
-        line10 = love.audio.newSource("assets/vn/com/audio/line10.ogg","stream"),
-        line11 = love.audio.newSource("assets/vn/com/audio/line11.ogg","stream"),
-        line12 = love.audio.newSource("assets/vn/com/audio/line12.ogg","stream"),
-        line13 = love.audio.newSource("assets/vn/com/audio/line13.ogg","stream"),
-        line14 = love.audio.newSource("assets/vn/com/audio/line14.ogg","stream"),
-        line15 = love.audio.newSource("assets/vn/com/audio/line15.ogg","stream"),
-      },
-    }
-  end)
-
-  difficulty = {
-    mult = {
-      asteroid = 1,
-      enemy = 1,
-      scrap = 1,
-    },
-  }
-
   loader:add("fonts",function()
     function makeFonts()
       fonts = {
@@ -182,13 +123,8 @@ function love.load(arg)
       load = require "states.load",
       splash = require "states.splash",
       menu = require "states.menu",
-      pause = require "states.pause",
       options = require "states.options",
-      gameover = require"states.gameover",
-      tree = require"states.tree",
-      mission = require "states.mission",
       credits = require "states.credits",
-      disclaimer = require "states.disclaimer",
       debug = require "states.debug",
       dynamicmusic = require "states.dynamicmusic",
       client = require"states.client",
@@ -225,18 +161,8 @@ function love.load(arg)
   loader:add("args",function()
   local version_server_check = true
     for i,v in pairs(arg) do
-      if v == "novn" then
-        disable_vn = true
-      end
       if states[v] then
         target_state = states[v]
-      end
-      if v == "operationcwal" then
-        cheat_operation_cwal = true
-      end
-      if v == "cheat" then
-        cheat = true
-        settings:write("tree_points",9000)
       end
       if v == "debug" then
         debug_mode = true
@@ -285,7 +211,6 @@ end
 
 function love.resize()
   if libs.stars then libs.stars:reload() end
-  if states.mission then states.mission:resize() end
   if states.client then states.client:resize() end
 end
 
@@ -294,7 +219,6 @@ function love.update(dt)
     libs.cursor.update(dt)
     love.mouse.setGrabbed(
       (
-        libs.hump.gamestate.current() == states.mission or
         (libs.hump.gamestate.current() == states.client and not states.client.menu_enabled)
       ) and love.window.hasFocus()
     )
