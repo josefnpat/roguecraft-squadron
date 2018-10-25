@@ -81,6 +81,8 @@ function client:init()
     end
   end
 
+  self.tutorial = libs.tutorial.new()
+
   self.buttonbar:addAction(
     love.graphics.newImage("assets/hud/buttonbar/menu.png"),
     function()
@@ -95,6 +97,13 @@ function client:init()
     function() self.mpresearch:setActive(true) end,
     hover,
     function() return "Research [R]" end
+  )
+
+  self.buttonbar:addAction(
+    love.graphics.newImage("assets/hud/buttonbar/tutorial.png"),
+    function() self.tutorial:show(true) end,
+    hover,
+    function() return "Tutorial [T]" end
   )
 
 end
@@ -679,6 +688,10 @@ function client:update(dt)
 
     self.mpresearch:update(dt)
 
+  elseif self.tutorial:active() then
+
+    self.tutorial:update(dt)
+
   else
 
     if not self.chat:getActive() and love.keyboard.isDown("space") then
@@ -834,6 +847,7 @@ function client:mousepressed(x,y,button)
   if self.menu_enabled then return end
   if self.mpresearch:active() then
     self.mpresearch:mousepressed(x,y,button)
+  elseif self.tutorial:active() then
   elseif button == 1 then
     if self.buttonbar:mouseInside(x,y) then
       -- nop
@@ -860,6 +874,7 @@ function client:mousereleased(x,y,button)
   self.chat:setActive(false)
   if self.mpresearch:active() then
     self.mpresearch:mousereleased(x,y,button)
+  elseif self.tutorial:active() then
   elseif button == 1 then
     if self.buttonbar:mouseInside(x,y) and not self.selection:selectionInProgress() then
       self.buttonbar:runHoverAction()
@@ -995,6 +1010,8 @@ function client:keypressed(key)
   if key == "escape" then
     if self.mpresearch:active() then
       self.mpresearch:setActive(false)
+    elseif self.tutorial:active() then
+      self.tutorial:hide()
     elseif self.chat:getActive() then
       self.chat:setActive(false)
       self.chat:setBuffer("")
@@ -1007,9 +1024,12 @@ function client:keypressed(key)
     if key == "r" then
        self.mpresearch:toggleActive()
     end
+    if key == "t" then
+       self.tutorial:toggle()
+    end
   end
 
-  if self.mpresearch:active() then
+  if self.mpresearch:active() or self.tutorial:active() then
 
   else
 
@@ -1182,6 +1202,9 @@ function client:draw()
     self.mpdisconnect:draw()
     if self.mpresearch:active() then
       self.mpresearch:draw(self.user,self.resources)
+    end
+    if self.tutorial:active() then
+      self.tutorial:draw()
     end
   else
     self.mpconnect:draw(self.config,self.players,self.user_count)

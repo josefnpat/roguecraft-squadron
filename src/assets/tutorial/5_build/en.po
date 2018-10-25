@@ -1,0 +1,2 @@
+msgid "desc"
+msgstr "Select a construction ship. Click on a ship button in the sidebar to build it."

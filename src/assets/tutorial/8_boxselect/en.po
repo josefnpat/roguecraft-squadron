@@ -1,0 +1,2 @@
+msgid "desc"
+msgstr "Start a box selection by pressing and holding the left mouse button. To end the selection, release the button."

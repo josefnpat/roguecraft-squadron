@@ -1,0 +1,2 @@
+msgid "desc"
+msgstr "Double left click on any unit type to select all visible units of that type."

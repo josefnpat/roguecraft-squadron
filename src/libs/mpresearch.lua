@@ -40,6 +40,15 @@ function mpresearch.new(init)
   self._currentObject = "command"
   self._dangle = 0
 
+  self.close = libs.button.new{
+    height=self._buttonHeight,
+    width = 64,
+    text = "Close",
+    onClick = function()
+      self:setActive(false)
+    end,
+  }
+
   return self
 
 end
@@ -50,6 +59,7 @@ function mpresearch:update(dt)
   for _,button in pairs(self._current_research_buttons) do
     button:update(dt)
   end
+  self.close:update(dt)
 end
 
 function mpresearch:draw(user,resources)
@@ -93,6 +103,10 @@ function mpresearch:draw(user,resources)
     dropshadowf("No research available for this object.",
       button_x_offset,y_offset+self._buttonPadding+32,self._buttonWidth,"center")
   end
+
+  self.close:setX(x_offset+self:getWidth()-self.close:getWidth()-16)
+  self.close:setY(y_offset+self:getHeight()-self.close:getHeight()-16)
+  self.close:draw()
 
   -- draw last for tooltips
   self._objects_select:setX(x_offset)

@@ -1,0 +1,2 @@
+msgid "desc"
+msgstr "Use the left mouse button on the map to move the camera quickly."

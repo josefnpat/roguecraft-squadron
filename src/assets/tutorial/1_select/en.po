@@ -1,0 +1,2 @@
+msgid "desc"
+msgstr "Use the left mouse button to select ships."

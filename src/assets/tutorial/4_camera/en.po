@@ -1,0 +1,2 @@
+msgid "desc"
+msgstr "Use the arrow keys or WASD to move the camera."

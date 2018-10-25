@@ -1,0 +1,2 @@
+msgid "desc"
+msgstr "Build a ship multiple times to queue multiple ships."

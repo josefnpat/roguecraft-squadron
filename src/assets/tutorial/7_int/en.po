@@ -1,0 +1,2 @@
+msgid "desc"
+msgstr "When you have units selected, use shift with right mouse button to allow ships to automatically gather or attack while moving."

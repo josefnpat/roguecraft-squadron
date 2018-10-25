@@ -123,8 +123,8 @@ function button:getDisabled()
   return self._disabled
 end
 
-function button:setDisabled()
-  return self._disabled
+function button:setDisabled(val)
+  self._disabled = val
 end
 
 function button:getX()
