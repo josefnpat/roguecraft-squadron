@@ -1,7 +1,7 @@
 return function()
   return {
     type = "capital",
-    military_large = true,
+    --military_large = true,
     cost = {material=4000,crew=800},
     points = 54,
     crew = 800,
