@@ -365,6 +365,8 @@ function client:update(dt)
   if self.lovernet:getCache(libs.net.op.get_config) then
     self.config = self.lovernet:getCache(libs.net.op.get_config)
     self.mpconnect:validateVersion(self.config.git_hash,self.config.git_count)
+    local tr_val = libs.net.transmitRates[self.config.transmitRate].value
+    self.lovernet:setClientTransmitRate(tr_val)
     self.lovernet:clearCache(libs.net.op.get_config)
   end
 
@@ -572,6 +574,7 @@ function client:update(dt)
       self.mpconnect:setPreset(self.config.preset or 1)
       self.mpresearch:setPreset(self.config.preset or 1)
       self.mpconnect:setPoints(self.config.points or 1)
+      self.mpconnect:setTransmitRate(self.config.transmitRate or 1)
       self.points:setPoints(self.config.points or 1)
     end
     if self.config and self.players then
@@ -1219,6 +1222,7 @@ function client:draw()
     else
       str = str .. "loading user ... \n"
     end
+    str = str .. "transmit_rate: " .. (self.lovernet:getClientTransmitRate()*1000) .. "ms\n"
     str = str .. "time: " .. self.time .. "\n"
     str = str .. "last_time: " .. self.last_time .. "\n"
     str = str .. "objects: " .. #self.objects .. "\n"

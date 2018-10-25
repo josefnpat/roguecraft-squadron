@@ -798,6 +798,7 @@ function server:resetGame()
     game_start=false,
     preset=#libs.mppresets.getPresets(),
     points=1,
+    transmitRate=1,
     creative=false,
     everyShipUnlocked=false,
     ai=0,
@@ -1191,6 +1192,11 @@ function server:validateConfig()
   if storage.config.points > #libs.net.points then
     storage.config.points = 1
   end
+  if storage.config.transmitRate > #libs.net.transmitRates then
+    storage.config.transmitRate = 1
+  end
+  local tr_val = libs.net.transmitRates[storage.config.transmitRate].value
+  self.lovernet:setClientTransmitRate(tr_val)
 end
 
 function server:validatePlayerConfig(player)
@@ -1429,6 +1435,7 @@ end
 
 function server:draw()
   str = ""
+  str = str .. "transmit_rate: " .. (self.lovernet:getClientTransmitRate()*1000) .. "ms\n"
   str = str .. "time: " .. math.floor(love.timer.getTime()) .. "\n"
   str = str .. "objects: " .. #self.lovernet:getStorage().objects .. "\n"
   str = str .. "updates: " .. #self.lovernet:getStorage().updates .. "\n"
@@ -1443,7 +1450,7 @@ function server:draw()
     str = str .. i .. " - " .. v .. "\n"
   end
 
-  love.graphics.printf(str,32,32,love.graphics.getWidth()-64,"right")
+  love.graphics.printf(str,32,32,love.graphics.getWidth()-64,"left")
   libs.version.draw()
 end
 

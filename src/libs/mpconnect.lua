@@ -10,6 +10,7 @@ function mpconnect.new(init)
   self.creative = false
   self.everyShipUnlocked = false
   self.preset = init.preset or #libs.mppresets.getPresets()
+  self.transmitRate = init.transmitRate or 1
   self.points = init.points or 1
 
   self.updateData = mpconnect.updateData
@@ -20,6 +21,7 @@ function mpconnect.new(init)
   self.setEveryShipUnlocked = mpconnect.setEveryShipUnlocked
   self.setPreset = mpconnect.setPreset
   self.setPoints = mpconnect.setPoints
+  self.setTransmitRate = mpconnect.setTransmitRate
   self.setUser = mpconnect.setUser
   self.validateVersion = mpconnect.validateVersion
 
@@ -41,6 +43,23 @@ function mpconnect.new(init)
   }
 
   self.buttons = {}
+
+  self.presetButton = libs.button.new{
+    disabled=#libs.mppresets.getPresets()<=1,
+    text="Preset",
+    onClick=function()
+      self.lovernet:pushData(libs.net.op.set_config,{d={preset=self.preset+1}})
+    end,
+  }
+  table.insert(self.buttons,self.presetButton)
+
+  self.transmitRatesButton = libs.button.new{
+    text="Network",
+    onClick=function()
+      self.lovernet:pushData(libs.net.op.set_config,{d={transmitRate=self.transmitRate+1}})
+    end,
+  }
+  table.insert(self.buttons,self.transmitRatesButton)
 
   table.insert(self.buttons,libs.button.new{
     text="Add AI",
@@ -71,15 +90,6 @@ function mpconnect.new(init)
       self.lovernet:pushData(libs.net.op.set_config,{d={everyShipUnlocked=not self.everyShipUnlocked}})
     end,
   })
-
-  self.presetButton = libs.button.new{
-    disabled=#libs.mppresets.getPresets()<=1,
-    text="Preset",
-    onClick=function()
-      self.lovernet:pushData(libs.net.op.set_config,{d={preset=self.preset+1}})
-    end,
-  }
-  table.insert(self.buttons,self.presetButton)
 
   self.pointsButton = libs.button.new{
     disabled=not isRelease(),
@@ -147,7 +157,12 @@ end
 
 function mpconnect:setPoints(points_value)
   self.points = points_value
-  self.pointsButton:setText(libs.net.points[points_value].text)
+  self.pointsButton:setText("Command Cap ["..libs.net.points[points_value].text.."]")
+end
+
+function mpconnect:setTransmitRate(value)
+  self.transmitRate = value
+  self.transmitRatesButton:setText("Network ["..libs.net.transmitRates[value].text.."]")
 end
 
 function mpconnect:setUser(user_id)
@@ -235,7 +250,7 @@ function mpconnect:draw(config,players,user_count)
       for button_index,button in pairs(self.buttons) do
         button:setX(32)
         button:setY(32+(button:getHeight()+4)*(button_index-1))
-        button:setWidth(256)
+        button:setWidth(256+32)
         button:draw()
       end
 

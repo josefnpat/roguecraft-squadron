@@ -68,25 +68,48 @@ net.aiDifficulty = {
 -- Command Capacity
 net.points = {
   {
-    text = "Low (200)",
+    text = "Normal — 200",
     value = 200,
   },
   {
-    text = "Medium (600)",
+    text = "Medium — 600",
     value = 600,
   },
   {
-    text = "High (1000)",
+    text = "High — 1000",
     value = 1000,
   },
   {
-    text = "Infinite (∞)",
+    text = "Infinite — ∞",
     value = math.huge,
   },
   {
-    text = "Minimal (100)",
+    text = "Minimal — 100",
     value = 100,
   }
+}
+
+net.transmitRates = {
+  {
+    text = "High — 62.5ms",
+    value = 1/16
+  },
+  {
+    text = "Medium — 125ms",
+    value = 1/8,
+  },
+  {
+    text = "Low — 250ms",
+    value = 1/4,
+  },
+  {
+    text = "V High — 31.3ms",
+    value = 1/32,
+  },
+  {
+    text = "Excessive — 15.6ms",
+    value = 1/64,
+  },
 }
 
 function net.hasPoints(pointsValue,points,object_type)
