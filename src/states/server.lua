@@ -459,9 +459,9 @@ function server:init()
     local user = self:getUser(peer)
     -- todo: check if object is unlockable
     local points = user.resources["research"]
-    local success = libs.researchrenderer.buyLevel(user,arg.o,arg.r,arg.v,points)
+    local success,cost = libs.researchrenderer.buyLevel(user,arg.o,arg.r,arg.v,points)
     if success then
-      user.resources["research"] = user.resources["research"] - points
+      user.resources["research"] = user.resources["research"] - cost
     end
   end)
 

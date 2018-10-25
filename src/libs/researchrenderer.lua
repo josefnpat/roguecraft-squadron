@@ -210,7 +210,7 @@ function researchrenderer.buyLevel(user,object_type,research_type,value,points)
   if valid then
     researchrenderer.setLevel(user,object_type,research_type,value)
   end
-  return valid
+  return valid,cost
 end
 
 function researchrenderer.getTypes()
