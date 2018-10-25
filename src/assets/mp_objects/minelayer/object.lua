@@ -11,5 +11,6 @@ return function()
       "build_mine",
     },
     build_time = 30,
+    unlock_cost = 25,
   }
 end

@@ -10,5 +10,6 @@ return function()
     health = {max = 10,},
     takeover = true,
     build_time = 10,
+    unlock_cost = 15,
   }
 end

@@ -7,5 +7,6 @@ return function()
     size = 8,
     build_time = 2.5,
     health = {max = 5,},
+    unlock_cost = 5,
   }
 end

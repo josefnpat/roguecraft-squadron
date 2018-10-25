@@ -22,5 +22,6 @@ return function()
       "build_capital",
     },
     build_time = 10,
+    unlock_cost = 10,
   }
 end

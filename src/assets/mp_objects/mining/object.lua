@@ -12,5 +12,6 @@ return function()
     ore_gather = 25,
     build_time = 5,
     collect = true,
+    unlock_cost = 15,
   }
 end

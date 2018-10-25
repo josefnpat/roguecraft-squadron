@@ -12,5 +12,6 @@ return function()
       "build_satellite",
     },
     build_time = 2,
+    unlock_cost = 25,
   }
 end

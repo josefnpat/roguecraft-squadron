@@ -11,5 +11,6 @@ return function()
     speed = 50,
     health = {max = 25,},
     build_time = 20,
+    unlock_cost = 15,
   }
 end

@@ -11,5 +11,6 @@ return function()
     repair = 1,
     actions = {},
     build_time = 5,
+    unlock_cost = 30,
   }
 end

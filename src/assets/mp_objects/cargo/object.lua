@@ -12,5 +12,6 @@ return function()
     ore = 600,
     material = 1200,
     build_time = 10,
+    unlock_cost = 30,
   }
 end

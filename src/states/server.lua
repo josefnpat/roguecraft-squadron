@@ -19,7 +19,6 @@ server._genMapDefault = {
   cat=1,
 }
 server._genEveryObjectOverride = false
-server._everyShipUnlocked = true
 
 server._genResourcesDefault = {
   material = math.huge,
@@ -451,9 +450,7 @@ function server:init()
   self.lovernet:addOp(libs.net.op.get_research)
   self.lovernet:addProcessOnServer(libs.net.op.get_research,function(self,peer,arg,storage)
     local user = self:getUser(peer)
-    return user.research or {
-      points=libs.researchrenderer.getPoints(user)
-    }
+    return user.research
   end)
 
   self.lovernet:addOp(libs.net.op.set_research)
@@ -461,7 +458,11 @@ function server:init()
   self.lovernet:addProcessOnServer(libs.net.op.set_research,function(self,peer,arg,storage)
     local user = self:getUser(peer)
     -- todo: check if object is unlockable
-    libs.researchrenderer.buyLevel(user,arg.o,arg.r,arg.v)
+    local points = user.resources["research"]
+    local success = libs.researchrenderer.buyLevel(user,arg.o,arg.r,arg.v,points)
+    if success then
+      user.resources["research"] = user.resources["research"] - points
+    end
   end)
 
   self.lovernet:addOp(libs.net.op.debug_create_object)
@@ -798,6 +799,7 @@ function server:resetGame()
     preset=#libs.mppresets.getPresets(),
     points=1,
     creative=false,
+    everyShipUnlocked=false,
     ai=0,
   }
 
@@ -869,8 +871,9 @@ function server:newGame()
       -- todo: balance players on pockets after 8
       user.ai:setCurrentPocket(pockets[user_count])
     end
-    if server._everyShipUnlocked then
-      local preset_value = self.lovernet:getStorage().config.preset
+    local storage = self.lovernet:getStorage()
+    if storage.config.everyShipUnlocked then
+      local preset_value = storage.config.preset
       local preset = libs.mppresets.getPresets()[preset_value]
       researchableObjects = researchableObjects or libs.researchrenderer.getResearchableObjects(nil,preset.gen.first)
       for _,researchableObject in pairs(researchableObjects) do

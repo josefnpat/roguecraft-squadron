@@ -15,6 +15,7 @@ function resources.new(init)
   self.update = resources.update
   self.calcCargo = resources.calcCargo
   self.set = resources.set
+  self.get = resources.get
   self.setFull = resources.setFull
   self.canAfford = resources.canAfford
   self.canAffordResType = resources.canAffordResType
@@ -128,6 +129,13 @@ function resources:set(restype,value)
     end
     self._value[restype] = value
   end
+end
+
+function resources:get(restype)
+  if self._value[restype] == nil then
+    print("warning: resource type `"..tostring(restype).."` does not exist.")
+  end
+  return self._value[restype]
 end
 
 function resources:setFull(res)

@@ -5,4 +5,4 @@ msgid "mission.object.repair.info"
 msgstr "A ship used to repair other ships."
 
 msgid "mission.object.repair.build"
-msgstr ""
+msgstr "Normally a ship would be required to go to a full drydock for repair, but with the discovery of wormholes, repairing ships on the go has become a requirement."

@@ -26,7 +26,7 @@ function researchrenderer.load(loadAssets,preset_value)
       max_level = 1,
       default_level = current_object_type.default_level,
       cost = function(current)
-        return 1
+        return current_object_type.unlock_cost or 0
       end,
       value = function(current)
         return current
@@ -43,7 +43,6 @@ function researchrenderer.load(loadAssets,preset_value)
 
     local object = require(dir)
     object.type = type -- screw you, inheritance!
-
     if loadAssets then
 
       local po_file = dir.."/en.po"
@@ -69,7 +68,9 @@ function researchrenderer.load(loadAssets,preset_value)
 
     end
 
-    data[type] = object
+    if not object.disabled then
+      data[type] = object
+    end
 
   end
 
@@ -187,14 +188,18 @@ function researchrenderer.setLevel(user,object_type,research_type,value)
   user.research[object_type][research_type] = value
 end
 
-function researchrenderer.buyLevel(user,object_type,research_type,value)
+function researchrenderer.buyLevel(user,object_type,research_type,value,points)
+  assert(user)
+  assert(object_type)
+  assert(research_type)
+  assert(value)
+  assert(points)
   local valid = true
   local target_level = researchrenderer.getLevel(user,object_type,research_type) + 1
   if target_level ~= value then
     valid = false
   end
   local research = researchrenderer.getType(research_type)
-  local points = researchrenderer.getPoints(user)
   local cost = research.cost(target_level-1)
   if points < cost then
     valid = false
@@ -203,26 +208,13 @@ function researchrenderer.buyLevel(user,object_type,research_type,value)
     valid = false
   end
   if valid then
-    researchrenderer.setPoints(user,points-cost)
     researchrenderer.setLevel(user,object_type,research_type,value)
   end
+  return valid
 end
 
 function researchrenderer.getTypes()
   return data
-end
-
-function researchrenderer.getPoints(user)
-  if user.research and user.research.points then
-    return user.research.points
-  else
-    return researchrenderer.defaultPoints
-  end
-end
-
-function researchrenderer.setPoints(user,points)
-  user.research = user.research or {}
-  user.research.points = points
 end
 
 function researchrenderer.getValidTypes(object_type,user)

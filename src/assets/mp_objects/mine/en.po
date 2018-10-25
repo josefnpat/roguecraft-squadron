@@ -5,4 +5,4 @@ msgid "mission.object.mine.info"
 msgstr "An immobile bomb that explodes when near enemies."
 
 msgid "mission.object.mine.build"
-msgstr ""
+msgstr "A very complicated device designed to use an exothermic reaction of an explosive material to do a significant amount of damage. Basically, it's a bomb."

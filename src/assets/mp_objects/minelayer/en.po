@@ -5,4 +5,4 @@ msgid "mission.object.minelayer.info"
 msgstr "A ship used deploy mines."
 
 msgid "mission.object.minelayer.build"
-msgstr ""
+msgstr "A retrofit of the old jump ships, we have added a small material construction bay to be able to create and lay mines."

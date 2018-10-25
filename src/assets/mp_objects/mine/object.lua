@@ -11,5 +11,6 @@ return function()
       damage_range = 200,
       damage = 50,
     },
+    unlock_cost = 5,
   }
 end

@@ -32,7 +32,7 @@ end
 
 function points:panelShown()
   local max = libs.net.points[self._points].value
-  return max ~= math.huge
+  return self._pointsValue > 0 and max ~= math.huge
 end
 
 function points:setPointsValue(val)

@@ -21,5 +21,6 @@ return function()
       },
     },
     build_time = 20,
+    unlock_cost = 30,
   }
 end

@@ -8,6 +8,7 @@ function mpconnect.new(init)
   self.chat = init.chat
   self.ai_count = init.ai_count or 0
   self.creative = false
+  self.everyShipUnlocked = false
   self.preset = init.preset or #libs.mppresets.getPresets()
   self.points = init.points or 1
 
@@ -16,6 +17,7 @@ function mpconnect.new(init)
   self.draw = mpconnect.draw
   self.setAiCount = mpconnect.setAiCount
   self.setCreative = mpconnect.setCreative
+  self.setEveryShipUnlocked = mpconnect.setEveryShipUnlocked
   self.setPreset = mpconnect.setPreset
   self.setPoints = mpconnect.setPoints
   self.setUser = mpconnect.setUser
@@ -56,9 +58,17 @@ function mpconnect.new(init)
 
   table.insert(self.buttons,libs.button.new{
     disabled=not isRelease(),
-    text=function() return self.creative and "Creative" or "Normal" end,
+    text=function() return self.creative and "Build Mode [Creative]" or "Build Mode [Normal]" end,
     onClick=function()
       self.lovernet:pushData(libs.net.op.set_config,{d={creative=not self.creative}})
+    end,
+  })
+
+  table.insert(self.buttons,libs.button.new{
+    disabled=not isRelease(),
+    text=function() return self.everyShipUnlocked and "Research [All Unlocked]" or "Research [Normal]" end,
+    onClick=function()
+      self.lovernet:pushData(libs.net.op.set_config,{d={everyShipUnlocked=not self.everyShipUnlocked}})
     end,
   })
 
@@ -121,8 +131,12 @@ function mpconnect:setAiCount(count)
   self.ai_count = count
 end
 
-function mpconnect:setCreative(creative)
-  self.creative = creative
+function mpconnect:setCreative(val)
+  self.creative = val
+end
+
+function mpconnect:setEveryShipUnlocked(val)
+  self.everyShipUnlocked = val
 end
 
 function mpconnect:setPreset(preset_value)
@@ -221,7 +235,7 @@ function mpconnect:draw(config,players,user_count)
       for button_index,button in pairs(self.buttons) do
         button:setX(32)
         button:setY(32+(button:getHeight()+4)*(button_index-1))
-        button:setWidth(192)
+        button:setWidth(256)
         button:draw()
       end
 

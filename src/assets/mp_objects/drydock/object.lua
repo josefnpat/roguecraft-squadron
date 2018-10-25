@@ -18,8 +18,9 @@ return function()
       "build_radar",
       "build_command",
       "build_repair",
-      -- "build_research",
+      "build_research",
     },
     build_time = 5,
+    unlock_cost = 10,
   }
 end

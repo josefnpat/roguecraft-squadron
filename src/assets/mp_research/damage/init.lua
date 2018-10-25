@@ -1,4 +1,5 @@
 return {
+  disabled = true,
   valid = function(object_type,user)
     return object_type.shoot ~= nil
   end,

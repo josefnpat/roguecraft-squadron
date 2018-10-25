@@ -14,6 +14,8 @@ function mpresearch.new(init)
 
   self.active = mpresearch.active
   self.setActive = mpresearch.setActive
+  self.getActive = mpresearch.getActive
+  self.toggleActive = mpresearch.toggleActive
   self._active = false
 
   self._preset = init.preset or 1
@@ -27,7 +29,7 @@ function mpresearch.new(init)
   self.mousereleased = mpresearch.mousereleased
   self.buildData = mpresearch.buildData
 
-  self._drawSize = 192
+  self._drawSize = 256+64
   self._drawPadding = 8
   self._buttonWidth = 320
   self._buttonPadding = 8
@@ -50,7 +52,7 @@ function mpresearch:update(dt)
   end
 end
 
-function mpresearch:draw(user)
+function mpresearch:draw(user,resources)
 
   love.graphics.setColor(0,0,0,191)
   love.graphics.rectangle("fill",0,0,
@@ -67,10 +69,10 @@ function mpresearch:draw(user)
   local w,h = self._drawSize,self:getHeight()
   self:drawObject(self._currentObject,x,y,self._drawSize,self._drawSize)
   local object_type = libs.objectrenderer.getType(self._currentObject)
-  love.graphics.setFont(fonts.default)
+  love.graphics.setFont(fonts.large)
   dropshadowf(object_type.loc.name,
     x+self._drawPadding,y+self._drawSize,w-self._drawPadding*2,"center")
-  love.graphics.setFont(fonts.small)
+  love.graphics.setFont(fonts.default)
   dropshadowf(object_type.loc.build,
     x+self._drawPadding,y+self._drawSize+32,w-self._drawPadding*2,"left")
 
@@ -78,7 +80,7 @@ function mpresearch:draw(user)
   local button_y_offset = y_offset + 8 + 32
 
   love.graphics.setFont(fonts.large)
-  dropshadowf("Research Points: "..libs.researchrenderer.getPoints(user),
+  dropshadowf("Research Points: "..resources:get("research"),
     button_x_offset,y_offset+self._buttonPadding,self._buttonWidth+32,"center")
   love.graphics.setFont(fonts.default)
   if #self._current_research_buttons > 0 then
@@ -141,6 +143,14 @@ function mpresearch:setActive(val)
   self._active = val
 end
 
+function mpresearch:getActive()
+  return self._active
+end
+
+function mpresearch:toggleActive()
+  self._active = not self._active
+end
+
 function mpresearch:setPreset(val)
   self._preset = val
 end
@@ -154,7 +164,7 @@ function mpresearch:getWidth()
 end
 
 function mpresearch:getHeight()
-  return 500 -- self._objects_select:getHeight()
+  return 720-32*2 -- self._objects_select:getHeight()
 end
 
 function mpresearch:mousepressed(x,y,button)

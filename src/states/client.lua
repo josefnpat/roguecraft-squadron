@@ -66,6 +66,37 @@ function client:init()
 
   self.soundtrack:play()
 
+  self.buttonbar = libs.matrixpanel.new{
+    iconSize=16,
+    padding=0,
+    drawbg=false,
+    icon_bg=love.graphics.newImage("assets/hud/icon_bg_small.png"),
+  }
+
+  local hover = function(hover)
+    if hover then
+      return {0,255,255}
+    else
+      return {255,255,255,256*7/8}
+    end
+  end
+
+  self.buttonbar:addAction(
+    love.graphics.newImage("assets/hud/buttonbar/menu.png"),
+    function()
+      self.menu_enabled = true
+    end,
+    hover,
+    function() return "Menu [Escape]" end
+  )
+
+  self.buttonbar:addAction(
+    love.graphics.newImage("assets/hud/buttonbar/research.png"),
+    function() self.mpresearch:setActive(true) end,
+    hover,
+    function() return "Research [R]" end
+  )
+
 end
 
 function client:enter()
@@ -192,6 +223,9 @@ end
 function client:stackSide()
   -- fix tooltips before adding right side stack feature
   local cx,cy = 32,32
+  self.buttonbar:setX(cx)
+  self.buttonbar:setY(cy)
+  cy = cy + 16
   self.minimap.x = cx
   self.minimap.y = cy
   cy = cy + self.minimap.size
@@ -341,8 +375,9 @@ function client:update(dt)
 
   if self.lovernet:getCache(libs.net.op.get_research) then
     self.user.research = self.lovernet:getCache(libs.net.op.get_research)
-    --todo: figure out why this breaks everything
-    --self.mpresearch:buildData(self.user,self.config.preset)
+    if self.gamestatus:isStarted() then
+      self.mpresearch:buildData(self.user,self.config.preset)
+    end
     self.lovernet:clearCache(libs.net.op.get_research)
   end
 
@@ -488,9 +523,6 @@ function client:update(dt)
   if self.lovernet:getCache(libs.net.op.get_resources) then
     local resources = self.lovernet:getCache(libs.net.op.get_resources)
     self.resources:setFull(resources)
-    if resources.research then
-      libs.researchrenderer.setPoints(self.user,resources.research)
-    end
     self.lovernet:clearCache(libs.net.op.get_resources)
   end
 
@@ -500,6 +532,7 @@ function client:update(dt)
   end
 
   self.gather:update(dt)
+  self.buttonbar:update(dt)
   self.points:update(dt)
   self.resources:update(dt)
   self.actionpanel:update(dt)
@@ -520,7 +553,7 @@ function client:update(dt)
   self.gamestatus:update(dt,self.objects,self.players or {})
   if self.gamestatus:isStarted() then
     if self.gamestatus:isStartedTrigger() then
-      libs.researchrenderer.load(headless,self.config.preset)
+      libs.researchrenderer.load(not headless,self.config.preset)
       self.mpresearch:buildData(self.user)
       self.lovernet:pushData(libs.net.op.get_research)
     end
@@ -535,6 +568,7 @@ function client:update(dt)
     if self.config then
       self.mpconnect:setAiCount(self.config.ai)
       self.mpconnect:setCreative(self.config.creative)
+      self.mpconnect:setEveryShipUnlocked(self.config.everyShipUnlocked)
       self.mpconnect:setPreset(self.config.preset or 1)
       self.mpresearch:setPreset(self.config.preset or 1)
       self.mpconnect:setPoints(self.config.points or 1)
@@ -683,7 +717,8 @@ function client:centerCamera()
 end
 
 function client:mouseInsideUI()
-  return self.minimap:mouseInside() or
+  return self.buttonbar:mouseInside() or
+    self.minimap:mouseInside() or
     self.points:mouseInside() or
     self.resources:mouseInside() or
     self.actionpanel:mouseInside() or
@@ -797,7 +832,9 @@ function client:mousepressed(x,y,button)
   if self.mpresearch:active() then
     self.mpresearch:mousepressed(x,y,button)
   elseif button == 1 then
-    if self.minimap:mouseInside(x,y) then
+    if self.buttonbar:mouseInside(x,y) then
+      -- nop
+    elseif self.minimap:mouseInside(x,y) then
       -- nop
     elseif self.actionpanel:mouseInside(x,y) then
       -- nop
@@ -821,7 +858,9 @@ function client:mousereleased(x,y,button)
   if self.mpresearch:active() then
     self.mpresearch:mousereleased(x,y,button)
   elseif button == 1 then
-    if self.minimap:mouseInside(x,y) and not self.selection:selectionInProgress() then
+    if self.buttonbar:mouseInside(x,y) and not self.selection:selectionInProgress() then
+      self.buttonbar:runHoverAction()
+    elseif self.minimap:mouseInside(x,y) and not self.selection:selectionInProgress() then
       -- nop
     elseif self.actionpanel:mouseInside(x,y) and not self.selection:selectionInProgress() then
       self.actionpanel:runHoverAction()
@@ -961,8 +1000,10 @@ function client:keypressed(key)
     end
   end
 
-  if debug_mode and key == "r" then -- todo: remove for prod
-    self.mpresearch:setActive(true)
+  if self.gamestatus:isStarted() then
+    if key == "r" then
+       self.mpresearch:toggleActive()
+    end
   end
 
   if self.mpresearch:active() then
@@ -1131,11 +1172,13 @@ function client:draw()
     end
   end
 
+  self.buttonbar:draw()
+
   self.notif:draw()
   if self.gamestatus:isStarted() then
     self.mpdisconnect:draw()
     if self.mpresearch:active() then
-      self.mpresearch:draw(self.user)
+      self.mpresearch:draw(self.user,self.resources)
     end
   else
     self.mpconnect:draw(self.config,self.players,self.user_count)

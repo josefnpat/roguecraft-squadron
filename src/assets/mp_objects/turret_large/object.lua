@@ -22,5 +22,6 @@ return function()
     build_time = 20,
     subdangle_speed = 0,
     rotate = 0.5,
+    unlock_cost = 60,
   }
 end

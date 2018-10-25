@@ -6,7 +6,7 @@ return function()
     points = 2,
     crew = 25,
     size = 32,
-    speed = 50,
+    speed = 100,
     health = {max = 600,},
     shoot = {
       image = "missile",
@@ -21,5 +21,6 @@ return function()
       },
     },
     build_time = 30,
+    unlock_cost = 60,
   }
 end
