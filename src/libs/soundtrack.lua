@@ -11,6 +11,7 @@ function soundtrack.new(init)
   self.play = soundtrack.play
   self.stop = soundtrack.stop
   self.nextTrack = soundtrack.nextTrack
+  self.randomTrack = soundtrack.randomTrack
 
   self.setIntensity = soundtrack.setIntensity
 
@@ -65,6 +66,10 @@ function soundtrack:nextTrack()
     data.instance:stop()
   end
   self._currentDynamicAudio = self._currentDynamicAudio + 1
+end
+
+function soundtrack:randomTrack()
+  self._currentDynamicAudio = math.random(#self._data)
 end
 
 function soundtrack:setIntensity(intensity)

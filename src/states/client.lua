@@ -64,8 +64,6 @@ function client:init()
   da:addTrack("assets/dynamicaudio/PlanetoidAndroid/4.ogg")
   self.soundtrack:addDynamicAudio(da,updateaDynamicAudio)
 
-  self.soundtrack:play()
-
   self.buttonbar = libs.matrixpanel.new{
     iconSize=16,
     padding=0,
@@ -176,6 +174,7 @@ function client:enter()
   self.combat_per_second = 0
 
   self.soundtrack:setVolume(settings:read("music_vol"))
+  self.soundtrack:randomTrack()
   self.soundtrack:play()
 
 end
