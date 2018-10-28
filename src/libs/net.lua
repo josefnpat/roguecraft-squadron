@@ -1,5 +1,12 @@
 local net = {}
 
+function net.clearCache()
+  net.cache = {
+    getCurrentLocation = {},
+  }
+end
+net.clearCache()
+
 net.op = {
   git_count =           'g',
   user_count =          'n',
@@ -183,18 +190,24 @@ end
 
 function net.getCurrentLocation(object,time)
   time = time or love.timer.getTime()
-  local type = libs.objectrenderer.getType(object.type)
-  if object.tdt and object.tx and object.ty then
-    local dt = math.max(0,time - object.tdt)
-    local distance = math.sqrt( (object.x-object.tx)^2 + (object.y-object.ty)^2 )
-    local ratio = math.min(1,(type.speed or 0)* dt / distance)
-    local cx = (1-ratio)*object.x+ratio*object.tx
-    local cy = (1-ratio)*object.y+ratio*object.ty
-    return round(cx),round(cy)
-  else
-    return round(object.x),round(object.y)
+  if net.cache.getCurrentLocation[object] == nil then
+    ___c = ___c + 1
+    local type = libs.objectrenderer.getType(object.type)
+    if object.tdt and object.tx and object.ty then
+      local dt = math.max(0,time - object.tdt)
+      local distance = math.sqrt( (object.x-object.tx)^2 + (object.y-object.ty)^2 )
+      local ratio = math.min(1,(type.speed or 0)* dt / distance)
+      local cx = (1-ratio)*object.x+ratio*object.tx
+      local cy = (1-ratio)*object.y+ratio*object.ty
+      net.cache.getCurrentLocation[object] = {x=round(cx),y=round(cy)}
+    else
+      net.cache.getCurrentLocation[object] = {x=round(object.x),y=round(object.y)}
+    end
   end
+  return net.cache.getCurrentLocation[object].x, net.cache.getCurrentLocation[object].y
 end
+
+
 
 function net.findObject(objects,index)
   for _,object in pairs(objects) do

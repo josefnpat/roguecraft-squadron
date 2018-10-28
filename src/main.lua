@@ -215,6 +215,7 @@ function love.resize()
 end
 
 function love.update(dt)
+  if libs.net then libs.net.clearCache() end
   if not headless then
     libs.cursor.update(dt)
     love.mouse.setGrabbed(
