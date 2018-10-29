@@ -239,6 +239,19 @@ function objectrenderer.randomNameIndex(type)
   end
 end
 
+function objectrenderer.findSlowestShootType()
+  local slowest_type,speed = nil,math.huge
+  for type,object_type in pairs(data) do
+    if object_type.speed and object_type.shoot then
+      if object_type.speed < speed then
+        slowest_type = object_type
+        speed = object_type.speed
+      end
+    end
+  end
+  return slowest_type
+end
+
 function objectrenderer.drawChevron(object,selection)
 
   local isSelected = selection:isSelected(object)

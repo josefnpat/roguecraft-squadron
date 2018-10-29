@@ -42,6 +42,9 @@ function ai.new(init)
   self.update = ai.update
   self.setCurrentPocket = ai.setCurrentPocket
   self.getCurrentPocket = ai.getCurrentPocket
+  self.setPockets = ai.setPockets
+  self.getPockets = ai.getPockets
+  self.getRandomPocket = ai.getRandomPocket
 
   return self
 end
@@ -102,11 +105,29 @@ function ai:update(dt)
 end
 
 function ai:setCurrentPocket(pocket)
-  self._startPocket = pocket
+  self._currentPocket = pocket
 end
 
 function ai:getCurrentPocket()
-  return self._startPocket
+  return self._currentPocket
+end
+
+function ai:setPockets(pockets)
+  self._pockets = pockets
+end
+
+function ai:getPockets()
+  return self._pockets
+end
+
+function ai:getRandomPocket(exclude)
+  local pocket
+  while true do
+    pocket = self._pockets[math.random(#self._pockets)]
+    if pocket ~= exclude then
+      return pocket
+    end
+  end
 end
 
 return ai

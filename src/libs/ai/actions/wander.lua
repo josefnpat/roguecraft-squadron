@@ -15,9 +15,10 @@ function action:updateFixed(ai)
   local user_id = ai:getUser().id
   for _,object in pairs(ai:getStorage().objects) do
     if object.user == user_id then
-      if self.last_wander[object.index] == nil and not libs.net.hasTarget(object) then
+      if self.last_wander[object.index] == nil and not libs.net.hasMoveTarget(object) then
         self.last_wander[object.index] = math.random()*5+5
         table.insert(actions,function()
+          if libs.net.hasMoveTarget(object) then return end
           libs.net.moveToTarget(
             ai:getServer(),
             object,

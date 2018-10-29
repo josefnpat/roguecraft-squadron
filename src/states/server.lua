@@ -881,6 +881,7 @@ function server:newGame()
     if user.ai then
       -- todo: balance players on pockets after 8
       user.ai:setCurrentPocket(pockets[user_count])
+      user.ai:setPockets(pockets)
     end
     local storage = self.lovernet:getStorage()
     if storage.config.everyShipUnlocked then
