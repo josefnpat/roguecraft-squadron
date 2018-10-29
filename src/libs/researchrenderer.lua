@@ -19,7 +19,6 @@ function researchrenderer.load(loadAssets,preset_value)
     local type = researchrenderer.getUnlockName(current_object_type.type)
     local object = {
       type = type,
-      icon = current_object_type.icons[1],
       valid = function(object_type,current_research)
         return current_object_type.type == object_type.type
       end,
@@ -32,6 +31,9 @@ function researchrenderer.load(loadAssets,preset_value)
         return current
       end,
     }
+    if loadAssets then
+      object.icon = current_object_type.icons[1]
+    end
     object.loc = {
       name="Unlock",
     }

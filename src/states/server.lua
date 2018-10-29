@@ -872,6 +872,10 @@ function server:newGame()
   end
   self.lovernet:getStorage().ai_are_connected = true
 
+  if headless then
+    libs.researchrenderer.load(false,self.lovernet:getStorage().config.preset)
+  end
+
   local user_count = 0
   local researchableObjects
   for peer,user in pairs(self.lovernet:getUsers()) do
