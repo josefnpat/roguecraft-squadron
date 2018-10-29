@@ -28,6 +28,8 @@ server._genResourcesDefault = {
 server._maxUserUnits = math.huge
 server.maxPlayers = 8
 
+server._bump_cell_size = 64
+
 function server.setupActions(storage)
 
   server.actions = {}
@@ -249,6 +251,11 @@ function server.createObject(storage,type_index,x,y,user)
   if object_type.health then
     object.health = object_type.health.max
   end
+
+  local object_type = libs.objectrenderer.getType(object.type)
+  local size = (object_type.fow or 1)*1024
+  storage.world:add(object,x-size/2,y-size/2,size,size)
+
   table.insert(storage.objects,object)
   if user then
     user.count = (user.count or 0) + 1
@@ -833,6 +840,9 @@ function server:resetGame()
   self.lovernet:getStorage().global_chat_index = 0
 
   self.last_user_index = 0
+
+  self.lovernet:getStorage().world = libs.bump.newWorld(server._bump_cell_size)
+
 end
 
 function server:newGame()
@@ -1071,14 +1081,18 @@ function server:changeResource(user,restype,amount)
   user.resources[restype] = math.min(math.max(value,0),cargo)
 end
 
-function server:attackNearby(object)
+function server:attackNearby(object,world)
   if object.user ~= nil and not libs.net.hasTarget(object) then
     assert(object.target==nil)
     local object_type = libs.objectrenderer.getType(object.type)
     if object_type.shoot then
       local storage = self.lovernet:getStorage()
       local nearby = {}
-      for _,tobject in pairs(storage.objects) do
+
+      local cx,cy = libs.net.getCurrentLocation(object)
+      local items, len = world:queryPoint(cx,cy)
+
+      for _,tobject in pairs(items) do
         if tobject.index ~= object.index and tobject.user ~= nil and not self:objectsAreAllies(tobject,object) then
           if libs.net.distance(object,tobject,love.timer.getTime()) < object_type.shoot.aggression then
             table.insert(nearby,tobject)
@@ -1101,14 +1115,18 @@ function server:attackNearby(object)
   end
 end
 
-function server:collectNearby(object)
+function server:collectNearby(object,world)
   if object.user ~= nil and not libs.net.hasTarget(object) then
     assert(object.target==nil)
     local object_type = libs.objectrenderer.getType(object.type)
     if object_type.collect ~= nil then
       local storage = self.lovernet:getStorage()
       local nearby = {}
-      for _,tobject in pairs(storage.objects) do
+
+      local cx,cy = libs.net.getCurrentLocation(object)
+      local items, len = world:queryPoint(cx,cy)
+
+      for _,tobject in pairs(items) do
 
         local tobject_type = libs.objectrenderer.getType(tobject.type)
 
@@ -1142,7 +1160,7 @@ function server:collectNearby(object)
   end
 end
 
-function server:explodeNearby(object)
+function server:explodeNearby(object,world)
   local object_type = libs.objectrenderer.getType(object.type)
   if object_type.explode then
 
@@ -1150,7 +1168,10 @@ function server:explodeNearby(object)
     local explode = false
     local nearby = {}
 
-    for _,tobject in pairs(storage.objects) do
+    local cx,cy = libs.net.getCurrentLocation(object)
+    local items, len = world:queryPoint(cx,cy)
+
+    for _,tobject in pairs(items) do
       if tobject.health then
 
         local distance = libs.net.distance(object,tobject,love.timer.getTime())
@@ -1220,6 +1241,15 @@ function server:update(dt)
   self.lovernet:update(dt)
   local storage = self.lovernet:getStorage()
 
+  for _,object in pairs(storage.objects) do
+    local object_type = libs.objectrenderer.getType(object.type)
+    if object_type.speed then
+      local size = (object_type.fow or 1)*1024
+      local x,y = libs.net.getCurrentLocation(object)
+      storage.world:update(object,x-size/2,y-size/2)
+    end
+  end
+
   if storage.config.game_started then
     if not libs.net.hasUserObjects(storage.objects) then
       server:resetGame()
@@ -1265,9 +1295,9 @@ function server:update(dt)
       object.target = nil
     end
 
-    self:collectNearby(object)
-    self:attackNearby(object)
-    self:explodeNearby(object)
+    self:collectNearby(object,sto`rage.world)
+    self:attackNearby(object,storage.world)
+    self:explodeNearby(object,storage.world)
 
     if user then
 
@@ -1302,7 +1332,7 @@ function server:update(dt)
 
       end
 
-    end
+    end -- end user
 
     if target then
 
@@ -1387,6 +1417,7 @@ function server:update(dt)
 
     if libs.net.objectShouldBeRemoved(object) then
       table.remove(storage.objects,object_index)
+      storage.world:remove(object)
       if user then
         local object_type = libs.objectrenderer.getType(object.type)
         user.count = user.count - 1
@@ -1401,6 +1432,7 @@ function server:update(dt)
 
       end
     end
+
   end
 
   for bullet_index,bullet in pairs(storage.bullets) do
