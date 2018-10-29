@@ -1295,7 +1295,7 @@ function server:update(dt)
       object.target = nil
     end
 
-    self:collectNearby(object,sto`rage.world)
+    self:collectNearby(object,storage.world)
     self:attackNearby(object,storage.world)
     self:explodeNearby(object,storage.world)
 
