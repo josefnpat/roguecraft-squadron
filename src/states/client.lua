@@ -1019,7 +1019,7 @@ function client:keypressed(key)
     end
   end
 
-  if self.gamestatus:isStarted() then
+  if self.gamestatus:isStarted() and not self.chat:getActive() then
     if key == "r" then
        self.mpresearch:toggleActive()
     end
