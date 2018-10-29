@@ -18,6 +18,7 @@ function love.load(arg)
       bulletrenderer = require"libs.bulletrenderer",
       ai = require"libs.ai",
       mppresets = require"libs.mppresets",
+      bump = require"libs.bump",
     }
 
     libs.objectrenderer.load(false)
