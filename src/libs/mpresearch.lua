@@ -117,7 +117,7 @@ function mpresearch:draw(user,resources)
     love.graphics.rectangle("line",x_offset,y_offset,
       self:getWidth(),self:getHeight())
       local s = ""
-      for i,v in pairs(user.research) do
+      for i,v in pairs(user.research or {}) do
         s = s .. i .. ": "..tostring(v) .. "\n"
         if type(v) == "table" then
           for j,w in pairs(v) do
