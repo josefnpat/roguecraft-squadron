@@ -79,8 +79,6 @@ function client:init()
     end
   end
 
-  self.tutorial = libs.tutorial.new()
-
   self.buttonbar:addAction(
     love.graphics.newImage("assets/hud/buttonbar/menu.png"),
     function()
@@ -176,6 +174,8 @@ function client:enter()
   self.soundtrack:setVolume(settings:read("music_vol"))
   self.soundtrack:randomTrack()
   self.soundtrack:play()
+
+  self.tutorial = libs.tutorial.new()
 
 end
 
