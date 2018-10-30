@@ -465,6 +465,9 @@ function client:update(dt)
           end
           if i == "user" and v ~= object.user then
             object.user = v
+            if self:isOnCamera(object) then
+              libs.sfx.play('action.takeover')
+            end
             self.selection:onChange()
           end
           -- back to work
@@ -474,6 +477,9 @@ function client:update(dt)
             -- exceptions
             if i == "health_repair" then
               object["health"] = v
+              if self:isOnCamera(object) then
+                libs.sfx.loop('action.repair')
+              end
             else
               object[i] = v
             end
@@ -523,6 +529,10 @@ function client:update(dt)
             type=sbullet.b.type,
           }
           table.insert(self.bullets,bullet)
+          if self:isOnCamera(bullet) then
+            local object_type = libs.objectrenderer.getType(bullet.type)
+            libs.sfx.play('bullet.'..object_type.shoot.type)
+          end
         end
       end
 
@@ -616,6 +626,18 @@ function client:update(dt)
         object.gather = nil
       end
       self.gather:add(object.dx,object.dy,object.user)
+      if self:isOnCamera(object) then
+        local object_type = libs.objectrenderer.getType(object.type)
+        if object_type.material_gather then
+          libs.sfx.loop('collect.material')
+        elseif object_type.ore_gather then
+          libs.sfx.loop('collect.ore')
+        elseif object_type.crew_gather then
+          libs.sfx.loop('collect.crew')
+        elseif object_type.ore_convert then
+          libs.sfx.loop('action.refine')
+        end
+      end
     end
 
     if self.user and self.user.id == object.user and object.in_combat then
@@ -655,6 +677,17 @@ function client:update(dt)
       for i = 1,explosion_count do
         self.explosions:add(object,explosion_range)
       end
+      if self:isOnCamera(object) then
+        if object_type.material_supply then
+          libs.sfx.play('remove.material_supply')
+        elseif object_type.ore_supply then
+          libs.sfx.play('remove.ore_supply')
+        elseif object_type.crew_supply then
+          libs.sfx.play('remove.crew_supply')
+        elseif object_type.health then
+          libs.sfx.play('remove.health')
+        end
+      end
       table.remove(self.objects,object_index)
     end
   end
@@ -676,6 +709,9 @@ function client:update(dt)
     if not keep then
       self.explosions:add(bullet,32)
       table.remove(self.bullets,bullet_index)
+      if self:isOnCamera(bullet) then
+        libs.sfx.play('remove.health')
+      end
     end
   end
 

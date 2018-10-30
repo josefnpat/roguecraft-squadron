@@ -7,15 +7,12 @@ return function()
     speed = 75,
     health = {max = 50,},
     shoot = {
+      type = "laser",
       reload = 0.25,
       damage = 2,
       speed = 200,
       range = 200,
       aggression = 400,
-      sfx = {
-        construct = "laser",
-        destruct = "collision"
-      },
     },
     build_time = 20,
   }

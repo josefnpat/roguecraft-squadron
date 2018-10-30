@@ -19,6 +19,7 @@ function mpdisconnect.new(init)
   self._enabled_dt = 0
   self._enabled_max = 5
   self._halt = false
+  self._gstatus = nil
 
   self.rotate = 0
   self.surrender = libs.button.new{
@@ -39,11 +40,17 @@ function mpdisconnect.new(init)
 end
 
 function mpdisconnect:setWin()
+  if not self._gstatus then
+    libs.sfx.play('mp.victory')
+  end
   self._gstatus = libs.i18n("mission.mpdisconnect.victory")
   self:_start()
 end
 
 function mpdisconnect:setLose()
+  if not self._gstatus then
+    libs.sfx.play('mp.defeat')
+  end
   self._gstatus = libs.i18n("mission.mpdisconnect.defeat")
   self:_start()
 end

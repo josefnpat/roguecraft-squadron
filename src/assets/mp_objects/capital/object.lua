@@ -9,16 +9,12 @@ return function()
     speed = 75,
     health = {max = 800,},
     shoot = {
-      image = "missile",
+      type = "missile",
       reload = 0.25*5,
       damage = 8*5,
       speed = 800,
       range = 500,
       aggression = 800,
-      sfx = {
-        construct = "laser",
-        destruct = "collision"
-      },
     },
     build_time = 320,
     subdangle_speed = 0.5,

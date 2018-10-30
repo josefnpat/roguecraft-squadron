@@ -10,16 +10,12 @@ return function()
     speed = 400,
     health = {max = 1,},
     shoot = {
-      image = "missile",
+      type = "missile",
       reload = 2,
       damage = 1,
       speed = 300,
       range = 100,
       aggression = 400,
-      sfx = {
-        construct = "laser",
-        destruct = "collision"
-      },
     },
     default_level = 1,
     build_time = 5,
