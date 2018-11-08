@@ -47,27 +47,33 @@ net.aiDifficultyScale = 50
 
 net.aiDifficulty = {
   {
-    text = "Chew Toy",
+    text = "Fg Off (I)",
+    full_text = "Flying Officer",
     apm = function() return net.aiDifficultyBase+net.aiDifficultyScale*0 end,
   },
   {
-    text = "Scrub",
+    text = "Flt Lt (II)",
+    full_text = "Flight Lieutenant",
     apm = function() return net.aiDifficultyBase+net.aiDifficultyScale*1 end,
   },
   {
-    text = "Awkward",
+    text = "Sqn Ldr (III)",
+    full_text = "Squadron Leader",
     apm = function() return net.aiDifficultyBase+net.aiDifficultyScale*2 end,
   },
   {
-    text = "Bananas",
+    text = "Wg Cdr (IV)",
+    full_text = "Wing Commander",
     apm = function() return net.aiDifficultyBase+net.aiDifficultyScale*3 end,
   },
   {
-    text = "Ragequit",
+    text = "Gp Capt (V)",
+    full_text = "Group Captain",
     apm = function() return net.aiDifficultyBase+net.aiDifficultyScale*4 end,
   },
   {
-    text = "No Ice Cream",
+    text = "Air Cdre (VI)",
+    full_text = "Air Commodore",
     apm = function() return net.aiDifficultyBase+net.aiDifficultyScale*5 end,
   },
 }
