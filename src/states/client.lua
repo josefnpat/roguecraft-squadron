@@ -396,6 +396,7 @@ function client:update(dt)
     local previous_level = self.level
     self.level = self.lovernet:getCache(libs.net.op.get_level)
     if self.mpgamemodes:getCurrentGamemode() and self.level.id ~= nil and self.level.id ~= previous_level.id then
+      -- next level
       self.mpgamemodes:setCurrentLevel(self.level.id)
       self.mpgamemodes:loadCurrentLevel()
       local level = self.mpgamemodes:getCurrentLevelData()
@@ -403,6 +404,7 @@ function client:update(dt)
       self.focusObject = nil
       self.fow:clearMap()
       self.lovernet:pushData(libs.net.op.get_players)
+      self.soundtrack:nextTrack()
     end
     self.lovernet:clearCache(libs.net.op.get_level)
   end
