@@ -99,7 +99,7 @@ function mpdisconnect:draw()
       mpdisconnect.planet:getWidth()/2,
       mpdisconnect.planet:getHeight()/2)
     love.graphics.setFont(fonts.title)
-    love.graphics.printf("["..self._gstatus.."]",
+    love.graphics.printf(self._gstatus,
       0,(love.graphics.getHeight()-fonts.title:getHeight())/2,
       love.graphics.getWidth(),"center")
     love.graphics.setFont(old_font)
