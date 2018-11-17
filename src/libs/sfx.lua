@@ -25,6 +25,11 @@ function sfx.get(name)
   return sfx._data[name].sources[math.random(#sfx._data[name].sources)]
 end
 
+function sfx.mute(val)
+  assert(type(val)=="boolean")
+  sfx._mute = val
+end
+
 function sfx.play(name,variation)
   for _,v in pairs(sfx._data[name].sources) do
     v:stop()
@@ -66,18 +71,20 @@ function sfx.loopGroup(name,variation)
 end
 
 function sfx.playVariation(name,variation)
-  local current_source = sfx._data[name].sources[math.random(#sfx._data[name].sources)]
-  if sfx._data[name].group == "vo" then
-    current_source:setVolume(settings:read("voiceover_vol"))
-  else
-    current_source:setVolume(settings:read("sfx_vol"))
+  if not sfx._mute then
+    local current_source = sfx._data[name].sources[math.random(#sfx._data[name].sources)]
+    if sfx._data[name].group == "vo" then
+      current_source:setVolume(settings:read("voiceover_vol"))
+    else
+      current_source:setVolume(settings:read("sfx_vol"))
+    end
+    if variation then
+      current_source:setPitch( (1-variation)+math.random()*variation*2 )
+    else
+      current_source:setPitch(1)
+    end
+    love.audio.play(current_source)
   end
-  if variation then
-    current_source:setPitch( (1-variation)+math.random()*variation*2 )
-  else
-    current_source:setPitch(1)
-  end
-  love.audio.play(current_source)
 end
 
 function sfx.skipWarning(name)
