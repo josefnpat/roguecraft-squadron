@@ -1280,9 +1280,8 @@ function client:draw()
     if self.buildqueue:showPanel() then
       self.buildqueue:drawPanel()
     end
+    self.buttonbar:draw()
   end
-
-  self.buttonbar:draw()
 
   self.notif:draw()
   if self.gamestatus:isStarted() then
