@@ -5,7 +5,7 @@ function vn.new(init)
   init = init or {}
 
   self._run = init.run or true
-  self.getRun = vn.getRun
+  self.active = vn.active
   self.update = vn.update
   self._frames = {}
   self.addFrame = vn.addFrame
@@ -129,7 +129,7 @@ function vn:draw()
   end
 end
 
-function vn:getRun()
+function vn:active()
   return self._run
 end
 
