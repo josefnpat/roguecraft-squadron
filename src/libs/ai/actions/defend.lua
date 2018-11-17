@@ -35,7 +35,7 @@ function action:updateFixed(ai)
         table.insert(user_objects_shoot,object)
       end
     end
-    if object.user and not ai:getServer():objectIsAlly(ai:getUser(),object) then
+    if object.user and not object.remove and not ai:getServer():objectIsAlly(ai:getUser(),object) then
       if object.target then
         table.insert(other_objects_with_targets,object)
       end
