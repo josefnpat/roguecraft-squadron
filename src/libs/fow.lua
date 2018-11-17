@@ -1,5 +1,7 @@
 local fow = {}
 
+fow.fow_img = love.graphics.newImage("assets/fow.png")
+
 function fow.new(init)
   init = init or {}
   local self = {}
@@ -7,6 +9,7 @@ function fow.new(init)
   self.camera = init.camera
 
   self.getMap = fow.getMap
+  self.clearMap = fow.clearMap
   self.resize = fow.resize
   self.draw = fow.draw
   self.drawSingle = fow.drawSingle
@@ -17,7 +20,6 @@ function fow.new(init)
 
   self.fow_map = {}
   self:resize()
-  self.fow_img = love.graphics.newImage("assets/fow.png")
   self.fow_mult = 1.5
   self.resolution = 256
   self.resolution_mult = 1024/self.resolution/2
@@ -41,6 +43,10 @@ function fow:getMap()
   return self.fow_map
 end
 
+function fow:clearMap()
+  self.fow_map = {}
+end
+
 function fow:resize()
   self.fow = love.graphics.newCanvas(love.graphics.getWidth(),love.graphics.getHeight())
 end
@@ -55,10 +61,10 @@ function fow:drawSingle(fow_obj_x,fow_obj_y,fow_scale,fow_rot,fow_alpha)
   if self:isOnCamera(fow_obj_x,fow_obj_y,fow_scale) then
 
     if settings:read("fow_quality") == "img_canvas" then
-      love.graphics.draw(self.fow_img,x,y,
+      love.graphics.draw(fow.fow_img,x,y,
         fow_rot,fow_scale,fow_scale,
-        self.fow_img:getWidth()/2,
-        self.fow_img:getHeight()/2)
+        fow.fow_img:getWidth()/2,
+        fow.fow_img:getHeight()/2)
     else
       love.graphics.setColor(0,0,0,fow_alpha)
       love.graphics.circle("fill",x,y,512*fow_scale)
@@ -123,10 +129,10 @@ function fow:draw(objects,explosions,user,players)
       local y = explosion.y-self.camera.y+love.graphics.getHeight()/2
 
       if settings:read("fow_quality") == "img_canvas" then
-        love.graphics.draw(self.fow_img,x,y,
+        love.graphics.draw(fow.fow_img,x,y,
           explosion.fow_rot,fow_scale,fow_scale,
-          self.fow_img:getWidth()/2,
-          self.fow_img:getHeight()/2)
+          fow.fow_img:getWidth()/2,
+          fow.fow_img:getHeight()/2)
       else
         love.graphics.setColor(0,0,0)
         love.graphics.circle("fill",x,y,512*fow_scale)
@@ -151,7 +157,9 @@ function fow:updateAll(dt,objects,user,players)
       self.fow_map[rx] = self.fow_map[rx] or {}
       if self.fow_map[rx][ry] == nil then
         for _,object in pairs(objects) do
-          if libs.net.isOnSameTeam(players,object.user,user.id) then
+          local same_team = libs.net.isOnSameTeam(players,object.user,user.id)
+          local removed = libs.net.objectShouldBeRemoved(object)
+          if same_team and not removed then
             local object_type = libs.objectrenderer.getType(object.type)
             local distance = math.sqrt( (rx-object.dx)^2 + (ry-object.dy)^2 )
             if distance < (object_type.fow or 1)*512 then
