@@ -395,7 +395,7 @@ function client:update(dt)
   if self.lovernet:getCache(libs.net.op.get_level) then
     local previous_level = self.level
     self.level = self.lovernet:getCache(libs.net.op.get_level)
-    if self.level.id ~= previous_level.id then
+    if self.mpgamemodes:getCurrentGamemode() and self.level.id ~= nil and self.level.id ~= previous_level.id then
       self.mpgamemodes:setCurrentLevel(self.level.id)
       self.mpgamemodes:loadCurrentLevel()
       local level = self.mpgamemodes:getCurrentLevelData()
@@ -612,7 +612,7 @@ function client:update(dt)
 
     if self.level.id then
       local level = self.mpgamemodes:getCurrentLevelData()
-      if not level.next_level then
+      if level and not level.next_level then
         if self.gamestatus:isPlayerLose(self.user) then
           self.mpdisconnect:setLose()
         elseif self.gamestatus:isPlayerWin(self.user) then
