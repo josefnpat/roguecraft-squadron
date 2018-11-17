@@ -1,13 +1,16 @@
 local mpgamemodes = {}
 
-mpgamemodes._gamemodes = {}
-mpgamemodes._dir = "assets/mp_gamemodes/"
-for _,filename in pairs(file.getAllDirectoryItems(mpgamemodes._dir)) do
-  local gamemode = require(filename)
-  -- todo: fix for headless
-  gamemode.image = love.graphics.newImage(filename.."/image.png")
-  gamemode.dir = filename
-  table.insert(mpgamemodes._gamemodes,gamemode)
+function mpgamemodes.load(loadAssets)
+  mpgamemodes._gamemodes = {}
+  mpgamemodes._dir = "assets/mp_gamemodes/"
+  for _,filename in pairs(file.getAllDirectoryItems(mpgamemodes._dir)) do
+    local gamemode = require(filename)
+    if loadAssets then
+      gamemode.image = love.graphics.newImage(filename.."/image.png")
+    end
+    gamemode.dir = filename
+    table.insert(mpgamemodes._gamemodes,gamemode)
+  end
 end
 
 function mpgamemodes.new(init)
@@ -43,7 +46,6 @@ function mpgamemodes:getGamemodeById(id)
 end
 
 function mpgamemodes:getCurrentGamemode()
-  assert(self._currentGamemode)
   return self._currentGamemode
 end
 
@@ -68,7 +70,6 @@ function mpgamemodes:loadCurrentLevel()
 end
 
 function mpgamemodes:getCurrentLevelData()
-  assert(self._currentLevelData)
   return self._currentLevelData
 end
 

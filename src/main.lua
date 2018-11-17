@@ -16,6 +16,8 @@ function love.load(arg)
       objectrenderer = require"libs.objectrenderer",
       researchrenderer = require"libs.researchrenderer",
       bulletrenderer = require"libs.bulletrenderer",
+      mpgamemodes = require"libs.mpgamemodes",
+      levelshared = require"libs.levelshared",
       ai = require"libs.ai",
       mppresets = require"libs.mppresets",
       bump = require"libs.bump",
@@ -23,6 +25,7 @@ function love.load(arg)
 
     libs.objectrenderer.load(false)
     libs.bulletrenderer.load(false)
+    libs.mpgamemodes.load(false)
 
     states = {
       server = require "states.server",
@@ -95,6 +98,10 @@ function love.load(arg)
   loader:add("renderers",function()
     libs.objectrenderer.load(true)
     libs.bulletrenderer.load(true)
+  end)
+
+  loader:add("game modes",function()
+    libs.mpgamemodes.load(true)
   end)
 
   loader:add("some space",function()
