@@ -12,7 +12,10 @@ function mpconnect.new(init)
   self.preset = init.preset or #libs.mppresets.getPresets()
   self.transmitRate = init.transmitRate or 1
   self.points = init.points or 1
+  self.mpgamemodes = init.mpgamemodes
+  self.target_gamemode = self.mpgamemodes:getGamemodes()[1].id
 
+  self.generateButtons = mpconnect.generateButtons
   self.updateData = mpconnect.updateData
   self.update = mpconnect.update
   self.draw = mpconnect.draw
@@ -21,6 +24,7 @@ function mpconnect.new(init)
   self.setEveryShipUnlocked = mpconnect.setEveryShipUnlocked
   self.setPreset = mpconnect.setPreset
   self.setPoints = mpconnect.setPoints
+  self.setGamemode = mpconnect.setGamemode
   self.setTransmitRate = mpconnect.setTransmitRate
   self.setUser = mpconnect.setUser
   self.validateVersion = mpconnect.validateVersion
@@ -42,6 +46,29 @@ function mpconnect.new(init)
     end,
   }
 
+  self.gamemodes = {}
+  for _,gamemode in pairs(self.mpgamemodes:getGamemodes()) do
+    local gamemode_button = libs.button.new{
+      text=gamemode.name,
+      onClick=function()
+        self.target_gamemode = gamemode.id
+      end,
+    }
+    table.insert(self.gamemodes,gamemode_button)
+  end
+
+  self.gamemodeTargetButton = libs.button.new{
+    text="Start",
+    onClick=function()
+      self.lovernet:pushData(libs.net.op.set_config,{d={gamemode=self.target_gamemode}})
+    end,
+  }
+
+  return self
+end
+
+function mpconnect:generateButtons()
+
   self.buttons = {}
 
   self.presetButton = libs.button.new{
@@ -61,46 +88,61 @@ function mpconnect.new(init)
   }
   table.insert(self.buttons,self.transmitRatesButton)
 
-  table.insert(self.buttons,libs.button.new{
-    text="Add AI",
+  -- todo: add when there's a way to reset the server config
+  --[[
+  self.changeGameModeButton = libs.button.new{
+    text="Change Game Mode",
     onClick=function()
-      self.lovernet:pushData(libs.net.op.set_config,{d={ai=self.ai_count+1}})
-    end,
-  })
-
-  table.insert(self.buttons,libs.button.new{
-    text="Remove AI",
-    onClick=function()
-      self.lovernet:pushData(libs.net.op.set_config,{d={ai=self.ai_count-1}})
-    end,
-  })
-
-  table.insert(self.buttons,libs.button.new{
-    disabled=not isRelease(),
-    text=function() return self.creative and "Build Mode [Creative]" or "Build Mode [Normal]" end,
-    onClick=function()
-      self.lovernet:pushData(libs.net.op.set_config,{d={creative=not self.creative}})
-    end,
-  })
-
-  table.insert(self.buttons,libs.button.new{
-    disabled=not isRelease(),
-    text=function() return self.everyShipUnlocked and "Research [All Unlocked]" or "Research [Normal]" end,
-    onClick=function()
-      self.lovernet:pushData(libs.net.op.set_config,{d={everyShipUnlocked=not self.everyShipUnlocked}})
-    end,
-  })
-
-  self.pointsButton = libs.button.new{
-    disabled=not isRelease(),
-    text="Points",
-    onClick=function()
-      self.lovernet:pushData(libs.net.op.set_config,{d={points=self.points+1}})
+      self.lovernet:pushData(libs.net.op.set_config,{d={gamemode="nil"}})
     end,
   }
-  table.insert(self.buttons,self.pointsButton)
+  table.insert(self.buttons,self.changeGameModeButton)
+  --]]
 
-  return self
+  local gamemode_object = self.mpgamemodes:getGamemodeById(self.gamemode)
+  if gamemode_object.configurable then
+
+    table.insert(self.buttons,libs.button.new{
+      text="Add AI",
+      onClick=function()
+        self.lovernet:pushData(libs.net.op.set_config,{d={ai=self.ai_count+1}})
+      end,
+    })
+
+    table.insert(self.buttons,libs.button.new{
+      text="Remove AI",
+      onClick=function()
+        self.lovernet:pushData(libs.net.op.set_config,{d={ai=self.ai_count-1}})
+      end,
+    })
+
+    table.insert(self.buttons,libs.button.new{
+      disabled=not isRelease(),
+      text=function() return self.creative and "Build Mode [Creative]" or "Build Mode [Normal]" end,
+      onClick=function()
+        self.lovernet:pushData(libs.net.op.set_config,{d={creative=not self.creative}})
+      end,
+    })
+
+    table.insert(self.buttons,libs.button.new{
+      disabled=not isRelease(),
+      text=function() return self.everyShipUnlocked and "Research [All Unlocked]" or "Research [Normal]" end,
+      onClick=function()
+        self.lovernet:pushData(libs.net.op.set_config,{d={everyShipUnlocked=not self.everyShipUnlocked}})
+      end,
+    })
+
+    self.pointsButton = libs.button.new{
+      disabled=not isRelease(),
+      text="Points",
+      onClick=function()
+        self.lovernet:pushData(libs.net.op.set_config,{d={points=self.points+1}})
+      end,
+    }
+    table.insert(self.buttons,self.pointsButton)
+
+  end
+
 end
 
 function mpconnect:updateData(config,players)
@@ -127,13 +169,25 @@ function mpconnect:updateData(config,players)
 end
 
 function mpconnect:update(dt)
-  self.start:update(dt)
-  self.chat:smallHeight()
-  for _,button in pairs(self.buttons) do
-    button:update(dt)
-  end
-  for _,player_data in pairs(self._data) do
-    player_data:update(dt)
+  if self.gamemode == nil then
+    for _,button in pairs(self.gamemodes) do
+      button:update(dt)
+    end
+    self.gamemodeTargetButton:update(dt)
+  else
+
+    local gamemode_object = self.mpgamemodes:getGamemodeById(self.gamemode)
+    for _,player_data in pairs(self._data) do
+      player_data:setConfigurable(gamemode_object.configurable)
+    end
+    self.start:update(dt)
+    self.chat:smallHeight()
+    for _,button in pairs(self.buttons) do
+      button:update(dt)
+    end
+    for _,player_data in pairs(self._data) do
+      player_data:update(dt)
+    end
   end
 end
 
@@ -152,17 +206,34 @@ end
 function mpconnect:setPreset(preset_value)
   self.preset = preset_value
   local preset = libs.mppresets.getPresets()[preset_value]
-  self.presetButton:setText(preset.name)
+  if self.presetButton then
+    self.presetButton:setText(preset.name)
+  end
 end
 
 function mpconnect:setPoints(points_value)
   self.points = points_value
-  self.pointsButton:setText("Command Cap ["..libs.net.points[points_value].text.."]")
+  if self.pointsButton then
+    self.pointsButton:setText("Command Cap ["..libs.net.points[points_value].text.."]")
+  end
+end
+
+function mpconnect:setGamemode(gamemode)
+  local gamemode_object = self.mpgamemodes:getGamemodeById(gamemode)
+  local previous_gamemode = self.gamemode
+  self.gamemode = gamemode
+  if self.gamemode ~= previous_gamemode then
+    self:generateButtons()
+    self.mpgamemodes:setCurrentGamemode(gamemode_object)
+  end
+  local gamemode_object = self.mpgamemodes:getGamemodeById(gamemode)
 end
 
 function mpconnect:setTransmitRate(value)
   self.transmitRate = value
-  self.transmitRatesButton:setText("Network ["..libs.net.transmitRates[value].text.."]")
+  if self.transmitRatesButton then
+    self.transmitRatesButton:setText("Network ["..libs.net.transmitRates[value].text.."]")
+  end
 end
 
 function mpconnect:setUser(user_id)
@@ -222,7 +293,51 @@ function mpconnect:draw(config,players,user_count)
 
       libs.loading.draw("Waiting for server to respond ...")
 
+    elseif self.gamemode == nil then
+
+      local paddingHorizontal = 32
+      local paddingVertical = 4
+
+      local buttonWidth = 256
+      local buttonHeight = 40
+
+      local gamemode_object = self.mpgamemodes:getGamemodeById(self.target_gamemode)
+      local x = (love.graphics.getWidth() - gamemode_object.image:getWidth() - buttonWidth - paddingHorizontal)/2
+
+      local name_height = fonts.title:getHeight()
+      local image_height = gamemode_object.image:getHeight()
+      local desc_height = fonts.default:getHeight() -- w/e i'm lazy
+      local target_y = (love.graphics.getHeight() - name_height - image_height - desc_height)/2
+      love.graphics.draw(gamemode_object.image,x,target_y)
+      love.graphics.setFont(fonts.title)
+      dropshadow(gamemode_object.name,x,target_y+image_height)
+      love.graphics.setFont(fonts.default)
+      dropshadowf(gamemode_object.desc:gsub("\n"," "),x,target_y+image_height+name_height,gamemode_object.image:getWidth())
+
+      for button_index,button in pairs(self.gamemodes) do
+        button:setX(x+paddingHorizontal+gamemode_object.image:getWidth())
+        button:setY(target_y+(buttonHeight+paddingVertical)*(button_index-1))
+        button:setWidth(buttonWidth)
+        button:setHeight(buttonHeight)
+        button:draw()
+      end
+
+      local targetVerticalOffset = (name_height - buttonHeight)/2
+
+      self.gamemodeTargetButton:setX(x+gamemode_object.image:getWidth()-buttonWidth)
+      self.gamemodeTargetButton:setY(target_y+gamemode_object.image:getHeight()+targetVerticalOffset+paddingVertical)
+      self.gamemodeTargetButton:setWidth(buttonWidth)
+      self.gamemodeTargetButton:setHeight(buttonHeight)
+      self.gamemodeTargetButton:setDisabled(gamemode_object.disabled)
+      self.gamemodeTargetButton:setText(gamemode_object.disabled and "Coming Soon!" or "Start")
+      self.gamemodeTargetButton:draw()
+
     else
+
+      local gamemode_object = self.mpgamemodes:getGamemodeById(self.gamemode)
+      love.graphics.setFont(fonts.window_title)
+      dropshadowf("Game Mode: "..gamemode_object.name,0,32,love.graphics.getWidth(),"center")
+      love.graphics.setFont(fonts.default)
 
       local rows = {}
       for player_index,player_data in pairs(self._data) do

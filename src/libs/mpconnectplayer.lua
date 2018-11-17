@@ -15,6 +15,7 @@ function mpconnectplayer.new(init)
   self.update = mpconnectplayer.update
   self.getWidth = mpconnectplayer.getWidth
   self.getHeight = mpconnectplayer.getHeight
+  self.setConfigurable = mpconnectplayer.setConfigurable
   self._type = init.type or "user"
   self._user_name = init.user_name or "Loading ..."
   self._user_id = init.user_id or 0
@@ -22,6 +23,7 @@ function mpconnectplayer.new(init)
   self._player_index = init.player_index or 0
   self._team = init.team or 1
   self._diff = init.diff or 1
+  self._configurable = init.configurable or false
   self._inner_padding = 8
   self._outer_padding = 4
 
@@ -75,10 +77,13 @@ function mpconnectplayer:draw(x,y)
     0,scale,scale)
   local text = self._user_name.."\n"..(self._ready and "[Ready]" or "")
   dropshadowf(text,x,y+image:getHeight()*scale+32,self:getWidth(),"center")
-  self._changeTeam:setX(target_x)
-  self._changeTeam:setY(target_y + target_height - self._changeTeam:getHeight())
-  self._changeTeam:setWidth(self._changeTeam:getHeight())
-  self._changeTeam:draw()
+
+  if self._configurable then
+    self._changeTeam:setX(target_x)
+    self._changeTeam:setY(target_y + target_height - self._changeTeam:getHeight())
+    self._changeTeam:setWidth(self._changeTeam:getHeight())
+    self._changeTeam:draw()
+  end
 
   if self._changeDiff then
     self._changeDiff:setX(target_x)
@@ -90,7 +95,9 @@ function mpconnectplayer:draw(x,y)
 end
 
 function mpconnectplayer:update(dt)
-  self._changeTeam:update(dt)
+  if self._configurable then
+    self._changeTeam:update(dt)
+  end
   if self._changeDiff then
     self._changeDiff:update(dt)
   end
@@ -102,6 +109,10 @@ end
 
 function mpconnectplayer:getHeight()
   return 192+64+self._inner_padding*2
+end
+
+function mpconnectplayer:setConfigurable(val)
+  self._configurable = val
 end
 
 return mpconnectplayer

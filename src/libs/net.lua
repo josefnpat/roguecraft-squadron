@@ -1,5 +1,7 @@
 local net = {}
 
+net.next_level_t = 5
+
 function net.clearCache()
   net.cache = {
     getCurrentLocation = {},
@@ -13,6 +15,7 @@ net.op = {
   get_user =            'u',
   get_config =          'f',
   set_config =          'h',
+  get_level =           'e',
   get_players =         'i',
   set_players =         'j',
   get_research =        'z',
@@ -296,7 +299,7 @@ function net.getObjectByIndex(objects,index)
 end
 
 function net.objectShouldBeRemoved(object)
-  if object.remove then
+  if object.remove or object.remove_no_drop then
     return true
   end
   if object.health and object.health <= 0 then
@@ -357,12 +360,14 @@ function net.userOwnsObject(user,object)
 end
 
 function net.getPlayersAbstract(players,a)
+  assert(#players>0)
   if type(a) == "number" then
     for i,v in pairs(players) do
       if i == a + 1 then
         return v
       end
     end
+    return nil
   end
   return a
 end
@@ -372,6 +377,14 @@ function net.isOnSameTeam(players,a,b)
   if b == nil then return false end
   local user_a = net.getPlayersAbstract(players,a)
   local user_b = net.getPlayersAbstract(players,b)
+  if user_a == nil then
+    print('warning: player[a] "'..a..'" does not exist')
+    return false
+  end
+  if user_b == nil then
+    print('warning: player[b] "'..b..'" does not exist')
+    return false
+  end
   assert(user_a.team)
   assert(user_b.team)
   return user_a.team == user_b.team

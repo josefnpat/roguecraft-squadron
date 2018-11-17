@@ -28,23 +28,25 @@ function ai.new(init)
   self._server = init.server
   assert(self._server)
 
-  local diff = libs.net.aiDifficulty[self._user.config.diff]
-  self._aps = diff.apm()/60 -- actions per second
-  self._current_aps = 0
-  self._queue = {}
-
   self.getActions = ai.getActions
   self._actions = {}
   for action_index,action in pairs(ai.actions) do
     self._actions[action_index] = action.new{preset=self._storage.config.preset}
   end
 
+  self.setDiff = ai.setDiff
+  self.updateDiff = ai.updateDiff
   self.update = ai.update
   self.setCurrentPocket = ai.setCurrentPocket
   self.getCurrentPocket = ai.getCurrentPocket
   self.setPockets = ai.setPockets
   self.getPockets = ai.getPockets
   self.getRandomPocket = ai.getRandomPocket
+
+  self._diff = self._user.config.diff or 1
+  self:updateDiff()
+  self._current_aps = 0
+  self._queue = {}
 
   return self
 end
@@ -69,7 +71,18 @@ function ai:getActions()
   return self._actions
 end
 
+function ai:setDiff(diff)
+  self._diff = diff
+  self:updateDiff()
+end
+
+function ai:updateDiff()
+  local diff = libs.net.aiDifficulty[self._diff]
+  self._aps = diff.apm()/60 -- actions per second
+end
+
 function ai:update(dt)
+
   for _,action in pairs(self._actions) do
     action:update(dt,self)
   end

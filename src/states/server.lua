@@ -12,10 +12,12 @@ server._throttle_bullet_updates = math.huge
 
 server._debris_ratio = 0.5
 
+server._genMapScale = 1
+
 server._genMapDefault = {
-  scrap=100,
-  station=16,
-  asteroid=50,
+  scrap=100*server._genMapScale,
+  station=16*server._genMapScale,
+  asteroid=50*server._genMapScale,
   cat=1,
 }
 server._genEveryObjectOverride = false
@@ -418,11 +420,16 @@ function server:init()
     return storage.config
   end)
 
+  self.lovernet:addOp(libs.net.op.get_level)
+  self.lovernet:addProcessOnServer(libs.net.op.get_level,function(self,peer,arg,storage)
+    return storage.level
+  end)
+
   self.lovernet:addOp(libs.net.op.set_config)
   self.lovernet:addValidateOnServer(libs.net.op.set_config,{d='table'})
   self.lovernet:addProcessOnServer(libs.net.op.set_config,function(self,peer,arg,storage)
     for i,v in pairs(arg.d) do
-      storage.config[i] = v
+      storage.config[i] = v ~= "nil" and v or nil
     end
     server:validateConfig()
   end)
@@ -792,14 +799,22 @@ function server:resetGame()
 
   self._addUpdateProfile = {}
 
-  if self.lovernet:getStorage().config then
-    for ai_id = 1,self.lovernet:getStorage().config.ai do
+  local storage = self.lovernet:getStorage()
+
+  if storage.config then
+    for ai_id = 1,storage.config.ai do
       self.lovernet:_removeUser("ai_"..ai_id)
     end
-    self.lovernet:getStorage().ai_are_connected = nil
+    storage.ai_are_connected = nil
   end
+  if storage.ai_players then
+    for _,ai_player in pairs(storage.ai_players) do
+      ai_player.config = nil
+    end
+  end
+  storage.ai_players = {}
 
-  self.lovernet:getStorage().config = {
+  storage.config = {
     git_hash = git_hash,
     git_count = git_count,
     game_start=false,
@@ -811,84 +826,104 @@ function server:resetGame()
     ai=0,
   }
 
-  local ai_players = self.lovernet:getStorage().ai_players
-  if ai_players then
-    for _,ai_player in pairs(ai_players) do
-      ai_players.config = nil
-    end
-  end
-  self.lovernet:getStorage().ai_players = {}
+  storage.objects = {}
+  storage.objects_index = 0
 
-  local players = self.lovernet:getStorage().players
-  if players then
-    for _,player in pairs(players) do
-      player.config = nil
-    end
-  end
-  self.lovernet:getStorage().players = {}
+  storage.updates = {}
+  storage.global_update_index = 0
 
-  self.lovernet:getStorage().objects = {}
-  self.lovernet:getStorage().objects_index = 0
+  storage.bullets = {}
+  storage.global_bullet_index = 0
 
-  self.lovernet:getStorage().updates = {}
-  self.lovernet:getStorage().global_update_index = 0
-
-  self.lovernet:getStorage().bullets = {}
-  self.lovernet:getStorage().global_bullet_index = 0
-
-  self.lovernet:getStorage().chats = {}
-  self.lovernet:getStorage().global_chat_index = 0
+  storage.chats = {}
+  storage.global_chat_index = 0
 
   self.last_user_index = 0
 
-  self.lovernet:getStorage().world = libs.bump.newWorld(server._bump_cell_size)
+  storage.world = libs.bump.newWorld(server._bump_cell_size)
 
 end
 
-function server:newGame()
+function server:newGame(soft)
 
   print('Server starting new game')
 
+  local storage = self.lovernet:getStorage()
+  if not soft then
+    storage.gamemode = libs.mpgamemodes.new()
+    local gamemode_object = storage.gamemode:getGamemodeById(storage.config.gamemode)
+    storage.gamemode:setCurrentGamemode(gamemode_object)
+    storage.gamemode:loadCurrentLevel()
+    storage.level = {
+      id=storage.gamemode:getCurrentLevelData().id,
+    }
+  end
+
   local maptype = "spacedpockets"
   local pockets = self.maps[maptype].generate(
-    self.lovernet:getStorage(),
+    storage,
     server.maps.spacedpockets.config)
 
-  if self.lovernet:getStorage().config.ai then
-    local ai_players = self.lovernet:getStorage().ai_players
-    for ai_index = 1,self.lovernet:getStorage().config.ai do
-      local ai = ai_players[ai_index]
-      local peer = "ai_"..ai.config.ai
-      self.lovernet:_addUser(peer)
-      local user = self.lovernet:getUser(peer)
-      user.config = ai.config
-      user.ai = libs.ai.new{
-        user = user,
-        pockets = pockets,
-        storage = self.lovernet:getStorage(),
-        server = server,
-      }
+  local level = storage.gamemode:getCurrentLevelData()
+
+  if level.players_config_skel then
+    for _,user in pairs(self.lovernet:getUsers()) do
+      if not user.ai then
+        for i,v in pairs(level.players_config_skel) do
+          user.config[i] = v
+        end
+      end
     end
   end
-  self.lovernet:getStorage().ai_are_connected = true
 
-  if headless then
-    libs.researchrenderer.load(false,self.lovernet:getStorage().config.preset)
+  if level.ai_players then
+    storage.ai_players = level.ai_players
+    storage.config.ai = #level.ai_players
+  end
+
+  -- todo: clean this up so we can change the number of AI in a gamemode
+  if not soft then
+    if storage.config.ai then
+      for ai_index = 1,storage.config.ai do
+        local ai = storage.ai_players[ai_index]
+        local peer = "ai_"..ai.config.ai
+        self.lovernet:_addUser(peer)
+        local user = self.lovernet:getUser(peer)
+        user.config = ai.config
+        user.ai = libs.ai.new{
+          user = user,
+          pockets = pockets,
+          storage = storage,
+          server = server,
+        }
+      end
+    end
+    storage.ai_are_connected = true
   end
 
   local user_count = 0
-  local researchableObjects
   for peer,user in pairs(self.lovernet:getUsers()) do
     -- todo: add unique names
     user_count = user_count + 1
-    self.generatePlayer(self.lovernet:getStorage(),user,pockets[user_count])
+    self.generatePlayer(storage,user,pockets[user_count])
     if user.ai then
       -- todo: balance players on pockets after 8
       user.ai:setCurrentPocket(pockets[user_count])
       user.ai:setPockets(pockets)
+      -- this is a hack, fix it later
+      if level.ai_players then
+        user.ai:setDiff(level.ai_players[user.config.ai].config.diff)
+      end
     end
-    local storage = self.lovernet:getStorage()
-    if storage.config.everyShipUnlocked then
+  end
+
+  if headless then
+    libs.researchrenderer.load(false,storage.config.preset)
+  end
+
+  if not soft and storage.config.everyShipUnlocked then
+    local researchableObjects
+    for peer,user in pairs(self.lovernet:getUsers()) do
       local preset_value = storage.config.preset
       local preset = libs.mppresets.getPresets()[preset_value]
       researchableObjects = researchableObjects or libs.researchrenderer.getResearchableObjects(nil,preset.gen.first)
@@ -897,6 +932,24 @@ function server:newGame()
       end
     end
   end
+
+end
+
+function server:nextLevel(next_level)
+  local storage = self.lovernet:getStorage()
+  storage.level = {id=next_level}
+  storage.gamemode:setCurrentLevel(next_level)
+  storage.gamemode:loadCurrentLevel()
+
+  -- clear current level
+  for _,object in pairs(storage.objects) do
+    object.remove_no_drop = true
+    object.remove = true
+    server:addUpdate(object,{remove=true},"delete_objects")
+  end
+
+  -- load new game
+  self:newGame(true)
 
 end
 
@@ -1429,10 +1482,12 @@ function server:update(dt)
         user.points = (user.points or 0) - (object_type.points or 1)
         assert(user.count>=0)
         self.updateCargo(storage,user)
-        local cx,cy = libs.net.getCurrentLocation(object,love.timer.getTime())
-        if object_type.cost and object_type.cost.material then
-          local debris = server.createObject(storage,"debris",cx,cy,nil)
-          debris.material_supply = object_type.cost.material*server._debris_ratio
+        if object.remove_no_drop == nil then
+          local cx,cy = libs.net.getCurrentLocation(object,love.timer.getTime())
+          if object_type.cost and object_type.cost.material then
+            local debris = server.createObject(storage,"debris",cx,cy,nil)
+            debris.material_supply = object_type.cost.material*server._debris_ratio
+          end
         end
 
       end
@@ -1465,6 +1520,22 @@ function server:update(dt)
     end
     if remove_bullet then
       table.remove(storage.bullets,bullet_index)
+    end
+  end
+
+  if storage.gamemode then
+    local users = self.lovernet:getUsers()
+    local players = self:generatePlayers(users,storage)
+    local level = storage.gamemode:getCurrentLevelData()
+    if level.victory and level.victory(storage,players) then
+      if level.next_level then
+        storage.level.endt = storage.level.endt or love.timer.getTime() + libs.net.next_level_t
+        if storage.level.endt <= love.timer.getTime() then
+          self:nextLevel(level.next_level)
+        end
+      else
+        print('game over')
+      end
     end
   end
 

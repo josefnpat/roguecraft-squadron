@@ -112,6 +112,7 @@ function client:enter()
   self.lovernet:addOp(libs.net.op.get_user)
   self.lovernet:addOp(libs.net.op.get_config)
   self.lovernet:addOp(libs.net.op.set_config)
+  self.lovernet:addOp(libs.net.op.get_level)
   self.lovernet:addOp(libs.net.op.set_players)
   self.lovernet:addOp(libs.net.op.get_players)
   self.lovernet:addOp(libs.net.op.set_research)
@@ -149,6 +150,7 @@ function client:enter()
   self.menu_enabled = false
   self.focusObject = nil
   self.config = nil
+  self.level = {}
 
   self.notif = libs.notif.new()
   self.camera = libs.hump.camera(0,0)
@@ -163,7 +165,8 @@ function client:enter()
   self.moveanim = libs.moveanim.new()
   self.controlgroups = libs.controlgroups.new()
   self.chat = libs.chat.new()
-  self.mpconnect = libs.mpconnect.new{lovernet=self.lovernet,chat=self.chat}
+  self.mpgamemodes = libs.mpgamemodes.new()
+  self.mpconnect = libs.mpconnect.new{lovernet=self.lovernet,chat=self.chat,mpgamemodes=self.mpgamemodes}
   self.mpresearch = libs.mpresearch.new{lovernet=self.lovernet,onChange=client.selectionOnChange,onChangeScope=self}
   self.mpdisconnect = libs.mpdisconnect.new()
   self.gamestatus = libs.gamestatus.new()
@@ -286,6 +289,13 @@ function client:update(dt)
 
   libs.loading.update(dt)
 
+  if self.fade_in then
+    self.fade_in = self.fade_in - dt
+    if self.fade_in <= 0 then
+      self.fade_in = nil
+    end
+  end
+
   self.combat_per_second = math.max(0,self.combat_per_second - dt)
   self:updateSoundtrackIntensity()
   self.soundtrack:update(dt)
@@ -342,6 +352,10 @@ function client:update(dt)
     self.lovernet:pushData(libs.net.op.get_chat,{i=self.chat_index})
   end
 
+  if not self.lovernet:hasData(libs.net.op.get_level) then
+    self.lovernet:pushData(libs.net.op.get_level)
+  end
+
   if not self.gamestatus:isStarted() then
     if self.config and self.config.game_start then
       self.gamestatus:startGame()
@@ -377,6 +391,22 @@ function client:update(dt)
     self.lovernet:setClientTransmitRate(tr_val)
     self.lovernet:clearCache(libs.net.op.get_config)
   end
+
+  if self.lovernet:getCache(libs.net.op.get_level) then
+    local previous_level = self.level
+    self.level = self.lovernet:getCache(libs.net.op.get_level)
+    if self.level.id ~= previous_level.id then
+      self.mpgamemodes:setCurrentLevel(self.level.id)
+      self.mpgamemodes:loadCurrentLevel()
+      local level = self.mpgamemodes:getCurrentLevelData()
+      self.vn = level.intro and level.intro(self.mpgamemodes:getCurrentGamemode()) or nil
+      self.focusObject = nil
+      self.fow:clearMap()
+      self.lovernet:pushData(libs.net.op.get_players)
+    end
+    self.lovernet:clearCache(libs.net.op.get_level)
+  end
+  libs.sfx.mute(self.vn and self.vn:active() or false)
 
   if self.lovernet:getCache(libs.net.op.get_players) then
     self.players = self.lovernet:getCache(libs.net.op.get_players)
@@ -576,12 +606,20 @@ function client:update(dt)
       libs.researchrenderer.load(not headless,self.config.preset)
       self.mpresearch:buildData(self.user)
       self.lovernet:pushData(libs.net.op.get_research)
+      self.fade_in = libs.net.next_level_t
     end
     self.mpdisconnect:update(dt)
-    if self.gamestatus:isPlayerLose(self.user) then
-      self.mpdisconnect:setLose()
-    elseif self.gamestatus:isPlayerWin(self.user) then
-      self.mpdisconnect:setWin()
+
+    if self.level.id then
+      local level = self.mpgamemodes:getCurrentLevelData()
+      if not level.next_level then
+        if self.gamestatus:isPlayerLose(self.user) then
+          self.mpdisconnect:setLose()
+        elseif self.gamestatus:isPlayerWin(self.user) then
+          self.mpdisconnect:setWin()
+        end
+      end
+
     end
   else
     self.mpconnect:update(dt)
@@ -592,6 +630,7 @@ function client:update(dt)
       self.mpconnect:setPreset(self.config.preset or 1)
       self.mpresearch:setPreset(self.config.preset or 1)
       self.mpconnect:setPoints(self.config.points or 1)
+      self.mpconnect:setGamemode(self.config.gamemode)
       self.mpconnect:setTransmitRate(self.config.transmitRate or 1)
       self.points:setPoints(self.config.points or 1)
     end
@@ -718,6 +757,10 @@ function client:update(dt)
   if self.menu_enabled then
 
     self.menu:update(dt)
+
+  elseif self.vn and self.vn:active() then
+
+    self.vn:update(dt)
 
   elseif self.mpresearch:active() then
 
@@ -880,7 +923,9 @@ end
 
 function client:mousepressed(x,y,button)
   if self.menu_enabled then return end
-  if self.mpresearch:active() then
+  if self.vn and self.vn:active() then
+    self.vn:next()
+  elseif self.mpresearch:active() then
     self.mpresearch:mousepressed(x,y,button)
   elseif self.tutorial:active() then
   elseif button == 1 then
@@ -907,9 +952,12 @@ end
 function client:mousereleased(x,y,button)
   if self.menu_enabled then return end
   self.chat:setActive(false)
-  if self.mpresearch:active() then
+  if self.vn and self.vn:active() then
+    --nop
+  elseif self.mpresearch:active() then
     self.mpresearch:mousereleased(x,y,button)
   elseif self.tutorial:active() then
+    --nop
   elseif button == 1 then
     if self.buttonbar:mouseInside(x,y) and not self.selection:selectionInProgress() then
       self.buttonbar:runHoverAction()
@@ -1043,7 +1091,9 @@ function client:keypressed(key)
   end
 
   if key == "escape" then
-    if self.mpresearch:active() then
+    if self.vn and self.vn:active() then
+      self.vn:stop()
+    elseif self.mpresearch:active() then
       self.mpresearch:setActive(false)
     elseif self.tutorial:active() then
       self.tutorial:hide()
@@ -1064,7 +1114,9 @@ function client:keypressed(key)
     end
   end
 
-  if self.mpresearch:active() or self.tutorial:active() then
+  if self.vn and self.vn:active() then
+    self.vn:next()
+  elseif self.mpresearch:active() or self.tutorial:active() then
 
   else
 
@@ -1247,8 +1299,25 @@ function client:draw()
 
   self.chat:draw()
 
+  if love.keyboard.isDown("tab") and self.gamestatus:isStarted() then
+    self.matchstats:draw(self.players,self.user,math.floor(self.time-self.start_time))
+  end
+
+  if self.vn and self.vn:active() then
+    self.vn:draw()
+  end
+
   if self.lovernetprofiler then
     self.lovernetprofiler:draw()
+  end
+
+  if self.level and self.level.endt then
+    self.fade_in = libs.net.next_level_t
+    local ratio = (self.level.endt-self.time)/libs.net.next_level_t
+    libs.fade(255*(1-ratio))
+  elseif self.fade_in then
+    local ratio = self.fade_in/libs.net.next_level_t
+    libs.fade(255*ratio)
   end
 
   local time_delta = self.time - self.last_time
@@ -1256,10 +1325,6 @@ function client:draw()
     libs.loading.draw("Server is not responding ... ["..math.floor(time_delta).."s]")
   elseif self.user and self.user.np then
     libs.loading.draw("Game currently in progress ...")
-  end
-
-  if love.keyboard.isDown("tab") and self.gamestatus:isStarted() then
-    self.matchstats:draw(self.players,self.user,math.floor(self.time-self.start_time))
   end
 
   if debug_mode then
@@ -1279,6 +1344,12 @@ function client:draw()
       love.graphics.setColor(255,255,255)
     else
       str = str .. "loading user ... \n"
+    end
+    str = str .. "get_level:\n"
+    if self.level then
+      for i,v in pairs(self.level) do
+        str = str .. "\t" .. i .. ": "..tostring(v) .. "\n"
+      end
     end
     str = str .. "transmit_rate: " .. (self.lovernet:getClientTransmitRate()*1000) .. "ms\n"
     str = str .. "time: " .. self.time .. "\n"
