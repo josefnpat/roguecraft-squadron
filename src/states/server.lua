@@ -1534,7 +1534,7 @@ function server:update(dt)
           self:nextLevel(level.next_level)
         end
       else
-        print('game over')
+        --print('game over')
       end
     end
   end
