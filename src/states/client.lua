@@ -2,6 +2,8 @@ local utf8 = require"utf8"
 
 local client = {}
 
+client._bump_cell_size = 64
+
 function client:init()
   -- todo: i18n
   self.menu = libs.menu.new{title="[MENU]"}
@@ -180,6 +182,8 @@ function client:enter()
 
   self.tutorial = libs.tutorial.new()
 
+  self.world = libs.bump.newWorld(client._bump_cell_size)
+
 end
 
 function client:leave()
@@ -286,6 +290,15 @@ function client:updateSoundtrackIntensity()
 end
 
 function client:update(dt)
+
+  for _,object in pairs(self.objects) do
+    local object_type = libs.objectrenderer.getType(object.type)
+    if object_type.speed then
+      local size = (object_type.fow or 1)*1024
+      local x,y = libs.net.getCurrentLocation(object,self.time)
+      self.world:update(object,x-size/2,y-size/2)
+    end
+  end
 
   libs.loading.update(dt)
 
@@ -473,6 +486,9 @@ function client:update(dt)
           end
         end
 
+        local sobject_type = libs.objectrenderer.getType(sobject.type)
+        local size = (sobject_type.fow or 1)*1024
+        self.world:add(sobject,sobject.x-size/2,sobject.y-size/2,size,size)
         table.insert(self.objects,sobject)
         self.object_index = math.max(self.object_index,sobject.index)
         change = true
@@ -594,7 +610,7 @@ function client:update(dt)
   if self.buildqueue:showPanel() then
     self.buildqueue:updateData(self.selection:getSelected()[1],self.resources)
   end
-  self.fow:updateAll(dt,self.objects,self.user,self.players)
+  self.fow:updateAll(dt,self.objects,self.user,self.players,self.world)
   self.explosions:update(dt)
   self.moveanim:update(dt)
   self.notif:update(dt)
@@ -702,6 +718,7 @@ function client:update(dt)
       self.fow:update(dt,object)
     end
     if libs.net.objectShouldBeRemoved(object) then
+      self.world:remove(object)
       local selected = self.selection:getSelected()
       if #selected == 1 and object == selected[1] then
         change = true

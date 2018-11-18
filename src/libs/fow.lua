@@ -149,14 +149,15 @@ function fow:draw(objects,explosions,user,players)
 
 end
 
-function fow:updateAll(dt,objects,user,players)
-  local size = math.floor(libs.net.mapsize/self.resolution+0.5)--*self.resolution
+function fow:updateAll(dt,objects,user,players,world)
+  local size = math.floor(libs.net.mapsize/self.resolution+0.5)
   for x = -size,size do
     for y = -size,size do
       local rx,ry = x*self.resolution,y*self.resolution
       self.fow_map[rx] = self.fow_map[rx] or {}
       if self.fow_map[rx][ry] == nil then
-        for _,object in pairs(objects) do
+        local items, len = world:queryPoint(rx,ry)
+        for _,object in pairs(items) do
           local same_team = libs.net.isOnSameTeam(players,object.user,user.id)
           local removed = libs.net.objectShouldBeRemoved(object)
           if same_team and not removed then
