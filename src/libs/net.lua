@@ -84,10 +84,6 @@ net.aiDifficulty = {
 -- Command Capacity
 net.points = {
   {
-    text = "Normal — 200",
-    value = 200,
-  },
-  {
     text = "Medium — 600",
     value = 600,
   },
@@ -102,7 +98,11 @@ net.points = {
   {
     text = "Minimal — 100",
     value = 100,
-  }
+  },
+  {
+    text = "Normal — 200",
+    value = 200,
+  },
 }
 
 net.transmitRates = {
