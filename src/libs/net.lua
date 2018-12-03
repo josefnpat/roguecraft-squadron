@@ -81,6 +81,17 @@ net.aiDifficulty = {
   },
 }
 
+net.maps = {
+  {
+    text = "Spaced Pockets",
+    value = "spacedpockets",
+  },
+  {
+    text = "Random",
+    value = "random",
+  },
+}
+
 -- Command Capacity
 net.points = {
   {

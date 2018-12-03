@@ -648,6 +648,7 @@ function client:update(dt)
       self.mpconnect:setPreset(self.config.preset or 1)
       self.mpresearch:setPreset(self.config.preset or 1)
       self.mpconnect:setPoints(self.config.points or 1)
+      self.mpconnect:setMap(self.config.map or 1)
       self.mpconnect:setGamemode(self.config.gamemode)
       self.mpconnect:setTransmitRate(self.config.transmitRate or 1)
       self.points:setPoints(self.config.points or 1)
@@ -1232,6 +1233,15 @@ function client:draw()
   libs.stars:draw(self.camera.x/2,self.camera.y/2)
   self.planets:draw()
   self.camera:attach()
+
+  if debug_mode and g_pockets then
+    for pocket_index,pocket in pairs(g_pockets) do
+      love.graphics.setColor(255,0,0)
+      love.graphics.circle("fill",pocket.x,pocket.y,128)
+      love.graphics.setColor(255,255,255)
+      love.graphics.print("Pocket #"..pocket_index,pocket.x-64,pocket.y-64)
+    end
+  end
 
   self.gather:draw()
 

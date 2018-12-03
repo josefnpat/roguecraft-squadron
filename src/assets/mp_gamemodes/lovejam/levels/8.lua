@@ -2,6 +2,7 @@ local level = {}
 
 level.id = "8"
 level.victory = libs.levelshared.team_2_and_3_defeated
+level.map = "random"
 
 level.players_config_skel = {
   team = 1,

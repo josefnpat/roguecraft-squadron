@@ -80,20 +80,6 @@ end
 
 server.maps = {}
 
-server.maps.random = {
-  config = {},
-}
-
-function server.maps.random.generate(storage,config)
-  for object_type,object_count in pairs(server._genMapDefault) do
-    for i = 1,object_count do
-      local x = math.random(-libs.net.mapsize,libs.net.mapsize)
-      local y = math.random(-libs.net.mapsize,libs.net.mapsize)
-      server.createObject(storage,object_type,x,y,nil)
-    end
-  end
-end
-
 server.maps.spacedpockets = {
   config = {
     attemptRatio = 10,
@@ -144,6 +130,42 @@ function server.maps.spacedpockets.generate(storage,config)
       local r = math.random(-config.size,config.size)
       local x = r*math.cos(t)+pocket.x
       local y = r*math.sin(t)+pocket.y
+      server.createObject(storage,object_type,x,y,nil)
+    end
+  end
+
+  return pockets
+
+end
+
+server.maps.random = {
+  config = {
+    distribution = 1,
+  },
+}
+
+function server.maps.random.generate(storage,config)
+
+  local pockets = {}
+  for x = -config.distribution,config.distribution do
+    for y = -config.distribution,config.distribution do
+      table.insert(pockets,{
+        x=libs.net.mapsize*x/(config.distribution+0.5),
+        y=libs.net.mapsize*y/(config.distribution+0.5),
+      })
+    end
+  end
+
+  -- shuffle
+  for i = #pockets, 2, -1 do
+    local j = math.random( 1, i );
+    pockets[i], pockets[j] = pockets[j], pockets[i];
+  end
+
+  for object_type,object_count in pairs(server._genMapDefault) do
+    for i = 1,object_count do
+      local x = math.random(-libs.net.mapsize,libs.net.mapsize)
+      local y = math.random(-libs.net.mapsize,libs.net.mapsize)
       server.createObject(storage,object_type,x,y,nil)
     end
   end
@@ -820,6 +842,7 @@ function server:resetGame()
     game_start=false,
     preset=#libs.mppresets.getPresets(),
     points=1,
+    map=1,
     transmitRate=1,
     creative=false,
     everyShipUnlocked=false,
@@ -859,12 +882,15 @@ function server:newGame(soft)
     }
   end
 
-  local maptype = "spacedpockets"
+  local level = storage.gamemode:getCurrentLevelData()
+
+  local maptype = level.map or libs.net.maps[storage.config.map].value
   local pockets = self.maps[maptype].generate(
     storage,
-    server.maps.spacedpockets.config)
+    server.maps[maptype].config)
 
-  local level = storage.gamemode:getCurrentLevelData()
+  -- todo: This is a hack - we should actually be checking the server object
+  g_pockets = pockets
 
   if level.players_config_skel then
     for _,user in pairs(self.lovernet:getUsers()) do
@@ -1274,6 +1300,9 @@ function server:validateConfig()
   end
   if storage.config.points > #libs.net.points then
     storage.config.points = 1
+  end
+  if storage.config.map > #libs.net.maps then
+    storage.config.map = 1
   end
   if storage.config.transmitRate > #libs.net.transmitRates then
     storage.config.transmitRate = 1
