@@ -932,9 +932,9 @@ function server:newGame(soft)
 
   local user_count = 0
   for peer,user in pairs(self.lovernet:getUsers()) do
+    local gen = preset.gen
     -- todo: add unique names
     user_count = user_count + 1
-    local gen = preset.gen
     if user.ai then
       -- todo: balance players on pockets after 8
       user.ai:setCurrentPocket(pockets[user_count])
@@ -956,7 +956,7 @@ function server:newGame(soft)
   if not soft and storage.config.everyShipUnlocked then
     local researchableObjects
     for peer,user in pairs(self.lovernet:getUsers()) do
-      researchableObjects = researchableObjects or libs.researchrenderer.getResearchableObjects(nil,preset.gen.first)
+      researchableObjects = researchableObjects or libs.researchrenderer.getResearchableObjects(nil,preset.gen().first)
       for _,researchableObject in pairs(researchableObjects) do
         libs.researchrenderer.setUnlocked(user,researchableObject.type)
       end
