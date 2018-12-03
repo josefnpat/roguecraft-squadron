@@ -1,8 +1,0 @@
-msgid "mission.object.enemy_boss.name"
-msgstr "Gigantic Enemy Battleship"
-
-msgid "mission.object.enemy_boss.info"
-msgstr "A truly fearsome enemy. Handle with extreme caution."
-
-msgid "mission.object.enemy_boss.build"
-msgstr ""

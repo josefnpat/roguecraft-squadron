@@ -1,12 +1,6 @@
 return {
   name="Demo",
-  gen = {
-    first = "command_demo",
-    default = {
-      habitat=1,
-      salvager=1,
-    }
-  },
+  gen = libs.levelshared.gen.demo,
   build = {
     priority = {
       --construction_command = 5,

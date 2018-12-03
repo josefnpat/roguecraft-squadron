@@ -1,8 +1,0 @@
-msgid "mission.object.enemy_mine.name"
-msgstr "Mine"
-
-msgid "mission.object.enemy_mine.info"
-msgstr "This explosive device will destroy anything it comes in contact with."
-
-msgid "mission.object.enemy_mine.build"
-msgstr ""

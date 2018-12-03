@@ -1,7 +1,7 @@
 local level = {}
 
 level.id = "8"
-level.victory = libs.levelshared.team_2_or_3_defeated
+level.victory = libs.levelshared.team_2_and_3_defeated
 
 level.players_config_skel = {
   team = 1,
@@ -13,14 +13,16 @@ level.ai_players = {
       ai = 1, -- ID
       team = 2,
       diff = 4, -- difficulty
-    }
+    },
+    gen = libs.levelshared.gen.alien,
   },
   {
     config = {
       ai = 2, -- ID
       team = 2,
       diff = 5, -- difficulty
-    }
+    },
+    gen = libs.levelshared.gen.alien,
   },
 }
 

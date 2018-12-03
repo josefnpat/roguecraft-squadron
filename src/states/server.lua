@@ -152,7 +152,7 @@ function server.maps.spacedpockets.generate(storage,config)
 
 end
 
-function server.generatePlayer(storage,user,pocket)
+function server.generatePlayer(storage,user,pocket,gen)
   local x,y
   if pocket then
     local t = math.random()*math.pi*2
@@ -162,10 +162,10 @@ function server.generatePlayer(storage,user,pocket)
     x = math.random(-libs.net.mapsize,libs.net.mapsize)
     y = math.random(-libs.net.mapsize,libs.net.mapsize)
   end
-  local preset = libs.mppresets.getPresets()[storage.config.preset]
-  server.createObject(storage,preset.gen.first,x,y,user)
+  local gen_render = gen()
+  server.createObject(storage,gen_render.first,x,y,user)
 
-  local genlist = preset.gen.default
+  local genlist = gen_render.default
   if server._genEveryObjectOverride then
     genlist = libs.objectrenderer.getTypes()
   end
@@ -901,20 +901,26 @@ function server:newGame(soft)
     storage.ai_are_connected = true
   end
 
+  local preset_value = storage.config.preset
+  local preset = libs.mppresets.getPresets()[preset_value]
+
   local user_count = 0
   for peer,user in pairs(self.lovernet:getUsers()) do
     -- todo: add unique names
     user_count = user_count + 1
-    self.generatePlayer(storage,user,pockets[user_count])
+    local gen = preset.gen
     if user.ai then
       -- todo: balance players on pockets after 8
       user.ai:setCurrentPocket(pockets[user_count])
       user.ai:setPockets(pockets)
       -- this is a hack, fix it later
       if level.ai_players then
-        user.ai:setDiff(level.ai_players[user.config.ai].config.diff)
+        local current_ai_player = level.ai_players[user.config.ai]
+        user.ai:setDiff(current_ai_player.config.diff)
+        gen = current_ai_player.gen or gen
       end
     end
+    self.generatePlayer(storage,user,pockets[user_count],gen)
   end
 
   if headless then
@@ -924,8 +930,6 @@ function server:newGame(soft)
   if not soft and storage.config.everyShipUnlocked then
     local researchableObjects
     for peer,user in pairs(self.lovernet:getUsers()) do
-      local preset_value = storage.config.preset
-      local preset = libs.mppresets.getPresets()[preset_value]
       researchableObjects = researchableObjects or libs.researchrenderer.getResearchableObjects(nil,preset.gen.first)
       for _,researchableObject in pairs(researchableObjects) do
         libs.researchrenderer.setUnlocked(user,researchableObject.type)

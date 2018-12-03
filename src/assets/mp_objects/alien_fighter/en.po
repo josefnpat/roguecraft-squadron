@@ -1,0 +1,8 @@
+msgid "mission.object.alien_fighter.name"
+msgstr "Fighter"
+
+msgid "mission.object.alien_fighter.info"
+msgstr "A small combat ship to defend your squadron with."
+
+msgid "mission.object.alien_fighter.build"
+msgstr " I think we can make a venerable one man space superior fighter based on the stiletto and viper class fighters. While they may be outdated at this point, in large numbers, they can be effective. In all technicality, we're pretty much strapping our young men and women to a combination of rockets, bathtubs and guns. That's ok, I never liked them anyway."

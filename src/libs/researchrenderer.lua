@@ -15,7 +15,9 @@ function researchrenderer.load(loadAssets,preset_value)
 
   local preset = libs.mppresets.getPresets()[preset_value]
 
-  for _,current_object_type in pairs(researchrenderer.getResearchableObjects(nil,preset.gen.first)) do
+  local gen_render = preset.gen()
+
+  for _,current_object_type in pairs(researchrenderer.getResearchableObjects(nil,gen_render.first)) do
     local type = researchrenderer.getUnlockName(current_object_type.type)
     local object = {
       type = type,
@@ -135,7 +137,8 @@ end
 function researchrenderer.getUnlockedObjects(user,preset_value)
 
   local preset = libs.mppresets.getPresets()[preset_value]
-  local objects = researchrenderer.getResearchableObjects(nil,preset.gen.first)
+  local gen_render = preset.gen()
+  local objects = researchrenderer.getResearchableObjects(nil,gen_render.first)
   local activeObjects = {}
   for _,object in pairs(objects) do
     if researchrenderer.isUnlocked(user,object)  then

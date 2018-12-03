@@ -1,8 +1,0 @@
-msgid "mission.object.enemy_combat.name"
-msgstr "Enemy Battlestar"
-
-msgid "mission.object.enemy_combat.info"
-msgstr "A combat ship."
-
-msgid "mission.object.enemy_combat.build"
-msgstr ""

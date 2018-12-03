@@ -1,8 +1,0 @@
-msgid "mission.object.enemy_artillery.name"
-msgstr "Enemy Artillery Vessel"
-
-msgid "mission.object.enemy_artillery.info"
-msgstr "A long ranged combat ship."
-
-msgid "mission.object.enemy_artillery.build"
-msgstr ""

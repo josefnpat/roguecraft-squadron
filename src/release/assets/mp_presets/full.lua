@@ -1,12 +1,6 @@
 return {
   name="Full Game",
-  gen = {
-    first = "command",
-    default = {
-      habitat=1,
-      salvager=1,
-    }
-  },
+  gen = libs.levelshared.gen.human,
   build = {
     priority = {
       construction_command = 5,

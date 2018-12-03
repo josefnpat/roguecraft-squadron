@@ -1,0 +1,8 @@
+msgid "mission.object.alien_turret_large.name"
+msgstr "Large Turret"
+
+msgid "mission.object.alien_turret_large.info"
+msgstr "A large stationary turret used for serious defense."
+
+msgid "mission.object.alien_turret_large.build"
+msgstr "When we had the idea to mount guns on stationary platforms, we asked ourselves; why not put even bigger guns on turrets. I mean like, really big ones!"
