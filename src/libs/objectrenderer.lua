@@ -409,12 +409,7 @@ function objectrenderer.draw(object,objects,selection,time,user_id,players)
     local str = ""
     str = str .. "index: " .. object.index .. "\n"
     str = str .. "target: " .. tostring(object.target) .. "\n"
-    str = str .. "user: " .. libs.net.getUser(object.user).name .. "["..tostring(object.user).."]\n"
-    str = str .. "angle: " .. math.floor(object.angle*100)/100 .. "\n"
-    str = str .. "dangle: " .. math.floor(object.dangle*100)/100 .. "\n"
-    str = str .. "render: " .. math.floor(object.render) .. "\n"
-    str = str .. "name: " .. tostring(object.name) .. "\n"
-    str = str .. "d: ["..math.floor(object.dx)..","..math.floor(object.dy).."]"
+    str = str .. "d: ["..math.floor(object.dx)..","..math.floor(object.dy).."]\n"
     love.graphics.printf(str,object.dx-64,object.dy,128,"center")
     love.graphics.setColor(0,255,0,63)
     for _,target in pairs(objects) do

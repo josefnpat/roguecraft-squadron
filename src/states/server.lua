@@ -43,7 +43,7 @@ function server.setupActions(storage)
       -- lazy init to prevent tons of extra tables
 
       if parent.build_queue == nil and server.objectCanAfford(object_type,user,storage) then
-        local build_time = storage.config.creative and 0 or object_type.build_time
+        local build_time = storage.config.creative and 0.1 or object_type.build_time
         server.objectBuy(object_type,user,storage)
         server:addUpdate(parent,{
           build_t=build_time,
@@ -71,6 +71,10 @@ function server.setupActions(storage)
             end
           end
         }
+      else
+        server:addUpdate(parent,{
+          dequeue=true,
+        },"setupActions dequeue")
       end
 
     end

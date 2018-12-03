@@ -12,6 +12,7 @@ function buildqueue.new(init)
   self.runHoverAction = buildqueue.runHoverAction
   self.drawPanel = buildqueue.drawPanel
   self.add = buildqueue.add
+  self.addAtFront = buildqueue.addAtFront
   self.showPanel = buildqueue.showPanel
   self.setUser = buildqueue.setUser
 
@@ -135,6 +136,22 @@ function buildqueue:update(dt,user,objects,resources,points,lovernet)
 
   for _,object in pairs(objects) do
 
+    if object.dequeue_dt then
+      object.dequeue_dt = object.dequeue_dt - dt
+      if object.dequeue_dt <= 0 then
+        object.dequeue_dt = nil
+      end
+    end
+
+    if object.dequeue and object.build_current and object.dequeue_dt == nil then
+      local object_type = libs.objectrenderer.getType(object.build_current.type)
+      local action = "build_"..object.build_current.type
+      self:addAtFront(object,object_type,action)
+      object.build_current = nil
+      object.dequeue = nil
+      object.dequeue_dt = 1
+    end
+
     if object.user == user.id and #object.queue > 0 and object.build_current == nil then
       local qobject = object.queue[1].type
       local qobject_type = libs.objectrenderer.getType(qobject.type)
@@ -195,6 +212,14 @@ function buildqueue:add(object,object_type,action)
     table.insert(object.queue,{type=object_type,action=action})
     self:doFullUpdate()
   end
+end
+
+function buildqueue:addAtFront(object,object_type,action)
+  table.insert(object.queue,1,{type=object_type,action=action})
+  if #object.queue > 5 then
+    table.remove(object.queue,#object.queue)
+  end
+  self:doFullUpdate()
 end
 
 function buildqueue:showPanel()
