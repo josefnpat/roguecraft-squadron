@@ -29,6 +29,7 @@ function matrixpanel.new(init)
   self.clearActions = matrixpanel.clearActions
   self.addAction = matrixpanel.addAction
   self.sort = matrixpanel.sort
+  self.applyIconShortcutKeyTable = matrixpanel.applyIconShortcutKeyTable
   self.mouseInside = matrixpanel.mouseInside
   self.runHoverAction = matrixpanel.runHoverAction
   self.runAction = matrixpanel.runAction
@@ -98,6 +99,10 @@ function matrixpanel:draw(bg,fg)
     end
     love.graphics.draw(self._icon_bg,ix,iy)
     love.graphics.draw(action.image,ix,iy)
+    if self._hover == action and action.iconShortcutKey then
+      love.graphics.setColor(255,255,255)
+      dropshadow(action.iconShortcutKey,ix,iy)
+    end
   end
   love.graphics.setColor(255,255,255)
   if self._hover then
@@ -154,13 +159,14 @@ function matrixpanel:clearActions()
   self._actions = {}
 end
 
-function matrixpanel:addAction(image,callback,color,text,weight)
+function matrixpanel:addAction(image,callback,color,text,weight,iconShortcutKey)
   table.insert(self._actions,{
     image = image,
     callback = callback,
     color = color,
     text = text,
     weight = weight,
+    iconShortcutKey = iconShortcutKey,
   })
 end
 
@@ -168,6 +174,16 @@ function matrixpanel:sort(f)
   table.sort(self._actions,function(a,b)
     return a.weight < b.weight
   end)
+end
+
+function matrixpanel:applyIconShortcutKeyTable(t)
+  for i,v in pairs(self._actions) do
+    if self._actions[i] and t[i] then
+      self._actions[i].iconShortcutKey = t[i]:upper()
+    else
+      self._actions[i].iconShortcutKey = nil
+    end
+  end
 end
 
 function matrixpanel:hasActions()

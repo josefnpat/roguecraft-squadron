@@ -112,6 +112,7 @@ function actionpanel:process(selection,user,points,resources,buildqueue)
         object_type.cost and object_type.cost.material or 0
       )
       self.panel:sort()
+      self.panel:applyIconShortcutKeyTable(settings:read('action_keys'))
     end
 
   end
