@@ -34,7 +34,7 @@ function sfx.play(name,variation)
   for _,v in pairs(sfx._data[name].sources) do
     v:stop()
   end
-  sfx.playVariation(name,variation)
+  return sfx.playVariation(name,variation)
 end
 
 function sfx.loop(name,variation)
@@ -71,8 +71,8 @@ function sfx.loopGroup(name,variation)
 end
 
 function sfx.playVariation(name,variation)
+  local current_source = sfx._data[name].sources[math.random(#sfx._data[name].sources)]
   if not sfx._mute then
-    local current_source = sfx._data[name].sources[math.random(#sfx._data[name].sources)]
     if sfx._data[name].group == "vo" then
       current_source:setVolume(settings:read("voiceover_vol"))
     else
@@ -85,6 +85,7 @@ function sfx.playVariation(name,variation)
     end
     love.audio.play(current_source)
   end
+  return current_source
 end
 
 function sfx.skipWarning(name)

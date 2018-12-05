@@ -702,7 +702,7 @@ function client:update(dt)
       if self.player_in_combat == nil then
         self.notif:add(
           libs.i18n('mission.notification.enemy_engage'),
-          libs.sfx.get("notif.enemy"),
+          "notif.enemy",
           {63,15,15,256*7/8},
           {255,0,0}
         )

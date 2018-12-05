@@ -1,8 +1,5 @@
 local button = {}
 
-button.change_sound = love.audio.newSource("assets/mp_sfx/widget.hover/1.ogg","static")
-button.callback_sound = love.audio.newSource("assets/mp_sfx/widget.click/1.ogg","static")
-
 function button.new(init)
   init = init or {}
   local self = {}
@@ -14,7 +11,9 @@ function button.new(init)
   self._draw = init.draw or button._default_draw_rcs
   self._text = init.text or "OK"
   self._onClick = init.onClick or button._default_onClick
-  self._onHoverIn = init.onHoverIn or function() playSFX(button.change_sound) end
+  self._onHoverIn = init.onHoverIn or function()
+    libs.sfx.play("widget.hover")
+  end
   self._onHoverOut = init.onHoverOut or function() end
   self._disabled = init.disabled or false
 
@@ -51,7 +50,7 @@ function button:update(dt)
   end
   local new_depress = new_hover and love.mouse.isDown(1)
   if new_hover and self._hover and not new_depress and self._depress and not self._disabled then
-    playSFX(button.callback_sound)
+    libs.sfx.play("widget.click")
     self._onClick()
   end
   self._hover = new_hover

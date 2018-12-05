@@ -49,7 +49,7 @@ function notif:update(dt)
     if #self._data > 0 then
       self._current = table.remove(self._data,1)
       if self._current.sfx then
-        playSFX(self._current.sfx)
+        self._current.sfx = libs.sfx.play(self._current.sfx)
       end
     end
   end

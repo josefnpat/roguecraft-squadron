@@ -309,35 +309,6 @@ function tooltipf(text,ox,oy,ow,align)
   love.graphics.printf(text,x+offsetx,y,w)
 end
 
-function playSFX(source,variation)
-  local current_source
-  if type(source) == "table" then
-    for _,v in pairs(source) do
-      v:stop()
-    end
-    current_source = source[math.random(#source)]
-  else
-    source:stop()
-    current_source = source
-  end
-  current_source:setVolume(settings:read("sfx_vol"))
-  if variation then
-    current_source:setPitch( (1-variation)+math.random()*variation*2 )
-  end
-  love.audio.play(current_source)
-end
-
-function loopSFX(source,variation)
-  local current_source = type(source) == "table" and source[math.random(#source)] or source
-  current_source:setVolume(settings:read("sfx_vol"))
-  if not current_source:isPlaying( ) then
-    if variation then
-      current_source:setPitch( (1-variation)+math.random()*variation*2 )
-    end
-    love.audio.play(current_source)
-  end
-end
-
 function getFileName(i)
   local _,_,fname,extension = i:find("^(.+)%.(.*)")
   return fname
