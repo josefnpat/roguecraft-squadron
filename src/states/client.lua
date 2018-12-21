@@ -1169,7 +1169,7 @@ function client:keypressed(key)
         self.chat:toggleHeight()
       end
 
-      if key == "delete" then
+      if key == "delete" or key == "backspace" then
         self.lovernet:sendData(libs.net.op.delete_objects,{
           d=self.selection:getSelectedIndexes(),
         })
