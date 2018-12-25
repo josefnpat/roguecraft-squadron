@@ -25,6 +25,7 @@ function mpconnect.new(init)
   self.setPreset = mpconnect.setPreset
   self.setPoints = mpconnect.setPoints
   self.setMap = mpconnect.setMap
+  self.setMapSize = mpconnect.setMapSize
   self.setGamemode = mpconnect.setGamemode
   self.setTransmitRate = mpconnect.setTransmitRate
   self.setUser = mpconnect.setUser
@@ -151,6 +152,15 @@ function mpconnect:generateButtons()
     }
     table.insert(self.buttons,self.mapButton)
 
+    self.mapSizeButton = libs.button.new{
+      disabled=not isRelease(),
+      text="Map Size",
+      onClick=function()
+        self.lovernet:pushData(libs.net.op.set_config,{d={mapsize=self.mapsize+1}})
+      end,
+    }
+    table.insert(self.buttons,self.mapSizeButton)
+
   end
 
 end
@@ -231,7 +241,14 @@ end
 function mpconnect:setMap(map_value)
   self.map = map_value
   if self.mapButton then
-    self.mapButton:setText("Map ["..libs.net.maps[map_value].text.."]")
+    self.mapButton:setText("Map Type ["..libs.net.maps[map_value].text.."]")
+  end
+end
+
+function mpconnect:setMapSize(map_size_value)
+  self.mapsize = map_size_value
+  if self.mapSizeButton then
+    self.mapSizeButton:setText("Map Size ["..libs.net.mapSizes[map_size_value].text.."]")
   end
 end
 

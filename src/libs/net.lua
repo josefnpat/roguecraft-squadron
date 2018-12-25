@@ -35,7 +35,32 @@ net.op = {
   get_chat =            'l',
 }
 net.resourceTypes = {"ore","material","crew","research"}
-net.mapsize = 32*192/2
+net.mapSizes = {
+  {
+    text = "Medium — 6K",
+    value = 32*64*3/2,
+  },
+  {
+    text = "Large — 8K",
+    value = 32*64*4/2,
+  },
+  {
+    text = "Huge — 10K",
+    value = 32*64*5/2,
+  },
+  {
+    text = "Enormous — 12K",
+    value = 32*64*6/2,
+  },
+  {
+    text = "Tiny — 2K",
+    value = 32*64*1/2,
+  },
+  {
+    text = "Small — 4k",
+    value = 32*64*2/2,
+  },
+}
 
 -- todo: i18n
 net.resourceStrings = {
@@ -265,11 +290,13 @@ function net.hasMoveTarget(object,time)
 end
 
 function net.moveToTarget(server,object,x,y,int)
+  local storage = server.lovernet:getStorage()
+  local mapsize = libs.net.mapSizes[storage.config.mapsize].value
   local type = libs.objectrenderer.getType(object.type)
   if type.speed then
     local cx,cy = server:stopObject(object)
-    object.tx = math.min(math.max(-libs.net.mapsize,x),libs.net.mapsize)
-    object.ty = math.min(math.max(-libs.net.mapsize,y),libs.net.mapsize)
+    object.tx = math.min(math.max(-mapsize,x),mapsize)
+    object.ty = math.min(math.max(-mapsize,y),mapsize)
     object.tdt = love.timer.getTime()
     object.target = nil
     object.tint = int

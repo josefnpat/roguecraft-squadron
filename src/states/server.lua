@@ -98,8 +98,9 @@ function server.maps.spacedpockets.generate(storage,config)
   local pocketAttempt = 0
 
   local newPocket = function()
-    local x = math.random(-libs.net.mapsize+config.size,libs.net.mapsize-config.size)
-    local y = math.random(-libs.net.mapsize+config.size,libs.net.mapsize-config.size)
+    local mapsize = libs.net.mapSizes[storage.config.mapsize].value
+    local x = math.random(-mapsize+config.size,mapsize-config.size)
+    local y = math.random(-mapsize+config.size,mapsize-config.size)
     return {x=x,y=y}
   end
 
@@ -150,12 +151,14 @@ server.maps.random = {
 
 function server.maps.random.generate(storage,config)
 
+  local mapsize = libs.net.mapSizes[storage.config.mapsize].value
+
   local pockets = {}
   for x = -config.distribution,config.distribution do
     for y = -config.distribution,config.distribution do
       table.insert(pockets,{
-        x=libs.net.mapsize*x/(config.distribution+0.5),
-        y=libs.net.mapsize*y/(config.distribution+0.5),
+        x=mapsize*x/(config.distribution+0.5),
+        y=mapsize*y/(config.distribution+0.5),
       })
     end
   end
@@ -168,8 +171,8 @@ function server.maps.random.generate(storage,config)
 
   for object_type,object_count in pairs(server._genMapDefault) do
     for i = 1,object_count do
-      local x = math.random(-libs.net.mapsize,libs.net.mapsize)
-      local y = math.random(-libs.net.mapsize,libs.net.mapsize)
+      local x = math.random(-mapsize,mapsize)
+      local y = math.random(-mapsize,mapsize)
       server.createObject(storage,object_type,x,y,nil)
     end
   end
@@ -179,14 +182,17 @@ function server.maps.random.generate(storage,config)
 end
 
 function server.generatePlayer(storage,user,pocket,gen)
+
+  local mapsize = libs.net.mapSizes[storage.config.mapsize].value
+
   local x,y
   if pocket then
     local t = math.random()*math.pi*2
     x = pocket.x + math.cos(t)*512
     y = pocket.y + math.sin(t)*512
   else
-    x = math.random(-libs.net.mapsize,libs.net.mapsize)
-    y = math.random(-libs.net.mapsize,libs.net.mapsize)
+    x = math.random(-mapsize,mapsize)
+    y = math.random(-mapsize,mapsize)
   end
   local gen_render = gen()
   server.createObject(storage,gen_render.first,x,y,user)
@@ -847,6 +853,7 @@ function server:resetGame()
     preset=#libs.mppresets.getPresets(),
     points=1,
     map=1,
+    mapsize=1,
     transmitRate=1,
     creative=false,
     everyShipUnlocked=false,
@@ -1307,6 +1314,9 @@ function server:validateConfig()
   end
   if storage.config.map > #libs.net.maps then
     storage.config.map = 1
+  end
+  if storage.config.mapsize > #libs.net.mapSizes then
+    storage.config.mapsize = 1
   end
   if storage.config.transmitRate > #libs.net.transmitRates then
     storage.config.transmitRate = 1

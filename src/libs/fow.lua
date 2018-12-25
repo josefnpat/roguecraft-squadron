@@ -149,8 +149,9 @@ function fow:draw(objects,explosions,user,players)
 
 end
 
-function fow:updateAll(dt,objects,user,players,world)
-  local size = math.floor(libs.net.mapsize/self.resolution+0.5)
+function fow:updateAll(dt,objects,user,players,world,map_size_value)
+  local mapsize = libs.net.mapSizes[map_size_value].value
+  local size = math.floor(mapsize/self.resolution+0.5)
   for x = -size,size do
     for y = -size,size do
       local rx,ry = x*self.resolution,y*self.resolution

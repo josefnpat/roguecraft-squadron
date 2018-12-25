@@ -610,7 +610,9 @@ function client:update(dt)
   if self.buildqueue:showPanel() then
     self.buildqueue:updateData(self.selection:getSelected()[1],self.resources)
   end
-  self.fow:updateAll(dt,self.objects,self.user,self.players,self.world)
+  if self.config then
+    self.fow:updateAll(dt,self.objects,self.user,self.players,self.world,self.config.mapsize)
+  end
   self.explosions:update(dt)
   self.moveanim:update(dt)
   self.notif:update(dt)
@@ -649,6 +651,8 @@ function client:update(dt)
       self.mpresearch:setPreset(self.config.preset or 1)
       self.mpconnect:setPoints(self.config.points or 1)
       self.mpconnect:setMap(self.config.map or 1)
+      self.mpconnect:setMapSize(self.config.mapsize or 1)
+      self.minimap:setMapSize(self.config.mapsize or 1)
       self.mpconnect:setGamemode(self.config.gamemode)
       self.mpconnect:setTransmitRate(self.config.transmitRate or 1)
       self.points:setPoints(self.config.points or 1)

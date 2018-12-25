@@ -4,6 +4,7 @@ function minimap.new(init)
   init = init or  {}
   local self = {}
 
+  self.setMapSize = minimap.setMapSize
   self.mouseInside = minimap.mouseInside
   self.moveToMouse = minimap.moveToMouse
   self.getRealCoords = minimap.getRealCoords
@@ -11,13 +12,18 @@ function minimap.new(init)
   self.x = init.x or 32
   self.y = init.y or 32
   self.size = init.size or 192
-  self.scale = init.scale or libs.net.mapsize/self.size*2
+  self.scale = init.scale or 1
   self.fow_mult = init.fow_mult or 1.5
   self.fow_image_size = init.fow_image_size or 1024
 
   self.draw = minimap.draw
 
   return self
+end
+
+function minimap:setMapSize(map_size_value)
+  local mapsize = libs.net.mapSizes[map_size_value].value
+  self.scale = mapsize/self.size*2
 end
 
 function minimap:mouseInside()
