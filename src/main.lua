@@ -82,6 +82,15 @@ function love.load(arg)
     libs.lovernet = require"libs.lovernet.lovernet"
     libs.bitser = require"libs.lovernet.bitser"
     libs.ai = require"libs.ai"
+    libs.slider = require"libs.slider"
+  end)
+
+  loader:add("localizations",function()
+    local loc_data = libs.gettext.decode(love.filesystem.read("assets/loc/en.po"))
+    for i,v in pairs(loc_data) do
+      local newstr = v.str:gsub([[\n]],"\n"):gsub([[\"]],"\"")
+      libs.i18n.set('en.'..v.id,newstr)
+    end
   end)
 
   local lib_dir = "libs/"
@@ -138,14 +147,6 @@ function love.load(arg)
       client = require"states.client",
       server = require"states.server",
     }
-  end)
-
-  loader:add("localizations",function()
-    local loc_data = libs.gettext.decode(love.filesystem.read("assets/loc/en.po"))
-    for i,v in pairs(loc_data) do
-      local newstr = v.str:gsub([[\n]],"\n"):gsub([[\"]],"\"")
-      libs.i18n.set('en.'..v.id,newstr)
-    end
   end)
 
   loader:add("cursors",function()

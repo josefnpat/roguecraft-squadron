@@ -40,9 +40,7 @@ function mainmenu:enter()
 
   self.menum:addButton(libs.i18n('menu.options'),function()
     libs.hump.gamestate.switch(states.options)
-    previousState = states.menu
   end)
-
 
   if self.debug_menu_enabled then
     self.menum:addButton(libs.i18n('menu.debug'),function()

@@ -6,18 +6,20 @@ client._bump_cell_size = 64
 
 function client:init()
   -- todo: i18n
-  self.menu = libs.menu.new{title="[MENU]"}
-  self.menu:add(libs.i18n('pause.continue'),function()
+  self.main_menu = libs.menu.new{title="[MENU]"}
+  self.main_menu:add(libs.i18n('pause.continue'),function()
     self.menu_enabled = false
   end)
-  -- todo:
-  -- self.menu:add(libs.i18n('pause.options'),function()
-  -- end)
-  self.menu:add(libs.i18n('pause.gameover'),function()
+  self.main_menu:add(libs.i18n('pause.options'),function()
+    self.menu = libs.options.menu
+  end)
+  self.main_menu:add(libs.i18n('pause.gameover'),function()
     -- todo: disconnect the user, lolol
     libs.hump.gamestate.switch(states.menu)
     self.menu_enabled = false
   end)
+
+  self.menu = self.main_menu
 
   self.soundtrack = libs.soundtrack.new()
 
@@ -1127,6 +1129,7 @@ function client:keypressed(key)
       self.chat:setActive(false)
       self.chat:setBuffer("")
     else
+      self.menu = self.main_menu
       self.menu_enabled = not self.menu_enabled
     end
   end
