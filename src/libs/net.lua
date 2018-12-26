@@ -19,7 +19,7 @@ net.op = {
   get_players =         'i',
   set_players =         'j',
   get_research =        'z',
-  set_research =        'x',
+  set_research =        'x', --10
   debug_create_object = 'c',
   delete_objects =      'd',
   get_new_objects =     'o',
@@ -29,12 +29,44 @@ net.op = {
   target_objects =      'y',
   get_resources =       'r',
   get_points =          'q',
-  time =                't',
+  time =                't', --20
   action =              'a',
   add_chat =            'k',
   get_chat =            'l',
 }
+
 net.resourceTypes = {"ore","material","crew","research"}
+
+net.mapGenDefaults = {
+  {
+    text = "Normal",
+    value = {
+      scrap=100,
+      station=16,
+      asteroid=50,
+      cat=1,
+    },
+  },
+  {
+    text = "Heavy",
+    value = {
+      scrap=200,
+      station=32,
+      asteroid=100,
+      cat=1,
+    },
+  },
+  {
+    text = "Light",
+    value = {
+      scrap=50,
+      station=8,
+      asteroid=25,
+      cat=1,
+    },
+  },
+}
+
 net.mapSizes = {
   {
     text = "Medium — 6K",

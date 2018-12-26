@@ -26,6 +26,8 @@ function mpconnect.new(init)
   self.setPoints = mpconnect.setPoints
   self.setMap = mpconnect.setMap
   self.setMapSize = mpconnect.setMapSize
+  self.setMapGenDefault = mpconnect.setMapGenDefault
+  self.setMapPockets = mpconnect.setMapPockets
   self.setGamemode = mpconnect.setGamemode
   self.setTransmitRate = mpconnect.setTransmitRate
   self.setUser = mpconnect.setUser
@@ -161,6 +163,24 @@ function mpconnect:generateButtons()
     }
     table.insert(self.buttons,self.mapSizeButton)
 
+    self.mapGenDefaultButton = libs.button.new{
+      disabled=not isRelease(),
+      text="Resources",
+      onClick=function()
+        self.lovernet:pushData(libs.net.op.set_config,{d={mapGenDefault=self.mapGenDefault+1}})
+      end,
+    }
+    table.insert(self.buttons,self.mapGenDefaultButton)
+
+    self.mapPocketsButton = libs.button.new{
+      disabled=not isRelease(),
+      text="Resource Pockets",
+      onClick=function()
+        self.lovernet:pushData(libs.net.op.set_config,{d={mapPockets=self.mapPockets+1}})
+      end,
+    }
+    table.insert(self.buttons,self.mapPocketsButton)
+
   end
 
 end
@@ -249,6 +269,20 @@ function mpconnect:setMapSize(map_size_value)
   self.mapsize = map_size_value
   if self.mapSizeButton then
     self.mapSizeButton:setText("Map Size ["..libs.net.mapSizes[map_size_value].text.."]")
+  end
+end
+
+function mpconnect:setMapGenDefault(map_gen_default)
+  self.mapGenDefault = map_gen_default
+  if self.mapGenDefaultButton then
+    self.mapGenDefaultButton:setText("Resources ["..libs.net.mapGenDefaults[map_gen_default].text.."]")
+  end
+end
+
+function mpconnect:setMapPockets(map_pockets)
+  self.mapPockets = map_pockets
+  if self.mapPocketsButton then
+    self.mapPocketsButton:setText("Resource Pockets ["..self.mapPockets.."]")
   end
 end
 

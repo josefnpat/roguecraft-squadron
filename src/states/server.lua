@@ -12,14 +12,6 @@ server._throttle_bullet_updates = math.huge
 
 server._debris_ratio = 0.5
 
-server._genMapScale = 1
-
-server._genMapDefault = {
-  scrap=100*server._genMapScale,
-  station=16*server._genMapScale,
-  asteroid=50*server._genMapScale,
-  cat=1,
-}
 server._genEveryObjectOverride = false
 
 server._genResourcesDefault = {
@@ -89,16 +81,17 @@ server.maps.spacedpockets = {
     attemptRatio = 10,
     size = 1024/2,
     range = 1024*2,
-    count = 8,
   },
 }
 
 function server.maps.spacedpockets.generate(storage,config)
 
+  local mapsize = libs.net.mapSizes[storage.config.mapsize].value
+  local mapGenDefault = libs.net.mapGenDefaults[storage.config.mapGenDefault].value
+
   local pocketAttempt = 0
 
   local newPocket = function()
-    local mapsize = libs.net.mapSizes[storage.config.mapsize].value
     local x = math.random(-mapsize+config.size,mapsize-config.size)
     local y = math.random(-mapsize+config.size,mapsize-config.size)
     return {x=x,y=y}
@@ -118,7 +111,7 @@ function server.maps.spacedpockets.generate(storage,config)
   end
 
   local pockets = {newPocket()}
-  while #pockets < config.count do
+  while #pockets < storage.config.mapPockets do
     local pocket = newPocket()
     if validPocket(pockets,pocket) then
       table.insert(pockets,pocket)
@@ -128,7 +121,7 @@ function server.maps.spacedpockets.generate(storage,config)
 
   -- print("pocket creation attempts:"..tostring(pocketAttempt))
 
-  for object_type,object_count in pairs(server._genMapDefault) do
+  for object_type,object_count in pairs(mapGenDefault) do
     for i = 1,object_count do
       local pocket = pockets[math.random(#pockets)]
       local t = math.pi*2*math.random()
@@ -152,6 +145,7 @@ server.maps.random = {
 function server.maps.random.generate(storage,config)
 
   local mapsize = libs.net.mapSizes[storage.config.mapsize].value
+  local mapGenDefault = libs.net.mapGenDefaults[storage.config.mapGenDefault].value
 
   local pockets = {}
   for x = -config.distribution,config.distribution do
@@ -169,7 +163,7 @@ function server.maps.random.generate(storage,config)
     pockets[i], pockets[j] = pockets[j], pockets[i];
   end
 
-  for object_type,object_count in pairs(server._genMapDefault) do
+  for object_type,object_count in pairs(mapGenDefault) do
     for i = 1,object_count do
       local x = math.random(-mapsize,mapsize)
       local y = math.random(-mapsize,mapsize)
@@ -854,6 +848,8 @@ function server:resetGame()
     points=1,
     map=1,
     mapsize=1,
+    mapGenDefault=1,
+    mapPockets=8,
     transmitRate=1,
     creative=false,
     everyShipUnlocked=false,
@@ -1305,6 +1301,7 @@ function server:validateConfig()
   for _,_ in pairs(self.lovernet:getUsers()) do
     user_count = user_count + 1
   end
+  local player_count = user_count + storage.config.ai
   storage.config.ai = math.min(server.maxPlayers-user_count,storage.config.ai)
   if storage.config.preset > #libs.mppresets.getPresets() then
     storage.config.preset = 1
@@ -1317,6 +1314,15 @@ function server:validateConfig()
   end
   if storage.config.mapsize > #libs.net.mapSizes then
     storage.config.mapsize = 1
+  end
+  if storage.config.mapGenDefault > #libs.net.mapGenDefaults then
+    storage.config.mapGenDefault = 1
+  end
+  if storage.config.mapPockets > 16 then
+    storage.config.mapPockets = 1
+  end
+  if storage.config.mapPockets < player_count then
+    storage.config.mapPockets = player_count
   end
   if storage.config.transmitRate > #libs.net.transmitRates then
     storage.config.transmitRate = 1
