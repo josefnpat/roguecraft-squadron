@@ -74,6 +74,7 @@ function love.load(arg)
     },
     cursor = require"libs.cursor",
     pcb = require"libs.progresscirclebar",
+    system = require"libs.system",
   }
 
   loader:add("lib dependencies",function()
@@ -223,6 +224,22 @@ function love.resize()
   if states.client then states.client:resize() end
 end
 
+function love.keypressed(key)
+  if key == "f12" then
+    local dname = "screenshots"
+    if not love.filesystem.exists(dname) then
+      love.filesystem.createDirectory(dname)
+    end
+    local fname = dname .. "/" .. os.time() .. '.png'
+    if not love.filesystem.exists(fname) then
+      local screenshot = love.graphics.newScreenshot();
+      screenshot:encode('png', fname);
+      local full = love.filesystem.getSaveDirectory() .. "/" .. fname
+      libs.system:set("Screenshot @ " .. full, 3)
+    end
+  end
+end
+
 function love.update(dt)
   if libs.net then libs.net.clearCache() end
   if not headless then
@@ -233,6 +250,7 @@ function love.update(dt)
       ) and love.window.hasFocus()
     )
   end
+  libs.system:update(dt)
   if states.server.run_localhost then
     states.server:update(dt)
   end
@@ -241,6 +259,7 @@ end
 function love.draw()
   libs.hump.gamestate.current():draw()
   libs.cursor.draw()
+  libs.system:draw()
 end
 
 function love.quit()
