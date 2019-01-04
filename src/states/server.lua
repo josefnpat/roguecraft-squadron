@@ -1306,26 +1306,44 @@ function server:validateConfig()
   if storage.config.preset > #libs.mppresets.getPresets() then
     storage.config.preset = 1
   end
+  if storage.config.preset < 1 then
+    storage.config.preset = #libs.mppresets.getPresets()
+  end
   if storage.config.points > #libs.net.points then
     storage.config.points = 1
+  end
+  if storage.config.points < 1 then
+    storage.config.points = #libs.net.points
   end
   if storage.config.map > #libs.net.maps then
     storage.config.map = 1
   end
+  if storage.config.map < 1 then
+    storage.config.map = #libs.net.maps
+  end
   if storage.config.mapsize > #libs.net.mapSizes then
     storage.config.mapsize = 1
   end
+  if storage.config.mapsize < 1 then
+    storage.config.mapsize = #libs.net.mapSizes
+  end
   if storage.config.mapGenDefault > #libs.net.mapGenDefaults then
     storage.config.mapGenDefault = 1
+  end
+  if storage.config.mapGenDefault < 1 then
+    storage.config.mapGenDefault = #libs.net.mapGenDefaults
   end
   if storage.config.mapPockets > 16 then
     storage.config.mapPockets = 1
   end
   if storage.config.mapPockets < player_count then
-    storage.config.mapPockets = player_count
+    storage.config.mapPockets = 16
   end
   if storage.config.transmitRate > #libs.net.transmitRates then
     storage.config.transmitRate = 1
+  end
+  if storage.config.transmitRate < 1 then
+    storage.config.transmitRate = #libs.net.transmitRates
   end
   local tr_val = libs.net.transmitRates[storage.config.transmitRate].value
   self.lovernet:setClientTransmitRate(tr_val)

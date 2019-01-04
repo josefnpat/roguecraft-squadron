@@ -187,12 +187,12 @@ net.transmitRates = {
     value = 1/4,
   },
   {
-    text = "V High — 31.3ms",
-    value = 1/32,
-  },
-  {
     text = "Excessive — 15.6ms",
     value = 1/64,
+  },
+  {
+    text = "V High — 31.3ms",
+    value = 1/32,
   },
 }
 

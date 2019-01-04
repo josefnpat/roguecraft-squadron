@@ -16,6 +16,8 @@ function button.new(init)
   end
   self._onHoverOut = init.onHoverOut or function() end
   self._disabled = init.disabled or false
+  self._dir = init.dir or 1
+  self._font = init.font or fonts.menu
 
   self._hover = false
   self._depress = false
@@ -36,6 +38,7 @@ function button.new(init)
   self.setText = button.setText
   self.setIcon = button.setIcon
   self.setOnClick = button.setOnClick
+  self.setFont = button.setFont
 
   return self
 end
@@ -51,7 +54,7 @@ function button:update(dt)
   local new_depress = new_hover and love.mouse.isDown(1)
   if new_hover and self._hover and not new_depress and self._depress and not self._disabled then
     libs.sfx.play("widget.click")
-    self._onClick()
+    self._onClick(self._dir)
   end
   self._hover = new_hover
   self._depress = new_depress
@@ -69,14 +72,15 @@ function button:draw()
     self._icon,
     self._x,self._y,
     self._width,self._height,
-    self._hover,self._depress,self._disabled)
+    self._hover,self._depress,self._disabled,
+    self._font)
 end
 
 function button._default_onClick()
   print('button pressed')
 end
 
-function button._default_draw_rcs(text,icon,x,y,width,height,hover,depress,disabled)
+function button._default_draw_rcs(text,icon,x,y,width,height,hover,depress,disabled,font)
   local old_color = {love.graphics.getColor()}
   local old_font = love.graphics.getFont()
   local bg,fg
@@ -88,9 +92,9 @@ function button._default_draw_rcs(text,icon,x,y,width,height,hover,depress,disab
     fg = depress and {255,255,255} or nil
   end
   tooltipbg(x,y,width,height,bg,fg)
-  local offset = (height-fonts.menu:getHeight())/2
+  local offset = (height-font:getHeight())/2
   love.graphics.setColor(fg or {0,255,255})
-  love.graphics.setFont(fonts.menu)
+  love.graphics.setFont(font)
   if icon then
     local icon_padding = (height - icon:getHeight()) / 2
     love.graphics.draw(icon,x+icon_padding,y+icon_padding)
@@ -104,7 +108,7 @@ function button._default_draw_rcs(text,icon,x,y,width,height,hover,depress,disab
   love.graphics.setFont(old_font)
 end
 
-function button._default_draw(text,icon,x,y,width,height,hover,depress,disabled)
+function button._default_draw(text,icon,x,y,width,height,hover,depress,disabled,font)
   local old_color = {love.graphics.getColor()}
   love.graphics.setColor(hover and {255,255,255} or {191,191,191})
   love.graphics.rectangle("fill",x,y,width,height)
@@ -168,6 +172,10 @@ end
 
 function button:setOnClick(val)
   self._onClick = val
+end
+
+function button:setFont(val)
+  self._font = val
 end
 
 return button

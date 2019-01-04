@@ -75,19 +75,19 @@ function mpconnect:generateButtons()
 
   self.buttons = {}
 
-  self.presetButton = libs.button.new{
+  self.presetButton = libs.stepper.new{
     disabled=#libs.mppresets.getPresets()<=1,
     text="Preset",
-    onClick=function()
-      self.lovernet:pushData(libs.net.op.set_config,{d={preset=self.preset+1}})
+    onClick=function(dir)
+      self.lovernet:pushData(libs.net.op.set_config,{d={preset=self.preset+dir}})
     end,
   }
   table.insert(self.buttons,self.presetButton)
 
-  self.transmitRatesButton = libs.button.new{
+  self.transmitRatesButton = libs.stepper.new{
     text="Network",
-    onClick=function()
-      self.lovernet:pushData(libs.net.op.set_config,{d={transmitRate=self.transmitRate+1}})
+    onClick=function(dir)
+      self.lovernet:pushData(libs.net.op.set_config,{d={transmitRate=self.transmitRate+dir}})
     end,
   }
   table.insert(self.buttons,self.transmitRatesButton)
@@ -136,50 +136,55 @@ function mpconnect:generateButtons()
       end,
     })
 
-    self.pointsButton = libs.button.new{
+    self.pointsButton = libs.stepper.new{
       disabled=not isRelease(),
       text="Points",
-      onClick=function()
-        self.lovernet:pushData(libs.net.op.set_config,{d={points=self.points+1}})
+      onClick=function(dir)
+        self.lovernet:pushData(libs.net.op.set_config,{d={points=self.points+dir}})
       end,
     }
     table.insert(self.buttons,self.pointsButton)
 
-    self.mapButton = libs.button.new{
+    self.mapButton = libs.stepper.new{
       disabled=not isRelease(),
       text="Maps",
-      onClick=function()
-        self.lovernet:pushData(libs.net.op.set_config,{d={map=self.map+1}})
+      onClick=function(dir)
+        self.lovernet:pushData(libs.net.op.set_config,{d={map=self.map+dir}})
       end,
     }
     table.insert(self.buttons,self.mapButton)
 
-    self.mapSizeButton = libs.button.new{
+    self.mapSizeButton = libs.stepper.new{
       disabled=not isRelease(),
       text="Map Size",
-      onClick=function()
-        self.lovernet:pushData(libs.net.op.set_config,{d={mapsize=self.mapsize+1}})
+      onClick=function(dir)
+        self.lovernet:pushData(libs.net.op.set_config,{d={mapsize=self.mapsize+dir}})
       end,
     }
     table.insert(self.buttons,self.mapSizeButton)
 
-    self.mapGenDefaultButton = libs.button.new{
+    self.mapGenDefaultButton = libs.stepper.new{
       disabled=not isRelease(),
       text="Resources",
-      onClick=function()
-        self.lovernet:pushData(libs.net.op.set_config,{d={mapGenDefault=self.mapGenDefault+1}})
+      onClick=function(dir)
+        self.lovernet:pushData(libs.net.op.set_config,{d={mapGenDefault=self.mapGenDefault+dir}})
       end,
     }
     table.insert(self.buttons,self.mapGenDefaultButton)
 
-    self.mapPocketsButton = libs.button.new{
+    self.mapPocketsButton = libs.stepper.new{
       disabled=not isRelease(),
       text="Resource Pockets",
-      onClick=function()
-        self.lovernet:pushData(libs.net.op.set_config,{d={mapPockets=self.mapPockets+1}})
+      onClick=function(dir)
+        self.lovernet:pushData(libs.net.op.set_config,{d={mapPockets=self.mapPockets+dir}})
       end,
     }
     table.insert(self.buttons,self.mapPocketsButton)
+
+    for _,button in pairs(self.buttons) do
+      button:setFont(fonts.submenu)
+      button:setHeight(32)
+    end
 
   end
 

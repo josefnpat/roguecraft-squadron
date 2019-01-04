@@ -56,6 +56,7 @@ function love.load(arg)
         window_title = love.graphics.newFont("assets/fonts/ExpletusSans-Bold.ttf",20),
         title = love.graphics.newFont("assets/fonts/ExpletusSans-Bold.ttf",64),
         menu = love.graphics.newFont("assets/fonts/Yantramanav-Regular.ttf",20),
+        submenu = love.graphics.newFont("assets/fonts/Yantramanav-Regular.ttf",16),
         vn_name = love.graphics.newFont("assets/fonts/Yantramanav-Regular.ttf",48),
         vn_text = love.graphics.newFont("assets/fonts/Yantramanav-Regular.ttf",24),
         vn_info = love.graphics.newFont("assets/fonts/Yantramanav-Regular.ttf",16),
