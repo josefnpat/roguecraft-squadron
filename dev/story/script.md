@@ -6,23 +6,25 @@
 
 ## Level 1 Prelude
 
-**Adjutant:** Incoming Message for Ruby Patton, time delay of one week and two days.
+**Adjutant:** Private message 67/67, time delay of one week and two days.
 
-*todo: make sure the player realizes this message is an anomaly, and is only for Ruby*
+**Grace Patton:** Ruby; all my life I wanted out. I've always wanted... I don't know. I wanted to leave everything behind, but I had to be there for you.
 
-**Grace Patton:** Ruby. All my life I wanted out. I've always wanted. I don't know. I wanted to leave, but I also wanted to be there for you.
+Here I am. I couldn't be there for you. It's cold and the air is getting thin. Life support has failed.
 
-I couldn't be there for you, but I left anyway. Here I am. It's cold and the air is getting thin, I can tell.
+I don't want you to be sad or angry. I just wanted to protect you, but now ...
 
-I don't want you to be sad or worry. I just wanted to protect you, but now there's nothing I can do. There's nothing I can do to save you.
+There's nothing I can do to save you.
 
-I tried my best, spent years studying to get to the top of my class for you. But then you followed me, I don't know why. Get out, get out while you can. Get out for me. I love you Ruby.
+I tried my best, spent years studying to get to the top of my class so I could keep us safe. Then you followed me, I don't know why. Get out, get out while you can.
+
+Get out for me, get out for yourself, I don't care. I ... I love you Ruby.
 
 **Ruby Patton:** Gracie - what did you do? How bad have things been out there?
 
-Adjutant, what happened to the [Grace Patton's Ship]
+Adjutant, what happened to the USS Bishop?
 
-**Adjutant:** [Grace Patton's Ship] is appointed to Grace Patton. Current status is classified.
+**Adjutant:** USS Bishop is captained by Grace Patton. Current status is classified.
 
 **Ruby Patton:** She had the best ship in the fleet. What happened?
 
@@ -30,7 +32,7 @@ What is Miho Takeda's current status?
 
 **Adjutant:** Miho Takeda is currently in wargames.
 
-**Ruby Patton:** Adjutant, open secure communications with Miho Takeda.
+**Ruby Patton:** Adjutant, open private message with Miho Takeda.
 
 **Miho Takeda:** Takeda here. Squadron Commander Patton, what can I do for you?
 
@@ -40,17 +42,25 @@ What is Miho Takeda's current status?
 
 **Ruby Patton:** Miho, I've received a troubling message from Grace.
 
-**Miho Takeda:** Miho ... you've not called me that in a while. I heard about your sister. I don't know much more than you; it's above my pay grade. I can tell you she was on an active mission, but she's missing in action now. I know you two are close, and what she meant to you. I'm sure if she died, she died doing her duty to the Imperial Earth Empire.
+**Miho Takeda:** Miho ... you've not called me that in a while. I heard about your sister.
+
+I don't know much more than you; it's above my pay grade. I can tell you she was on an active mission, but she's missing in action now. I know you two are close and what she meant to you. I'm sure if she died, she died doing her duty to the Imperial Earth Empire.
 
 **Ruby Patton:** Did they find the ship?
 
-**Miho Takeda:** She made a formal report along with the personal message that you got. The report was mostly above my head, but we don't think she made it. I'm sorry Ruby.
+**Miho Takeda:** She made a formal report along with the personal message that you got. The report was mostly above my grade, but ... we don't think she made it. I'm sorry Ruby.
 
-There's new active orders. All of my squadrons, including yours,  have been moved to the front line against the Dojeer. We might be following in her footsteps. We've lost a lot of good people. We're going to make them pay.
+**Ruby Patton:** ...
 
-**Ruby Patton:** Thanks Miho.
+**Miho Takeda:** There are new active orders. All of my squadrons, including yours, have been moved to the front line against the Dojeer. We might be following in her footsteps. We've lost a lot of good people. I promise you, we're going to make them pay.
 
-**Miho Takeda:** Your orders are to move to the front lines. You will be receiving a Lieutenant to support you, Rosa Dietrich. He's green, but he shows a lot of promise. She will convey the mission specifics. Takeda out.
+**Ruby Patton:** Thanks Miho. I haven't given up on her yet.
+
+**Miho Takeda:** Your orders are to move to the front lines. You will be receiving a Lieutenant to support you, Rosa Dietrich. She's green, but he shows a lot of promise. She will convey the mission specifics.
+
+And Ruby... I'm sorry for your loss.
+
+Takeda out.
 
 **Rosa Dietrich:** Squadron Commander, Lieutenant Dietrich reporting in.
 
@@ -60,7 +70,7 @@ There's new active orders. All of my squadrons, including yours,  have been move
 
 **Ruby Patton:** And what has happened to our support?
 
-**Rosa Dietrich:** Sir, only the command ship can get through the wormholes - the other squadrons in the fleet are engaged in other sectors.
+**Rosa Dietrich:** Sir, the other squadrons in the fleet are engaged in other sectors. We're on our own.
 
 ## Level 1 Mission
 
@@ -76,13 +86,13 @@ There's new active orders. All of my squadrons, including yours,  have been move
 
 **Ruby Patton:** I heard you were an actor before joining the military.
 
-**Rosa Dietrich:** I was, but don't think that makes me unqualified, sir. I resent that you bring up my history, it makes me feel like you think I'm unprepared.
+**Rosa Dietrich:** Sir ... yes I was, but don't think that makes me unqualified. I resent that you bring up my history, it makes me feel like you think I'm unprepared.
 
 **Ruby Patton:** I ...
 
-**Rosa Dietrich:** I have served on many ships, and I have surpassed expectations. Everything I have done has been on the merit of my ability.
+**Rosa Dietrich:** I have served on many ships and I have surpassed expectations. Everything I have done has been on the merit of my ability.
 
-**Ruby Patton:** I didn't mean to offend, Rosa. Takeda had told me you were talented, and I agree.
+**Ruby Patton:** I didn't mean to offend, Rosa. Takeda has nothing but high praise and I trust in her judgment.
 
 **Rosa Dietrich:** I'm sorry, sir. I ... Usually people question my ability, because I used to be an actor.
 
@@ -94,7 +104,7 @@ There's new active orders. All of my squadrons, including yours,  have been move
 
 **Miho Takeda:** Nikolai, Report.
 
-**Valentina Nikolai**: Nikolai reports that all hostiles have been removed from the adjacent sector.
+**Valentina Nikolai**: All hostiles have been removed from the adjacent sector.
 
 **Miho Takeda:** Good work, commanders. Your next mission requires a joint effort. We have detected a larger presence of Dojeer in the next sector. You two are to secure that sector. I will be moving into an adjacent sector in hopes of engaging in a pincer attack.
 
@@ -102,7 +112,7 @@ There's new active orders. All of my squadrons, including yours,  have been move
 
 **Valentina Nikolai**: The Dojeer have begin to improve their tactics and strategy. They are adapting.
 
-**Ruby Patton:** And what of the [Grace's Ship Name]
+**Ruby Patton:** And what of the USS Bishop?
 
 **Valentina Nikolai**: Unfortunately, no new information.
 
@@ -112,7 +122,7 @@ There's new active orders. All of my squadrons, including yours,  have been move
 
 **Ruby Patton:** I have heard of your unorthodox conquests as well.
 
-**Valentina Nikolai**: *laughs* Yes, yes yes. The time I used troopships to take over enemy vessels. Good times! I am prepared for this mission! If it is our day to die, then it is our day to die. Let's kick some ass!
+**Valentina Nikolai**: *Laughs* Yes, yes yes. The time I used troopships to take over enemy vessels. Good times! I am prepared for this mission! If it is our day to die, then it is our day to die.
 
 **Ruby Patton:** See you on the battlefield.
 
@@ -132,21 +142,21 @@ Grace Patton
 
 **Rosa Dietrich:** Grace Patton? Your sister? What does it all mean?
 
-**Ruby Patton:** I don't know.
+**Ruby Patton:** I ... I don't know.
 
 ## Level 3 Prelude
 
 **Miho Takeda:** Report.
 
-**Valentina Nikolai**: Mission was great success. The enemy is becoming harder, but we will be victorious.
+**Valentina Nikolai**: Mission was great success. The enemy is cunning, but we will be victorious.
 
-**Ruby Patton:** We received a strange message from the Dojeer.
+**Ruby Patton:** We are receiving messages from the Dojeer. We have no translations.
 
-**Valentina Nikolai**: Dojeer says funny things. We never know what they talk, we can't listen.
+**Valentina Nikolai**: The Dojeer say funny things. It's all gibberish, so why bother listening?
 
 **Ruby Patton:** They said Grace's name ...
 
-**Miho Takeda:** We've been trying to open up formal communications with the Dojeer. It's interesting that they know her name. Continue recording incoming messages from the Dojeer, and send them to central command. We're moving to the next sector. Nikolai, you shall move to the adjacent sector, and I will be in the other. Keep moving forward, Patton.
+**Miho Takeda:** We've been trying to open up formal communications with the Dojeer. It's disturbing that they know her name. Continue recording incoming messages from the Dojeer and send them to central command. We're moving to the next sector. Nikolai, you shall move to the adjacent sector, and I will be in the other. Keep moving forward, Patton.
 
 ## Level 3 Mission
 
@@ -154,7 +164,7 @@ Grace Patton
 
 ## Level 3 Complete
 
-**Rosa Dietrich:** More messages incoming.
+**Rosa Dietrich:** More messages from the Dojeer incoming.
 
 **Dojeer 1:** [foreign text]
 
@@ -168,17 +178,17 @@ Grace Patton
 
 **Miho Takeda:** Patton, this is a secure channel. I've just talked to Nikolai. I'm going to be honest with you, we're losing this war. We're doing well on this front, but the other fleets are getting splattered on the metaphorical windshield. 
 
-In the 20th century, bombs like the Tasar Bomba at 50 Megatons became bragging rights. Once you get to this size, the application becomes racial genocide. Once you have a bomb of this size, you might as well just blow it up in your back yard, because everything on the planet is going to die.
+In the 20th century, bombs like the Tasar Bomba at 50 megatons were bragging rights. Of course once you get to this payload, the application becomes racial genocide. You might as well just blow it up in your backyard because every living thing on the planet is going to die.
 
-Now to the point. Imperial Earth Empire has built two 1,000 Megaton Thermonuclear weapons. Teller Mark 42. These bombs are the biggest we have ever made. We're giving you our last one. We've modified your ship so that you can take cover in anti-radiation chambers.
+Now to the point. Imperial Earth Empire has built two 1,000 megaton thermonuclear weapons. Teller Mark 42. These bombs are the biggest we as a species have ever made. We're giving you our last one. We've modified your ship so that you can take cover in anti-radiation chambers for when you launch it.
 
 **Ruby Patton:** Are we trying to take advantage while the Dojeer fight each other?
 
-**Miho Takeda:** Exactly. Even with this, we're losing this war. At this point it's them or us. I pray that with Nikolai supporting you, you will end this war and come back alive. You mission is to go directly to Hoft, and eradicate the Dojeer at all costs.
+**Miho Takeda:** Exactly. Even with this, we're losing this war. At this point it's them or us. I pray that with Nikolai supporting you, you will end this war and come back alive. You mission is to go directly to the Dojeer home world, Hoft, and eradicate the Dojeer at all costs.
 
 **Ruby Patton:** Into the valley of death we ride. It's been an honor serving with you, Takeda-san.
 
-**Miho Takeda:** The honor is all mine.
+**Miho Takeda:** The honor is all mine. Takeda out.
 
 ## Level 4 Mission
 
@@ -192,19 +202,17 @@ Now to the point. Imperial Earth Empire has built two 1,000 Megaton Thermonuclea
 
 **Rosa Dietrich:** Sir, we've gotten a basic translation algorithm from central command. Attempting auto translation.
 
-**Dojeer:** We are not here because we choose to be, but because we are destined to be here. All that has happened, has happened before, and will happen again. It is not our place to attempt to deviate, because we cannot. You are to die.
+**Dojeer:** We are not here because we choose to be, but because we are destined to be here. Time is of no consequence; all that matters is causality. It is not our place to attempt to deviate because we cannot. You are to die.
 
 ## Level 5 Prelude
 
-**Rosa Dietrich:** Sir. it looks like we have a small force cornered!
+**Rosa Dietrich:** Sir, good news and bad news. Good news is that we seem to have a small force of Dojeer cornered in this system. 
 
-**Rosa Dietrich:** Sir, good news and bad news. Good news is that we seem to have a small force of Dojeer to contend with in this system. 
+**Ruby Patton:** This deep in space? Let's take them out as quickly as we can and move on. Bad news?
 
-**Ruby Patton:** This deep in space? Let's take them out as quickly as we can, and move on. Bad news?
+**Rosa Dietrich:** Bad news is that I cannot hail Takeda. Intelligence reports that she may have fallen in battle.
 
-**Rosa Dietrich:** Bad news is that I cannot hail Takeda. Intelligence reports that she may have been defeated in battle.
-
-**Ruby Patton:** Oh Miho. Theirs not to make reply, theirs not to reason why, theirs but to do and die.
+**Ruby Patton:** Oh Miho. It is not their place make reply, not to reason why, but only to do and die.
 
 ## Level 5 Mission
 
@@ -215,29 +223,27 @@ Now to the point. Imperial Earth Empire has built two 1,000 Megaton Thermonuclea
 
 **Rosa Dietrich:** Sir; there's too many of them!
 
-**Grace Patton:** This is the [Grace's Ship Name]. We've detected a massive fleet surrounding this sector!
+**Grace Patton:** This is the USS Biship. We've detected a massive fleet surrounding this sector!
 
 **Ruby Patton:** Gracie, is that you?
 
 **Grace Patton:** Yes. It's Grace.
 
-**Ruby Patton:** I'm sorry. I'm sorry I couldn't find you sooner.
+**Ruby Patton:** Grace. I'm sorry. I'm sorry I couldn't find you sooner.
 
-**Grace Patton:** No. I was the one who will to protect you. There's no time - prepare for a radiological explosion.
+**Grace Patton:** No. I am the one who will to protect you. There's no time - prepare for a radiological explosion.
 
-**Rosa Dietrich:** What?
+This has happened before and it will happen again. Remember that.
 
-**Grace Patton:** All that has happened, will happen before, and will happen again.
-
-**Rosa Dietrich:** She's firing a Teller MK 2! Everyone to the radiation chambers!
+**Rosa Dietrich:** She's firing a warhead! Teller Mark 2 class! Everyone to the radiation chambers!
 
 **Ruby Patton:** Gracie!
 
 ## Level 6 Prelude
 
-**Rosa Dietrich:** She did it. She killed them all. She must have had the other Teller Mark 42. She ... sacrificed herself for us.
+**Rosa Dietrich:** She did it. She killed them all. She must have had the other Teller Mark 42 Miho mentioned. She ... sacrificed herself for us.
 
-**Ruby Patton:** I ... I don't know what ...
+**Ruby Patton:** No, Miho. Was there no other way? Miho ...
 
 **Rosa Dietrich:** Incoming!
 
@@ -247,7 +253,11 @@ Now to the point. Imperial Earth Empire has built two 1,000 Megaton Thermonuclea
 
 ## Level 6 Complete
 
-**Valentina Nikolai**: We have caught up to your sector! We're prepared to meet you in the next!
+**Valentina Nikolai**: Nikolai reporting in.
+
+**Ruby Patton:** Valentina ... I thought we had lost you!
+
+**Valentina Nikolai**: You can't keep a good soldier down! We were slowed down, but have caught up! We're prepared to meet you in the next!
 
 ## Level 7 Prelude
 
@@ -257,7 +267,9 @@ Now to the point. Imperial Earth Empire has built two 1,000 Megaton Thermonuclea
 
 **Ruby Patton:** I don't understand. If it's not your desire, why do you fight?
 
-**Dojeer:**  Just as it was not Grace Patton's desire to kill us, she chose to do so anyway. Why did she fight?
+**Dojeer:** Just as it was not Grace Patton's desire to kill us, she chose to do so anyway. Why did she fight?
+
+**Rosa Dietrich:** Incoming!
 
 ## Level 7 Mission
 
@@ -269,15 +281,15 @@ Now to the point. Imperial Earth Empire has built two 1,000 Megaton Thermonuclea
 
 **Ruby Patton:** Good luck Valentina. Rage, rage against the dying of the light.
 
-**Valentina Nikolai**: Today, we will be victorious, or die fighting to the last man.
+**Valentina Nikolai**: Today, we will be victorious, or die fighting to the last.
 
 ## Level 8 Prelude
 
 **Rosa Dietrich:** There's no sign of Nikolai! Hostiles incoming!
 
-**Ruby Patton:** Valentina. No.
+**Ruby Patton:** Valentina ... No. Not you too...
 
-**Dojeer:** You are not prepared for what you have seen, and what you will see. As time begins and as time ends, you will understand your death.
+**Dojeer:** You are not prepared for what you have seen and what you will see. As time begins and as time ends, you will understand your death.
 
 ## Level 8 Mission
 
@@ -287,49 +299,51 @@ Now to the point. Imperial Earth Empire has built two 1,000 Megaton Thermonuclea
 
 **Rosa Dietrich:** Commander - we've got intelligence that the Dojeer are only a few sectors from Earth!
 
-**Ruby Patton:** I have been fighting for so long. We are fighting for the survival of the human race. Today we will destroy the Dojeer, or they will destroy us.
+**Ruby Patton:** I have been fighting for so long. We have been fighting for the survival of the human race. Today we will destroy the Dojeer or they will destroy us.
 
-**Dojeer:** All that has happened before, and will happen again. 
+**Rosa Dietrich:** Incoming communication from the Dojeer!
 
 **Mati:** I am Mati.
 
 I am not here for your life as much as you are not here to die.
 
-I was Mati and Algos. Now we are two.
+I was Dojeer. We are now Mati and Algos. Now we are two.
 
 I am not your enemy. Although I kill, I kill to protect and maintain.
 
 Algos is blind with rage. This rage blinds his vision of the past, the present and the future.
 
-**Ruby Patton:** There's two of you! Algos must have killed Takeda!
+**Ruby Patton:** There's two of you? Algos must have killed Takeda!
 
 **Mati:** Yes. Mati will be friend to humans. Algos must die or humans will die.
 
 **Ruby Patton:** But ... what about ... Grace?
 
-**Mati:** Grace was meant to end war. Instead of killing Algos, Algos tried to kill Mati with big bomb.
+**Mati:** Grace was meant to end the war. Grace failed and Algos found a big bomb. Algos tried use big bomb on Mati.
 
 **Ruby Patton:** But ... Grace saved me with the bomb. She died protecting me!
 
 **Mati:** No, Grace died here.
 
-**Rosa Dietrich:** Commander, we've received telemetry for a ship ... it's the [Grace's ship name]! The ship ... there's no one left.
+**Rosa Dietrich:** Commander, we've received telemetry for a ship ... it's the USS Bishop! The ship ... there's no one left.
 
 **Mati:** Grace could not understand, Mati defended Dojeer.
 
 **Ruby Patton:** Then who saved me?
 
-**Mati:** You did. All this has happened before, and will happen again.
+**Mati:** You did. This has happened before and it will happen again.
 
 **Rosa Dietrich:** There's a ... unstable wormhole forming!
 
 **Mati:** Take big bomb through time portal. Destroy Algos. If not for Dojeer, if not for Takeda, for memory of Grace. Become Grace, so that you may succeed.
 
-**Ruby Patton:** Tear off the hull markings. Change our identifiers to match the [Grace's Ship Name]. Disconnect the video feed from the communications systems.
+**Ruby Patton:** I have no choice.
+
+Tear off the hull markings. Change our identifiers to match the USS Bishop. Disconnect the video feed from the communications systems.
 
 **Rosa Dietrich:** What?
 
-**Ruby Patton:** Grace never completed her mission. Mission command gave her the other bomb. Without Grace, we must take her place in history.
+**Ruby Patton:** Grace never completed her mission. Mission command gave her the other Teller Mark 2. Without Grace, we must take her place in time.
 
 **Rosa Dietrich:** Yes sir.
 
@@ -357,7 +371,7 @@ Algos is blind with rage. This rage blinds his vision of the past, the present a
 
 **Ruby Patton:** Miho, I'm sorry. I can't save you.
 
-**Miho Takeda:** Ruby? Is that you?
+**Miho Takeda:** That voice. Ruby? Is that you?
 
 **Ruby Patton:** Miho ...
 
@@ -379,20 +393,18 @@ I saw your movies, you know. Your last one ... even made me cry.
 
 [The following text must be exactly the same at the end]
 
-**Ruby Patton:** Gracie, is that you?
+**Past Ruby Patton:** Gracie, is that you?
 
-**Not Grace Patton:** Yes. It's Grace.
+**Future Ruby Patton:** Yes. It's Grace.
 
-**Ruby Patton:** I'm sorry. I'm sorry I couldn't find you sooner.
+**Past Ruby Patton:** Grace. I'm sorry. I'm sorry I couldn't find you sooner.
 
-**Not Grace Patton:** No. I was the one who will to protect you. There's no time - prepare for a radiological explosion.
+**Future Ruby Patton:** No. I am the one who will to protect you. There's no time - prepare for a radiological explosion.
 
-**Past Rosa Dietrich:** What?
-
-**Not Grace Patton:** All that has happened, will happen before, and will happen again.
+This has happened before and it will happen again. Remember that.
 
 [The previous text must be exactly the same at the end]
 
-**Future Rosa Dietrich:** Communications ended. Algos is here.
+**Rosa Dietrich:** Communications ended. Algos is here.
 
 **Ruby Patton:** Detonate the Teller.
