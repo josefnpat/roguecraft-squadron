@@ -1,7 +1,5 @@
 # RogueCraft Squadron Campaign
 
-**THIS IS A ROUGHT DRAFT AND NEEDS A LOT OF CLEANUP. ALL CRITIQUE AND CRITICISM WELCOME!**
-
 ## Script:
 
 ## Level 1 Prelude
