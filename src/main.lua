@@ -40,7 +40,7 @@ function love.load(arg)
   end}
 
   loader:add("window icon",function()
-    love.window.setIcon(love.image.newImageData("assets/icon.png"))
+    love.window.setIcon(love.image.newImageData("assets/icons/rcs_512.png"))
   end)
 
   loader:add("tooltip edge",function()
