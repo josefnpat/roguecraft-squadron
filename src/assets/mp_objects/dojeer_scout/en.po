@@ -1,0 +1,8 @@
+msgid "mission.object.dojeer_scout.name"
+msgstr "Scout"
+
+msgid "mission.object.dojeer_scout.info"
+msgstr "A small ship to scout with."
+
+msgid "mission.object.dojeer_scout.build"
+msgstr ""

@@ -16,6 +16,15 @@ end
 
 levelshared.gen = {}
 
+levelshared.gen.getAllFirst = function()
+  return {
+    libs.levelshared.gen.demo().first,
+    libs.levelshared.gen.human().first,
+    libs.levelshared.gen.alien().first,
+    libs.levelshared.gen.dojeer().first,
+  }
+end
+
 levelshared.gen.human = function()
   return {
     first = "command",
@@ -36,8 +45,25 @@ levelshared.gen.alien = function()
   }
 end
 
+levelshared.gen.dojeer = function()
+  return {
+    first = "dojeer_command",
+    default = {
+      dojeer_habitat=1,
+      dojeer_salvager=1,
+    },
+  }
+end
+
 levelshared.gen.random = function()
-  return math.random(2) == 2 and levelshared.gen.human or levelshared.gen.alien
+  local random = math.random(3)
+  if random == 1 then
+    return levelshared.gen.human()
+  elseif random == 2 then
+    return levelshared.gen.alien()
+  else -- random == 3
+    return levelshared.gen.dojeer()
+  end
 end
 
 levelshared.gen.demo = function()
@@ -49,4 +75,5 @@ levelshared.gen.demo = function()
     },
   }
 end
+
 return levelshared

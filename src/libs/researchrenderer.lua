@@ -15,31 +15,33 @@ function researchrenderer.load(loadAssets,preset_value)
 
   local preset = libs.mppresets.getPresets()[preset_value]
 
-  local gen_render = preset.gen()
+  for _,render in pairs(libs.levelshared.gen.getAllFirst()) do
 
-  for _,current_object_type in pairs(researchrenderer.getResearchableObjects(nil,gen_render.first)) do
-    local type = researchrenderer.getUnlockName(current_object_type.type)
-    local object = {
-      type = type,
-      valid = function(object_type,current_research)
-        return current_object_type.type == object_type.type
-      end,
-      max_level = 1,
-      default_level = current_object_type.default_level,
-      cost = function(current)
-        return current_object_type.unlock_cost or 0
-      end,
-      value = function(current)
-        return current
-      end,
-    }
-    if loadAssets then
-      object.icon = current_object_type.icons[1]
+    for _,current_object_type in pairs(researchrenderer.getResearchableObjects(nil,render)) do
+      local type = researchrenderer.getUnlockName(current_object_type.type)
+      local object = {
+        type = type,
+        valid = function(object_type,current_research)
+          return current_object_type.type == object_type.type
+        end,
+        max_level = 1,
+        default_level = current_object_type.default_level,
+        cost = function(current)
+          return current_object_type.unlock_cost or 0
+        end,
+        value = function(current)
+          return current
+        end,
+      }
+      if loadAssets then
+        object.icon = current_object_type.icons[1]
+      end
+      object.loc = {
+        name="Unlock",
+      }
+      data[type] = object
     end
-    object.loc = {
-      name="Unlock",
-    }
-    data[type] = object
+
   end
 
   for _,type in pairs(love.filesystem.getDirectoryItems("assets/mp_research")) do
