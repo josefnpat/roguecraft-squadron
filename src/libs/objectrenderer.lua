@@ -7,6 +7,8 @@ local data = {}
 
 function objectrenderer.load(loadAssets)
 
+  data = {}
+
   if loadAssets then
     objectrenderer.tooltip_icons = {}
     local dir = "assets/hud/tooltip_icons/"
