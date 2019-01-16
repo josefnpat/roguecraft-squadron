@@ -76,13 +76,13 @@ function credits:enter()
     padding = 32,
   })
   table.insert(self.data,{
-    data = [[Josef Patoprsty (@josefnpat) — Code, Art, Design, Voice Talent
-Ashley Hooper (@ByteDesigning) — Code, Art
+    data = [[Josef Patoprsty (@josefnpat) — Code, Design, Art and Voice Talent
+Ashley Hooper (@ByteDesigning) — Art and Code
 Ashley Schuster (SnowSchu) — Marketing and QA
 Ran Schonewille (audio-interactive.com) — Music Composer
 Noyemi Karlaite (@NoyemiK) — Character Art
-Laura Vk (Solsforest) — Art, Voice Talent
-Arjan Vk (Vivid) — Code, SFX, Voice Talent
+Laura Vk (Solsforest) — Art and Voice Talent
+Arjan Vk (Vivid) — Code, SFX and Voice Talent
 Ethan Blackley — Video Marketing]]
   })
 
