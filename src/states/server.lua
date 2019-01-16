@@ -943,6 +943,7 @@ function server:newGame(soft)
     -- todo: add unique names
     user_count = user_count + 1
     if user.ai then
+      gen = preset.gen_ai or gen
       -- todo: balance players on pockets after 8
       user.ai:setCurrentPocket(pockets[user_count])
       user.ai:setPockets(pockets)
