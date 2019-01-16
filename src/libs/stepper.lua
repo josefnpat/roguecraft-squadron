@@ -28,6 +28,7 @@ function stepper.new(init)
   self._align = stepper._align
 
   self._down = libs.button.new{
+    disabled=init.disabled,
     text="-",
     width=32,
     dir=-1,
@@ -35,12 +36,14 @@ function stepper.new(init)
     font=init.font,
   }
   self._info = libs.button.new{
+    disabled=init.disabled,
     init.text or "OK",
     dir=1,
     onClick=init.onClick,
     font=init.font,
   }
   self._up = libs.button.new{
+    disabled=init.disabled,
     text="+",
     width=32,
     dir=1,
