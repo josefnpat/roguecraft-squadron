@@ -7,10 +7,10 @@ return function()
     "build_alien_mining",
     "build_alien_refinery",
     "build_alien_cargo",
-    "build_radar",
+    -- "build_radar",
     "build_alien_command",
-    "build_repair",
-    "build_research",
+    -- "build_repair",
+    -- "build_research",
   }
   return ship
 end
