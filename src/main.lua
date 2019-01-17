@@ -255,12 +255,18 @@ function love.update(dt)
   if states.server.run_localhost then
     states.server:update(dt)
   end
+  if libs.tooltip then
+    libs.tooltip.update(dt)
+  end
 end
 
 function love.draw()
   libs.hump.gamestate.current():draw()
   libs.cursor.draw()
   libs.system:draw()
+  if libs.tooltip then
+    libs.tooltip.draw()
+  end
 end
 
 function love.quit()
