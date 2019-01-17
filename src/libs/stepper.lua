@@ -30,22 +30,26 @@ function stepper.new(init)
   self._down = libs.button.new{
     disabled=init.disabled,
     text="-",
-    width=32,
+    width=self._height,
+    height=self._height,
     dir=-1,
     onClick=init.onClick,
     font=init.font,
   }
   self._info = libs.button.new{
     disabled=init.disabled,
-    init.text or "OK",
+    text=init.text or "OK",
+    height=self._height,
     dir=1,
     onClick=init.onClick,
     font=init.font,
+    tooltip=init.tooltip,
   }
   self._up = libs.button.new{
     disabled=init.disabled,
     text="+",
-    width=32,
+    width=self._height,
+    height=self._height,
     dir=1,
     onClick=init.onClick,
     font=init.font,
@@ -119,8 +123,11 @@ end
 
 function stepper:setHeight(val)
   self._down:setHeight(val)
+  self._down:setWidth(val)
   self._info:setHeight(val)
   self._up:setHeight(val)
+  self._up:setWidth(val)
+  self:_align()
 end
 
 function stepper:setText(val)

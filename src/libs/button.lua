@@ -10,6 +10,7 @@ function button.new(init)
   self._height = init.height or 40
   self._draw = init.draw or button._default_draw_rcs
   self._text = init.text or "OK"
+  self._tooltip = init.tooltip
   self._onClick = init.onClick or button._default_onClick
   self._onHoverIn = init.onHoverIn or function()
     libs.sfx.play("widget.hover")
@@ -58,6 +59,12 @@ function button:update(dt)
   end
   self._hover = new_hover
   self._depress = new_depress
+  if self._hover then
+    libs.tooltip.set(
+      self._tooltip,
+      self._x+self._width-4,
+      self._y+self._height-4)
+  end
 end
 
 function button:mouseInside()
