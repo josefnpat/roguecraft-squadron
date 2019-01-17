@@ -28,6 +28,7 @@ function mpconnectplayer.new(init)
   self._outer_padding = 4
 
   self._changeTeam = libs.button.new{
+    height=24,
     text=function()
       return self._team
     end,
@@ -37,19 +38,29 @@ function mpconnectplayer.new(init)
         p=self._user_id,
         t=self._type=="user" and "u" or "ai"})
     end,
+    tooltip=function(data)
+      return "This player is on team "..self._team
+    end,
   }
 
   if self._type ~= "user" then
-    self._changeDiff = libs.button.new{
+    -- todo: add tooltips for buttons
+    self._changeDiff = libs.stepper.new{
+      height=24,
       text=function()
         local diff = libs.net.aiDifficulty[self._diff]
-        return diff.text--.." ["..diff.apm().."]"
+        return diff.roman_numeral--.." ["..diff.apm().."]"
       end,
-      onClick=function()
+      onClick=function(dir)
         self.lovernet:pushData(libs.net.op.set_players,{
-          d={diff=self._diff+1},
+          d={diff=self._diff+dir},
           p=self._user_id,
           t="ai"})
+      end,
+      font=fonts.submenu,
+      tooltip=function(data)
+        local diff = libs.net.aiDifficulty[self._diff]
+        return "This AI is set to difficulty ".. diff.full_text .. " (" .. diff.roman_numeral .. ")"
       end,
     }
   end

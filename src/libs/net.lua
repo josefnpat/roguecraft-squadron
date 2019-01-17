@@ -107,31 +107,37 @@ net.aiDifficultyScale = 50
 
 net.aiDifficulty = {
   {
+    roman_numeral = "I",
     text = "Fg Off (I)",
     full_text = "Flying Officer",
     apm = function() return net.aiDifficultyBase+net.aiDifficultyScale*0 end,
   },
   {
+    roman_numeral = "II",
     text = "Flt Lt (II)",
     full_text = "Flight Lieutenant",
     apm = function() return net.aiDifficultyBase+net.aiDifficultyScale*1 end,
   },
   {
+    roman_numeral = "III",
     text = "Sqn Ldr (III)",
     full_text = "Squadron Leader",
     apm = function() return net.aiDifficultyBase+net.aiDifficultyScale*2 end,
   },
   {
+    roman_numeral = "IV",
     text = "Wg Cdr (IV)",
     full_text = "Wing Commander",
     apm = function() return net.aiDifficultyBase+net.aiDifficultyScale*3 end,
   },
   {
+    roman_numeral = "V",
     text = "Gp Capt (V)",
     full_text = "Group Captain",
     apm = function() return net.aiDifficultyBase+net.aiDifficultyScale*4 end,
   },
   {
+    roman_numeral = "VI",
     text = "Air Cdre (VI)",
     full_text = "Air Commodore",
     apm = function() return net.aiDifficultyBase+net.aiDifficultyScale*5 end,

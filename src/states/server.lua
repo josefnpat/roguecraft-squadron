@@ -1295,14 +1295,19 @@ function server:explodeNearby(object,world)
   end
 end
 
-function server:validateConfig()
+function server:getPlayerCount()
   local storage = self.lovernet:getStorage()
-  storage.config.ai = math.max(0,storage.config.ai)
   local user_count = 0
   for _,_ in pairs(self.lovernet:getUsers()) do
     user_count = user_count + 1
   end
-  local player_count = user_count + storage.config.ai
+  return user_count + storage.config.ai,user_count
+end
+
+function server:validateConfig()
+  local storage = self.lovernet:getStorage()
+  local player_count,user_count = self:getPlayerCount()
+  storage.config.ai = math.max(0,storage.config.ai)
   storage.config.ai = math.min(server.maxPlayers-user_count,storage.config.ai)
   if storage.config.preset > #libs.mppresets.getPresets() then
     storage.config.preset = 1
@@ -1351,7 +1356,9 @@ function server:validateConfig()
 end
 
 function server:validatePlayerConfig(player)
-  if player.team > server.maxPlayers then
+
+  local player_count = self:getPlayerCount()
+  if player.team > player_count then
     player.team = 1
   end
   if player.diff and player.diff > #libs.net.aiDifficulty then
@@ -1365,6 +1372,7 @@ function server:validatePlayerConfig(player)
     end
   end
   self.lovernet:getStorage().config.game_start = all_ready
+
 end
 
 function server:update(dt)
