@@ -1361,8 +1361,13 @@ function server:validatePlayerConfig(player)
   if player.team > player_count then
     player.team = 1
   end
-  if player.diff and player.diff > #libs.net.aiDifficulty then
-    player.diff = 1
+  if player.diff then
+    if player.diff > #libs.net.aiDifficulty then
+      player.diff = 1
+    end
+    if player.diff < 1 then
+      player.diff = #libs.net.aiDifficulty
+    end
   end
   local all_ready = true
   for _,user in pairs(self.lovernet:getUsers()) do
