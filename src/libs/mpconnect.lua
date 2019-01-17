@@ -106,19 +106,13 @@ function mpconnect:generateButtons()
   local gamemode_object = self.mpgamemodes:getGamemodeById(self.gamemode)
   if gamemode_object.configurable then
 
-    table.insert(self.buttons,libs.button.new{
-      text="Add AI",
-      onClick=function()
-        self.lovernet:pushData(libs.net.op.set_config,{d={ai=self.ai_count+1}})
+    self.aiCountButton = libs.stepper.new{
+      text="AI Count",
+      onClick=function(dir)
+        self.lovernet:pushData(libs.net.op.set_config,{d={ai=self.ai_count+dir}})
       end,
-    })
-
-    table.insert(self.buttons,libs.button.new{
-      text="Remove AI",
-      onClick=function()
-        self.lovernet:pushData(libs.net.op.set_config,{d={ai=self.ai_count-1}})
-      end,
-    })
+    }
+    table.insert(self.buttons,self.aiCountButton)
 
     table.insert(self.buttons,libs.button.new{
       disabled=not isRelease(),
@@ -238,6 +232,9 @@ end
 
 function mpconnect:setAiCount(count)
   self.ai_count = count
+  if self.aiCountButton then
+    self.aiCountButton:setText("AI Count ["..self.ai_count.."]")
+  end
 end
 
 function mpconnect:setCreative(val)
