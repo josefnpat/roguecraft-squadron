@@ -1,8 +1,8 @@
 msgid "mission.object.dojeer_cargo.name"
-msgstr "Freighter"
+msgstr "Frei"
 
 msgid "mission.object.dojeer_cargo.info"
-msgstr "A cargo ship that stores ore and material."
+msgstr ""
 
 msgid "mission.object.dojeer_cargo.build"
-msgstr "After humans began colonizing other planets, cargo vessels became a necessity. If we're running out of room, I guess we could just build a giant hangar, and attach some engines to it. Should provide a good way to stockpile materials, assuming it doesn't get blown up."
+msgstr ""

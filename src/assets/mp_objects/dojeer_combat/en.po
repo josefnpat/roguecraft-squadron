@@ -1,8 +1,8 @@
 msgid "mission.object.dojeer_combat.name"
-msgstr "Battlestar"
+msgstr "Budja"
 
 msgid "mission.object.dojeer_combat.info"
-msgstr "A combat ship to defend your squadron with."
+msgstr ""
 
 msgid "mission.object.dojeer_combat.build"
-msgstr "One of the largest warship classes is the Galactica class warship. A sturdy design that has lasted the trials of time. We realize that the small fighter doesn't really have staying power in combat, so we made a bigger one. Bigger is better, right?"
+msgstr ""

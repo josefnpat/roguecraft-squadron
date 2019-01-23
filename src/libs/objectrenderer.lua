@@ -92,8 +92,10 @@ function objectrenderer.tooltip(object,object_type,x,y)
   if object_type.names then
     name = object_type.names[object.name]
   end
-  tooltipf(name.." — "..(object_type.loc.info or ""),
-    x,y,320,"right")
+  if object_type.loc.info and object_type.loc.info ~= "" then
+    name = name .. " — " .. object_type.loc.info
+  end
+  tooltipf(name,x,y,320,"right")
 end
 
 function objectrenderer.tooltipBuild(object_type,x,y,points,resources)

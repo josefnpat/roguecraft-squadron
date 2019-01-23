@@ -1,8 +1,8 @@
 msgid "mission.object.dojeer_mining.name"
-msgstr "Mining Rig"
+msgstr "Ricomi"
 
 msgid "mission.object.dojeer_mining.info"
-msgstr "An ore mining ship with some ore storage."
+msgstr ""
 
 msgid "mission.object.dojeer_mining.build"
-msgstr "Mining has been a respected occupation for many generations. If you want to collect ore to refine into minerals, you're going to need some kind of ship to mine it. It's pretty basic, but it will get the job done! Keep in mind that this ship will not refine the ore; you'll need a refinery for that."
+msgstr ""

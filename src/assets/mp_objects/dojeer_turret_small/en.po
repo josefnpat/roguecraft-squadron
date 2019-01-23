@@ -1,8 +1,8 @@
 msgid "mission.object.dojeer_turret_small.name"
-msgstr "Small Turret"
+msgstr "Tura"
 
 msgid "mission.object.dojeer_turret_small.info"
-msgstr "A small stationary turret used for defense."
+msgstr ""
 
 msgid "mission.object.dojeer_turret_small.build"
-msgstr "Our research found that we no longer had to go to the enemy. We figured they could just come to us now."
+msgstr ""

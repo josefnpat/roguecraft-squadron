@@ -1,8 +1,8 @@
 msgid "mission.object.dojeer_drydock.name"
-msgstr "Civilian Drydock"
+msgstr "Civika"
 
 msgid "mission.object.dojeer_drydock.info"
-msgstr "A construction ship builds ships focused on resources and expansion."
+msgstr ""
 
 msgid "mission.object.dojeer_drydock.build"
-msgstr "At one point in history, humans created a self-replicating drydock. They ran out of materials rather quickly. Regardless, if you want bigger ships, you're going to have to build bigger drydocks."
+msgstr ""

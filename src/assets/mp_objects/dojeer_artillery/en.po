@@ -1,8 +1,8 @@
 msgid "mission.object.dojeer_artillery.name"
-msgstr "Artillery Vessel"
+msgstr "Artja"
 
 msgid "mission.object.dojeer_artillery.info"
-msgstr "A long ranged combat ship to defend your squadron with."
+msgstr ""
 
 msgid "mission.object.dojeer_artillery.build"
-msgstr "We can create an artillery class ship designed for long range. This way we can keep the heavy armored ships in the front, and blast them from a distance. I'm told that this ship is basically just a modified howitzer."
+msgstr ""
