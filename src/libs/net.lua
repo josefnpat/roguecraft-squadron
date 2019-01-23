@@ -234,15 +234,28 @@ end
 
 local selected_alpha = 127
 
+local colors = {}
+
+-- first four are good for deut
+-- last two are not, but that's why they're at the end
+colors.default = {
+  text = "Default",
+  data = {
+    {77,175,74},
+    {152,78,163},
+    {255,255,51},
+    {247,129,191},
+    {255,127,0},
+    {55,126,184},
+    {228,26,28},
+    {166,86,40},
+  }
+}
+
 net._users = {}
-local names = {"Alberto","Beryl","Chris","Debby","Ernesto","Florence","Gordon","Helene"}
-local full_offset = -0.2
-for i,v in pairs(names) do
-  local scalar = 1/8
-  local offset = i%2==0 and full_offset or full_offset+0.5
-  local r,g,b = HSVToRGB(math.mod(i*scalar+offset,1)*255,255,255)
+for i = 1,8 do
+  local r,g,b = unpack(colors.default.data[i])
   table.insert(net._users,{
-    name = v,
     color = {r,g,b,selected_alpha},
     selected_color = {r,g,b},
   })

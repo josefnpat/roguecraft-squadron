@@ -88,11 +88,7 @@ function minimap:draw(camera,focus,objects,fow,players,user,disable)
       end
       if type.minimap ~= false then
         love.graphics.setColor(color)
-        love.graphics.rectangle("fill",
-          x+ox+object.dx/scale-2,y+oy+object.dy/scale-2,4,4)
-        love.graphics.setColor(255,255,255,127)
-        love.graphics.rectangle("line",
-          x+ox+object.dx/scale-1.5,y+oy+object.dy/scale-1.5,4,4)
+        love.graphics.circle("fill",x+ox+object.dx/scale,y+oy+object.dy/scale,2)
       end
       if object.in_combat then
         love.graphics.setColor(255,0,0)

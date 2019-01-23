@@ -321,7 +321,7 @@ function objectrenderer.draw(object,objects,selection,time,user_id,players)
     elseif object.user == user_id then
       love.graphics.setColor(0,255,255)
     elseif libs.net.isOnSameTeam(players,user_id,object.user) then
-      love.graphics.setColor(0,255,0)
+      love.graphics.setColor(0,127,255)
     else
       love.graphics.setColor(255,0,0)
     end

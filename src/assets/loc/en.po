@@ -76,6 +76,9 @@ msgstr "What is love? Baby don't hurt me."
 msgid "credits.title"
 msgstr "CREDITS"
 
+msgid "credits.special"
+msgstr "Special Thanks"
+
 msgid "credits.playtesters"
 msgstr "Playtesters"
 

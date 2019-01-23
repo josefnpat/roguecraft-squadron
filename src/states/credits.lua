@@ -43,7 +43,18 @@ function credits:init()
   }
   self.vivid:init()
 
-  self.testers = {"Peter Oswald","Ashley Shuster","ByteDesigning","Vivid","EntranceJew","Forer"}
+  self.testers = {
+    "Peter Oswald",
+    "Ashley Shuster",
+    "ByteDesigning",
+    "Vivid",
+    "EntranceJew",
+    "Forer",
+  }
+  self.special = {
+    "Positive07 — Deutan Specialist",
+    "And you — Super Sexy"
+  }
   -- Thank you so much whiteland92!!! <3
   self.ibtwitch = {"icecooltea","whiteland92"}
   self.twitch = {"bartbes","whitebot_","ashlon23","unekpl","hartlomiej",
@@ -92,6 +103,17 @@ Ethan Blackley — Video Marketing]]
     padding = 32,
   })
   for _,v in pairs(self.testers) do
+    table.insert(self.data,{
+      data = v,
+    })
+  end
+
+  table.insert(self.data,{
+    data = libs.i18n('credits.special'),
+    font = fonts.window_title,
+    padding = 32,
+  })
+  for _,v in pairs(self.special) do
     table.insert(self.data,{
       data = v,
     })
