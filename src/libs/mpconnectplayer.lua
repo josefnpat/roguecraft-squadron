@@ -5,6 +5,11 @@ mpconnectplayer.img = {
   ai = love.graphics.newImage("assets/hud/portraits/ai.png"),
 }
 
+mpconnectplayer.icons = {
+  check = love.graphics.newImage("assets/hud/check.png"),
+  check_empty = love.graphics.newImage("assets/hud/check_empty.png"),
+}
+
 function mpconnectplayer.new(init)
   init = init or {}
   local self = {}
@@ -86,8 +91,13 @@ function mpconnectplayer:draw(x,y)
     target_x,
     target_y,
     0,scale,scale)
-  local text = self._user_name.."\n"..(self._ready and "[Ready]" or "")
+
+  local text = self._user_name
   dropshadowf(text,x,y+image:getHeight()*scale+32,self:getWidth(),"center")
+  local ready_image = self._ready and mpconnectplayer.icons.check or mpconnectplayer.icons.check_empty
+  love.graphics.draw(ready_image,
+    x+(self:getWidth()-ready_image:getWidth())/2,
+    y+image:getHeight()*scale+32+love.graphics.getFont():getHeight())
 
   if self._configurable then
     self._changeTeam:setX(target_x)

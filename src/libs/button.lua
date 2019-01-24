@@ -19,6 +19,7 @@ function button.new(init)
   self._disabled = init.disabled or false
   self._dir = init.dir or 1
   self._font = init.font or fonts.menu
+  self._icon = init.icon
 
   self._hover = false
   self._depress = false
@@ -103,8 +104,9 @@ function button._default_draw_rcs(text,icon,x,y,width,height,hover,depress,disab
   love.graphics.setColor(fg or {0,255,255})
   love.graphics.setFont(font)
   if icon then
-    local icon_padding = (height - icon:getHeight()) / 2
-    love.graphics.draw(icon,x+icon_padding,y+icon_padding)
+    local icon_image = type(icon) == "function" and icon() or icon
+    local icon_padding = (height - icon_image:getHeight()) / 2
+    love.graphics.draw(icon_image,x+icon_padding,y+icon_padding)
   end
   if not fg then
     dropshadowf(text,x,y+offset,width,"center")

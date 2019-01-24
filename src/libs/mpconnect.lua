@@ -1,5 +1,10 @@
 local mpconnect = {}
 
+mpconnect.icons = {
+  check = love.graphics.newImage("assets/hud/check.png"),
+  check_empty = love.graphics.newImage("assets/hud/check_empty.png"),
+}
+
 function mpconnect.new(init)
   init = init or {}
   local self = {}
@@ -37,16 +42,17 @@ function mpconnect.new(init)
   self._data = {}
 
   self.start = libs.button.new{
-    text=function()
-      local player = libs.net.getPlayerById(self._players,self._user_id)
-      return player.ready and "Ready" or "Not Ready"
-    end,
+    text="Ready",
     onClick=function()
       local player = libs.net.getPlayerById(self._players,self._user_id)
       self.lovernet:pushData(libs.net.op.set_players,{
         d={ready=not player.ready},
         p=self._user_id,
         t="u"})
+    end,
+    icon=function()
+      local player = libs.net.getPlayerById(self._players,self._user_id)
+      return player.ready and mpconnect.icons.check or mpconnect.icons.check_empty
     end,
   }
 
