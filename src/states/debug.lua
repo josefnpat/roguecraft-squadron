@@ -64,6 +64,15 @@ function state:init()
     libs.hump.gamestate.switch(states.dynamicmusic)
   end)
 
+  self.menu:add(
+    function()
+      return "Enable all Game Modes ["..(libs.mpconnect.enable_all_modes and "Enabled" or "Disabled").."]"
+    end,
+    function()
+      libs.mpconnect.enable_all_modes = not libs.mpconnect.enable_all_modes
+    end
+  )
+
   self.menu:add("Back",function()
     libs.hump.gamestate.switch(states.menu)
   end)

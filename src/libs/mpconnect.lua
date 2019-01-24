@@ -404,8 +404,13 @@ function mpconnect:draw(config,players,user_count)
       self.gamemodeTargetButton:setY(target_y+gamemode_object.image:getHeight()+targetVerticalOffset+paddingVertical)
       self.gamemodeTargetButton:setWidth(buttonWidth)
       self.gamemodeTargetButton:setHeight(buttonHeight)
-      self.gamemodeTargetButton:setDisabled(gamemode_object.disabled)
-      self.gamemodeTargetButton:setText(gamemode_object.disabled and "Coming Soon!" or "Start")
+      local disabled = gamemode_object.disabled and true or false
+      if mpconnect.enable_all_modes then
+        disabled = false
+      end
+      self.gamemodeTargetButton:setDisabled(disabled)
+      local text = gamemode_object.disabled and gamemode_object.disabled or "Start"
+      self.gamemodeTargetButton:setText(text)
       self.gamemodeTargetButton:draw()
 
     else

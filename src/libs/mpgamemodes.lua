@@ -11,6 +11,9 @@ function mpgamemodes.load(loadAssets)
     gamemode.dir = filename
     table.insert(mpgamemodes._gamemodes,gamemode)
   end
+  table.sort(mpgamemodes._gamemodes,function(a,b)
+    return a.weight < b.weight
+  end)
 end
 
 function mpgamemodes.new(init)

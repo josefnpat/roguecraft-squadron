@@ -7,7 +7,8 @@ Imperial Earth Empire. Ruby's sister is missing in action after the Dojeer, a
 fearful hivemind race, hellbent on the end of humanity, come charging for earth.
 It's up to Ruby to end this siege at any cost, even her own humanity.]]
 gamemode.start_level = "1"
-gamemode.disabled = true
+gamemode.disabled = "Coming this summer!"
 gamemode.configurable = false
+gamemode.weight = 2
 
 return gamemode
