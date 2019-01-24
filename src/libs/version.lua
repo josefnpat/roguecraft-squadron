@@ -1,6 +1,9 @@
 local version = {}
 
 function version.draw()
+  if debug_hide_hud then
+    return
+  end
   local vs_info = ""
   if version_server then
 

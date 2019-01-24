@@ -86,6 +86,7 @@ function slider:setOnChange(val)
 end
 
 function slider:draw()
+  if debug_hide_hud then return end
   local old_color = {love.graphics.getColor()}
   tooltipbg(self._x,self._y,self._width,self._height)
   local tvoff = (self._height-love.graphics.getFont():getHeight())/2

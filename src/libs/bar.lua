@@ -56,6 +56,7 @@ function barlib.new(init)
 end
 
 function barlib:draw()
+  if debug_hide_hud then return end
   if not self._barEnable then return end
   local old_color = {love.graphics.getColor()}
   if self._drawbg then

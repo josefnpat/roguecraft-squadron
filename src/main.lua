@@ -226,6 +226,9 @@ function love.resize()
 end
 
 function love.keypressed(key)
+  if key == "f5" then
+    debug_hide_hud = not debug_hide_hud
+  end
   if key == "f12" then
     local dname = "screenshots"
     if not love.filesystem.exists(dname) then
@@ -311,6 +314,7 @@ function debugrect(x,y,w,h)
 end
 
 function tooltipf(text,ox,oy,ow,align)
+  if debug_hide_hud then return end
   local padding = 8
 
   local x = ox + padding

@@ -15,6 +15,7 @@ function notif.new(init)
 end
 
 function notif:draw()
+  if debug_hide_hud then return end
   if self._current then
     local padding = 32
     local tfont = love.graphics.getFont()

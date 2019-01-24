@@ -45,6 +45,8 @@ end
 
 function minimap:draw(camera,focus,objects,fow,players,user,disable)
 
+  if debug_hide_hud then return end
+
   local fow_map = fow:getMap()
   local x,y,w,h = self.x, self.y,self.size,self.size
   tooltipbg(x,y,w,h)

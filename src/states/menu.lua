@@ -190,11 +190,13 @@ function mainmenu:draw()
   libs.stars:draw()
   libs.stars:drawPlanet()
 
-  local logow = love.graphics.getWidth()*11/16 -- see menu lib for this math
+  if not debug_hide_hud then
+    local logow = love.graphics.getWidth()*11/16 -- see menu lib for this math
 
-  local logox = (logow-self.logo:getWidth())/2
-  local logoy = (love.graphics.getHeight()-self.logo:getHeight())/2
-  love.graphics.draw(self.logo,logox,logoy)
+    local logox = (logow-self.logo:getWidth())/2
+    local logoy = (love.graphics.getHeight()-self.logo:getHeight())/2
+    love.graphics.draw(self.logo,logox,logoy)
+  end
 
   self.menu:draw()
 

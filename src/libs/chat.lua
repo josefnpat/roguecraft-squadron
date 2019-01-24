@@ -41,6 +41,7 @@ function chat.new(init)
 end
 
 function chat:draw()
+  if debug_hide_hud then return end
   love.graphics.setScissor(self._x,self._y,self._width,self._height)
   local font = love.graphics.getFont()
   local offset = font:getHeight()+self._padding*2

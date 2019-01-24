@@ -36,6 +36,7 @@ function menu:getEntryArea(i)
 end
 
 function menu:draw()
+  if debug_hide_hud then return end
   local old_font = love.graphics.getFont()
   local old_color = {love.graphics.getColor()}
 

@@ -81,6 +81,9 @@ function matrixpanel:getWidth()
 end
 
 function matrixpanel:draw(bg,fg)
+  if debug_hide_hud then
+    return
+  end
   if self._drawbg then
     tooltipbg(self._x,self._y,self._width,self:getHeight(),bg,fg)
   end

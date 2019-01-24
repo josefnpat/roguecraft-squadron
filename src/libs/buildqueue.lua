@@ -199,6 +199,7 @@ function buildqueue:runHoverAction()
 end
 
 function buildqueue:drawPanel()
+  if debug_hide_hud then return end
   tooltipbg(self._x,self._y,self._width,self:getHeight())
   self.progress:draw()
   self.queue:draw()

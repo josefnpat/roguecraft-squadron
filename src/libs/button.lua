@@ -75,6 +75,9 @@ function button:mouseInside()
 end
 
 function button:draw()
+  if debug_hide_hud then
+    return
+  end
   self._draw(
     type(self._text)=="function" and self._text() or self._text,
     self._icon,
