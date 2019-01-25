@@ -191,11 +191,14 @@ function mainmenu:draw()
   libs.stars:drawPlanet()
 
   if not debug_hide_hud then
-    local logow = love.graphics.getWidth()*11/16 -- see menu lib for this math
-
-    local logox = (logow-self.logo:getWidth())/2
+    local logox = love.graphics.getWidth()/16
+    local logow = love.graphics.getWidth()*9/16 -- see menu lib for this math
     local logoy = (love.graphics.getHeight()-self.logo:getHeight())/2
-    love.graphics.draw(self.logo,logox,logoy)
+    love.graphics.draw(self.logo,logox+(logow-self.logo:getWidth())/2,logoy)
+    love.graphics.draw(self.logo,logox-(self.logo:getWidth()-logow)/2,logoy)
+    love.graphics.setFont(fonts.title)
+    dropshadowf(game_tagline,logox,logoy+self.logo:getHeight()-32,logow,"center")
+    love.graphics.setFont(fonts.default)
   end
 
   self.menu:draw()

@@ -19,7 +19,8 @@ settings:define("mouse_draw_mode","software")
 settings:define("object_shaders",true)
 settings:define("action_keys",{"z","x","c","v","b"})
 
-game_name = "RogueCraft Squadron"
+game_tagline = "Call to Arms"
+game_name = "RogueCraft Squadron: "..game_tagline
 git_hash,git_count = "missing git.lua",-1
 pcall( function() return require("git") end );
 
