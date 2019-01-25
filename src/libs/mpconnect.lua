@@ -19,6 +19,11 @@ function mpconnect.new(init)
   self.points = init.points or 1
   self.mpgamemodes = init.mpgamemodes
   self.target_gamemode = self.mpgamemodes:getGamemodes()[1].id
+  self.guide = libs.guide.new{
+    text = [[Welcome to the IEE war game simulator.
+
+Configure your players to prepare your match.]],
+  }
 
   self.generateButtons = mpconnect.generateButtons
   self.updateData = mpconnect.updateData
@@ -449,6 +454,8 @@ function mpconnect:draw(config,players,user_count)
         button:setWidth(256+32)
         button:draw()
       end
+
+      self.guide:draw(self.chat:getX(),32,self.chat:getWidth())
 
     end
 
