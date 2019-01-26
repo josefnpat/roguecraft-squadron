@@ -94,10 +94,12 @@ function mpconnectplayer:draw(x,y)
 
   local text = self._user_name
   dropshadowf(text,x,y+image:getHeight()*scale+32,self:getWidth(),"center")
-  local ready_image = self._ready and mpconnectplayer.icons.check or mpconnectplayer.icons.check_empty
-  love.graphics.draw(ready_image,
-    x+(self:getWidth()-ready_image:getWidth())/2,
-    y+image:getHeight()*scale+32+love.graphics.getFont():getHeight())
+  if self._type=="user" then
+    local ready_image = self._ready and mpconnectplayer.icons.check or mpconnectplayer.icons.check_empty
+    love.graphics.draw(ready_image,
+      x+(self:getWidth()-ready_image:getWidth())/2,
+      y+image:getHeight()*scale+32+love.graphics.getFont():getHeight())
+  end
 
   if self._configurable then
     self._changeTeam:setX(target_x)
