@@ -1091,7 +1091,7 @@ end
 
 function client:keypressed(key)
 
-  if not self.chat:getActive() and key == "`" then
+  if not self.chat:getActive() and key == "`" and love.keyboard.isDown("lshift") then
     debug_mode = not debug_mode
   end
   if debug_mode then
