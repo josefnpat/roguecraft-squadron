@@ -40,12 +40,20 @@ function menu:draw()
   local old_font = love.graphics.getFont()
   local old_color = {love.graphics.getColor()}
 
-  love.graphics.setFont(self._title_font)
-
-  self._printf(self._title,
-    0,
-    (love.graphics.getHeight()-self._title_font:getHeight())/2,
-    love.graphics.getWidth(),"center")
+  if type(self._title) == "string" then
+    love.graphics.setFont(self._title_font)
+    self._printf(self._title,
+      0,
+      (love.graphics.getHeight()-self._title_font:getHeight())/2,
+      love.graphics.getWidth(),"center")
+  elseif type(self._title) == "userdata" then
+    local offset = love.graphics.getWidth()/16
+    local width = love.graphics.getWidth()*9/16
+    love.graphics.draw(self._title,
+      offset+(width-self._title:getWidth())/2,
+      (love.graphics.getHeight()-self._title:getHeight())/2
+    )
+  end
 
   love.graphics.setFont(self._entry_font)
 

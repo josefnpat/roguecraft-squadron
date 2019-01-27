@@ -6,7 +6,7 @@ client._bump_cell_size = 64
 
 function client:init()
   -- todo: i18n
-  self.main_menu = libs.menu.new{title="[MENU]"}
+  self.main_menu = libs.menu.new{title=love.graphics.newImage("assets/hud/overlay.png")}
   self.main_menu:add(libs.i18n('pause.continue'),function()
     self.menu_enabled = false
   end)
