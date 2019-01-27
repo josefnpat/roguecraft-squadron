@@ -59,6 +59,7 @@ Configure your players to prepare your match.]],
       local player = libs.net.getPlayerById(self._players,self._user_id)
       return player.ready and mpconnect.icons.check or mpconnect.icons.check_empty
     end,
+    tooltip="Change your ready status.",
   }
 
   self.gamemodes = {}
@@ -92,6 +93,7 @@ function mpconnect:generateButtons()
     onClick=function(dir)
       self.lovernet:pushData(libs.net.op.set_config,{d={preset=self.preset+dir}})
     end,
+    tooltip="Change what ships are available in the game.",
   }
   table.insert(self.buttons,self.presetButton)
 
@@ -100,6 +102,7 @@ function mpconnect:generateButtons()
     onClick=function(dir)
       self.lovernet:pushData(libs.net.op.set_config,{d={transmitRate=self.transmitRate+dir}})
     end,
+    tooltip="Change the update time per player. Raise this if your game has issues.",
   }
   table.insert(self.buttons,self.transmitRatesButton)
 
@@ -122,6 +125,7 @@ function mpconnect:generateButtons()
       onClick=function(dir)
         self.lovernet:pushData(libs.net.op.set_config,{d={ai=self.ai_count+dir}})
       end,
+      tooltip="Change how many computers you want playing in the game.",
     }
     table.insert(self.buttons,self.aiCountButton)
 
@@ -131,6 +135,7 @@ function mpconnect:generateButtons()
       onClick=function()
         self.lovernet:pushData(libs.net.op.set_config,{d={creative=not self.creative}})
       end,
+      tooltip="Change how long it takes to build ships.",
     })
 
     table.insert(self.buttons,libs.button.new{
@@ -139,6 +144,7 @@ function mpconnect:generateButtons()
       onClick=function()
         self.lovernet:pushData(libs.net.op.set_config,{d={everyShipUnlocked=not self.everyShipUnlocked}})
       end,
+      tooltip="Determine if all ships are unlocked in the game.",
     })
 
     self.pointsButton = libs.stepper.new{
@@ -147,6 +153,7 @@ function mpconnect:generateButtons()
       onClick=function(dir)
         self.lovernet:pushData(libs.net.op.set_config,{d={points=self.points+dir}})
       end,
+      tooltip="Determine how many ships can be made in a game by choosing a command capacity.",
     }
     table.insert(self.buttons,self.pointsButton)
 
@@ -156,6 +163,7 @@ function mpconnect:generateButtons()
       onClick=function(dir)
         self.lovernet:pushData(libs.net.op.set_config,{d={map=self.map+dir}})
       end,
+      tooltip="Choose what kind of map the game will use.",
     }
     table.insert(self.buttons,self.mapButton)
 
@@ -165,17 +173,9 @@ function mpconnect:generateButtons()
       onClick=function(dir)
         self.lovernet:pushData(libs.net.op.set_config,{d={mapsize=self.mapsize+dir}})
       end,
+      tooltip="Choose the size of the map for the game.",
     }
     table.insert(self.buttons,self.mapSizeButton)
-
-    self.mapGenDefaultButton = libs.stepper.new{
-      disabled=not isRelease(),
-      text="Resources",
-      onClick=function(dir)
-        self.lovernet:pushData(libs.net.op.set_config,{d={mapGenDefault=self.mapGenDefault+dir}})
-      end,
-    }
-    table.insert(self.buttons,self.mapGenDefaultButton)
 
     self.mapPocketsButton = libs.stepper.new{
       disabled=not isRelease(),
@@ -183,8 +183,19 @@ function mpconnect:generateButtons()
       onClick=function(dir)
         self.lovernet:pushData(libs.net.op.set_config,{d={mapPockets=self.mapPockets+dir}})
       end,
+      tooltip="Choose among how many pockets the resources are spread out on. Only works for Map Type Spaced Pockets.",
     }
     table.insert(self.buttons,self.mapPocketsButton)
+
+    self.mapGenDefaultButton = libs.stepper.new{
+      disabled=not isRelease(),
+      text="Resources",
+      onClick=function(dir)
+        self.lovernet:pushData(libs.net.op.set_config,{d={mapGenDefault=self.mapGenDefault+dir}})
+      end,
+      tooltip=" Choose how many resources are available on the map.",
+    }
+    table.insert(self.buttons,self.mapGenDefaultButton)
 
     for _,button in pairs(self.buttons) do
       button:setFont(fonts.submenu)
