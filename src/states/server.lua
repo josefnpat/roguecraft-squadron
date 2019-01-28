@@ -853,7 +853,7 @@ function server:resetGame()
     transmitRate=1,
     creative=false,
     everyShipUnlocked=false,
-    ai=0,
+    ai=1,
   }
 
   storage.objects = {}

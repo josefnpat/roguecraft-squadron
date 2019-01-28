@@ -11,7 +11,7 @@ function mpconnect.new(init)
 
   self.lovernet = init.lovernet
   self.chat = init.chat
-  self.ai_count = init.ai_count or 0
+  self.ai_count = init.ai_count or 1
   self.creative = false
   self.everyShipUnlocked = false
   self.preset = init.preset or #libs.mppresets.getPresets()
