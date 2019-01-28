@@ -1394,9 +1394,13 @@ function server:update(dt)
   end
 
   if storage.config.game_started then
+    -- todo: figure out6 how to clean this up without it breaking things
+    -- see https://github.com/josefnpat/roguecraft-squadron/issues/665
+    --[[
     if not libs.net.hasUserObjects(storage.objects) then
       server:resetGame()
     end
+    --]]
   else
     self:validateConfig()
     for _,user in pairs(self.lovernet:getUsers()) do
