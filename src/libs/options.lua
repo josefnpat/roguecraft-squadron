@@ -121,8 +121,9 @@ options.menu:add(
 
 options.menu:addSlider(
   function()
+    local camera_slow = libs.camera_edge.slow_camera and 1/10 or 1
     return libs.i18n('options.camera_speed',{
-      camera_speed=math.floor(settings:read("camera_speed")*10+0.5)/10,
+      camera_speed=math.floor(settings:read("camera_speed")*10+0.5)/10*camera_slow,
     })
   end,
   function(value,rangeValue)

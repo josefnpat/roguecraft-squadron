@@ -73,6 +73,15 @@ function state:init()
     end
   )
 
+  self.menu:add(
+    function()
+      return "Enable slow camera ["..(libs.camera_edge.slow_camera and "Enabled" or "Disabled").."]"
+    end,
+    function()
+      libs.camera_edge.slow_camera = not libs.camera_edge.slow_camera
+    end
+  )
+
   self.menu:add("Back",function()
     libs.hump.gamestate.switch(states.menu)
   end)

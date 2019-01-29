@@ -18,6 +18,10 @@ function camera_edge.get_delta(dt,left,right,up,down)
   if down then
     dy = camera_edge_speed*dt*settings:read("camera_speed")
   end
+  if camera_edge.slow_camera then
+    dx = dx / 10
+    dy = dy / 10
+  end
   return dx,dy
 end
 
