@@ -9,6 +9,7 @@ function mainmenu:init()
   self.music.title:setLooping(true)
 
   self.logo = love.graphics.newImage("assets/logo.png")
+  self.tagline = love.graphics.newImage("assets/tagline.png")
 
   self.debug_menu = {"up","up","down","down","left","right","left","right","b","a"}
   self.debug_menu_index = 1
@@ -196,9 +197,10 @@ function mainmenu:draw()
     local logoy = (love.graphics.getHeight()-self.logo:getHeight())/2
     love.graphics.draw(self.logo,logox+(logow-self.logo:getWidth())/2,logoy)
     love.graphics.draw(self.logo,logox-(self.logo:getWidth()-logow)/2,logoy)
-    love.graphics.setFont(fonts.title)
-    dropshadowf(game_tagline,logox,logoy+self.logo:getHeight()-32,logow,"center")
-    love.graphics.setFont(fonts.default)
+    love.graphics.draw(self.tagline,
+      logox+(logow-self.tagline:getWidth())/2,
+      logoy+self.logo:getHeight()
+    )
   end
 
   self.menu:draw()
