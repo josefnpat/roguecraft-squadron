@@ -23,7 +23,7 @@
 
 **Regular Price:** USD $14.99
 
-**Releases:** [Steam](https://store.steampowered.com/app/330687) and [Itch.io](https://josefnpat.itch.io/roguecraft-squadron)
+**Releases:** [Steam](https://store.steampowered.com/app/1000810/RogueCraft_Squadron/) and [Itch.io](https://josefnpat.itch.io/roguecraft-squadron)
 
 **Press / Business Contact**: [MissingSentinelSoftware@gmail.com](mailto:MissingSenitelSoftware@gmail.com)
 
@@ -46,8 +46,8 @@ RogueCraft Squadron is a fast paced real-time strategy space adventure with rogu
 - Fully featured and customizable Skirmish mode. Includes Co-Op and PvP game types using online multiplayer.
 - Build a wide variety of fleets with over 15 different ships to unlock.
 - Deep strategy elements. Carefully manage your fleet and resources to defeat your enemies.
-- A classic space opera story with art by NoyemiK. 
-- Dynamic musical score that changes as you play composed by Ran Schonewille.
+- A classic space opera story with fun character art.
+- Dynamic musical score that changes as you play.
 
 ### Awards
 
@@ -57,15 +57,15 @@ RogueCraft Squadron is a fast paced real-time strategy space adventure with rogu
 
 [![Check out our trailer!](youtube.png)](https://www.youtube.com/watch?v=IMLxxkWiuaU)
 
-[Direct Youtube Link](https://www.youtube.com/watch?v=IMLxxkWiuaU)
+[Direct Youtube Link](https://www.youtube.com/watch?v=-IlYHr2tgs8)
 
 ### Screenshots
 
-[![](tn/rcs_ss_01.png)](ss/rcs_ss_01.png) [![](tn/rcs_ss_02.png)](ss/rcs_ss_02.png) [![](tn/rcs_ss_03.png)](ss/rcs_ss_03.png)
+[![](tn/1.png)](ss/1.png) [![](tn/2.png)](ss/2.png) [![](tn/3.png)](ss/3.png)
 
-[![](tn/rcs_ss_04.png)](ss/rcs_ss_04.png) [![](tn/rcs_ss_05.png)](ss/rcs_ss_05.png) [![](tn/rcs_ss_06.png)](ss/rcs_ss_06.png)
+[![](tn/4.png)](ss/4.png) [![](tn/5.png)](ss/5.png) [![](tn/6.png)](ss/6.png)
 
-[![](tn/rcs_ss_07.png)](ss/rcs_ss_07.png) [![](tn/rcs_ss_08.png)](ss/rcs_ss_08.png) [![](tn/rcs_ss_09.png)](ss/rcs_ss_09.png)
+[![](tn/7.png)](ss/7.png) [![](tn/8.png)](ss/8.png) [![](tn/9.png)](ss/9.png)
 
 ### History
 
