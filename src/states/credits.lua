@@ -90,7 +90,7 @@ function credits:enter()
     data = [[Josef Patoprsty (@josefnpat) — Code, Design, Art and Voice Talent
 Ashley Hooper (@ByteDesigning) — Art and Code
 Ashley Schuster (SnowSchu) — Marketing and QA
-Ran Schonewille (audio-interactive.com) — Music Composer
+Ran Schonewille (audio-interactive.com) — Music Composer, SFX
 Noyemi Karlaite (@NoyemiK) — Character Art
 Laura Vk (Solsforest) — Art and Voice Talent
 Arjan Vk (Vivid) — Code, SFX and Voice Talent
