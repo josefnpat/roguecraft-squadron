@@ -63,7 +63,6 @@ function mainmenu:enter()
           text=libs.i18n('menu.survey.yes'),
           callback=function()
             love.system.openURL("http://roguecraftsquadron.com/feedback?git="..git_count.." ["..git_hash.."]")
-            love.event.quit()
           end,
         },
         {
@@ -78,7 +77,11 @@ function mainmenu:enter()
   end)
 
   self.menum:addButton(libs.i18n('menu.exit'),function()
-    love.event.quit()
+    if isRelease() then
+      love.event.quit()
+    else
+      self.demosplash = libs.demosplash.new()
+    end
   end)
 
   self.menump = libs.menu.new()
@@ -177,7 +180,9 @@ function mainmenu:leave()
 end
 
 function mainmenu:update(dt)
-  if self.feedback then
+  if self.demosplash then
+    self.demosplash:update(dt)
+  elseif self.feedback then
     self.feedback:update(dt)
   else
     self.menu:update(dt)
@@ -206,6 +211,10 @@ function mainmenu:draw()
   self.menu:draw()
 
   if self.feedback then self.feedback:draw() end
+
+  if self.demosplash then
+    self.demosplash:draw()
+  end
 
   libs.version.draw()
 
