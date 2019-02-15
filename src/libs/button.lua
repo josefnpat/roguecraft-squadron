@@ -103,14 +103,15 @@ function button._default_draw_rcs(text,icon,x,y,width,height,hover,depress,disab
     fg = depress and {255,255,255} or nil
   end
   tooltipbg(x,y,width,height,bg,fg)
-  local offset = (height-font:getHeight())/2
-  love.graphics.setColor(fg or {0,255,255})
-  love.graphics.setFont(font)
+  love.graphics.setColor(255,255,255)
   if icon then
     local icon_image = type(icon) == "function" and icon() or icon
     local icon_padding = (height - icon_image:getHeight()) / 2
     love.graphics.draw(icon_image,x+icon_padding,y+icon_padding)
   end
+  local offset = (height-font:getHeight())/2
+  love.graphics.setColor(fg or {0,255,255})
+  love.graphics.setFont(font)
   if not fg then
     dropshadowf(text,x,y+offset,width,"center")
   else
