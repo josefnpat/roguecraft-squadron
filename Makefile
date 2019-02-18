@@ -20,8 +20,9 @@ DEPS_MACOS_TARGET=love-${LOVE_VERSION}\-macosx-x64.zip
 DEPS_LINUX_TARGET=love-${LOVE_VERSION}\-amd64.tar.gz
 
 BUILD_INFO=v${GIT_COUNT}-[${GIT_HASH}]
-BUILD_BIN_NAME=${PROJECT_SHORTNAME}_${BUILD_INFO}
+BUILD_BIN_NAME=${PROJECT_SHORTNAME}
 BUILD_DIR=builds
+STEAM_PREP_DIR=steam_prep
 
 BUILD_LOVE=${PROJECT_SHORTNAME}_${BUILD_INFO}
 BUILD_WIN32=${PROJECT_SHORTNAME}_win32_${BUILD_INFO}
@@ -221,3 +222,38 @@ deploy: all
 status:
 	#VERSION: ${BUILD_INFO}
 	butler status ${BUTLER_ITCHUSERNAME}/${BUTLER_ITCHNAME}
+
+.PHONY: steam_prep
+steam_prep: all
+
+	rm -rf ${STEAM_PREP_DIR}
+
+	mkdir -p ${STEAM_PREP_DIR}/win64 # depot 1
+	mkdir -p ${STEAM_PREP_DIR}/win32 # depot 2
+	mkdir -p ${STEAM_PREP_DIR}/macosx # depot 3
+	mkdir -p ${STEAM_PREP_DIR}/linux64 # depot 4
+
+	mkdir -p ${STEAM_PREP_DIR}/win64_demo # depot 1
+	mkdir -p ${STEAM_PREP_DIR}/win32_demo # depot 2
+	mkdir -p ${STEAM_PREP_DIR}/macosx_demo # depot 3
+	mkdir -p ${STEAM_PREP_DIR}/linux64_demo # depot 4
+
+	unzip ${BUILD_DIR}/${BUILD_WIN64}.zip -d ${STEAM_PREP_DIR}/win64
+	unzip ${BUILD_DIR}/${BUILD_WIN32}.zip -d ${STEAM_PREP_DIR}/win32
+	unzip ${BUILD_DIR}/${BUILD_MACOS}.zip -d ${STEAM_PREP_DIR}/macosx
+	unzip ${BUILD_DIR}/${BUILD_LINUX}.zip -d ${STEAM_PREP_DIR}/linux64
+
+	unzip ${BUILD_DIR}/${BUILD_WIN64_DEMO}.zip -d ${STEAM_PREP_DIR}/win64_demo
+	unzip ${BUILD_DIR}/${BUILD_WIN32_DEMO}.zip -d ${STEAM_PREP_DIR}/win32_demo
+	unzip ${BUILD_DIR}/${BUILD_MACOS_DEMO}.zip -d ${STEAM_PREP_DIR}/macosx_demo
+	unzip ${BUILD_DIR}/${BUILD_LINUX_DEMO}.zip -d ${STEAM_PREP_DIR}/linux64_demo
+
+	cp src/git.lua ${STEAM_PREP_DIR}/win32/version
+	cp src/git.lua ${STEAM_PREP_DIR}/win64/version
+	cp src/git.lua ${STEAM_PREP_DIR}/macosx/version
+	cp src/git.lua ${STEAM_PREP_DIR}/linux64/version
+
+	cp src/git.lua ${STEAM_PREP_DIR}/win32_demo/version
+	cp src/git.lua ${STEAM_PREP_DIR}/win64_demo/version
+	cp src/git.lua ${STEAM_PREP_DIR}/macosx_demo/version
+	cp src/git.lua ${STEAM_PREP_DIR}/linux64_demo/version

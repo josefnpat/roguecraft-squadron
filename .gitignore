@@ -2,5 +2,6 @@ src/git.lua
 src/demo.ogv
 *.swp
 builds/
+steam_prep/
 *.love
 Makefile.config
