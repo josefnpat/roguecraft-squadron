@@ -195,7 +195,7 @@ header .header-content .header-content-inner p {
 	font-size: 16px;
 	margin-bottom: 50px
 }
-
+/*
 @media (min-width: 768px) {
 	header {
 		min-height: 100%
@@ -220,6 +220,7 @@ header .header-content .header-content-inner p {
 		margin-right: auto
 	}
 }
+*/
 
 .section-heading {
 	margin-top: 0
