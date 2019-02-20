@@ -46,7 +46,6 @@ RogueCraft Squadron is a fast paced real-time strategy space adventure with rogu
 - Fully featured and customizable Skirmish mode. Includes Co-Op and PvP game types using online multiplayer.
 - Build a wide variety of fleets with over 15 different ships to unlock.
 - Deep strategy elements. Carefully manage your fleet and resources to defeat your enemies.
-- A classic space opera story with fun character art.
 - Dynamic musical score that changes as you play.
 
 ### Awards

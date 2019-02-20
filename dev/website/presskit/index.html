@@ -2,7 +2,9 @@
 <html>
 <head>
 <meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
-<title>RogueCraft Squadron Presskit</title><link href='https://fonts.loli.net/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext' rel='stylesheet' type='text/css' /><style type='text/css'>html {overflow-x: initial !important;}:root { --bg-color:#ffffff; --text-color:#333333; --select-text-bg-color:#B5D6FC; --select-text-font-color:auto; --monospace:"Lucida Console",Consolas,"Courier",monospace; }
+<title>RogueCraft Squadron Presskit</title><link href='night/mermaid.dark.css' rel='stylesheet' type='text/css' />
+<link href='night/codeblock.dark.css' rel='stylesheet' type='text/css' />
+<link href='night/sourcemode.dark.css' rel='stylesheet' type='text/css' /><style type='text/css'>html {overflow-x: initial !important;}:root { --bg-color:#ffffff; --text-color:#333333; --select-text-bg-color:#B5D6FC; --select-text-font-color:auto; --monospace:"Lucida Console",Consolas,"Courier",monospace; }
 html { font-size: 14px; background-color: var(--bg-color); color: var(--text-color); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
 body { margin: 0px; padding: 0px; height: auto; bottom: 0px; top: 0px; left: 0px; right: 0px; font-size: 1rem; line-height: 1.42857; overflow-x: hidden; background: inherit; }
 iframe { margin: auto; }
@@ -147,75 +149,191 @@ iframe { max-width: 100%; width: 100%; border: none; }
 .highlight td, .highlight tr { border: 0px; }
 
 
-:root { --side-bar-bg-color: #fafafa; --control-text-color: #777; }
+.cm-s-inner .cm-variable, .cm-s-inner .cm-operator, .cm-s-inner .cm-property { color: rgb(184, 191, 198); }
+.cm-s-inner .cm-keyword { color: rgb(200, 143, 208); }
+.cm-s-inner .cm-tag { color: rgb(125, 244, 106); }
+.cm-s-inner .cm-attribute { color: rgb(117, 117, 228); }
+.CodeMirror div.CodeMirror-cursor { border-left: 1px solid rgb(184, 191, 198); z-index: 3; }
+.cm-s-inner .cm-string { color: rgb(210, 107, 107); }
+.cm-s-inner .cm-comment, .cm-s-inner.cm-comment { color: rgb(218, 146, 74); }
+.cm-s-inner .cm-header, .cm-s-inner .cm-def, .cm-s-inner.cm-header, .cm-s-inner.cm-def { color: rgb(141, 141, 240); }
+.cm-s-inner .cm-quote, .cm-s-inner.cm-quote { color: rgb(87, 172, 87); }
+.cm-s-inner .cm-hr { color: rgb(216, 213, 213); }
+.cm-s-inner .cm-link { color: rgb(211, 211, 239); }
+.cm-s-inner .cm-negative { color: rgb(217, 80, 80); }
+.cm-s-inner .cm-positive { color: rgb(80, 230, 80); }
+.cm-s-inner .cm-string-2 { color: rgb(255, 85, 0); }
+.cm-s-inner .cm-meta, .cm-s-inner .cm-qualifier { color: rgb(183, 179, 179); }
+.cm-s-inner .cm-builtin { color: rgb(243, 179, 248); }
+.cm-s-inner .cm-bracket { color: rgb(153, 153, 119); }
+.cm-s-inner .cm-atom, .cm-s-inner.cm-atom { color: rgb(132, 182, 203); }
+.cm-s-inner .cm-number { color: rgb(100, 171, 143); }
+.cm-s-inner .cm-variable { color: rgb(184, 191, 198); }
+.cm-s-inner .cm-variable-2 { color: rgb(159, 186, 213); }
+.cm-s-inner .cm-variable-3 { color: rgb(28, 198, 133); }
+.CodeMirror-selectedtext, .CodeMirror-selected { background: rgb(74, 137, 220); text-shadow: none; color: rgb(255, 255, 255) !important; }
+.CodeMirror-gutters { border-right: none; }
+
+
+:root { --bg-color: #363B40; --side-bar-bg-color: #2E3033; --text-color: #b8bfc6; --select-text-bg-color:#4a89dc; --control-text-color: #b7b7b7; --control-text-hover-color: #eee; --window-border: 1px solid #555; --active-file-bg-color: rgb(34, 34, 34); --active-file-border-color: #8d8df0; --active-file-text-color: white; --item-hover-bg-color: #70717d; --item-hover-text-color: white; --primary-color: #6dc1e7; --rawblock-edit-panel-bd: #4B535A; }
 html { font-size: 16px; }
-body { font-family: "Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; color: rgb(51, 51, 51); line-height: 1.6; }
-#write { max-width: 860px; margin: 0px auto; padding: 30px 30px 100px; }
-#write > ul:first-child, #write > ol:first-child { margin-top: 30px; }
-a { color: rgb(65, 131, 196); }
-h1, h2, h3, h4, h5, h6 { position: relative; margin-top: 1rem; margin-bottom: 1rem; font-weight: bold; line-height: 1.4; cursor: text; }
-h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor { text-decoration: none; }
-h1 tt, h1 code { font-size: inherit; }
-h2 tt, h2 code { font-size: inherit; }
-h3 tt, h3 code { font-size: inherit; }
-h4 tt, h4 code { font-size: inherit; }
-h5 tt, h5 code { font-size: inherit; }
-h6 tt, h6 code { font-size: inherit; }
-h1 { padding-bottom: 0.3em; font-size: 2.25em; line-height: 1.2; border-bottom: 1px solid rgb(238, 238, 238); }
-h2 { padding-bottom: 0.3em; font-size: 1.75em; line-height: 1.225; border-bottom: 1px solid rgb(238, 238, 238); }
-h3 { font-size: 1.5em; line-height: 1.43; }
-h4 { font-size: 1.25em; }
-h5 { font-size: 1em; }
-h6 { font-size: 1em; color: rgb(119, 119, 119); }
-p, blockquote, ul, ol, dl, table { margin: 0.8em 0px; }
-li > ol, li > ul { margin: 0px; }
-hr { height: 2px; padding: 0px; margin: 16px 0px; background-color: rgb(231, 231, 231); border: 0px none; overflow: hidden; box-sizing: content-box; }
-li p.first { display: inline-block; }
-ul, ol { padding-left: 30px; }
-ul:first-child, ol:first-child { margin-top: 0px; }
-ul:last-child, ol:last-child { margin-bottom: 0px; }
-blockquote { border-left: 4px solid rgb(223, 226, 229); padding: 0px 15px; color: rgb(119, 119, 119); }
-blockquote blockquote { padding-right: 0px; }
-table { padding: 0px; word-break: initial; }
-table tr { border-top: 1px solid rgb(223, 226, 229); margin: 0px; padding: 0px; }
-table tr:nth-child(2n), thead { background-color: rgb(248, 248, 248); }
-table tr th { font-weight: bold; border-width: 1px 1px 0px; border-top-style: solid; border-right-style: solid; border-left-style: solid; border-top-color: rgb(223, 226, 229); border-right-color: rgb(223, 226, 229); border-left-color: rgb(223, 226, 229); border-image: initial; border-bottom-style: initial; border-bottom-color: initial; text-align: left; margin: 0px; padding: 6px 13px; }
-table tr td { border: 1px solid rgb(223, 226, 229); text-align: left; margin: 0px; padding: 6px 13px; }
-table tr th:first-child, table tr td:first-child { margin-top: 0px; }
-table tr th:last-child, table tr td:last-child { margin-bottom: 0px; }
-.CodeMirror-lines { padding-left: 4px; }
-.code-tooltip { box-shadow: rgba(0, 28, 36, 0.3) 0px 1px 1px 0px; border-top: 1px solid rgb(238, 242, 242); }
-.md-fences, code, tt { border: 1px solid rgb(231, 234, 237); background-color: rgb(248, 248, 248); border-radius: 3px; padding: 2px 4px 0px; font-size: 0.9em; }
-code { background-color: rgb(243, 244, 244); padding: 0px 2px; }
-.md-fences { margin-bottom: 15px; margin-top: 15px; padding: 8px 1em 6px; }
-.md-task-list-item > input { margin-left: -1.3em; }
-@media print {
-  html { font-size: 13px; }
-  table, pre { break-inside: avoid; }
-  pre { word-wrap: break-word; }
+html, body { text-size-adjust: 100%; background: var(--bg-color); fill: currentcolor; }
+#write { max-width: 914px; }
+html, body, button, input, select, textarea, div.code-tooltip-content { color: rgb(184, 191, 198); border-color: transparent; }
+div.code-tooltip, .md-hover-tip .md-arrow::after { background: rgb(75, 83, 90); }
+.popover.bottom > .arrow::after { border-bottom-color: rgb(75, 83, 90); }
+html, body, button, input, select, textarea { font-style: normal; line-height: 1.625rem; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+hr { height: 2px; border: 0px; margin: 24px 0px !important; }
+h1, h2, h3, h4, h5, h6 { font-family: "Lucida Grande", Corbel, sans-serif; font-weight: normal; clear: both; word-wrap: break-word; margin: 0px; padding: 0px; color: rgb(222, 222, 222); }
+h1 { font-size: 2.5rem; line-height: 2.75rem; margin-bottom: 1.5rem; letter-spacing: -1.5px; }
+h2 { font-size: 1.63rem; line-height: 1.875rem; margin-bottom: 1.5rem; letter-spacing: -1px; font-weight: bold; }
+h3 { font-size: 1.17rem; line-height: 1.5rem; margin-bottom: 1.5rem; letter-spacing: -1px; font-weight: bold; }
+h4 { font-size: 1.12rem; line-height: 1.375rem; margin-bottom: 1.5rem; color: white; }
+h5 { font-size: 0.97rem; line-height: 1.25rem; margin-bottom: 1.5rem; font-weight: bold; }
+h6 { font-size: 0.93rem; line-height: 1rem; margin-bottom: 0.75rem; color: white; }
+@media (min-width: 980px) {
+  h3.md-focus::before, h4.md-focus::before, h5.md-focus::before, h6.md-focus::before { color: rgb(221, 221, 221); border: 1px solid rgb(221, 221, 221); border-radius: 3px; position: absolute; left: -1.64286rem; top: 0.357143rem; float: left; font-size: 9px; padding-left: 2px; padding-right: 2px; vertical-align: bottom; font-weight: normal; line-height: normal; }
+  h3.md-focus::before { content: "h3"; }
+  h4.md-focus::before { content: "h4"; }
+  h5.md-focus::before { content: "h5"; top: 0px; }
+  h6.md-focus::before { content: "h6"; top: 0px; }
 }
-.md-fences { background-color: rgb(248, 248, 248); }
-#write pre.md-meta-block { padding: 1rem; font-size: 85%; line-height: 1.45; background-color: rgb(247, 247, 247); border: 0px; border-radius: 3px; color: rgb(119, 119, 119); margin-top: 0px !important; }
-.mathjax-block > .code-tooltip { bottom: 0.375rem; }
-.md-mathjax-midline { background: rgb(250, 250, 250); }
-#write > h3.md-focus::before { left: -1.5625rem; top: 0.375rem; }
-#write > h4.md-focus::before { left: -1.5625rem; top: 0.285714rem; }
-#write > h5.md-focus::before { left: -1.5625rem; top: 0.285714rem; }
-#write > h6.md-focus::before { left: -1.5625rem; top: 0.285714rem; }
-.md-image > .md-meta { border-radius: 3px; padding: 2px 0px 0px 4px; font-size: 0.9em; color: inherit; }
-.md-tag { color: rgb(167, 167, 167); opacity: 1; }
-.md-toc { margin-top: 20px; padding-bottom: 20px; }
-.sidebar-tabs { border-bottom: none; }
-#typora-quick-open { border: 1px solid rgb(221, 221, 221); background-color: rgb(248, 248, 248); }
-#typora-quick-open-item { background-color: rgb(250, 250, 250); border-color: rgb(254, 254, 254) rgb(229, 229, 229) rgb(229, 229, 229) rgb(238, 238, 238); border-style: solid; border-width: 1px; }
-.on-focus-mode blockquote { border-left-color: rgba(85, 85, 85, 0.12); }
-header, .context-menu, .megamenu-content, footer { font-family: "Segoe UI", Arial, sans-serif; }
-.file-node-content:hover .file-node-icon, .file-node-content:hover .file-node-open-state { visibility: visible; }
-.mac-seamless-mode #typora-sidebar { background-color: var(--side-bar-bg-color); }
-.md-lang { color: rgb(180, 101, 77); }
-.html-for-mac .context-menu { --item-hover-bg-color: #E6F0FE; }
-#md-notification .btn { border: 0px; }
-.dropdown-menu .divider { border-color: rgb(229, 229, 229); }
+a { text-decoration: none; outline: 0px; }
+a:hover { outline: 0px; }
+a:focus { outline: dotted thin; }
+sup.md-footnote { background-color: rgb(85, 85, 85); color: rgb(221, 221, 221); }
+p { word-wrap: break-word; }
+p, ul, dd, ol, hr, address, pre, table, iframe, .wp-caption, .wp-audio-shortcode, .wp-video-shortcode { margin-top: 0px; margin-bottom: 1.5rem; }
+li > blockquote { margin-bottom: 0px; }
+audio:not([controls]) { display: none; }
+[hidden] { display: none; }
+.in-text-selection, ::selection { background: rgb(74, 137, 220); color: rgb(255, 255, 255); text-shadow: none; }
+ul, ol { padding: 0px 0px 0px 1.875rem; }
+ul { list-style: square; }
+ol { list-style: decimal; }
+ul ul, ol ol, ul ol, ol ul { margin: 0px; }
+b, th, dt, strong { font-weight: bold; }
+i, em, dfn, cite { font-style: italic; }
+blockquote { margin: 35px 0px 1.875rem 1.875rem; border-left: 2px solid rgb(71, 77, 84); padding-left: 30px; }
+pre, code, kbd, tt, var { background: rgba(0, 0, 0, 0.05); font-size: 0.875rem; font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace; }
+kbd { padding: 2px 4px; font-size: 90%; color: rgb(255, 255, 255); background-color: rgb(51, 51, 51); border-radius: 3px; box-shadow: rgba(0, 0, 0, 0.25) 0px -1px 0px inset; }
+pre.md-fences { padding: 10px 30px; margin-bottom: 20px; border: 1px solid; }
+.md-fences .code-tooltip { bottom: -3.2em; }
+.enable-diagrams pre.md-fences[lang="sequence"] .code-tooltip, .enable-diagrams pre.md-fences[lang="flow"] .code-tooltip, .enable-diagrams pre.md-fences[lang="mermaid"] .code-tooltip { bottom: -2.2em; right: 4px; }
+code, kbd, tt, var { padding: 2px 5px; }
+table { max-width: 100%; width: 100%; border-collapse: collapse; border-spacing: 0px; }
+th, td { padding: 5px 10px; vertical-align: top; }
+a { transition: all 0.2s ease-in-out; }
+hr { background: rgb(71, 77, 84); }
+h1 { margin-top: 2em; }
+a { color: rgb(224, 224, 224); text-decoration: underline; }
+a:hover { color: rgb(255, 255, 255); }
+.md-inline-math script { color: rgb(129, 177, 219); }
+b, th, dt, strong { color: rgb(222, 222, 222); }
+mark { background: rgb(211, 212, 14); }
+blockquote { color: rgb(157, 162, 166); }
+table a { color: rgb(222, 222, 222); }
+th, td { border: 1px solid rgb(71, 77, 84); }
+.task-list { padding-left: 0px; }
+.md-task-list-item { padding-left: 1.25rem; }
+.md-task-list-item > input { top: auto; }
+.md-task-list-item > input::before { content: ""; display: inline-block; width: 0.875rem; height: 0.875rem; vertical-align: middle; text-align: center; border: 1px solid rgb(184, 191, 198); background-color: rgb(54, 59, 64); margin-top: -0.4rem; }
+.md-task-list-item > input:checked::before, .md-task-list-item > input[checked]::before { content: "√"; font-size: 0.625rem; line-height: 0.625rem; color: rgb(222, 222, 222); }
+.CodeMirror-gutters { background: transparent; border-right: 1px solid transparent; }
+.auto-suggest-container { border: 0px; background-color: rgb(82, 92, 101); }
+#typora-quick-open { background-color: rgb(82, 92, 101); }
+#typora-quick-open input { background-color: rgb(82, 92, 101); border-width: 0px 0px 1px; border-top-style: initial; border-right-style: initial; border-left-style: initial; border-top-color: initial; border-right-color: initial; border-left-color: initial; border-image: initial; border-bottom-style: solid; border-bottom-color: grey; }
+.typora-quick-open-item { background-color: inherit; color: inherit; }
+.typora-quick-open-item.active, .typora-quick-open-item:hover { background-color: rgb(77, 139, 219); color: white; }
+.typora-quick-open-item:hover { background-color: rgba(77, 139, 219, 0.8); }
+.typora-search-spinner > div { background-color: rgb(255, 255, 255); }
+#write pre.md-meta-block { border-bottom: 1px dashed rgb(204, 204, 204); background: transparent; padding-bottom: 0.6em; line-height: 1.6em; }
+.btn, .btn .btn-default { background: transparent; color: rgb(184, 191, 198); }
+.ty-table-edit { border-top: 1px solid gray; background-color: rgb(54, 59, 64); }
+.popover-title { background: transparent; }
+.md-image > .md-meta { color: rgb(187, 187, 187); background: transparent; }
+.md-expand.md-image > .md-meta { color: rgb(221, 221, 221); }
+#write > h3::before, #write > h4::before, #write > h5::before, #write > h6::before { border: none; border-radius: 0px; color: rgb(136, 136, 136); text-decoration: underline; left: -1.4rem; top: 0.2rem; }
+#write > h3.md-focus::before { top: 2px; }
+#write > h4.md-focus::before { top: 2px; }
+.md-toc-item { color: rgb(168, 194, 220); }
+#write div.md-toc-tooltip { background-color: rgb(54, 59, 64); }
+.dropdown-menu .btn:hover, .dropdown-menu .btn:focus, .md-toc .btn:hover, .md-toc .btn:focus { color: white; background: black; }
+#toc-dropmenu { background: rgba(50, 54, 59, 0.93); border: 1px solid rgba(253, 253, 253, 0.15); }
+#toc-dropmenu .divider { background-color: rgb(155, 155, 155); }
+.outline-expander::before { top: 2px; }
+#typora-sidebar { box-shadow: none; border-right: none; }
+.sidebar-tabs { border-bottom: 0px; }
+#typora-sidebar:hover .outline-title-wrapper { border-left: 1px dashed; }
+.outline-title-wrapper .btn { color: inherit; }
+.outline-item:hover { border-color: rgb(54, 59, 64); background-color: rgb(54, 59, 64); color: white; }
+h1.md-focus .md-attr, h2.md-focus .md-attr, h3.md-focus .md-attr, h4.md-focus .md-attr, h5.md-focus .md-attr, h6.md-focus .md-attr, .md-header-span .md-attr { color: rgb(140, 142, 146); display: inline; }
+.md-comment { color: rgb(90, 149, 227); opacity: 1; }
+.md-inline-math g, .md-inline-math svg { stroke: rgb(184, 191, 198) !important; fill: rgb(184, 191, 198) !important; }
+[md-inline="inline_math"] { color: rgb(156, 178, 233); }
+#math-inline-preview .md-arrow::after { background: black; }
+.modal-content { background: var(--bg-color); border: 0px; }
+.modal-title { font-size: 1.5em; }
+.modal-content input { background-color: rgba(26, 21, 21, 0.51); color: white; }
+.modal-content .input-group-addon { background-color: rgba(0, 0, 0, 0.17); color: white; }
+.modal-backdrop { background-color: rgba(174, 174, 174, 0.7); }
+.modal-content .btn-primary { border-color: var(--primary-color); }
+.md-table-resize-popover { background-color: rgb(75, 83, 90); }
+.form-inline .input-group .input-group-addon { color: white; }
+#md-searchpanel { border-bottom: 1px dashed grey; }
+.context-menu, #spell-check-panel, #footer-word-count-info { background-color: rgb(66, 70, 74); }
+.context-menu.dropdown-menu .divider, .dropdown-menu .divider { background-color: rgb(119, 119, 119); }
+footer { color: inherit; }
+@media (max-width: 1000px) {
+  footer { border-top: none; }
+  footer:hover { color: inherit; }
+}
+#file-info-file-path .file-info-field-value:hover { background-color: rgb(85, 85, 85); color: rgb(222, 222, 222); }
+.megamenu-content, .megamenu-opened header { background: var(--bg-color); }
+.megamenu-menu-panel h2, .megamenu-menu-panel h1, .long-btn { color: inherit; }
+.megamenu-menu-panel input[type="text"] { background: inherit; border-width: 0px 0px 1px; border-top-style: initial; border-right-style: initial; border-left-style: initial; border-color: initial; border-image: initial; border-bottom-style: solid; }
+#recent-file-panel-action-btn { background: inherit; border: 1px solid grey; }
+.megamenu-menu-panel .dropdown-menu > li > a { color: inherit; background-color: rgb(47, 53, 58); text-decoration: none; }
+.megamenu-menu-panel table td:nth-child(1) { color: inherit; font-weight: bold; }
+.megamenu-menu-panel tbody tr:hover td:nth-child(1) { color: white; }
+.modal-footer .btn-default, .modal-footer .btn-primary, .modal-footer .btn-default:not(:hover) { border: 1px solid transparent; }
+.btn-default:hover, .btn-default:focus, .btn-default.focus, .btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default { color: white; border: 1px solid rgb(221, 221, 221); background-color: inherit; }
+.modal-header { border-bottom: 0px; }
+.modal-footer { border-top: 0px; }
+#recent-file-panel tbody tr:nth-child(2n-1) { background-color: transparent !important; }
+.megamenu-menu-panel tbody tr:hover td:nth-child(2) { color: inherit; }
+.megamenu-menu-panel .btn { border: 1px solid rgb(238, 238, 238); background: transparent; }
+.mouse-hover .toolbar-icon.btn:hover, #w-full.mouse-hover, #w-pin.mouse-hover { background-color: inherit; }
+.typora-node::-webkit-scrollbar { width: 5px; }
+.typora-node::-webkit-scrollbar-thumb:vertical { background: rgba(250, 250, 250, 0.3); }
+.typora-node::-webkit-scrollbar-thumb:vertical:active { background: rgba(250, 250, 250, 0.5); }
+#w-unpin { background-color: rgb(65, 130, 196); }
+#top-titlebar, #top-titlebar * { color: var(--item-hover-text-color); }
+.typora-sourceview-on #toggle-sourceview-btn, #footer-word-count:hover, .ty-show-word-count #footer-word-count { background: rgb(51, 51, 51); }
+#toggle-sourceview-btn:hover { color: rgb(238, 238, 238); background: rgb(51, 51, 51); }
+.on-focus-mode .md-end-block:not(.md-focus):not(.md-focus-container) * { color: rgb(104, 104, 104) !important; }
+.on-focus-mode .md-end-block:not(.md-focus) img, .on-focus-mode .md-task-list-item:not(.md-focus-container) > input { }
+.on-focus-mode li[cid]:not(.md-focus-container) { color: rgb(104, 104, 104); }
+.on-focus-mode .md-fences.md-focus .CodeMirror-code > :not(.CodeMirror-activeline) *, .on-focus-mode .CodeMirror.cm-s-inner:not(.CodeMirror-focused) * { color: rgb(104, 104, 104) !important; }
+.on-focus-mode .md-focus, .on-focus-mode .md-focus-container { color: rgb(255, 255, 255); }
+.on-focus-mode #typora-source .CodeMirror-code > :not(.CodeMirror-activeline) * { color: rgb(104, 104, 104) !important; }
+#write .md-focus .md-diagram-panel { border: 1px solid rgb(221, 221, 221); margin-left: -1px; width: calc(100% + 2px); }
+#write .md-focus.md-fences-with-lineno .md-diagram-panel { margin-left: auto; }
+.md-diagram-panel-error { color: rgb(241, 144, 142); }
+.active-tab-files #info-panel-tab-file, .active-tab-files #info-panel-tab-file:hover, .active-tab-outline #info-panel-tab-outline, .active-tab-outline #info-panel-tab-outline:hover { color: rgb(238, 238, 238); }
+.sidebar-footer-item:hover, .footer-item:hover { background: inherit; color: white; }
+.ty-side-sort-btn.active, .ty-side-sort-btn:hover, .selected-folder-menu-item a::after { color: white; }
+#sidebar-files-menu { border: 1px solid; box-shadow: rgba(0, 0, 0, 0.79) 4px 4px 20px; background-color: var(--bg-color); }
+.file-list-item { border-bottom: none; }
+.file-list-item-summary { opacity: 1; }
+.file-list-item.active:first-child { border-top: none; }
+.file-node-background { height: 32px; }
+.file-library-node.active > .file-node-content, .file-list-item.active { color: var(--active-file-text-color); }
+.file-library-node.active > .file-node-background { background-color: var(--active-file-bg-color); }
+.file-list-item.active { background-color: var(--active-file-bg-color); }
+#ty-tooltip { background-color: black; color: rgb(238, 238, 238); }
+.md-task-list-item > input { margin-left: -1.3em; margin-top: calc(1rem - 10px); -webkit-appearance: none; }
+.md-mathjax-midline { background-color: rgb(87, 97, 107); border-bottom: none; }
 
 
 
@@ -225,6 +343,6 @@ header, .context-menu, .megamenu-content, footer { font-family: "Segoe UI", Aria
 </style>
 </head>
 <body class='typora-export os-windows' >
-<div  id='write'  class = 'is-node'><p><img src='header.png' alt='Header' referrerPolicy='no-referrer' /></p><h1><a name='header-n186' class='md-header-anchor '></a>RogueCraft Squadron Presskit</h1><h2><a name='header-n187' class='md-header-anchor '></a>Table of Contents</h2><ul><li><a href='#header-n198'>Factsheet</a></li><li><a href='#header-n209'>About</a></li><li><a href='#header-n246'>FAQ</a></li><li><a href='#team'>Missing Sentinel Software Team</a></li></ul><p><a href='#header-n198'></a></p><h2><a name='header-n198' class='md-header-anchor '></a>Factsheet</h2><p><strong>Developer:</strong> Missing Sentinel Software (<a href='http://MissingSentinelSoftware.com'>MissingSentinelSoftware.com</a>). Based in Austin, Texas. Founded: October 20, 2011</p><p><strong>Website:</strong> <a href='http://roguecraftsquadron.com/'>RogueCraftSquadron.com</a></p><p><strong>Release Date:</strong> Early Release: November 2018. Official Release: Q1 2019.</p><p><strong>Platforms:</strong> Windows / Mac / Linux</p><p><strong>Regular Price:</strong> USD $14.99</p><p><strong>Releases:</strong> <a href='https://store.steampowered.com/app/1000810/RogueCraft_Squadron/'>Steam</a> and <a href='https://josefnpat.itch.io/roguecraft-squadron'>Itch.io</a></p><p><strong>Press / Business Contact</strong>: <a href='mailto:MissingSenitelSoftware@gmail.com'>MissingSentinelSoftware@gmail.com</a></p><p><strong>Social:</strong> <a href='https://twitter.com/MissingSentinel'>twitter.com/MissingSentinel</a>, <a href='https://www.facebook.com/MissingSentinelSoftware'>facebook.com/MissingSentinelSoftware</a></p><p><strong>Address:</strong> P.O. Box 200824, 11900 Jollyville Rd, Austin, TX 78720-0824</p><p><a href='#header-n209'></a></p><h2><a name='header-n209' class='md-header-anchor '></a>About</h2><h3><a name='header-n210' class='md-header-anchor '></a>Description</h3><p>RogueCraft Squadron is a fast paced real-time strategy space adventure with roguelike elements. Play as a squadron commander fighting against a hostile alien race; collecting resources, researching new ships and building an armada as you fight to survive against overwhelming odds.</p><h3><a name='header-n212' class='md-header-anchor '></a>Features</h3><ul><li>Fast paced space-faring RTS. </li><li>Roguelike gameplay. Death marks the end of your mission.</li><li>Fully featured and customizable Skirmish mode. Includes Co-Op and PvP game types using online multiplayer.</li><li>Build a wide variety of fleets with over 15 different ships to unlock.</li><li>Deep strategy elements. Carefully manage your fleet and resources to defeat your enemies.</li><li>A classic space opera story with fun character art.</li><li>Dynamic musical score that changes as you play.</li></ul><h3><a name='header-n228' class='md-header-anchor '></a>Awards</h3><p><a href='https://itch.io/jam/love2d-jam/rate/121472'>LÖVE Jam 2017 - 3rd Place (Original game jam prototype)</a></p><h3><a name='header-n230' class='md-header-anchor '></a>Video Trailer</h3><p><a href='https://www.youtube.com/watch?v=IMLxxkWiuaU'><img src='youtube.png' alt='Check out our trailer!' referrerPolicy='no-referrer' /></a></p><p><a href='https://www.youtube.com/watch?v=-IlYHr2tgs8'>Direct Youtube Link</a></p><h3><a name='header-n233' class='md-header-anchor '></a>Screenshots</h3><p><a href='ss/1.png'><img src='tn/1.png' alt='' referrerPolicy='no-referrer' /></a> <a href='ss/2.png'><img src='tn/2.png' alt='' referrerPolicy='no-referrer' /></a> <a href='ss/3.png'><img src='tn/3.png' alt='' referrerPolicy='no-referrer' /></a></p><p><a href='ss/4.png'><img src='tn/4.png' alt='' referrerPolicy='no-referrer' /></a> <a href='ss/5.png'><img src='tn/5.png' alt='' referrerPolicy='no-referrer' /></a> <a href='ss/6.png'><img src='tn/6.png' alt='' referrerPolicy='no-referrer' /></a></p><p><a href='ss/7.png'><img src='tn/7.png' alt='' referrerPolicy='no-referrer' /></a> <a href='ss/8.png'><img src='tn/8.png' alt='' referrerPolicy='no-referrer' /></a> <a href='ss/9.png'><img src='tn/9.png' alt='' referrerPolicy='no-referrer' /></a></p><h3><a name='header-n237' class='md-header-anchor '></a>History</h3><h4><a name='header-n238' class='md-header-anchor '></a>Early Development</h4><p>Started out as as a game jam prototype from the LÖVE Jam (<a href='https://missingsentinelsoftware.com/game/roguecraft-squadron'>download it here</a>) in February 2017. The game was a level-based, permadeath, space RTS with the ability to unlock and upgrade your ships.</p><h4><a name='header-n240' class='md-header-anchor '></a>Current</h4><p>March 2018, after the SXSW Gaming Expo, we decided to pivot the game, going from the level based system to a more open system that would also allow for multiplayer matches. This allowed the game to have configurable maps and expand on the number strategies available to the players. We brought in artist NoyemiK to create character art for the storyline of RogueCraft Squadron, which included humans and aliens. We also brought in composer Ran Schonewille to work on dynamic music tracks. This created a more immersive experience for the player as the music would intensify with conflict and fleet growth.</p><h3><a name='header-n242' class='md-header-anchor '></a>Media Kit</h3><p><img src='MediaKit.png' alt='Media Kit' referrerPolicy='no-referrer' /></p><p><a href='MediaKit.zip'>Download: Zip 35.8 MB</a></p><p><a href='#header-n246'></a></p><h2><a name='header-n246' class='md-header-anchor '></a>FAQ</h2><p><strong>Is there a demo?</strong> Yep, try it here on <a href='https://josefnpat.itch.io/roguecraft-squadron'>Itch.io!</a></p><p>The demo has a functional multiplayer too!</p><p><strong>Is this the full game?</strong> Yes, but the currently released version is multiplayer mode with more free game modes coming near the end of summer. </p><p><strong>Is there planned DLC?</strong> Yes, we will be adding more game modes after release, expect them near the end of spring.</p><p><strong>Will any future DLC cost money?</strong> No. It will all be free DLC.</p><p><strong>Where are the new characters created by NoyemiK?</strong> You can see a sneak peak in the lobby, some of the characters are seen there but you’ll have to wait for post release content to discover all of them.</p><p><strong>I like the music, is there a planned OST?</strong> Yep we have an OST on the way.</p><p><strong>How many more game modes should I expect coming?</strong> We plan on releasing two more modes come early spring. This will feature the original prototype with some updates and a new campaign and story mode.</p><p><strong>What happened to the storyline and voice acting?</strong> Don’t worry it’s coming soon, we wanted to spend some more time polishing it before release.</p><p><strong>How many players does this game support?</strong> Up to 8 players, even works on the demo.</p><p><strong>Is there online play?</strong> Yes, online play is available. </p><p><strong>I’m having issues where can I turn for bug help or support?</strong> Please send an email to:  <a href='mailto:missingsentinelsoftware@gmail.com'>missingsentinelsoftware@gmail.com</a></p><p><strong>Does this require a keyboard and mouse to play?</strong> Yes, the game requires a keyboard and mouse.</p><p><strong>I’d really like to get in contact to create a interview how can I do so?</strong> Aww, thanks for the support! Please send an email to: <a href='mailto:missingsentinelsoftware@gmail.com'>missingsentinelsoftware@gmail.com</a> </p><p><strong>Is this a single player game?</strong> You can test your luck against the AI but the game is most fun with other players. We plan on releasing single player content near the end of summer.</p><p><strong>I’d really like a review key, how could I get one?</strong> We’d love to send you one, but we really want to make sure you’re a legitimate review site.</p><p>We ask that you send us a photo with a shoe on your head and show us how excited you are about our game, so we can post it on twitter!</p><p>Please reach out to us on twitter or send an email to: <a href='mailto:missingsentinelsoftware@gmail.com' target='_blank' class='url'>missingsentinelsoftware@gmail.com</a></p><p><img src='shoeonhead.png' alt='An example photo of a shoe on your head.' referrerPolicy='no-referrer' /></p><p><a href='#team'></a></p><h2><a name='header-n267' class='md-header-anchor '></a>Missing Sentinel Software Team</h2><p><strong>Josef Patoprsty:</strong> Project Manager, Programmer, Writer, UI, Voice Talent</p><p><strong>Ashley Hooper:</strong> 2D Artist, Designer, Project Manager, Marketing</p><p><strong>Ashley Schuster:</strong> Marketing, QA, Playtesting</p><p><strong>Noyemi Karlaite:</strong> Character Art</p><p><strong>Ran Schonewille:</strong> Music</p><p><strong>Arjan Vk:</strong> Voice Talent, Playtesting</p><p><strong>Laura Vk:</strong> Voice Talent</p></div>
+<div  id='write'  class = 'is-node'><p><img src='header.png' alt='Header' referrerPolicy='no-referrer' /></p><h1><a name='header-n2' class='md-header-anchor '></a>RogueCraft Squadron Presskit</h1><h2><a name='header-n3' class='md-header-anchor '></a>Table of Contents</h2><ul><li><a href='#header-n14'>Factsheet</a></li><li><a href='#header-n25'>About</a></li><li><a href='#header-n62'>FAQ</a></li><li><a href='#team'>Missing Sentinel Software Team</a></li></ul><p><a href='#header-n14'></a></p><h2><a name='header-n14' class='md-header-anchor '></a>Factsheet</h2><p><strong>Developer:</strong> Missing Sentinel Software (<a href='http://MissingSentinelSoftware.com'>MissingSentinelSoftware.com</a>). Based in Austin, Texas. Founded: October 20, 2011</p><p><strong>Website:</strong> <a href='http://roguecraftsquadron.com/'>RogueCraftSquadron.com</a></p><p><strong>Release Date:</strong> Early Release: November 2018. Official Release: Q1 2019.</p><p><strong>Platforms:</strong> Windows / Mac / Linux</p><p><strong>Regular Price:</strong> USD $14.99</p><p><strong>Releases:</strong> <a href='https://store.steampowered.com/app/1000810/RogueCraft_Squadron/'>Steam</a> and <a href='https://josefnpat.itch.io/roguecraft-squadron'>Itch.io</a></p><p><strong>Press / Business Contact</strong>: <a href='mailto:MissingSenitelSoftware@gmail.com'>MissingSentinelSoftware@gmail.com</a></p><p><strong>Social:</strong> <a href='https://twitter.com/MissingSentinel'>twitter.com/MissingSentinel</a>, <a href='https://www.facebook.com/MissingSentinelSoftware'>facebook.com/MissingSentinelSoftware</a></p><p><strong>Address:</strong> P.O. Box 200824, 11900 Jollyville Rd, Austin, TX 78720-0824</p><p><a href='#header-n25'></a></p><h2><a name='header-n25' class='md-header-anchor '></a>About</h2><h3><a name='header-n26' class='md-header-anchor '></a>Description</h3><p>RogueCraft Squadron is a fast paced real-time strategy space adventure with roguelike elements. Play as a squadron commander fighting against a hostile alien race; collecting resources, researching new ships and building an armada as you fight to survive against overwhelming odds.</p><h3><a name='header-n28' class='md-header-anchor '></a>Features</h3><ul><li>Fast paced space-faring RTS. </li><li>Roguelike gameplay. Death marks the end of your mission.</li><li>Fully featured and customizable Skirmish mode. Includes Co-Op and PvP game types using online multiplayer.</li><li>Build a wide variety of fleets with over 15 different ships to unlock.</li><li>Deep strategy elements. Carefully manage your fleet and resources to defeat your enemies.</li><li>Dynamic musical score that changes as you play.</li></ul><h3><a name='header-n44' class='md-header-anchor '></a>Awards</h3><p><a href='https://itch.io/jam/love2d-jam/rate/121472'>LÖVE Jam 2017 - 3rd Place (Original game jam prototype)</a></p><h3><a name='header-n46' class='md-header-anchor '></a>Video Trailer</h3><p><a href='https://www.youtube.com/watch?v=IMLxxkWiuaU'><img src='youtube.png' alt='Check out our trailer!' referrerPolicy='no-referrer' /></a></p><p><a href='https://www.youtube.com/watch?v=-IlYHr2tgs8'>Direct Youtube Link</a></p><h3><a name='header-n49' class='md-header-anchor '></a>Screenshots</h3><p><a href='ss/1.png'><img src='tn/1.png' alt='' referrerPolicy='no-referrer' /></a> <a href='ss/2.png'><img src='tn/2.png' alt='' referrerPolicy='no-referrer' /></a> <a href='ss/3.png'><img src='tn/3.png' alt='' referrerPolicy='no-referrer' /></a></p><p><a href='ss/4.png'><img src='tn/4.png' alt='' referrerPolicy='no-referrer' /></a> <a href='ss/5.png'><img src='tn/5.png' alt='' referrerPolicy='no-referrer' /></a> <a href='ss/6.png'><img src='tn/6.png' alt='' referrerPolicy='no-referrer' /></a></p><p><a href='ss/7.png'><img src='tn/7.png' alt='' referrerPolicy='no-referrer' /></a> <a href='ss/8.png'><img src='tn/8.png' alt='' referrerPolicy='no-referrer' /></a> <a href='ss/9.png'><img src='tn/9.png' alt='' referrerPolicy='no-referrer' /></a></p><h3><a name='header-n53' class='md-header-anchor '></a>History</h3><h4><a name='header-n54' class='md-header-anchor '></a>Early Development</h4><p>Started out as as a game jam prototype from the LÖVE Jam (<a href='https://missingsentinelsoftware.com/game/roguecraft-squadron'>download it here</a>) in February 2017. The game was a level-based, permadeath, space RTS with the ability to unlock and upgrade your ships.</p><h4><a name='header-n56' class='md-header-anchor '></a>Current</h4><p>March 2018, after the SXSW Gaming Expo, we decided to pivot the game, going from the level based system to a more open system that would also allow for multiplayer matches. This allowed the game to have configurable maps and expand on the number strategies available to the players. We brought in artist NoyemiK to create character art for the storyline of RogueCraft Squadron, which included humans and aliens. We also brought in composer Ran Schonewille to work on dynamic music tracks. This created a more immersive experience for the player as the music would intensify with conflict and fleet growth.</p><h3><a name='header-n58' class='md-header-anchor '></a>Media Kit</h3><p><img src='MediaKit.png' alt='Media Kit' referrerPolicy='no-referrer' /></p><p><a href='MediaKit.zip'>Download: Zip 35.8 MB</a></p><p><a href='#header-n62'></a></p><h2><a name='header-n62' class='md-header-anchor '></a>FAQ</h2><p><strong>Is there a demo?</strong> Yep, try it here on <a href='https://josefnpat.itch.io/roguecraft-squadron'>Itch.io!</a></p><p>The demo has a functional multiplayer too!</p><p><strong>Is this the full game?</strong> Yes, but the currently released version is multiplayer mode with more free game modes coming near the end of summer. </p><p><strong>Is there planned DLC?</strong> Yes, we will be adding more game modes after release, expect them near the end of spring.</p><p><strong>Will any future DLC cost money?</strong> No. It will all be free DLC.</p><p><strong>Where are the new characters created by NoyemiK?</strong> You can see a sneak peak in the lobby, some of the characters are seen there but you’ll have to wait for post release content to discover all of them.</p><p><strong>I like the music, is there a planned OST?</strong> Yep we have an OST on the way.</p><p><strong>How many more game modes should I expect coming?</strong> We plan on releasing two more modes come early spring. This will feature the original prototype with some updates and a new campaign and story mode.</p><p><strong>What happened to the storyline and voice acting?</strong> Don’t worry it’s coming soon, we wanted to spend some more time polishing it before release.</p><p><strong>How many players does this game support?</strong> Up to 8 players, even works on the demo.</p><p><strong>Is there online play?</strong> Yes, online play is available. </p><p><strong>I’m having issues where can I turn for bug help or support?</strong> Please send an email to:  <a href='mailto:missingsentinelsoftware@gmail.com'>missingsentinelsoftware@gmail.com</a></p><p><strong>Does this require a keyboard and mouse to play?</strong> Yes, the game requires a keyboard and mouse.</p><p><strong>I’d really like to get in contact to create a interview how can I do so?</strong> Aww, thanks for the support! Please send an email to: <a href='mailto:missingsentinelsoftware@gmail.com'>missingsentinelsoftware@gmail.com</a> </p><p><strong>Is this a single player game?</strong> You can test your luck against the AI but the game is most fun with other players. We plan on releasing single player content near the end of summer.</p><p><strong>I’d really like a review key, how could I get one?</strong> We’d love to send you one, but we really want to make sure you’re a legitimate review site.</p><p>We ask that you send us a photo with a shoe on your head and show us how excited you are about our game, so we can post it on twitter!</p><p>Please reach out to us on twitter or send an email to: <a href='mailto:missingsentinelsoftware@gmail.com' target='_blank' class='url'>missingsentinelsoftware@gmail.com</a></p><p><img src='shoeonhead.png' alt='An example photo of a shoe on your head.' referrerPolicy='no-referrer' /></p><p><a href='#team'></a></p><h2><a name='header-n83' class='md-header-anchor '></a>Missing Sentinel Software Team</h2><p><strong>Josef Patoprsty:</strong> Project Manager, Programmer, Writer, UI, Voice Talent</p><p><strong>Ashley Hooper:</strong> 2D Artist, Designer, Project Manager, Marketing</p><p><strong>Ashley Schuster:</strong> Marketing, QA, Playtesting</p><p><strong>Noyemi Karlaite:</strong> Character Art</p><p><strong>Ran Schonewille:</strong> Music</p><p><strong>Arjan Vk:</strong> Voice Talent, Playtesting</p><p><strong>Laura Vk:</strong> Voice Talent</p></div>
 </body>
 </html>
