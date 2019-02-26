@@ -5,6 +5,7 @@ net.next_level_t = 5
 function net.clearCache()
   net.cache = {
     getCurrentLocation = {},
+    objectShouldBeRemoved = {},
   }
 end
 net.clearCache()
@@ -386,7 +387,7 @@ function net.getObjectByIndex(objects,index)
   end
 end
 
-function net.objectShouldBeRemoved(object)
+function net._objectShouldBeRemoved(object)
   if object.remove or object.remove_no_drop then
     return true
   end
@@ -400,6 +401,13 @@ function net.objectShouldBeRemoved(object)
     end
   end
   return false
+end
+
+function net.objectShouldBeRemoved(object)
+  if net.cache.objectShouldBeRemoved[object] == nil then
+    net.cache.objectShouldBeRemoved[object] = net._objectShouldBeRemoved(object)
+  end
+  return net.cache.objectShouldBeRemoved[object]
 end
 
 function net.getCurrentBulletLocation(bullet,target,time)
