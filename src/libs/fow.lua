@@ -28,10 +28,12 @@ function fow.new(init)
 end
 
 function fow:objectVisible(object)
-  for x,row in pairs(self.fow_map) do
-    for y,node in pairs(row) do
-      local distance = math.sqrt( (x-object.dx+self.resolution/2)^2 + (y-object.dy+self.resolution/2)^2  )
-      if distance < self.resolution*self.resolution_mult then
+  local fullres = self.resolution*self.resolution_mult/2
+  local obj_round_x = math.floor(object.dx/self.resolution+0.5)*self.resolution
+  local obj_round_y = math.floor(object.dy/self.resolution+0.5)*self.resolution
+  for x = obj_round_x - fullres,obj_round_x + fullres,self.resolution do
+    for y = obj_round_y - fullres,obj_round_y + fullres,self.resolution do
+      if self.fow_map[x] and self.fow_map[x][y] then
         return true
       end
     end
