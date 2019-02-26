@@ -360,14 +360,9 @@ function server:stopUpdateObjectTarget(object)
   end
 end
 
-function server:findObject(index,storage)
+function server:findObject(index)
   if index == nil then return end
-  storage = storage or self.lovernet:getStorage()
-  for _,object in pairs(storage.objects) do
-    if object.index == index then
-      return object
-    end
-  end
+  return libs.net.findObject(self.lovernet:getStorage().objects,index)
 end
 
 function server:generatePlayers(users,storage)
@@ -739,7 +734,7 @@ function server:init()
   self.lovernet:addProcessOnServer(libs.net.op.action,function(self,peer,arg,storage)
     local user = self:getUser(peer)
     for _,object_id in pairs(arg.t) do
-      local parent = server:findObject(object_id,storage)
+      local parent = server:findObject(object_id)
       libs.net.build(server,user,parent,arg.a)
     end
   end)
