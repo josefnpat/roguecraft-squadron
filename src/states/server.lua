@@ -189,7 +189,9 @@ function server.generatePlayer(storage,user,pocket,gen)
     y = math.random(-mapsize,mapsize)
   end
   local gen_render = gen()
-  server.createObject(storage,gen_render.first,x,y,user)
+  if gen_render.first then
+    server.createObject(storage,gen_render.first,x,y,user)
+  end
 
   local genlist = gen_render.default
   if server._genEveryObjectOverride then
@@ -971,6 +973,10 @@ function server:newGame(soft)
     end
   end
 
+  if level.init then
+    level:init(self)
+  end
+
 end
 
 function server:nextLevel(next_level)
@@ -1005,8 +1011,8 @@ function server:targetIsEnemy(object,target)
   return target.user ~= nil and not self:objectsAreAllies(object,target)
 end
 
-function server:targetCanBeShot(object)
-  return object.health ~= nil
+function server:targetCanBeShot(object_type)
+  return object_type.health ~= nil
 end
 
 function server:targetIsNeutral(object,target)
@@ -1190,7 +1196,8 @@ function server:attackNearby(object,world)
 
       for _,tobject in pairs(items) do
         if tobject.index ~= object.index and tobject.user ~= nil and not self:objectsAreAllies(tobject,object) then
-          if libs.net.distance(object,tobject,love.timer.getTime()) < object_type.shoot.aggression then
+          local tobject_type = libs.objectrenderer.getType(tobject.type)
+          if self:targetCanBeShot(tobject_type) and libs.net.distance(object,tobject,love.timer.getTime()) < object_type.shoot.aggression then
             table.insert(nearby,tobject)
           end
         end
@@ -1353,6 +1360,18 @@ function server:validateConfig()
   end
   local tr_val = libs.net.transmitRates[storage.config.transmitRate].value
   self.lovernet:setClientTransmitRate(tr_val)
+
+  -- gamemode overrides
+  if storage.config.gamemode then
+    local gamemode = libs.mpgamemodes:getGamemodeById(storage.config.gamemode)
+    if gamemode.map_size then
+      storage.config.mapsize = gamemode.map_size
+    end
+    if gamemode.every_ship_unlocked then
+      storage.config.everyShipUnlocked = gamemode.every_ship_unlocked
+    end
+  end
+
 end
 
 function server:validatePlayerConfig(player)
@@ -1502,7 +1521,7 @@ function server:update(dt)
             self:repairTarget(storage.config,object,target,dt)
           end
         elseif self:targetIsEnemy(object,target) then
-          if self:targetCanBeShot(object) and object_type.shoot then
+          if self:targetCanBeShot(target_type) and object_type.shoot then
             self:gotoTarget(object,target,server:getShootRange(object,target))
             self:shootTarget(object,target,dt)
           else
@@ -1571,7 +1590,7 @@ function server:update(dt)
         user.points = (user.points or 0) - (object_type.points or 1)
         assert(user.count>=0)
         self.updateCargo(storage,user)
-        if object.remove_no_drop == nil then
+        if object.drop_debris ~= false and object.remove_no_drop == nil then
           local cx,cy = libs.net.getCurrentLocation(object,love.timer.getTime())
           if object_type.cost and object_type.cost.material then
             local debris = server.createObject(storage,"debris",cx,cy,nil)
@@ -1616,6 +1635,9 @@ function server:update(dt)
     local users = self.lovernet:getUsers()
     local players = self:generatePlayers(users,storage)
     local level = storage.gamemode:getCurrentLevelData()
+    if level.update then
+      level:update(dt,self)
+    end
     if level.victory and level.victory(storage,players) then
       if level.next_level then
         storage.level.endt = storage.level.endt or love.timer.getTime() + libs.net.next_level_t
