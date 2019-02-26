@@ -84,7 +84,7 @@ net.mapSizes = {
     text = "Enormous — 12K",
     value = 32*64*6/2,
   },
-  {
+  { -- survival gamemode depends on this being #5
     text = "Tiny — 2K",
     value = 32*64*1/2,
   },
@@ -105,6 +105,7 @@ net.resourceStrings = {
 net.aiDifficultyBase = 20
 net.aiDifficultyScale = 50
 
+-- gamemodes depend on this being 6 elements
 net.aiDifficulty = {
   {
     roman_numeral = "I",
@@ -301,8 +302,6 @@ function net.getCurrentLocation(object,time)
   end
   return net.cache.getCurrentLocation[object].x, net.cache.getCurrentLocation[object].y
 end
-
-
 
 function net.findObject(objects,index)
   for _,object in pairs(objects) do

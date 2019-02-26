@@ -55,6 +55,12 @@ levelshared.gen.dojeer = function()
   }
 end
 
+levelshared.gen.none = function()
+  return {
+    default = {},
+  }
+end
+
 levelshared.gen.random = function()
   local random = math.random(3)
   if random == 1 then

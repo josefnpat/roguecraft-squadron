@@ -42,11 +42,17 @@ function ai.new(init)
   self.setPockets = ai.setPockets
   self.getPockets = ai.getPockets
   self.getRandomPocket = ai.getRandomPocket
+  self.setSurrender = ai.setSurrender
+  self.getSurrender = ai.getSurrender
+  self.setUseRandomPocket = ai.setUseRandomPocket
+  self.getUseRandomPocket = ai.getUseRandomPocket
 
   self._diff = self._user.config.diff or 1
   self:updateDiff()
   self._current_aps = 0
   self._queue = {}
+  self._surrender = true
+  self._useRandomPockets = false
 
   return self
 end
@@ -141,6 +147,22 @@ function ai:getRandomPocket(exclude)
       return pocket
     end
   end
+end
+
+function ai:setSurrender(val)
+  self._surrender = val
+end
+
+function ai:getSurrender()
+  return self._surrender
+end
+
+function ai:setUseRandomPocket(val)
+  self._useRandomPockets = val
+end
+
+function ai:getUseRandomPocket()
+  return self._useRandomPockets
 end
 
 return ai

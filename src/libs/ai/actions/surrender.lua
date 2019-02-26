@@ -16,6 +16,9 @@ function action:updateFixed(ai)
 end
 
 function action:update(dt,ai)
+  if ai._surrender == false then
+    return
+  end
   self._check_dt = self._check_dt + dt
   if self._check_dt >= action._check_t then
     self._check_dt = 0
