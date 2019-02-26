@@ -88,16 +88,6 @@ end
 
 function fow:draw(objects,explosions,user,players)
 
-  if debug_mode then
-    for fow_obj_x,fow_obj_row in pairs(self.fow_map) do
-      for fow_obj_y,fow_obj_val in pairs(fow_obj_row) do
-        local x = fow_obj_x-self.camera.x+love.graphics.getWidth()/2
-        local y = fow_obj_y-self.camera.y+love.graphics.getHeight()/2
-        love.graphics.print("fow",x,y)
-      end
-    end
-  end
-
   self.fow:renderTo(function()
     love.graphics.clear()
     love.graphics.setColor(255,255,255)
@@ -148,6 +138,17 @@ function fow:draw(objects,explosions,user,players)
   love.graphics.setColor(255,255,255)
   love.graphics.draw(self.fow)
   love.graphics.setBlendMode("alpha")
+
+  if debug_mode then
+    love.graphics.setColor(255,255,255)
+    for fow_obj_x,fow_obj_row in pairs(self.fow_map) do
+      for fow_obj_y,fow_obj_val in pairs(fow_obj_row) do
+        local x = fow_obj_x-self.camera.x+love.graphics.getWidth()/2
+        local y = fow_obj_y-self.camera.y+love.graphics.getHeight()/2
+        love.graphics.print("fow["..(math.floor(self.fow_map[fow_obj_x][fow_obj_y]) or nil).."]",x,y)
+      end
+    end
+  end
 
 end
 
