@@ -255,11 +255,11 @@ function love.update(dt)
     )
   end
   libs.system:update(dt)
-  if states.server.run_localhost then
-    states.server:update(dt)
-  end
   if libs.tooltip then
     libs.tooltip.update(dt)
+  end
+  if states.server.run_localhost then
+    states.server:update(dt)
   end
 end
 
