@@ -8,6 +8,7 @@ function stringchooser.new(init)
 
   self._prompt = init.prompt or "Type a string and press return:"
   self._callback = init.callback or function() print"No callback defined." end
+  self._cancelCallback = init.cancelCallback
 
   self.draw = stringchooser.draw
   self.update = stringchooser.update
@@ -16,11 +17,28 @@ function stringchooser.new(init)
 
   self._asset = init.string or ""
 
+  self._okButton = libs.button.new{
+    text = "Accept",
+    onClick = function()
+      self._callback(self._asset)
+    end,
+    disabled=true,
+  }
+  if self._cancelCallback then
+    self._cancelButton = libs.button.new{
+      text = "Cancel",
+      onClick = function()
+        self._cancelCallback()
+      end,
+    }
+  end
+
   return self
 
 end
 
 function stringchooser:draw()
+
   local old_color = {love.graphics.getColor()}
   local old_font = love.graphics.getFont()
 
@@ -32,18 +50,36 @@ function stringchooser:draw()
   love.graphics.setFont(font)
   local wa = font:getWidth(self._asset)
   local wp = font:getWidth(self._prompt)
-  local w = math.max(wa,wp)
+  local w = math.max(wa,wp,192)
   local h = font:getHeight()
   local x = (love.graphics.getWidth()-w)/2
   local y = (love.graphics.getHeight()-h)/2
 
   local padding = 8
 
+  local button_offset_y = h+padding*2
+  local button_height = 40
+  local button_width = 96
+
+  self._okButton:setWidth(button_width)
+  self._okButton:setHeight(button_height)
+  self._okButton:setX(x+w-self._okButton:getWidth()+padding)
+  self._okButton:setY(y+button_offset_y)
+
+  self._okButton:setDisabled(string.len(self._asset) < 1)
+
+  if self._cancelButton then
+    self._cancelButton:setWidth(button_width)
+    self._cancelButton:setHeight(button_height)
+    self._cancelButton:setX(x-padding)
+    self._cancelButton:setY(y+button_offset_y)
+  end
+
   tooltipbg(
     x-padding*2,
     y-font:getHeight()*2,
     w+padding*2*2,
-    h+font:getHeight()*2+padding*2
+    h+font:getHeight()*2+padding*3+button_height
   )
 
   love.graphics.setColor(255,255,255)
@@ -60,8 +96,20 @@ function stringchooser:draw()
   love.graphics.rectangle("line",x-padding,y-padding,w+padding*2,h+padding*2)
   love.graphics.print(self._asset,x,y)
 
+  self._okButton:draw()
+  if self._cancelButton then
+    self._cancelButton:draw()
+  end
+
   love.graphics.setColor(old_color)
   love.graphics.setFont(old_font)
+end
+
+function stringchooser:update(dt)
+  self._okButton:update(dt)
+  if self._cancelButton then
+    self._cancelButton:update(dt)
+  end
 end
 
 function stringchooser:textinput(t)

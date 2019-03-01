@@ -119,6 +119,9 @@ function mainmenu:enter()
         settings:write("user_name",string)
         callback()
       end,
+      cancelCallback = function()
+        self.chooser = nil
+      end,
     }
   end
 
@@ -131,6 +134,9 @@ function mainmenu:enter()
         self.chooser = nil
         settings:write("remote_server_address",string)
         callback()
+      end,
+      cancelCallback = function()
+        self.chooser = nil
       end,
     }
   end
@@ -197,6 +203,9 @@ function mainmenu:update(dt)
     self.feedback:update(dt)
   else
     self.menu:update(dt)
+  end
+  if self.chooser then
+    self.chooser:update(dt)
   end
   libs.demo:update(dt)
   self.social:update(dt)
