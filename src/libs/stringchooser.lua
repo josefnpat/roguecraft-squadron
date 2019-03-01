@@ -110,6 +110,9 @@ function stringchooser:update(dt)
   if self._cancelButton then
     self._cancelButton:update(dt)
   end
+  if love.keyboard.isDown("lctrl") and love.keyboard.isDown("v") then
+    self._asset = love.system.getClipboardText()
+  end
 end
 
 function stringchooser:textinput(t)
