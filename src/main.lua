@@ -425,3 +425,22 @@ function seconds_to_clock(time)
   local seconds = math.floor(math.mod(time,60))
   return string.format("%02d:%02d:%02d",hours,minutes,seconds)
 end
+
+function deepcopy(orig)
+  local orig_type = type(orig)
+  local copy
+  if orig_type == 'table' then
+    copy = {}
+    for orig_key, orig_value in next, orig, nil do
+      copy[deepcopy(orig_key)] = deepcopy(orig_value)
+    end
+    -- setmetatable(copy, deepcopy(getmetatable(orig)))
+  else -- number, string, boolean, etc
+    copy = orig
+  end
+  return copy
+end
+
+function deencode(self,input)
+  return deepcopy(input)
+end

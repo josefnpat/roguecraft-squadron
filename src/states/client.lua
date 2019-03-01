@@ -110,7 +110,23 @@ end
 
 function client:enter()
 
-  self.lovernet = libs.lovernet.new{serdes=libs.bitser,ip=self._remote_address}
+  local enet = require"enet"
+  if states.client.run_singleplayer then
+    enet=require"libs.enetfake"
+  else
+    enet=require"enet"
+  end
+
+  self.lovernet = libs.lovernet.new{
+    serdes=libs.bitser,
+    ip=self._remote_address,
+    enet=enet,
+  }
+  if states.client.run_singleplayer then
+    self.lovernet._encode = deencode
+    self.lovernet._decode = deencode
+  end
+
   self.lovernet:addOp(libs.net.op.git_count)
   self.lovernet:addOp(libs.net.op.user_count)
   self.lovernet:addOp(libs.net.op.get_user)

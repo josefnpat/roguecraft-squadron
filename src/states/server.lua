@@ -398,6 +398,13 @@ end
 function server:init()
   self.lovernet = nil
 
+  local enet
+  if states.client.run_singleplayer then
+    enet=require"libs.enetfake"
+  else
+    enet=require"enet"
+  end
+
   -- Just keep trying to connect until lovernet is dead
   local temp_log_data,lovernet_log
   local function temp_lovernet_log(self,...)
@@ -410,7 +417,12 @@ function server:init()
       type=libs.lovernet.mode.server,
       serdes=libs.bitser,
       log=temp_lovernet_log,
+      enet=enet,
     }
+    if states.client.run_singleplayer then
+      self.lovernet._encode = deencode
+      self.lovernet._decode = deencode
+    end
   end
   self.lovernet.log = libs.lovernet.log
   for _,entry in pairs(temp_log_data) do
