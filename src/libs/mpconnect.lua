@@ -197,11 +197,11 @@ function mpconnect:generateButtons()
     }
     table.insert(self.buttons,self.mapGenDefaultButton)
 
-    for _,button in pairs(self.buttons) do
-      button:setFont(fonts.submenu)
-      button:setHeight(32)
-    end
+  end
 
+  for _,button in pairs(self.buttons) do
+    button:setFont(fonts.submenu)
+    button:setHeight(32)
   end
 
 end
