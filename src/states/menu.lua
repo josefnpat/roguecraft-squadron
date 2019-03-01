@@ -32,66 +32,13 @@ function mainmenu:enter()
 
   libs.demo:check()
 
-  self.menum = libs.menu.new()--{title=game_name}
+  self.menu_main = libs.menu.new()--{title=game_name}
 
-  self.menum:addButton(libs.i18n('menu.multiplayer'),function()
-      self.menu = self.menump
-    end
-  )
-
-  self.menum:addButton(libs.i18n('menu.options'),function()
-    libs.hump.gamestate.switch(states.options)
-  end)
-
-  if self.debug_menu_enabled then
-    self.menum:addButton(libs.i18n('menu.debug'),function()
-      libs.hump.gamestate.switch(states.debug)
-    end)
-  end
-
-  self.menum:addButton(libs.i18n('menu.credits'),function()
-    libs.hump.gamestate.switch(states.credits)
-  end)
-
-  self.menum:addButton(libs.i18n('menu.feedback'),function()
-    self.feedback = libs.window.new{
-      x = (love.graphics.getWidth()-320)/2,
-      title = libs.i18n('menu.survey.title'),
-      text = libs.i18n('menu.survey.body'),
-      buttons = {
-        {
-          text=libs.i18n('menu.survey.yes'),
-          callback=function()
-            love.system.openURL("http://roguecraftsquadron.com/feedback?git="..git_count.." ["..git_hash.."]")
-          end,
-        },
-        {
-          text=libs.i18n('menu.survey.no'),
-          callback=function()
-            self.feedback = nil
-          end,
-        },
-      },
-    }
-    self.feedback.y = (love.graphics.getHeight()-self.feedback.h)/2
-  end)
-
-  self.menum:addButton(libs.i18n('menu.exit'),function()
-    if isRelease() then
-      love.event.quit()
-    else
-      self.demosplash = libs.demosplash.new()
-    end
-  end)
-
-  self.menump = libs.menu.new()
-
-  self.menump:addButton(
-    function()
-      return libs.i18n('menu.server')
-    end,
+  self.menu_main:addButton(
+    libs.i18n('menu.singleplayer'),
     function()
       states.client._remote_address = nil
+      states.client.run_singleplayer = true
       states.server:init()
       if states.server.run_localhost then
         states.server:leave()
@@ -99,79 +46,143 @@ function mainmenu:enter()
       states.server.run_localhost = true
       self.music.title:stop()
       libs.hump.gamestate.switch(states.client)
-    end
-  )
+    end)
 
-  self.menump:addButton(
+  self.menu_main:addButton(
+    libs.i18n('menu.multiplayer'),
     function()
-      return libs.i18n('menu.client') .. " ["..settings:read("remote_server_address").."]"
-    end,
-    function()
-      states.client._remote_address = settings:read("remote_server_address")
-      self.music.title:stop()
-      libs.hump.gamestate.switch(states.client)
-    end
-  )
+      self.menu = self.menu_mp
+    end)
 
-  self.menump:addButton(
+  self.menu_main:addButton(
+    libs.i18n('menu.options'),
     function()
-      return libs.i18n('menu.remote_server_address')
-    end,
+      libs.hump.gamestate.switch(states.options)
+    end)
+
+  if self.debug_menu_enabled then
+    self.menu_main:addButton(libs.i18n('menu.debug'),function()
+      libs.hump.gamestate.switch(states.debug)
+    end)
+  end
+
+  self.menu_main:addButton(
+    libs.i18n('menu.credits'),
     function()
-      self.chooser = libs.stringchooser.new{
-        prompt = "Set Remote Server Address:",
-        string = settings:read("remote_server_address"),
-        callback = function(string)
-          self.chooser = nil
-          settings:write("remote_server_address",string)
-        end,
+      libs.hump.gamestate.switch(states.credits)
+    end)
+
+  self.menu_main:addButton(
+    libs.i18n('menu.feedback'),
+    function()
+      self.feedback = libs.window.new{
+        x = (love.graphics.getWidth()-320)/2,
+        title = libs.i18n('menu.survey.title'),
+        text = libs.i18n('menu.survey.body'),
+        buttons = {
+          {
+            text=libs.i18n('menu.survey.yes'),
+            callback=function()
+              love.system.openURL("http://roguecraftsquadron.com/feedback?git="..git_count.." ["..git_hash.."]")
+            end,
+          },
+          {
+            text=libs.i18n('menu.survey.no'),
+            callback=function()
+              self.feedback = nil
+            end,
+          },
+        },
       }
-    end
-  )
+      self.feedback.y = (love.graphics.getHeight()-self.feedback.h)/2
+    end)
 
-  self.menump:addButton(
+  self.menu_main:addButton(
+    libs.i18n('menu.exit'),
     function()
-      return libs.i18n('menu.user_name').." ["..settings:read("user_name").."]"
-    end,
-    function()
-      self.chooser = libs.stringchooser.new{
-        prompt = "Set User Name:",
-        string = settings:read("user_name"),
-        callback = function(string)
-          self.chooser = nil
-          settings:write("user_name",string)
-        end,
-      }
-    end
-  )
+      if isRelease() then
+        love.event.quit()
+      else
+        self.demosplash = libs.demosplash.new()
+      end
+    end)
 
-  self.menump:addButton(
+  self.menu_mp = libs.menu.new()
+
+  local ask_for_name = function(callback)
+    -- ask for name
+    self.chooser = libs.stringchooser.new{
+      prompt = "Set User Name:",
+      string = settings:read("user_name"),
+      callback = function(string)
+        self.chooser = nil
+        settings:write("user_name",string)
+        callback()
+      end,
+    }
+  end
+
+  local ask_for_ip = function(callback)
+    -- ask for name
+    self.chooser = libs.stringchooser.new{
+      prompt = "Set Server IP Address:",
+      string = settings:read("remote_server_address"),
+      callback = function(string)
+        self.chooser = nil
+        settings:write("remote_server_address",string)
+        callback()
+      end,
+    }
+  end
+
+  local ask_for_both = function(callback)
+    ask_for_name(function()
+      ask_for_ip(callback)
+    end)
+  end
+
+  self.menu_mp:addButton(
+    libs.i18n('menu.host'),
     function()
-      return libs.i18n('menu.standalone_server')
-    end,
+      ask_for_name(function()
+        states.client._remote_address = nil
+        states.client.run_singleplayer = false
+        states.server:init()
+        if states.server.run_localhost then
+          states.server:leave()
+        end
+        states.server.run_localhost = true
+        self.music.title:stop()
+        libs.hump.gamestate.switch(states.client)
+      end)
+    end)
+
+  self.menu_mp:addButton(
+    libs.i18n('menu.client'),
     function()
+      ask_for_both(function()
+        states.client._remote_address = settings:read("remote_server_address")
+        states.client.run_singleplayer = false
+        self.music.title:stop()
+        libs.hump.gamestate.switch(states.client)
+      end)
+    end)
+
+  self.menu_mp:addButton(
+    libs.i18n('menu.host_dedicated'),
+    function()
+      states.client.run_singleplayer = false
       libs.hump.gamestate.switch(states.server)
-    end
-  )
+    end)
 
-  self.menump:addButton(
+  self.menu_mp:addButton(
+    libs.i18n('menu.back'),
     function()
-      return libs.i18n('menu.client') .. ' [localhost]'
-    end,
-    function()
-      states.client._remote_address = nil
-      self.music.title:stop()
-      libs.hump.gamestate.switch(states.client)
-    end
-  )
+        self.chooser = nil
+        self.menu = self.menu_main
+      end)
 
-  self.menump:addButton(libs.i18n('menu.back'),function()
-      self.chooser = nil
-      self.menu = self.menum
-    end
-  )
-
-  self.menu = self.menum
+  self.menu = self.menu_main
 
 end
 
@@ -237,8 +248,8 @@ function mainmenu:keypressed(key)
   if key == "escape" then
     if self.chooser then
       self.chooser = nil
-    elseif self.menu ~= self.menum then
-      self.menu = self.menum
+    elseif self.menu ~= self.menu_main then
+      self.menu = self.menu_main
     end
   end
 

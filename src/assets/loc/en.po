@@ -1,38 +1,11 @@
 msgid "menu.singleplayer"
 msgstr "Single Player"
 
-msgid "menu.continue_game"
-msgstr "Continue Game"
-
-msgid "menu.new_game"
-msgstr "New Game"
+msgid "menu.multiplayer"
+msgstr "Multiplayer"
 
 msgid "menu.options"
 msgstr "Options"
-
-msgid "menu.tech_tree"
-msgstr "Tech Tree [%{tree_points}]"
-
-msgid "menu.back"
-msgstr "Back"
-
-msgid "menu.multiplayer"
-msgstr "Play"
-
-msgid "menu.server"
-msgstr "Host Game"
-
-msgid "menu.client"
-msgstr "Connect to Game"
-
-msgid "menu.remote_server_address"
-msgstr "Change Remote Game Address"
-
-msgid "menu.user_name"
-msgstr "Change User Name"
-
-msgid "menu.standalone_server"
-msgstr "Host Standalone Server"
 
 msgid "menu.debug"
 msgstr "Debug"
@@ -45,6 +18,18 @@ msgstr "Player Feedback"
 
 msgid "menu.exit"
 msgstr "Exit"
+
+msgid "menu.host"
+msgstr "Host Game"
+
+msgid "menu.client"
+msgstr "Connect to Game"
+
+msgid "menu.host_dedicated"
+msgstr "Host Dedicated Server"
+
+msgid "menu.back"
+msgstr "Back"
 
 msgid "menu.survey.title"
 msgstr "Help us out!"
