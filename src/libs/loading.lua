@@ -4,9 +4,7 @@ loading._dt = 0
 
 function loading.draw(text)
   -- super lazy ...
-  if loading._camera == nil then
-    loading._camera = libs.picocam.new{}
-  end
+  loading._camera = loading._camera or libs.picocam.new{}
   loading._camera.width = love.graphics.getWidth()
   loading._camera.height = love.graphics.getHeight()
   local old_font = love.graphics.getFont()
@@ -29,6 +27,8 @@ function loading.draw(text)
 end
 
 function loading.update(dt)
+  -- haha made this oop, ya jackass
+  loading._camera = loading._camera or libs.picocam.new{}
   loading._dt = loading._dt + dt
   loading._camera.z = math.sin(loading._dt)/math.pi-4
   loading._camera.theta = loading._dt
