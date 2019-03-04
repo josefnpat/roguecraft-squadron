@@ -83,24 +83,18 @@ function mpconnect:generateButtons()
 
   self.buttons = {}
 
-  self.presetButton = libs.stepper.new{
-    disabled=#libs.mppresets.getPresets()<=1,
-    text="Preset",
-    onClick=function(dir)
-      self.lovernet:pushData(libs.net.op.set_config,{d={preset=self.preset+dir}})
-    end,
-    tooltip="Change what ships are available in the game.",
-  }
-  table.insert(self.buttons,self.presetButton)
+  if not states.client.run_singleplayer then
 
-  self.transmitRatesButton = libs.stepper.new{
-    text="Network",
-    onClick=function(dir)
-      self.lovernet:pushData(libs.net.op.set_config,{d={transmitRate=self.transmitRate+dir}})
-    end,
-    tooltip="Change the update time per player. Raise this if your game has issues.",
-  }
-  table.insert(self.buttons,self.transmitRatesButton)
+    self.transmitRatesButton = libs.stepper.new{
+      text="Network",
+      onClick=function(dir)
+        self.lovernet:pushData(libs.net.op.set_config,{d={transmitRate=self.transmitRate+dir}})
+      end,
+      tooltip="Change the update time per player. Raise this if your game has issues.",
+    }
+    table.insert(self.buttons,self.transmitRatesButton)
+
+  end
 
   -- todo: add when there's a way to reset the server config
   --[[
@@ -114,7 +108,18 @@ function mpconnect:generateButtons()
   --]]
 
   local gamemode_object = self.mpgamemodes:getGamemodeById(self.gamemode)
+
   if gamemode_object.configurable then
+
+    self.presetButton = libs.stepper.new{
+      disabled=#libs.mppresets.getPresets()<=1,
+      text="Preset",
+      onClick=function(dir)
+        self.lovernet:pushData(libs.net.op.set_config,{d={preset=self.preset+dir}})
+      end,
+      tooltip="Change what ships are available in the game.",
+    }
+    table.insert(self.buttons,self.presetButton)
 
     self.aiCountButton = libs.stepper.new{
       text="AI Count",
