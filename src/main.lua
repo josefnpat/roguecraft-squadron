@@ -423,7 +423,11 @@ function seconds_to_clock(time)
   local hours = math.floor(time/3600)
   local minutes = math.floor(math.mod(time,3600)/60)
   local seconds = math.floor(math.mod(time,60))
-  return string.format("%02d:%02d:%02d",hours,minutes,seconds)
+  if hours > 0 then
+    return string.format("%02d:%02d:%02d",hours,minutes,seconds)
+  else
+    return string.format("%02d:%02d",minutes,seconds)
+  end
 end
 
 function deepcopy(orig)
