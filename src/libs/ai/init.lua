@@ -35,6 +35,7 @@ function ai.new(init)
   end
 
   self.setDiff = ai.setDiff
+  self.getDiff = ai.getDiff
   self.updateDiff = ai.updateDiff
   self.update = ai.update
   self.setCurrentPocket = ai.setCurrentPocket
@@ -80,6 +81,10 @@ end
 function ai:setDiff(diff)
   self._diff = diff
   self:updateDiff()
+end
+
+function ai:getDiff()
+  return self._diff
 end
 
 function ai:updateDiff()
