@@ -31,7 +31,7 @@ function matchstats:draw(players,user,current_time)
   local y = (love.graphics.getHeight()-h)/2
   tooltipbg(x,y,w,h)
 
-  dropshadowf("Match Time: "..seconds_to_clock(current_time),
+  dropshadowf(libs.i18n('client.match_time')..seconds_to_clock(current_time),
     x+self._padding,y+self._padding,w-self._padding*2,"center")
 
   local vtextoffset = (self._rowSize-love.graphics.getFont():getHeight())/2

@@ -670,9 +670,9 @@ function client:update(dt)
       local level = self.mpgamemodes:getCurrentLevelData()
       if level and not level.next_level then
         if self.gamestatus:isPlayerLose(self.user) then
-          self.mpdisconnect:setLose()
+          self.mpdisconnect:setLose(math.floor(self.time-self.start_time))
         elseif self.gamestatus:isPlayerWin(self.user) then
-          self.mpdisconnect:setWin()
+          self.mpdisconnect:setWin(math.floor(self.time-self.start_time))
         end
       end
 

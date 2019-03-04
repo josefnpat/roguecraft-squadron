@@ -39,7 +39,8 @@ function mpdisconnect.new(init)
   return self
 end
 
-function mpdisconnect:setWin()
+function mpdisconnect:setWin(time)
+  self._time = self._time or time
   if not self._gstatus then
     libs.sfx.play('mp.victory')
   end
@@ -47,7 +48,8 @@ function mpdisconnect:setWin()
   self:_start()
 end
 
-function mpdisconnect:setLose()
+function mpdisconnect:setLose(time)
+  self._time = self._time or time
   if not self._gstatus then
     libs.sfx.play('mp.defeat')
   end
@@ -98,9 +100,14 @@ function mpdisconnect:draw()
       self.rotate/10,1,1,
       mpdisconnect.planet:getWidth()/2,
       mpdisconnect.planet:getHeight()/2)
+    local text_offset = (love.graphics.getHeight()-fonts.title:getHeight())/2
     love.graphics.setFont(fonts.title)
     love.graphics.printf(self._gstatus,
-      0,(love.graphics.getHeight()-fonts.title:getHeight())/2,
+      0,text_offset,
+      love.graphics.getWidth(),"center")
+    love.graphics.setFont(fonts.large)
+    love.graphics.printf(libs.i18n('client.match_time')..seconds_to_clock(self._time),
+      0,text_offset+fonts.title:getHeight()/2+fonts.large:getHeight(),
       love.graphics.getWidth(),"center")
     love.graphics.setFont(old_font)
     if self:_ready() then

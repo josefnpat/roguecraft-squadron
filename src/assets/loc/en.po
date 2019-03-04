@@ -232,6 +232,9 @@ msgstr "You have defeated the alien invasion!\nYou win!"
 msgid "gameover.lose"
 msgstr "You and your crew have been lost to the void of space.\nYou Lose."
 
+msgid "client.match_time"
+msgstr "Match Time: "
+
 msgid "mission.action.repair.basic"
 msgstr "Repair"
 
