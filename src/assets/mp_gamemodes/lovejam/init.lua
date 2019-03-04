@@ -6,6 +6,6 @@ gamemode.desc = "This is a campaign that is inspired by the original game jam ve
 gamemode.start_level = "1"
 gamemode.disabled = "Coming this summer!"
 gamemode.configurable = false
-gamemode.weight = 3
+gamemode.weight = 400
 
 return gamemode

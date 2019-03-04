@@ -9,6 +9,6 @@ It's up to Ruby to end this siege at any cost, even her own humanity.]]
 gamemode.start_level = "1"
 gamemode.disabled = "Coming this summer!"
 gamemode.configurable = false
-gamemode.weight = 2
+gamemode.weight = 300
 
 return gamemode
