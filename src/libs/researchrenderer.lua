@@ -121,7 +121,8 @@ function researchrenderer.isUnlockable(user,objects,testObject)
       if testObject.type == buildObject then
         local currentLevel = researchrenderer.getLevel(
           user,
-          object.type,researchrenderer.getUnlockName(object.type)
+          object.type,
+          researchrenderer.getUnlockName(object.type)
         )
         if currentLevel > 0  then
           return true
@@ -134,6 +135,18 @@ end
 
 function researchrenderer.isUnlocked(user,object)
   return researchrenderer.getLevel(user,object.type,researchrenderer.getUnlockName(object.type)) > 0
+end
+
+function researchrenderer.getUnlockCost(user,object_type)
+  local research_type = researchrenderer.getUnlockName(object_type.type)
+  local research = researchrenderer.getType(research_type)
+  local target_level = researchrenderer.getLevel(user,object_type.type,research_type) + 1
+  return research.cost(target_level) or 0
+end
+
+function researchrenderer.canAffordUnlock(user,object_type,points)
+  local cost = researchrenderer.getUnlockCost(user,object_type)
+  return points >= cost
 end
 
 function researchrenderer.getUnlockedObjects(user,preset_value)

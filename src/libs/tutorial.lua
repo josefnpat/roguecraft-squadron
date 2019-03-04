@@ -72,6 +72,7 @@ function tutorial:changeCurrent(val)
 end
 
 function tutorial:show()
+  settings:write("tutorial",false)
   self._show = true
 end
 

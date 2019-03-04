@@ -27,6 +27,7 @@ function mpresearch.new(init)
 
   self.mousepressed = mpresearch.mousepressed
   self.mousereleased = mpresearch.mousereleased
+  self.canAffordAnything = mpresearch.canAffordAnything
   self.buildData = mpresearch.buildData
 
   self._drawSize = 256+64
@@ -190,8 +191,22 @@ end
 function mpresearch:mousereleased(x,y,button)
 end
 
-function mpresearch:buildData(user)
+function mpresearch:canAffordAnything(user,resources)
+  local points = resources:get("research")
+  for _,object_type in pairs(libs.researchrenderer.getUnlockedObjects(user,self._preset)) do
+    if not libs.researchrenderer.isUnlocked(user,object_type) and
+      libs.researchrenderer.canAffordUnlock(user,object_type,points) then
 
+      return true
+
+    end
+  end
+  return false
+end
+
+function mpresearch:buildData(user,resources)
+  assert(user)
+  assert(resources)
   self._object_types = libs.researchrenderer.getUnlockedObjects(user,self._preset)
   self._objects_select = libs.matrixpanel.new{
     width=self._objectsSelectWidth,
@@ -202,11 +217,14 @@ function mpresearch:buildData(user)
       object_type.icons[1],
       function()
         self._currentObject = object_type.type
-        self:buildData(user)
+        self:buildData(user,resources)
       end,
       function(hover)
+        local points = resources:get("research")
         if libs.researchrenderer.isUnlocked(user,object_type) then
           return {0,255,0,hover and 255 or 191}
+        elseif libs.researchrenderer.canAffordUnlock(user,object_type,points) then
+          return {0,255,255}
         else
           return {127,127,127,hover and 255 or 191}
         end

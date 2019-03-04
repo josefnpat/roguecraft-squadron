@@ -18,6 +18,7 @@ settings:define("user_name","Player")
 settings:define("mouse_draw_mode","software")
 settings:define("object_shaders",true)
 settings:define("action_keys",{"z","x","c","v","b"})
+settings:define("tutorial",true)
 
 game_tagline = "Call to Arms"
 game_name = "RogueCraft Squadron: "..game_tagline

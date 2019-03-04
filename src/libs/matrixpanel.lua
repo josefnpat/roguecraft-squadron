@@ -101,7 +101,11 @@ function matrixpanel:draw(bg,fg)
       end
     end
     love.graphics.draw(self._icon_bg,ix,iy)
-    love.graphics.draw(action.image,ix,iy)
+    if type(action) == "function" then
+      love.graphics.draw(action.image(),ix,iy)
+    else
+      love.graphics.draw(action.image,ix,iy)
+    end
     if self._hover == action and action.iconShortcutKey then
       love.graphics.setColor(255,255,255)
       dropshadow(action.iconShortcutKey,ix,iy)

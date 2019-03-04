@@ -69,10 +69,10 @@ function client:init()
   self.soundtrack:addDynamicAudio(da,updateaDynamicAudio)
 
   self.buttonbar = libs.matrixpanel.new{
-    iconSize=16,
+    iconSize=32,
     padding=0,
     drawbg=false,
-    icon_bg=love.graphics.newImage("assets/hud/icon_bg_small.png"),
+    icon_bg=love.graphics.newImage("assets/hud/icon_bg.png"),
   }
 
   local hover = function(hover)
@@ -80,6 +80,22 @@ function client:init()
       return {0,255,255}
     else
       return {255,255,255,256*7/8}
+    end
+  end
+
+  local ebb_research = function(isHover)
+    if self.mpresearch:canAffordAnything(self.user,self.resources) then
+      return {math.sin(self.time*4)*255,255,0}
+    else
+      return hover(isHover)
+    end
+  end
+
+  local ebb_tutorial = function(isHover)
+    if settings:read("tutorial") then
+      return {math.sin(self.time*4)*255,255,0}
+    else
+      return hover(isHover)
     end
   end
 
@@ -95,14 +111,16 @@ function client:init()
   self.buttonbar:addAction(
     love.graphics.newImage("assets/hud/buttonbar/research.png"),
     function() self.mpresearch:setActive(true) end,
-    hover,
+    ebb_research,
     function() return "Research [R]" end
   )
 
   self.buttonbar:addAction(
     love.graphics.newImage("assets/hud/buttonbar/tutorial.png"),
-    function() self.tutorial:show(true) end,
-    hover,
+    function()
+      self.tutorial:show(true)
+    end,
+    ebb_tutorial,
     function() return "Tutorial [T]" end
   )
 
@@ -256,9 +274,9 @@ end
 function client:stackSide()
   -- fix tooltips before adding right side stack feature
   local cx,cy = 32,32
-  self.buttonbar:setX(cx)
+  self.buttonbar:setX(cx + self.minimap.size)
   self.buttonbar:setY(cy)
-  cy = cy + 16
+
   self.minimap.x = cx
   self.minimap.y = cy
   cy = cy + self.minimap.size
@@ -449,7 +467,7 @@ function client:update(dt)
   if self.lovernet:getCache(libs.net.op.get_research) then
     self.user.research = self.lovernet:getCache(libs.net.op.get_research)
     if self.gamestatus:isStarted() then
-      self.mpresearch:buildData(self.user,self.config.preset)
+      self.mpresearch:buildData(self.user,self.resources)
     end
     self.lovernet:clearCache(libs.net.op.get_research)
   end
@@ -642,7 +660,7 @@ function client:update(dt)
   if self.gamestatus:isStarted() then
     if self.gamestatus:isStartedTrigger() then
       libs.researchrenderer.load(not headless,self.config.preset)
-      self.mpresearch:buildData(self.user)
+      self.mpresearch:buildData(self.user,self.resources)
       self.lovernet:pushData(libs.net.op.get_research)
       self.fade_in = libs.net.next_level_t
     end
