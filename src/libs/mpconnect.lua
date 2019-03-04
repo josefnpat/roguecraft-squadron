@@ -19,11 +19,7 @@ function mpconnect.new(init)
   self.points = init.points or 1
   self.mpgamemodes = init.mpgamemodes
   self.target_gamemode = self.mpgamemodes:getGamemodes()[1].id
-  self.guide = libs.guide.new{
-    text = [[Welcome to the IEE war game simulator.
-
-Configure your players to prepare your match.]],
-  }
+  self.guide = libs.guide.new()
 
   self.generateButtons = mpconnect.generateButtons
   self.updateData = mpconnect.updateData
@@ -432,6 +428,7 @@ function mpconnect:draw(config,players,user_count)
     else
 
       local gamemode_object = self.mpgamemodes:getGamemodeById(self.gamemode)
+      self.guide:setText(gamemode_object.guide_text)
       love.graphics.setFont(fonts.window_title)
       dropshadowf("Game Mode: "..gamemode_object.name,0,32,love.graphics.getWidth(),"center")
       love.graphics.setFont(fonts.default)
