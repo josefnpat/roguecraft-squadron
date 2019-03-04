@@ -919,7 +919,7 @@ function server:newGame(soft)
   end
 
   if level.ai_players then
-    storage.ai_players = level.ai_players
+    absorb(storage.ai_players,level.ai_players)
     storage.config.ai = #level.ai_players
   end
 

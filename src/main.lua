@@ -448,3 +448,32 @@ end
 function deencode(self,input)
   return deepcopy(input)
 end
+
+-- absorb slave into master
+function absorb(master,slave)
+  for i,_ in pairs(slave) do
+    if type(master[i]) == "table" and type(slave[i]) == "table" then
+      absorb(master[i],slave[i])
+    else
+      master[i]=slave[i]
+    end
+  end
+  return master
+end
+
+function print_r (t,indent)
+  indent = indent or ""
+  if (type(t)=="table") then
+    for pos,val in pairs(t) do
+      if (type(val)=="table") then
+        print(indent.."["..pos.."] "..tostring(t).." => {")
+        print_r(val,indent..string.rep(" ",2))
+        print(indent..string.rep(" ",0).."}")
+      else
+        print(indent.."["..pos.."] => "..tostring(val))
+      end
+    end
+  else
+    print(indent..tostring(t))
+  end
+end
