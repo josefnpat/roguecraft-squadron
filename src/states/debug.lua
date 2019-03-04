@@ -82,6 +82,15 @@ function state:init()
     end
   )
 
+  self.menu:add(
+    function()
+      return "Tutorial ["..(settings:read("tutorial") and "Enabled" or "Disabled").."]"
+    end,
+    function()
+      settings:write("tutorial",not settings:read("tutorial"))
+    end
+  )
+
   self.menu:add("Back",function()
     libs.hump.gamestate.switch(states.menu)
   end)
