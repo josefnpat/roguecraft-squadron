@@ -958,7 +958,7 @@ function server:newGame(soft)
       user.ai:setPockets(pockets)
       -- this is a hack, fix it later
       if level.ai_players then
-        local current_ai_player = level.ai_players[user.config.ai]
+        local current_ai_player = storage.ai_players[user.config.ai]
         user.ai:setDiff(current_ai_player.config.diff)
         gen = current_ai_player.gen or gen
       end
