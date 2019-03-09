@@ -881,6 +881,9 @@ function server:resetGame()
 
   storage.world = libs.bump.newWorld(server._bump_cell_size)
 
+  self._public_t = 10
+  self._public_dt = self._public_t
+
 end
 
 function server:newGame(soft)
@@ -1438,7 +1441,19 @@ function server:update(dt)
       server:resetGame()
     end
     --]]
+    if settings:read("server_public") and storage.config.game_started_trigger == nil then
+      storage.config.game_started_trigger = true
+      libs.mpserverlist.sendPublicUpdate(true,self:getPlayerCount())
+    end
   else
+    if settings:read("server_public") then
+      self._public_dt = self._public_dt + dt
+      if self._public_dt > self._public_t then
+        self._public_dt = 0
+        libs.mpserverlist.sendPublicUpdate(false,self:getPlayerCount())
+      end
+    end
+
     self:validateConfig()
     for _,user in pairs(self.lovernet:getUsers()) do
       if user.config then
