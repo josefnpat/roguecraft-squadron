@@ -14,6 +14,9 @@ settings:define("sfx_vol",0.2)
 settings:define("music_vol",0.3)
 settings:define("fow_quality","img_canvas")
 settings:define("remote_server_address","127.0.0.1")
+settings:define("server_port","26000") --quake?
+settings:define("server_public",true)
+settings:define("sensitive",false)
 settings:define("user_name","Player")
 settings:define("mouse_draw_mode","software")
 settings:define("object_shaders",true)
@@ -24,6 +27,7 @@ game_tagline = "Call to Arms"
 game_name = "RogueCraft Squadron: "..game_tagline
 git_hash,git_count = "missing git.lua",-1
 game_singleplayer = false
+game_randomstring = require("libs.randomstring")(32)
 pcall( function() return require("git") end );
 
 function love.conf(t)

@@ -1,0 +1,5 @@
+acf-lib from Alpine Linux, Version 0.10.1-r0
+
+https://pkgs.alpinelinux.org/package/v3.7/main/x86/acf-lib
+
+License is GPLv2: https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html
