@@ -33,9 +33,34 @@ pcall( function() return require("git") end );
 function love.conf(t)
 
   for _,v in pairs(arg) do
+
     if v == "--server" or v == "-s" then
       headless = true
     end
+
+    local port
+    if string.sub(v,0,2) == "-p" then
+      port = string.sub(v,3)
+    end
+    if string.sub(v,0,6) == "--port" then
+      port = string.sub(v,7)
+    end
+    if port and require("libs.acf.validator").is_port(port) then
+      settings:write("server_port",port)
+    end
+
+    if v == "--private" then
+      print("Private Server")
+      settings:write("server_public",false)
+    end
+    if v == "--public" then
+      print("Public Server")
+      settings:write("server_public",true)
+    end
+    if string.sub(v,0,6) == "--name" then
+      settings:write("user_name",string.sub(v,7))
+    end
+
   end
   t.identity = "RogueCraftSquadron"
 
