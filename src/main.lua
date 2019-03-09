@@ -305,6 +305,9 @@ function tooltipbg(ox,oy,width,oh,c1,c2)
 end
 
 function debugrect(x,y,w,h)
+  if (type(x)=="table") then
+    x,y,w,h = x.x,x.y,x.width,x.height
+  end
   local old_color = {love.graphics.getColor()}
   love.graphics.setColor(255,0,0)
   love.graphics.rectangle("line",x+0.5,y+0.5,w,h)

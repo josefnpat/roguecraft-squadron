@@ -110,7 +110,9 @@ function client:init()
 
   self.buttonbar:addAction(
     love.graphics.newImage("assets/hud/buttonbar/research.png"),
-    function() self.mpresearch:setActive(true) end,
+    function()
+      self.windows:show("mpresearch")
+    end,
     ebb_research,
     function() return "Research [R]" end
   )
@@ -118,7 +120,7 @@ function client:init()
   self.buttonbar:addAction(
     love.graphics.newImage("assets/hud/buttonbar/tutorial.png"),
     function()
-      self.tutorial:show(true)
+      self.windows:show("mptutorial")
     end,
     ebb_tutorial,
     function() return "Tutorial [T]" end
@@ -205,7 +207,14 @@ function client:enter()
   self.chat = libs.chat.new()
   self.mpgamemodes = libs.mpgamemodes.new()
   self.mpconnect = libs.mpconnect.new{lovernet=self.lovernet,chat=self.chat,mpgamemodes=self.mpgamemodes}
+
+  --windows
+  self.windows = libs.windowmanager.new()
   self.mpresearch = libs.mpresearch.new{lovernet=self.lovernet,onChange=client.selectionOnChange,onChangeScope=self}
+  self.windows:add(self.mpresearch,"mpresearch")
+  self.mptutorial = libs.mptutorial.new()
+  self.windows:add(self.mptutorial,"mptutorial")
+
   self.mpdisconnect = libs.mpdisconnect.new()
   self.gamestatus = libs.gamestatus.new()
   self.matchstats = libs.matchstats.new()
@@ -215,8 +224,6 @@ function client:enter()
   self.soundtrack:setVolume(settings:read("music_vol"))
   self.soundtrack:randomTrack()
   self.soundtrack:play()
-
-  self.tutorial = libs.tutorial.new()
 
   self.world = libs.bump.newWorld(client._bump_cell_size)
 
@@ -658,14 +665,17 @@ function client:update(dt)
 
   self.gamestatus:update(dt,self.objects,self.players or {})
   if self.gamestatus:isStarted() then
+
     if self.gamestatus:isStartedTrigger() then
       libs.researchrenderer.load(not headless,self.config.preset)
       self.mpresearch:buildData(self.user,self.resources)
       self.lovernet:pushData(libs.net.op.get_research)
       self.fade_in = libs.net.next_level_t
     end
+    if libs.researchrenderer.isLoaded() then
+      self.resources:showResource("research",self.mpresearch:canUnlockAnything(self.user))
+    end
     self.mpdisconnect:update(dt)
-
     if self.level.id then
       local level = self.mpgamemodes:getCurrentLevelData()
       if level and not level.next_level then
@@ -675,8 +685,8 @@ function client:update(dt)
           self.mpdisconnect:setWin(math.floor(self.time-self.start_time))
         end
       end
-
     end
+
   else
     self.mpconnect:update(dt)
     if self.config then
@@ -824,13 +834,13 @@ function client:update(dt)
 
     self.vn:update(dt)
 
-  elseif self.mpresearch:active() then
+  elseif self.mpresearch:isActive() then
 
-    self.mpresearch:update(dt)
+    self.mpresearch:update(dt,self.user,self.resources)
 
-  elseif self.tutorial:active() then
+  elseif self.mptutorial:isActive() then
 
-    self.tutorial:update(dt)
+    self.mptutorial:update(dt)
 
   else
 
@@ -987,9 +997,9 @@ function client:mousepressed(x,y,button)
   if self.menu_enabled then return end
   if self.vn and self.vn:active() then
     self.vn:next()
-  elseif self.mpresearch:active() then
+  elseif self.mpresearch:isActive() then
     self.mpresearch:mousepressed(x,y,button)
-  elseif self.tutorial:active() then
+  elseif self.mptutorial:isActive() then
   elseif button == 1 then
     if self.buttonbar:mouseInside(x,y) then
       -- nop
@@ -1016,9 +1026,9 @@ function client:mousereleased(x,y,button)
   self.chat:setActive(false)
   if self.vn and self.vn:active() then
     --nop
-  elseif self.mpresearch:active() then
+  elseif self.mpresearch:isActive() then
     self.mpresearch:mousereleased(x,y,button)
-  elseif self.tutorial:active() then
+  elseif self.mptutorial:isActive() then
     --nop
   elseif button == 1 then
     if self.buttonbar:mouseInside(x,y) and not self.selection:selectionInProgress() then
@@ -1155,10 +1165,8 @@ function client:keypressed(key)
   if key == "escape" then
     if self.vn and self.vn:active() then
       self.vn:stop()
-    elseif self.mpresearch:active() then
-      self.mpresearch:setActive(false)
-    elseif self.tutorial:active() then
-      self.tutorial:hide()
+    elseif self.windows:isActive() then
+      self.windows:hide()
     elseif self.chat:getActive() then
       self.chat:setActive(false)
       self.chat:setBuffer("")
@@ -1170,16 +1178,16 @@ function client:keypressed(key)
 
   if self.gamestatus:isStarted() and not self.chat:getActive() then
     if key == "r" then
-       self.mpresearch:toggleActive()
+      self.windows:toggle("mpresearch")
     end
     if key == "t" then
-       self.tutorial:toggle()
+      self.windows:toggle("mptutorial")
     end
   end
 
   if self.vn and self.vn:active() then
     self.vn:next()
-  elseif self.mpresearch:active() or self.tutorial:active() then
+  elseif self.windows:isActive() then
 
   else
 
@@ -1358,12 +1366,15 @@ function client:draw()
   self.notif:draw()
   if self.gamestatus:isStarted() then
     self.mpdisconnect:draw()
-    if self.mpresearch:active() then
-      self.mpresearch:draw(self.user,self.resources)
+
+    -- can't use self.windows here
+    if self.mpresearch:isActive() then
+      self.mpresearch:draw(self.user,self.resources,self.points)
     end
-    if self.tutorial:active() then
-      self.tutorial:draw()
+    if self.mptutorial:isActive() then
+      self.mptutorial:draw()
     end
+
   else
     self.mpconnect:draw(self.config,self.players,self.user_count)
   end

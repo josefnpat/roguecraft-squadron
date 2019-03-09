@@ -1,6 +1,7 @@
 return function()
   return {
     type = "turret_large",
+    class = libs.net.classTypes.military,
     military_large = true,
     cost = {material=500,crew=100},
     points = 8,

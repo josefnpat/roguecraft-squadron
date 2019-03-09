@@ -1,6 +1,7 @@
 return function()
   return {
     type = "scout",
+    class = libs.net.classTypes.military,
     military_small = true,
     cost = {material=50,crew=10},
     points = 1,

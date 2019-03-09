@@ -1,6 +1,7 @@
 return function()
   return {
     type = "habitat",
+    class = libs.net.classTypes.industrial,
     cost = {material=100},
     points = 2,
     fow = 0.5,

@@ -1,6 +1,7 @@
 return function()
   return {
     type = "mining",
+    class = libs.net.classTypes.industrial,
     cost = {material=75,crew=10},
     points = 2,
     fow = 0.5,

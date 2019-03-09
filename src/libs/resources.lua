@@ -14,14 +14,18 @@ function resources.new(init)
   self.updateBars = resources.updateBars
   self.update = resources.update
   self.calcCargo = resources.calcCargo
-  self.set = resources.set
-  self.get = resources.get
+  self.set = resources.setValue
+  self.setValue = resources.setValue
+  self.get = resources.getValue
+  self.getValue = resources.getValue
+  self.getCargo = resources.getCargo
   self.setFull = resources.setFull
   self.canAfford = resources.canAfford
   self.canAffordResType = resources.canAffordResType
   self.cantAffordNotif = resources.cantAffordNotif
   self.mouseInside = resources.mouseInside
   self.getHeight = resources.getHeight
+  self.showResource = resources.showResource
 
   local resourceIcons = {}
   self._value = {}
@@ -65,7 +69,7 @@ function resources:updateBars(dt)
   local current = 0
   for _,restype in pairs(libs.net.resourceTypes) do
     self.resourceBars[restype]:update(dt)
-    local enabled = self._cargo[restype] > 0
+    local enabled = self._cargo[restype] > 0 and self["_show_"..restype] ~= false
     self.resourceBars[restype]:setBarEnable(enabled)
     if enabled then
       local barValue = self._value_tween[restype]/self._cargo[restype]
@@ -114,7 +118,7 @@ function resources:calcCargo(objects,user)
 
 end
 
-function resources:set(restype,value)
+function resources:setValue(restype,value)
   if self._value[restype] == nil then
     print("warning: resource type `"..tostring(restype).."` does not exist.")
   else
@@ -131,11 +135,18 @@ function resources:set(restype,value)
   end
 end
 
-function resources:get(restype)
+function resources:getValue(restype)
   if self._value[restype] == nil then
     print("warning: resource type `"..tostring(restype).."` does not exist.")
   end
   return self._value[restype]
+end
+
+function resources:getCargo(restype)
+  if self._cargo[restype] == nil then
+    print("warning: resource type `"..tostring(restype).."` does not exist.")
+  end
+  return self._cargo[restype]
 end
 
 function resources:setFull(res)
@@ -197,6 +208,10 @@ function resources:getHeight()
     end
   end
   return height
+end
+
+function resources:showResource(restype,value)
+  self["_show_"..restype] = value
 end
 
 return resources

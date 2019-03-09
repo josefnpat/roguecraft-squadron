@@ -38,6 +38,13 @@ net.op = {
 
 net.resourceTypes = {"ore","material","crew","research"}
 
+net.classTypes = {
+  military="Military",
+  construction="Construction",
+  industrial="Industrial",
+  support="Support",
+}
+
 net.mapGenDefaults = {
   {
     text = "Normal",

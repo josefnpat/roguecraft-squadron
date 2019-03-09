@@ -9,7 +9,7 @@ function button.new(init)
   self._width = init.width or 256
   self._height = init.height or 40
   self._draw = init.draw or button._default_draw_rcs
-  self._text = init.text or "OK"
+  self._text = init.text or ""
   self._tooltip = init.tooltip
   self._onClick = init.onClick or button._default_onClick
   self._onHoverIn = init.onHoverIn or function()
@@ -104,13 +104,13 @@ function button._default_draw_rcs(text,icon,x,y,width,height,hover,depress,disab
   end
   tooltipbg(x,y,width,height,bg,fg)
   love.graphics.setColor(255,255,255)
+  local offset = (height-font:getHeight())/2
+  love.graphics.setColor(fg or {0,255,255})
   if icon then
     local icon_image = type(icon) == "function" and icon() or icon
     local icon_padding = (height - icon_image:getHeight()) / 2
     love.graphics.draw(icon_image,x+icon_padding,y+icon_padding)
   end
-  local offset = (height-font:getHeight())/2
-  love.graphics.setColor(fg or {0,255,255})
   love.graphics.setFont(font)
   if not fg then
     dropshadowf(text,x,y+offset,width,"center")

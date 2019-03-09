@@ -1,6 +1,7 @@
 return function()
   return {
     type = "troopship",
+    class = libs.net.classTypes.support,
     cost = {material=50,crew=100},
     points = 2,
     fow = 0.75,

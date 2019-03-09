@@ -1,6 +1,7 @@
 return function()
   return {
     type = "satellite",
+    class = libs.net.classTypes.support,
     cost = {material=25},
     points = 0,
     fow = 3,

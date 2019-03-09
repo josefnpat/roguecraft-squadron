@@ -2,21 +2,20 @@ local mpresearch = {}
 
 function mpresearch.new(init)
   init = init or {}
-  local self = {}
+  local self = libs.mpwindow.new()
 
   self.lovernet = init.lovernet
   self._onChange = init.onChange or function() end
   self._onChangeScope = init.onChangeScope or function() end
 
   self.update = mpresearch.update
+
+  self.getDescText = mpresearch.getDescText
+  self.getDescTextWidth = mpresearch.getDescTextWidth
+  self.getDescTextHeight = mpresearch.getDescTextHeight
+
   self.draw = mpresearch.draw
   self.drawObject = mpresearch.drawObject
-
-  self.active = mpresearch.active
-  self.setActive = mpresearch.setActive
-  self.getActive = mpresearch.getActive
-  self.toggleActive = mpresearch.toggleActive
-  self._active = false
 
   self._preset = init.preset or 1
   self.setPreset = mpresearch.setPreset
@@ -24,99 +23,139 @@ function mpresearch.new(init)
 
   self.getWidth = mpresearch.getWidth
   self.getHeight = mpresearch.getHeight
+  self.getSubContentWidth = mpresearch.getSubContentWidth
+  self.getSubContentHeight = mpresearch.getSubContentHeight
 
   self.mousepressed = mpresearch.mousepressed
   self.mousereleased = mpresearch.mousereleased
   self.canAffordAnything = mpresearch.canAffordAnything
+  self.canUnlockAnything = mpresearch.canUnlockAnything
   self.buildData = mpresearch.buildData
 
-  self._drawSize = 256+64
-  self._drawPadding = 8
-  self._buttonWidth = 320
-  self._buttonPadding = 8
-  self._buttonInternalPadding = 4
-  self._objectsSelectWidth = 96
+  self._drawSize = 256+self._padding*2
+  self._objectsSelectWidth = 32*2
+  self._buttonWidth = 256
+
+  self._desc_font = fonts.default
 
   self._startObject = "command"
   self._currentObject = "command"
   self._dangle = 0
 
-  self.close = libs.button.new{
-    height=self._buttonHeight,
-    width = 64,
-    text = "Close",
-    onClick = function()
-      self:setActive(false)
-    end,
-  }
-
   return self
 
 end
 
-function mpresearch:update(dt)
-  self._objects_select:update(dt)
-  self._dangle = self._dangle + dt
-  for _,button in pairs(self._current_research_buttons) do
-    button:update(dt)
+function mpresearch:update(dt,user,resources)
+  if self:isActive() then
+    self:windowupdate(dt)
+    local points = resources:getValue("research")
+    self:setWindowTitle("Research ("..points.."/"..resources:getCargo("research")..")")
+    self._objects_select:update(dt)
+    self._dangle = self._dangle + dt
+    for _,button in pairs(self._current_research_buttons) do
+      button:update(dt)
+      button:_researchCheck(user,points)
+    end
   end
-  self.close:update(dt)
 end
 
-function mpresearch:draw(user,resources)
-
-  love.graphics.setColor(0,0,0,191)
-  love.graphics.rectangle("fill",0,0,
-    love.graphics:getWidth(),love.graphics:getHeight())
-  love.graphics.setColor(255,255,255)
-
-  local x_offset = (love.graphics.getWidth()-self:getWidth())/2
-  local y_offset = (love.graphics.getHeight()-self:getHeight())/2
-
-  tooltipbg(x_offset,y_offset,self:getWidth(),self:getHeight())
-
-  local x = x_offset+self._objects_select:getWidth()
-  local y = y_offset
-  local w,h = self._drawSize,self:getHeight()
-  self:drawObject(self._currentObject,x,y,self._drawSize,self._drawSize)
-  local object_type = libs.objectrenderer.getType(self._currentObject)
-  love.graphics.setFont(fonts.large)
-  dropshadowf(object_type.loc.name,
-    x+self._drawPadding,y+self._drawSize,w-self._drawPadding*2,"center")
-  love.graphics.setFont(fonts.default)
-  dropshadowf(object_type.loc.build,
-    x+self._drawPadding,y+self._drawSize+32,w-self._drawPadding*2,"left")
-
-  local button_x_offset = x + self._drawSize
-  local button_y_offset = y_offset + 8 + 32
-
-  love.graphics.setFont(fonts.large)
-  dropshadowf("Research Points: "..resources:get("research"),
-    button_x_offset,y_offset+self._buttonPadding,self._buttonWidth+32,"center")
-  love.graphics.setFont(fonts.default)
-  if #self._current_research_buttons > 0 then
-    for button_index,button in pairs(self._current_research_buttons) do
-      button:setX(button_x_offset+32+self._buttonPadding)
-      button:setY(button_y_offset + (button:getHeight()+self._buttonInternalPadding)*(button_index-1))
-      button:draw()
-    end
-  else
-    dropshadowf("No research available for this object.",
-      button_x_offset,y_offset+self._buttonPadding+32,self._buttonWidth,"center")
+function mpresearch:getDescText(index)
+  index = index or self._currentObject
+  local object_type = libs.objectrenderer.getType(index)
+  local body = "\n" .. object_type.loc.build
+  if object_type.class then
+    body = "Class: " .. object_type.class .. "\n" .. body
   end
+  return body
+end
 
-  self.close:setX(x_offset+self:getWidth()-self.close:getWidth()-16)
-  self.close:setY(y_offset+self:getHeight()-self.close:getHeight()-16)
-  self.close:draw()
+function mpresearch:getDescTextWidth()
+  return self:getSubContentWidth()
+end
 
-  -- draw last for tooltips
-  self._objects_select:setX(x_offset)
-  self._objects_select:setY(y_offset)
-  self._objects_select:draw()
+function mpresearch:getDescTextHeight(index)
+  local text_width = self:getDescTextWidth(index)
+  local desc = self:getDescText(index)
+  local _,text_wrappings = self._desc_font:getWrap( desc, text_width )
+  return self._desc_font:getHeight()*#text_wrappings
+end
 
-  if debug_mode then
-    love.graphics.rectangle("line",x_offset,y_offset,
-      self:getWidth(),self:getHeight())
+function mpresearch:draw(user,resources,points)
+
+  if self:isActive() then
+
+    local window,content = self:windowdraw()
+    -- ignore window: size is override
+    -- ignore content: using subcontent
+
+    local subcontent = {
+      x=content.x+self._objects_select:getWidth()+self._padding,
+      y=content.y,
+      width=self:getSubContentWidth(),
+      height=self:getSubContentHeight(),
+    }
+
+    if debug_mode then
+      debugrect(subcontent)
+    end
+
+    local object_type = libs.objectrenderer.getType(self._currentObject)
+
+    -- title and description
+    love.graphics.setFont(fonts.large)
+    local title = object_type.loc.name
+    dropshadowf(title,
+      subcontent.x,
+      subcontent.y,
+      subcontent.width,
+      "left")
+    local title_height = fonts.large:getHeight()
+    love.graphics.setFont(fonts.default)
+    dropshadowf(self:getDescText(),
+      subcontent.x,
+      subcontent.y+fonts.large:getHeight(),
+      self:getDescTextWidth(),
+      "left")
+    local desc_height = self:getDescTextHeight()
+
+    -- draw object
+    self:drawObject(self._currentObject,
+      subcontent.x+subcontent.width-self._drawSize, -- TODO: add tooltipdata
+      subcontent.y+title_height+desc_height,
+      self._drawSize,self._drawSize)
+    libs.objectrenderer.tooltipBuild(
+      object_type,
+      subcontent.x-8,--tooltipBuild padding hack
+      subcontent.y+title_height+desc_height,
+      points,
+      resources,
+      {
+        disable_tooltipbg=true,
+      })
+
+    -- draw buttons
+    local button_x_offset = subcontent.x + subcontent.width - self._buttonWidth--+(subcontent.width-self._buttonWidth)/2
+    local button_y_offset = subcontent.y + title_height + desc_height + self._drawSize
+    if #self._current_research_buttons > 0 then
+      for button_index,button in pairs(self._current_research_buttons) do
+        button:setX(button_x_offset)
+        button:setWidth(self._buttonWidth)
+        -- button:setY(button_y_offset + button:getHeight()*(button_index-1))
+        button:setY(window.y+self:getHeight()-button:getHeight()-self._padding)
+        button:draw()
+      end
+    else
+      dropshadowf("No research available for this object.",
+        button_x_offset,y_offset,subcontent.width,"center")
+    end
+
+    -- draw last for tooltips
+    self._objects_select:setX(content.x)
+    self._objects_select:setY(content.y)
+    self._objects_select:draw()
+
+    if debug_mode then
       local s = ""
       for i,v in pairs(user.research or {}) do
         s = s .. i .. ": "..tostring(v) .. "\n"
@@ -127,11 +166,17 @@ function mpresearch:draw(user,resources)
         end
       end
       love.graphics.print(s,32,128)
+    end
+
   end
 
 end
 
 function mpresearch:drawObject(type,x,y,w,h)
+
+  if debug_mode then
+    debugrect(x,y,w,h)
+  end
 
   local demoShip = {
     type = type,
@@ -150,22 +195,6 @@ function mpresearch:drawObject(type,x,y,w,h)
 
 end
 
-function mpresearch:active()
-  return self._active
-end
-
-function mpresearch:setActive(val)
-  self._active = val
-end
-
-function mpresearch:getActive()
-  return self._active
-end
-
-function mpresearch:toggleActive()
-  self._active = not self._active
-end
-
 function mpresearch:setPreset(val)
   self._preset = val
 end
@@ -175,11 +204,30 @@ function mpresearch:getPreset(val)
 end
 
 function mpresearch:getWidth()
-  return self._objects_select:getWidth()+self._drawSize+32+self._buttonWidth
+  return self._objects_select:getWidth()+self:getSubContentWidth()+self._padding*3
 end
 
 function mpresearch:getHeight()
-  return 720-32*2 -- self._objects_select:getHeight()
+  if true then
+    return 720-32*2
+  else
+    local content_height = fonts.window_title:getHeight()+self._padding*2
+    local a = self._objects_select:getHeight()+content_height+self._padding
+    local b = fonts.window_title:getHeight()+self:getSubContentHeight()+self._padding*3
+    return math.max(a,b)
+  end
+end
+
+function mpresearch:getSubContentWidth()
+  return 480
+end
+
+function mpresearch:getSubContentHeight()
+  local buttons_height = 0
+  for _,button in pairs(self._current_research_buttons) do
+    buttons_height = buttons_height + button:getHeight()
+  end
+  return fonts.large:getHeight()+self:getDescTextHeight()+self._drawSize+buttons_height
 end
 
 function mpresearch:mousepressed(x,y,button)
@@ -204,6 +252,18 @@ function mpresearch:canAffordAnything(user,resources)
   return false
 end
 
+function mpresearch:canUnlockAnything(user)
+  local preset = libs.mppresets.getPresets()[self._preset]
+  local gen_render = preset.gen()
+  local objects = libs.researchrenderer.getResearchableObjects(nil,gen_render.first)
+  for _,object in pairs(objects) do
+    if not libs.researchrenderer.isUnlocked(user,object) then
+      return true
+    end
+  end
+  return false
+end
+
 function mpresearch:buildData(user,resources)
   assert(user)
   assert(resources)
@@ -211,6 +271,7 @@ function mpresearch:buildData(user,resources)
   self._objects_select = libs.matrixpanel.new{
     width=self._objectsSelectWidth,
     drawbg=false,
+    padding=0,
   }
   for _,object_type in pairs(self._object_types) do
     self._objects_select:addAction(
@@ -251,16 +312,21 @@ function mpresearch:buildData(user,resources)
         })
         self.lovernet:pushData(libs.net.op.get_research)
       end,
-      disabled = current_level == research.max_level
     }
+    button._researchCheck = function(self,user,points)
+      local canAfford = libs.researchrenderer.canAffordUnlock(user,current_object_type,points)
+      local isMaxLevel = current_level == research.max_level
+      self:setDisabled(not canAfford or isMaxLevel)
+    end
     local cost = ""
     local level = research.max_level == 1 and " " or " (max)"
     if current_level ~= research.max_level then
       cost = " ("..research.cost(current_level)..")"
-      level = " "..current_level.."/"..research.max_level
+      if research.max_level > 1 then
+        level = " "..current_level.."/"..research.max_level
+      end
     end
     button:setText(research.loc.name..cost..level)
-    button:setWidth(self._buttonWidth-self._buttonPadding*2)
     button:setIcon(research.icon)
     table.insert(self._current_research_buttons,button)
   end

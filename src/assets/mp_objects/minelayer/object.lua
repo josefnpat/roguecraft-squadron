@@ -1,6 +1,7 @@
 return function()
   return {
     type = "minelayer",
+    class = libs.net.classTypes.military,
     cost = {material=150,crew=15},
     points = 2,
     crew = 15,

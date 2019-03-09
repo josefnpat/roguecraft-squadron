@@ -1,6 +1,7 @@
 return function()
   return {
     type = "capital",
+    class = libs.net.classTypes.military,
     --military_large = true,
     cost = {material=4000,crew=800},
     points = 54,

@@ -1,6 +1,7 @@
 return function()
   return {
     type = "repair",
+    class = libs.net.classTypes.support,
     cost = {material=150,crew=100},
     points = 6,
     fow = 0.5,

@@ -1,6 +1,7 @@
 return function()
   return {
     type = "radar",
+    class = libs.net.classTypes.support,
     cost = {material=125,crew=5},
     points = 3,
     fow = 2,

@@ -1,6 +1,7 @@
 return function()
   return {
     type = "combat",
+    class = libs.net.classTypes.military,
     military_large = true,
     cost = {material=250,crew=50},
     points = 4,

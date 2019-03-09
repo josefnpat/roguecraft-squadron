@@ -1,6 +1,7 @@
 return function()
   return {
     type = "advdrydock",
+    class = libs.net.classTypes.construction,
     cost = {material=400,crew=100},
     points = 12,
     fow = 0.5,

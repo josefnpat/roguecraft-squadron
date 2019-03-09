@@ -3,13 +3,15 @@ local researchrenderer = {}
 researchrenderer.defaultPoints = 0
 researchrenderer._build_string = "build_"
 
-local data = {}
+local data
 
 function researchrenderer.getUnlockName(type)
   return "_unlock_"..type
 end
 
 function researchrenderer.load(loadAssets,preset_value)
+
+  data = {}
 
   --print("researchrenderer.load:"..preset_value)
 
@@ -80,6 +82,10 @@ function researchrenderer.load(loadAssets,preset_value)
 
   end
 
+end
+
+function researchrenderer.isLoaded()
+  return type(data) ~= nil
 end
 
 function researchrenderer.getResearchableObjects(list,startObject)
@@ -156,7 +162,7 @@ function researchrenderer.getUnlockedObjects(user,preset_value)
   local objects = researchrenderer.getResearchableObjects(nil,gen_render.first)
   local activeObjects = {}
   for _,object in pairs(objects) do
-    if researchrenderer.isUnlocked(user,object)  then
+    if researchrenderer.isUnlocked(user,object) then
       table.insert(activeObjects,object)
     else
       if researchrenderer.isUnlockable(user,objects,object) then

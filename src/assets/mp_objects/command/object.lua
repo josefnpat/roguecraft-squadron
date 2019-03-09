@@ -1,6 +1,7 @@
 return function()
   return {
     type = "command",
+    class = libs.net.classTypes.construction,
     cost = {material=1000,crew=100},
     points = 25,
     fow = 0.5,

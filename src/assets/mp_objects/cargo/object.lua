@@ -1,6 +1,7 @@
 return function()
   return {
     type = "cargo",
+    class = libs.net.classTypes.industrial,
     cost = {material=200,crew=10},
     points = 5,
     fow = 0.5,
