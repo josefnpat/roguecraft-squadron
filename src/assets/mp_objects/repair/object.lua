@@ -9,7 +9,7 @@ return function()
     size = 32,
     speed = 50,
     health = {max = 15,},
-    repair = 1,
+    repair = 10,
     actions = {},
     build_time = 5,
     unlock_cost = 30,
