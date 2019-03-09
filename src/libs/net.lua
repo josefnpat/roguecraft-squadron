@@ -1,6 +1,7 @@
 local net = {}
 
 net.next_level_t = 5
+net.max_players = 8
 
 function net.clearCache()
   net.cache = {

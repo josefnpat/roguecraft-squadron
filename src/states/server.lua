@@ -20,7 +20,6 @@ server._genResourcesDefault = {
 }
 
 server._maxUserUnits = math.huge
-server.maxPlayers = 8
 
 server._bump_cell_size = 64
 
@@ -1322,7 +1321,7 @@ function server:validateConfig()
   local storage = self.lovernet:getStorage()
   local player_count,user_count = self:getPlayerCount()
   storage.config.ai = math.max(0,storage.config.ai)
-  storage.config.ai = math.min(server.maxPlayers-user_count,storage.config.ai)
+  storage.config.ai = math.min(libs.net.max_players-user_count,storage.config.ai)
   if storage.config.preset > #libs.mppresets.getPresets() then
     storage.config.preset = 1
   end
