@@ -72,6 +72,7 @@ function client:init()
     iconSize=32,
     padding=0,
     drawbg=false,
+    width=32,
     icon_bg=love.graphics.newImage("assets/hud/icon_bg.png"),
   }
 
