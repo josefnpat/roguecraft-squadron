@@ -16,6 +16,10 @@ function stringchooser.new(init)
   self.keypressed = stringchooser.keypressed
 
   self._asset = init.string or ""
+  self._validate = init.validate or
+    function(asset) return string.len(asset) > 0 end
+  self._mask = init.mask or
+    function(asset) return asset end
 
   self._okButton = libs.button.new{
     text = "Accept",
@@ -66,7 +70,7 @@ function stringchooser:draw()
   self._okButton:setX(x+w-self._okButton:getWidth()+padding)
   self._okButton:setY(y+button_offset_y)
 
-  self._okButton:setDisabled(string.len(self._asset) < 1)
+  self._okButton:setDisabled(not self._validate(self._asset))
 
   if self._cancelButton then
     self._cancelButton:setWidth(button_width)
@@ -88,13 +92,13 @@ function stringchooser:draw()
   love.graphics.setColor(0,0,0,127)
 
   love.graphics.rectangle("fill",x-padding,y-padding,w+padding*2,h+padding*2)
-  if string.len(self._asset) > 0 then
+  if self._validate(self._asset) then
     love.graphics.setColor(0,255,0)
   else
     love.graphics.setColor(255,0,0)
   end
   love.graphics.rectangle("line",x-padding,y-padding,w+padding*2,h+padding*2)
-  love.graphics.print(self._asset,x,y)
+  love.graphics.print(self._mask(self._asset),x,y)
 
   self._okButton:draw()
   if self._cancelButton then
@@ -125,8 +129,10 @@ function stringchooser:keypressed(key)
     if byteoffset then
       self._asset = string.sub(self._asset, 1, byteoffset - 1)
     end
-  elseif key == "return" then
-    self._callback(self._asset)
+  elseif key == "return" or key == "kpenter" then
+    if self._validate(self._asset) then
+      self._callback(self._asset)
+    end
   end
 end
 
