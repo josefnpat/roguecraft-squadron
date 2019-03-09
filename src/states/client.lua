@@ -131,7 +131,7 @@ end
 function client:enter()
 
   local enet = require"enet"
-  if states.client.run_singleplayer then
+  if game_singleplayer then
     enet=require"libs.enetfake"
   else
     enet=require"enet"
@@ -142,7 +142,7 @@ function client:enter()
     ip=self._remote_address,
     enet=enet,
   }
-  if states.client.run_singleplayer then
+  if game_singleplayer then
     self.lovernet._encode = deencode
     self.lovernet._decode = deencode
   end

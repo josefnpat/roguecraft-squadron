@@ -83,7 +83,7 @@ function mpconnect:generateButtons()
 
   self.buttons = {}
 
-  if not states.client.run_singleplayer then
+  if not game_singleplayer then
 
     self.transmitRatesButton = libs.stepper.new{
       text="Network",

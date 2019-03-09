@@ -38,7 +38,7 @@ function mainmenu:enter()
     libs.i18n('menu.singleplayer'),
     function()
       states.client._remote_address = nil
-      states.client.run_singleplayer = true
+      game_singleplayer = true
       states.server:init()
       if states.server.run_localhost then
         states.server:leave()
@@ -152,7 +152,7 @@ function mainmenu:enter()
     function()
       ask_for_name(function()
         states.client._remote_address = nil
-        states.client.run_singleplayer = false
+        game_singleplayer = false
         states.server:init()
         if states.server.run_localhost then
           states.server:leave()
@@ -168,18 +168,25 @@ function mainmenu:enter()
     function()
       ask_for_both(function()
         states.client._remote_address = settings:read("remote_server_address")
-        states.client.run_singleplayer = false
+        game_singleplayer = false
         self.music.title:stop()
         libs.hump.gamestate.switch(states.client)
       end)
     end)
 
-  self.menu_mp:addButton(
-    libs.i18n('menu.host_dedicated'),
-    function()
-      states.client.run_singleplayer = false
-      libs.hump.gamestate.switch(states.server)
-    end)
+  if debug_mode then
+    local ask_for_host_dedicated = function(callback)
+      ask_for_port(callback)
+    end
+    self.menu_mp:addButton(
+      libs.i18n('menu.host_dedicated'),
+      function()
+        ask_for_host_dedicated(function()
+          game_singleplayer = false
+          libs.hump.gamestate.switch(states.server)
+        end)
+      end)
+  end
 
   self.menu_mp:addButton(
     libs.i18n('menu.back'),

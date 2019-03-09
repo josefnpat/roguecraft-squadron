@@ -399,7 +399,7 @@ function server:init()
   self.lovernet = nil
 
   local enet
-  if states.client.run_singleplayer then
+  if game_singleplayer then
     enet=require"libs.enetfake"
   else
     enet=require"enet"
@@ -419,7 +419,7 @@ function server:init()
       log=temp_lovernet_log,
       enet=enet,
     }
-    if states.client.run_singleplayer then
+    if game_singleplayer then
       self.lovernet._encode = deencode
       self.lovernet._decode = deencode
     end

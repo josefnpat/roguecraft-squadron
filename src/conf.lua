@@ -23,6 +23,7 @@ settings:define("tutorial",true)
 game_tagline = "Call to Arms"
 game_name = "RogueCraft Squadron: "..game_tagline
 git_hash,git_count = "missing git.lua",-1
+game_singleplayer = false
 pcall( function() return require("git") end );
 
 function love.conf(t)
