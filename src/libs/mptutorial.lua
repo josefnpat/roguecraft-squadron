@@ -75,7 +75,6 @@ end
 
 function mptutorial:setActive(val)
   if val then
-    print("setting tutorial to false.")
     settings:write("tutorial",false)
   end
   self._active = val
