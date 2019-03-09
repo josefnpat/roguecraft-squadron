@@ -19,11 +19,14 @@ msgstr "Player Feedback"
 msgid "menu.exit"
 msgstr "Exit"
 
+msgid "menu.serverlist"
+msgstr "Public Servers"
+
 msgid "menu.host"
 msgstr "Host Game"
 
 msgid "menu.client"
-msgstr "Connect to Game"
+msgstr "Direct Connect"
 
 msgid "menu.host_dedicated"
 msgstr "Host Dedicated Server"
@@ -120,6 +123,36 @@ msgstr "01010100 01101000 01101001 01110011 00100000 01101001 01110011 00100000 
 
 msgid "options.title"
 msgstr "OPTIONS"
+
+msgid "options.title_graphics"
+msgstr "GRAPHICS"
+
+msgid "options.title_audio"
+msgstr "AUDIO"
+
+msgid "options.graphics"
+msgstr "Graphics"
+
+msgid "options.audio"
+msgstr "Audio"
+
+msgid "options.sensitive.pre"
+msgstr "Streamer Mode"
+
+msgid "options.sensitive.enabled"
+msgstr "Enabled"
+
+msgid "options.sensitive.disabled"
+msgstr "Disabled"
+
+msgid "options.server_public.pre"
+msgstr "Hosting Server Public"
+
+msgid "options.server_public.enabled"
+msgstr "Enabled"
+
+msgid "options.server_public.disabled"
+msgstr "Disabled"
 
 msgid "options.fullscreen"
 msgstr "Fullscreen"

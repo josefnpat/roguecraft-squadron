@@ -16,6 +16,21 @@ function mainmenu:init()
 
   self.social = libs.social.new()
 
+  -- windows
+  self.windows = libs.windowmanager.new()
+  self.mpserverlist = libs.mpserverlist.new()
+  self.windows:add(self.mpserverlist,"mpserverlist")
+
+end
+
+function mainmenu:connectToServer(ip,port)
+  local name = settings:read("user_name")
+  settings:write("remote_server_address",ip)
+  settings:write("server_port",port)
+  states.client._remote_address = ip
+  game_singleplayer = false
+  self.music.title:stop()
+  libs.hump.gamestate.switch(states.client)
 end
 
 function mainmenu:textinput(t)
@@ -109,8 +124,15 @@ function mainmenu:enter()
 
   self.menu_mp = libs.menu.new()
 
+  local ask_mask = function(asset)
+    if settings:read('sensitive') then
+      return string.rep("*",string.len(asset))
+    else
+      return asset
+    end
+  end
+
   local ask_for_name = function(callback)
-    -- ask for name
     self.chooser = libs.stringchooser.new{
       prompt = "Set User Name:",
       string = settings:read("user_name"),
@@ -126,9 +148,8 @@ function mainmenu:enter()
   end
 
   local ask_for_ip = function(callback)
-    -- ask for name
     self.chooser = libs.stringchooser.new{
-      prompt = "Set Server IP Address:",
+      prompt = "Server IP Address:",
       string = settings:read("remote_server_address"),
       callback = function(string)
         self.chooser = nil
@@ -138,19 +159,41 @@ function mainmenu:enter()
       cancelCallback = function()
         self.chooser = nil
       end,
+      validate = function(asset)
+        return libs.acf.validator.is_ipv4(asset)
+      end,
+      mask = ask_mask,
     }
   end
 
-  local ask_for_both = function(callback)
-    ask_for_name(function()
-      ask_for_ip(callback)
-    end)
+  local ask_for_port = function(callback)
+    self.chooser = libs.stringchooser.new{
+      prompt = "Server Port:",
+      string = settings:read("server_port"),
+      callback = function(string)
+        self.chooser = nil
+        settings:write("server_port",string)
+        callback()
+      end,
+      cancelCallback = function()
+        self.chooser = nil
+      end,
+      validate = function(asset)
+        return libs.acf.validator.is_port(asset)
+      end,
+      mask = ask_mask,
+    }
   end
 
+  local ask_for_host = function(callback)
+    ask_for_name(function()
+      ask_for_port(callback)
+    end)
+  end
   self.menu_mp:addButton(
     libs.i18n('menu.host'),
     function()
-      ask_for_name(function()
+      ask_for_host(function()
         states.client._remote_address = nil
         game_singleplayer = false
         states.server:init()
@@ -164,9 +207,24 @@ function mainmenu:enter()
     end)
 
   self.menu_mp:addButton(
+    libs.i18n('menu.serverlist'),
+    function()
+      ask_for_name(function()
+        self.mpserverlist:setActive(true)
+      end)
+    end)
+
+  local ask_for_client = function(callback)
+    ask_for_name(function()
+      ask_for_ip(function()
+        ask_for_port(callback)
+      end)
+    end)
+  end
+  self.menu_mp:addButton(
     libs.i18n('menu.client'),
     function()
-      ask_for_both(function()
+      ask_for_client(function()
         states.client._remote_address = settings:read("remote_server_address")
         game_singleplayer = false
         self.music.title:stop()
@@ -197,6 +255,8 @@ function mainmenu:enter()
 
   self.menu = self.menu_main
 
+  self.windows:hide()
+
 end
 
 function mainmenu:leave()
@@ -204,18 +264,20 @@ function mainmenu:leave()
 end
 
 function mainmenu:update(dt)
-  if self.demosplash then
+  if self.windows:isActive() then
+    self.mpserverlist:update(dt)
+  elseif self.demosplash then
     self.demosplash:update(dt)
   elseif self.feedback then
     self.feedback:update(dt)
   else
     self.menu:update(dt)
+    self.social:update(dt)
+    libs.demo:update(dt)
+    if self.chooser then
+      self.chooser:update(dt)
+    end
   end
-  if self.chooser then
-    self.chooser:update(dt)
-  end
-  libs.demo:update(dt)
-  self.social:update(dt)
 end
 
 function mainmenu:draw()
@@ -236,20 +298,18 @@ function mainmenu:draw()
   end
 
   self.menu:draw()
-
   if self.feedback then self.feedback:draw() end
-
   if self.demosplash then
     self.demosplash:draw()
   end
-
   libs.version.draw()
-
+  self.social:draw()
+  if self.windows:isActive() then
+    self.mpserverlist:draw()
+  end
   if self.chooser then
     self.chooser:draw()
   end
-
-  self.social:draw()
 
   libs.demo:draw()
 
@@ -262,30 +322,37 @@ end
 function mainmenu:keypressed(key)
 
   if key == "escape" then
-    if self.chooser then
+    if self.windows:isActive() then
+      self.windows:hide()
+    elseif self.chooser then
       self.chooser = nil
     elseif self.menu ~= self.menu_main then
       self.menu = self.menu_main
     end
   end
 
-  if self.chooser then
-    self.chooser:keypressed(key)
-  end
+  if not self.windows:isActive() then
 
-  if self.debug_menu[self.debug_menu_index] == key then
-    self.debug_menu_index = self.debug_menu_index + 1
-    if self.debug_menu_index == #self.debug_menu + 1 then
-      self.debug_menu_enabled = not self.debug_menu_enabled
-      self.debug_menu_index = 1
-      self:enter()
-      print(libs.i18n('menu.debug_enabled'))
-      libs.sfx.play("silly")
+    if self.chooser then
+      self.chooser:keypressed(key)
     end
-  else
-    self.debug_menu_index = 1
+
+    if self.debug_menu[self.debug_menu_index] == key then
+      self.debug_menu_index = self.debug_menu_index + 1
+      if self.debug_menu_index == #self.debug_menu + 1 then
+        self.debug_menu_enabled = not self.debug_menu_enabled
+        self.debug_menu_index = 1
+        self:enter()
+        print(libs.i18n('menu.debug_enabled'))
+        libs.sfx.play("silly")
+      end
+    else
+      self.debug_menu_index = 1
+    end
+
+    libs.demo:stop()
+
   end
-  libs.demo:stop()
 end
 
 return mainmenu

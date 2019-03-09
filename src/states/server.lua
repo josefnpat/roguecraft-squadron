@@ -417,6 +417,7 @@ function server:init()
       serdes=libs.bitser,
       log=temp_lovernet_log,
       enet=enet,
+      port=settings:read("server_port"),
     }
     if game_singleplayer then
       self.lovernet._encode = deencode

@@ -14,9 +14,61 @@ local function updateWindowMode()
     }
   )
 end
-options.menu = libs.menu.new{title="["..libs.i18n('options.title').."]"}
 
-options.menu:add(libs.i18n('options.fullscreen'),function()
+options.menu_main = libs.menu.new{title="["..libs.i18n('options.title').."]"}
+options.menu = options.menu_main
+
+options.menu_main:add(libs.i18n('options.graphics'),function()
+  options.menu = options.menu_graphics
+  states.client.menu = options.menu_graphics
+end)
+
+options.menu_main:add(libs.i18n('options.audio'),function()
+  options.menu = options.menu_audio
+  states.client.menu = options.menu_audio
+end)
+
+options.menu_main:addSlider(
+  function()
+    local camera_slow = libs.camera_edge.slow_camera and 1/10 or 1
+    return libs.i18n('options.camera_speed',{
+      camera_speed=math.floor(settings:read("camera_speed")*10+0.5)/10*camera_slow,
+    })
+  end,
+  function(value,rangeValue)
+    settings:write("camera_speed", rangeValue)
+  end,
+  settings:read("camera_speed"),{1,3})
+
+options.menu_main:add(
+  function()
+    return libs.i18n('options.server_public.pre')..": "..
+      (settings:read('server_public') and libs.i18n('options.server_public.enabled') or libs.i18n('options.server_public.disabled'))
+  end,
+  function()
+    settings:write('server_public',not settings:read('server_public'))
+  end)
+
+options.menu_main:add(
+  function()
+    return libs.i18n('options.sensitive.pre')..": "..
+      (settings:read('sensitive') and libs.i18n('options.sensitive.enabled') or libs.i18n('options.sensitive.disabled'))
+  end,
+  function()
+    settings:write('sensitive',not settings:read('sensitive'))
+  end)
+
+options.menu_main:add(libs.i18n('options.back'),function()
+  if libs.hump.gamestate.current() == states.client then
+    states.client.menu = states.client.main_menu
+  else -- assume menu
+    libs.hump.gamestate.switch(states.menu)
+  end
+end)
+
+options.menu_graphics = libs.menu.new{title="["..libs.i18n('options.title_graphics').."]"}
+
+options.menu_graphics:add(libs.i18n('options.fullscreen'),function()
   local fs = not settings:read("window_fullscreen")
   settings:write("window_fullscreen",fs)
   updateWindowMode()
@@ -42,7 +94,7 @@ for mode_index,mode in pairs(modes) do
   end
 end
 
-options.menu:addSlider(
+options.menu_graphics:addSlider(
   function(s)
     local mode = modes[math.floor(s:getRangeValue()+0.5)]
     if mode then
@@ -62,10 +114,9 @@ options.menu:addSlider(
     end
   end,
   currentMode,
-  {1,#modes}
-)
+  {1,#modes})
 
-options.menu:add(
+options.menu_graphics:add(
   function()
     return libs.i18n('options.fullscreen_type.pre')..": "..
       libs.i18n(settings:read("window_fullscreen_type") == "desktop" and
@@ -76,10 +127,9 @@ options.menu:add(
     local target_type = settings:read("window_fullscreen_type") == "desktop" and "exclusive" or "desktop"
     settings:write("window_fullscreen_type",target_type)
     updateWindowMode()
-  end
-)
+  end)
 
-options.menu:add(
+options.menu_graphics:add(
   function()
     return libs.i18n('options.display')..": "..settings:read('window_display')
   end,
@@ -90,10 +140,9 @@ options.menu:add(
     end
     settings:write('window_display',target_display)
     updateWindowMode()
-  end
-)
+  end)
 
-options.menu:add(
+options.menu_graphics:add(
   function()
     return libs.i18n('options.vsync.pre')..": "..
       (settings:read('window_vsync') and libs.i18n('options.vsync.enabled') or libs.i18n('options.vsync.disabled'))
@@ -101,10 +150,9 @@ options.menu:add(
   function()
     settings:write('window_vsync',not settings:read('window_vsync'))
     updateWindowMode()
-  end
-)
+  end)
 
-options.menu:add(
+options.menu_graphics:add(
   function()
     return libs.i18n('options.window_msaa',{window_msaa=settings:read("window_msaa")})
   end,
@@ -116,65 +164,9 @@ options.menu:add(
     end
     settings:write("window_msaa",msaa)
     updateWindowMode()
-  end
-)
+  end)
 
-options.menu:addSlider(
-  function()
-    local camera_slow = libs.camera_edge.slow_camera and 1/10 or 1
-    return libs.i18n('options.camera_speed',{
-      camera_speed=math.floor(settings:read("camera_speed")*10+0.5)/10*camera_slow,
-    })
-  end,
-  function(value,rangeValue)
-    settings:write("camera_speed", rangeValue)
-  end,
-  settings:read("camera_speed"),{1,3}
-)
-
-options.menu:addSlider(
-  function()
-    return libs.i18n('options.sfx_vol',{sfx_vol=math.floor(settings:read("sfx_vol")*100)})
-  end,
-  function(value,rangeValue,released)
-    settings:write("sfx_vol",value)
-    if released then
-      libs.sfx.play("widget.click")
-    end
-  end,
-  settings:read("sfx_vol")
-)
-
-options.menu:addSlider(
-  function()
-    return libs.i18n('options.music_vol',{music_vol=math.floor(settings:read("music_vol")*100)})
-  end,
-  function(value,rangeValue)
-    settings:write("music_vol",value)
-    if states.menu.music then
-      states.menu.music.title:setVolume(value)
-    end
-    if states.client.soundtrack then
-      states.client.soundtrack:setVolume(settings:read("music_vol"))
-    end
-  end,
-  settings:read("music_vol")
-)
-
-options.menu:addSlider(
-  function()
-    return libs.i18n('options.voiceover_vol',{voiceover_vol=math.floor(settings:read("voiceover_vol")*100)})
-  end,
-  function(value,rangeValue,released)
-    settings:write("voiceover_vol",value)
-    if released then
-      libs.sfx.play("move")
-    end
-  end,
-  settings:read("voiceover_vol")
-)
-
-options.menu:add(
+options.menu_graphics:add(
   function()
     return libs.i18n(
       'options.fow_quality',
@@ -185,18 +177,18 @@ options.menu:add(
     settings:write("fow_quality", fowq == "img_canvas" and "circle_canvas" or "img_canvas")
   end)
 
-options.menu.bg_quality = {
+options.bg_quality = {
   {value="none",string="None"},
   {value="low",string=libs.i18n('options.bg_quality.low')},
   {value="medium",string=libs.i18n('options.bg_quality.medium')},
   {value="high",string=libs.i18n('options.bg_quality.high')},
 }
 
-options.menu:add(
+options.menu_graphics:add(
   function()
     local quality = settings:read("bg_quality")
     local quality_string = libs.i18n('options.bg_quality.pre')
-    for _,v in pairs(options.menu.bg_quality) do
+    for _,v in pairs(options.bg_quality) do
       if v.value == quality then
         return quality_string..v.string
       end
@@ -206,7 +198,7 @@ options.menu:add(
   function()
     local quality = settings:read("bg_quality")
     local first,use_next,next_quality
-    for _,v in pairs(options.menu.bg_quality) do
+    for _,v in pairs(options.bg_quality) do
       if first == nil then
         first = v
       end
@@ -224,7 +216,7 @@ options.menu:add(
     libs.stars:reload()
   end)
 
-options.menu:add(
+options.menu_graphics:add(
   function()
     return libs.i18n('options.mouse_draw_mode.pre')..": "..
       libs.i18n(settings:read("mouse_draw_mode") == "software" and
@@ -237,12 +229,55 @@ options.menu:add(
     libs.cursor.mode(target_mode)
   end)
 
-options.menu:add(libs.i18n('options.back'),function()
-  if libs.hump.gamestate.current() == states.client then
-    states.client.menu = states.client.main_menu
-  else -- assume menu
-    libs.hump.gamestate.switch(states.menu)
-  end
+options.menu_graphics:add(libs.i18n('options.back'),function()
+  options.menu = options.menu_main
+  states.client.menu = options.menu_main
+end)
+
+options.menu_audio = libs.menu.new{title="["..libs.i18n('options.title_audio').."]"}
+
+options.menu_audio:addSlider(
+  function()
+    return libs.i18n('options.sfx_vol',{sfx_vol=math.floor(settings:read("sfx_vol")*100)})
+  end,
+  function(value,rangeValue,released)
+    settings:write("sfx_vol",value)
+    if released then
+      libs.sfx.play("widget.click")
+    end
+  end,
+  settings:read("sfx_vol"))
+
+options.menu_audio:addSlider(
+  function()
+    return libs.i18n('options.music_vol',{music_vol=math.floor(settings:read("music_vol")*100)})
+  end,
+  function(value,rangeValue)
+    settings:write("music_vol",value)
+    if states.menu.music then
+      states.menu.music.title:setVolume(value)
+    end
+    if states.client.soundtrack then
+      states.client.soundtrack:setVolume(settings:read("music_vol"))
+    end
+  end,
+  settings:read("music_vol"))
+
+options.menu_audio:addSlider(
+  function()
+    return libs.i18n('options.voiceover_vol',{voiceover_vol=math.floor(settings:read("voiceover_vol")*100)})
+  end,
+  function(value,rangeValue,released)
+    settings:write("voiceover_vol",value)
+    if released then
+      libs.sfx.play("move")
+    end
+  end,
+  settings:read("voiceover_vol"))
+
+options.menu_audio:add(libs.i18n('options.back'),function()
+  options.menu = options.menu_main
+  states.client.menu = options.menu_main
 end)
 
 return options

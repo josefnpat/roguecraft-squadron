@@ -142,6 +142,7 @@ function client:enter()
     serdes=libs.bitser,
     ip=self._remote_address,
     enet=enet,
+    port=settings:read("server_port"),
   }
   if game_singleplayer then
     self.lovernet._encode = deencode
@@ -1173,6 +1174,7 @@ function client:keypressed(key)
       self.chat:setBuffer("")
     else
       self.menu = self.main_menu
+      libs.options.menu = libs.options.menu_main
       self.menu_enabled = not self.menu_enabled
     end
   end

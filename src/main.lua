@@ -17,15 +17,19 @@ function love.load(arg)
       researchrenderer = require"libs.researchrenderer",
       bulletrenderer = require"libs.bulletrenderer",
       mpgamemodes = require"libs.mpgamemodes",
-      levelshared = require"libs.levelshared",
+      mpserverlist = require"libs.mpserverlist",
+      json = require"libs.json",
       ai = require"libs.ai",
-      mppresets = require"libs.mppresets",
       bump = require"libs.bump",
     }
+
+    libs.levelshared = require"libs.levelshared"
+    libs.mppresets = require"libs.mppresets"
 
     libs.objectrenderer.load(false)
     libs.bulletrenderer.load(false)
     libs.mpgamemodes.load(false)
+    libs.mpserverlist.load(false)
 
     states = {
       server = require "states.server",
@@ -73,6 +77,9 @@ function love.load(arg)
       gamestate = require "libs.gamestate",
       camera = require "libs.camera",
     },
+    acf = {
+      validator=require "libs.acf.validator",
+    },
     cursor = require"libs.cursor",
     pcb = require"libs.progresscirclebar",
     system = require"libs.system",
@@ -113,6 +120,10 @@ function love.load(arg)
 
   loader:add("game modes",function()
     libs.mpgamemodes.load(true)
+  end)
+
+  loader:add("server list",function()
+    libs.mpserverlist.load(true)
   end)
 
   loader:add("some space",function()
@@ -253,8 +264,8 @@ function love.update(dt)
         (libs.hump.gamestate.current() == states.client and not states.client.menu_enabled)
       ) and love.window.hasFocus()
     )
+    libs.system:update(dt)
   end
-  libs.system:update(dt)
   if libs.tooltip then
     libs.tooltip.update(dt)
   end
