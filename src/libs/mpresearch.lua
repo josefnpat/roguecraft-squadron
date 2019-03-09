@@ -282,7 +282,9 @@ function mpresearch:buildData(user,resources)
       end,
       function(hover)
         local points = resources:get("research")
-        if libs.researchrenderer.isUnlocked(user,object_type) then
+        if self._currentObject == object_type.type then
+          return {255,255,255,hover and 255 or 191}
+        elseif libs.researchrenderer.isUnlocked(user,object_type) then
           return {0,255,0,hover and 255 or 191}
         elseif libs.researchrenderer.canAffordUnlock(user,object_type,points) then
           return {0,255,255}
