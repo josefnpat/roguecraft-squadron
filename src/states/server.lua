@@ -1298,14 +1298,25 @@ function server:explodeNearby(object,world)
       object.health = 0
       self:addUpdate(object,{health=0,},"explodeNearby:source")
       for _,tobject in pairs(nearby) do
-        tobject.health = math.max(0,tobject.health - object_type.explode.damage)
-        self:addUpdate(tobject,{
-          health=tobject.health,
-        },"explodeNearby:target")
+        self:dealDamage(tobject,object_type.explode.damage)
       end
     end
 
   end
+end
+
+function server:dealDamage(object,raw_damage)
+  local damage
+  if object.damage_reduction then
+    damage = raw_damage*object.damage_reduction
+    -- print('using damage reduction: '..raw_damage.." => "..damage)
+  else
+    damage = raw_damage
+  end
+  object.health = math.max(0,object.health - damage)
+  self:addUpdate(object,{
+    health=object.health,
+  },"dealDamge")
 end
 
 function server:getPlayerCount()
@@ -1621,10 +1632,7 @@ function server:update(dt)
         remove_bullet = true
         local object_type = libs.objectrenderer.getType(bullet.bullet.type)
         if target.health then
-          target.health = math.max(0,target.health - object_type.shoot.damage)
-          self:addUpdate(target,{
-            health=target.health,
-          },"bullet damage")
+          self:dealDamage(target,object_type.shoot.damage)
         else
           print('Warning: bullet[type='..(bullet.bullet.type)..'] cannot damage target[type='..target.type..'] as target does not have health.')
         end
