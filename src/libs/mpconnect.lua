@@ -374,7 +374,7 @@ function mpconnect:draw(config,players,user_count)
 
   if self._valid == nil then
 
-    libs.loading.draw("Checking client and server version config ...")
+    libs.loading.draw("Connecting ...")
 
   elseif self._valid == false then
 
