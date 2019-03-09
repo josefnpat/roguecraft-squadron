@@ -98,12 +98,13 @@ function objectrenderer.tooltip(object,object_type,x,y)
   tooltipf(name,x,y,320,"right")
 end
 
-function objectrenderer.tooltipBuild(object_type,x,y,points,resources)
+function objectrenderer.tooltipBuild(object_type,x,y,points,resources,flags)
+
+  flags = flags or {}
+
   local data = {}
 
-  table.insert(data,{text="Build "..object_type.loc.name})
-
-  --table.insert(data,{text=object_type.loc.info})
+  table.insert(data,{text="Cost:"})
 
   if object_type.points and object_type.points > 0 then
     table.insert(data,{
@@ -197,7 +198,9 @@ function objectrenderer.tooltipBuild(object_type,x,y,points,resources)
       width = math.max(width,font:getWidth(v.text))
     end
   end
-  tooltipbg(x,y,width+padding*2,#data*font:getHeight()+padding*2)
+  if not flags.disable_tooltipbg then
+    tooltipbg(x,y,width+padding*2,#data*font:getHeight()+padding*2)
+  end
 
   for i,v in pairs(data) do
     local yoff = y+(i-1)*font:getHeight()+padding
