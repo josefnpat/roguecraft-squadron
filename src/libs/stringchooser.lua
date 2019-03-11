@@ -114,6 +114,10 @@ function stringchooser:update(dt)
   if self._cancelButton then
     self._cancelButton:update(dt)
   end
+  -- Quite a few linux distros use the middle mouse button for paste
+  if love.system.getOS() == "Linux" and love.mouse.isDown(3) then
+    buffer = love.system.getClipboardText()
+  end
 end
 
 function stringchooser:textinput(t)
@@ -147,10 +151,6 @@ function stringchooser:keypressed(key)
     if key == "v" then
       self._asset = love.system.getClipboardText()
     end
-  end
-  -- Quite a few linux distros use the middle mouse button for paste
-  if love.mouse.isDown(3) then
-    self._asset = love.system.getClipboardText()
   end
 
 end
