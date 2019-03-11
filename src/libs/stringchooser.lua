@@ -114,9 +114,6 @@ function stringchooser:update(dt)
   if self._cancelButton then
     self._cancelButton:update(dt)
   end
-  if love.keyboard.isDown("lctrl") and love.keyboard.isDown("v") then
-    self._asset = love.system.getClipboardText()
-  end
 end
 
 function stringchooser:textinput(t)
@@ -124,6 +121,7 @@ function stringchooser:textinput(t)
 end
 
 function stringchooser:keypressed(key)
+
   if key == "backspace" then
     local byteoffset = utf8.offset(self._asset, -1)
     if byteoffset then
@@ -134,6 +132,27 @@ function stringchooser:keypressed(key)
       self._callback(self._asset)
     end
   end
+
+  local osString = love.system.getOS()
+  local control
+  if osString == "OS X" then
+    control = love.keyboard.isDown("lgui","rgui")
+  elseif osString == "Windows" or osString == "Linux" then
+    control = love.keyboard.isDown("lctrl","rctrl")
+  end
+  if control then
+    if key == "c" then
+      if self._asset then love.system.setClipboardText(self._asset) end
+    end
+    if key == "v" then
+      self._asset = love.system.getClipboardText()
+    end
+  end
+  -- Quite a few linux distros use the middle mouse button for paste
+  if love.mouse.isDown(3) then
+    self._asset = love.system.getClipboardText()
+  end
+
 end
 
 return stringchooser
