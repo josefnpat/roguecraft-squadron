@@ -106,7 +106,16 @@ function actionpanel:process(selection,user,points,resources,buildqueue)
         end,
         function(x,y)
           return function() -- override tooltip
-            libs.objectrenderer.tooltipBuild(object_type,x,y,points,resources)
+            libs.objectrenderer.tooltipBuild(
+              object_type,
+              x,
+              y,
+              points,
+              resources,
+              {
+                use_build_header=true,
+              }
+            )
           end
         end,
         object_type.cost and object_type.cost.material or 0

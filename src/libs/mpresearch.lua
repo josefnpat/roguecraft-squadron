@@ -132,6 +132,7 @@ function mpresearch:draw(user,resources,points)
       resources,
       {
         disable_tooltipbg=true,
+        use_cost_header=true,
       })
 
     -- draw buttons

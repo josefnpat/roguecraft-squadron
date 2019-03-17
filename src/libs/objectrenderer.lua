@@ -104,7 +104,14 @@ function objectrenderer.tooltipBuild(object_type,x,y,points,resources,flags)
 
   local data = {}
 
-  table.insert(data,{text="Cost:"})
+
+  if flags.use_build_header then
+    table.insert(data,{text="Build "..object_type.loc.name})
+  end
+
+  if flags.use_cost_header then
+    table.insert(data,{text="Cost:"})
+  end
 
   if object_type.points and object_type.points > 0 then
     table.insert(data,{
