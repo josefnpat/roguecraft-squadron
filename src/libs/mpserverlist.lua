@@ -134,14 +134,16 @@ function mpserverlist:requestRefresh()
   local r,e = http.request(url)
   self._data = e == 200 and libs.json.decode(r) or nil
   self._connectButtons = {}
-  for _,connection in pairs(self._data.list) do
-    if connection.started == false then
-      table.insert(self._connectButtons,libs.button.new{
-        text=connection.name.." ["..connection.players .."/"..libs.net.max_players.."]",
-        onClick=function()
-          states.menu:connectToServer(connection.ip,connection.port)
-        end,
-      })
+  if self._data then
+    for _,connection in pairs(self._data.list) do
+      if connection.started == false then
+        table.insert(self._connectButtons,libs.button.new{
+          text=connection.name.." ["..connection.players .."/"..libs.net.max_players.."]",
+          onClick=function()
+            states.menu:connectToServer(connection.ip,connection.port)
+          end,
+        })
+      end
     end
   end
   self._page_offset = 1
