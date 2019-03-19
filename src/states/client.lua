@@ -197,6 +197,7 @@ function client:enter()
   self.notif = libs.notif.new()
   self.camera = libs.hump.camera(0,0)
   self.minimap = libs.minimap.new()
+  self.mapedge = libs.mapedge.new()
   self.fow = libs.fow.new{camera=self.camera}
   self.resources = libs.resources.new{notif=self.notif}
   self.points = libs.points.new()
@@ -699,6 +700,7 @@ function client:update(dt)
       self.mpresearch:setPreset(self.config.preset or 1)
       self.mpconnect:setPoints(self.config.points or 1)
       self.mpconnect:setMap(self.config.map or 1)
+      self.mapedge:setMapSize(self.config.mapsize or 1)
       self.mpconnect:setMapSize(self.config.mapsize or 1)
       self.mpconnect:setMapGenDefault(self.config.mapGenDefault or 1)
       self.mpconnect:setMapPockets(self.config.mapPockets or 8)
@@ -1286,6 +1288,7 @@ function client:draw()
 
   libs.stars:draw(self.camera.x/2,self.camera.y/2)
   self.planets:draw()
+  self.mapedge:draw(self.camera)
   self.camera:attach()
 
   if debug_mode and g_pockets then
