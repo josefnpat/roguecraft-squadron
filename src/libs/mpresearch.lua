@@ -42,6 +42,8 @@ function mpresearch.new(init)
   self._currentObject = "command"
   self._dangle = 0
 
+  self._objects_select = libs.matrixpanel.new()
+
   return self
 
 end
