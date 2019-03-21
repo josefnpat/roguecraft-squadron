@@ -101,7 +101,7 @@ function level:update(dt,server)
   self.dt = self.dt + dt
   self.invaders.ai:setCurrentPocket(self.invaders.ai:getRandomPocket())
   -- for ever five intervals, we have a large interval. Include offset
-  local current_interval = math.floor((self.dt-self._offset)/(self._interval*5))
+  local current_interval = math.floor((self.dt-self._offset)/(self._interval*5))+1
   -- use math.max to create an initial 1 offset for the scaled spawner
   -- invert for ratio
   local damage_reduction = 1/math.max(1,current_interval)
