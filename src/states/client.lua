@@ -494,7 +494,7 @@ function client:update(dt)
     for _,msg in pairs(self.lovernet:getCache(libs.net.op.get_chat)) do
       if msg.i > self.chat_index then
         local player = libs.net.getPlayerById(self.players,msg.u)
-        self.chat:addData(msg.u,msg.t,player and player.user_name or "N/A")
+        self.chat:addData(msg.u,msg.t,player and player.user_name or "AI")
       end
       self.chat_index = math.max(self.chat_index,msg.i)
     end

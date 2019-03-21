@@ -394,6 +394,15 @@ function server:generatePlayers(users,storage)
   return players
 end
 
+function server.addChat(storage,user,text)
+  storage.global_chat_index = storage.global_chat_index + 1
+  table.insert(storage.chats,{
+    index=storage.global_chat_index,
+    user=user.id,
+    text=text,
+  })
+end
+
 function server:init()
   self.lovernet = nil
 
@@ -777,12 +786,7 @@ function server:init()
   self.lovernet:addValidateOnServer(libs.net.op.add_chat,{t='string'})
   self.lovernet:addProcessOnServer(libs.net.op.add_chat,function(self,peer,arg,storage)
     local user = self:getUser(peer)
-    storage.global_chat_index = storage.global_chat_index + 1
-    table.insert(storage.chats,{
-      index=storage.global_chat_index,
-      user=user.id,
-      text=arg.t,
-    })
+    server.addChat(storage,user,arg.t)
   end)
 
   server:resetGame()

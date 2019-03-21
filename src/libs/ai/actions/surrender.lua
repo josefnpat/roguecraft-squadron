@@ -1,5 +1,14 @@
 local action = {}
 
+action._lines = {
+  "gg",
+  "wp",
+  "Well played.",
+  "Good battle.",
+  "Fair match.",
+  "Until next time.",
+}
+
 action._check_t = 5
 
 function action.new(init)
@@ -38,6 +47,13 @@ function action:update(dt,ai)
       for _,object in pairs(player_objects) do
         ai:getServer():addUpdate(object,{remove=true},"delete_objects")
         object.remove = true
+      end
+      if not self._surrendered then
+        self._surrendered = true
+        ai:getServer().addChat(
+          ai:getServer().lovernet:getStorage(),
+          user,
+          action._lines[math.random(#action._lines)])
       end
     end
   end
