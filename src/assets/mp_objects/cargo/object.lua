@@ -2,7 +2,7 @@ return function()
   return {
     type = "cargo",
     class = libs.net.classTypes.industrial,
-    cost = {material=200,crew=10},
+    cost = {material=100,crew=5},
     points = 5,
     fow = 0.5,
     crew = 10,
@@ -13,6 +13,6 @@ return function()
     ore = 600,
     material = 1200,
     build_time = 10,
-    unlock_cost = 30,
+    unlock_cost = 15,
   }
 end

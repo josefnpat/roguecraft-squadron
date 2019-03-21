@@ -19,6 +19,7 @@ function barlib.new(init)
   self._color = init.color or {0,255,255}
   self._barColor = init.color or {246,197,42}
   self._barColorFull = init.colorFull or {0,255,255}
+  self._textColorFull = init.textColorFull or {0,0,0}
   self._textColor = init.textColor or {0,0,0}
   self._textInverseColor = init.textInverseColor or {255,255,255}
   self._icon = init.icon
@@ -103,7 +104,11 @@ function barlib:draw()
   end
   love.graphics.rectangle("fill",bx,by,bw,bh)
   love.graphics.setScissor(bx,by,bw,bh)
-  love.graphics.setColor(self._textColor)
+  if self._barValue >= 1 then
+    love.graphics.setColor(self._textColorFull)
+  else
+    love.graphics.setColor(self._textColor)
+  end
   love.graphics.printf(ttext,tx,ty+thoff,tw,"center")
   love.graphics.setScissor()
   love.graphics.setColor(old_color)

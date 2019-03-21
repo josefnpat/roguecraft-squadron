@@ -7,7 +7,7 @@ return function()
     fow = 0.5,
     crew = 25,
     research = 100,
-    research_generate = 1,
+    research_generate = 0.125,
     size = 32,
     speed = 50,
     health = {max = 25,},
