@@ -1,5 +1,10 @@
 local stepper = {}
 
+stepper.icons = {
+  prev=love.graphics.newImage("assets/hud/arrow_prev.png"),
+  next=love.graphics.newImage("assets/hud/arrow_next.png"),
+}
+
 function stepper.new(init)
   init = init or {}
   local self = {}
@@ -29,12 +34,12 @@ function stepper.new(init)
 
   self._down = libs.button.new{
     disabled=init.disabled,
-    text="-",
     width=self._height,
     height=self._height,
     dir=-1,
     onClick=init.onClick,
     font=init.font,
+    icon=stepper.icons.prev,
   }
   self._info = libs.button.new{
     disabled=init.disabled,
@@ -47,12 +52,12 @@ function stepper.new(init)
   }
   self._up = libs.button.new{
     disabled=init.disabled,
-    text="+",
     width=self._height,
     height=self._height,
     dir=1,
     onClick=init.onClick,
     font=init.font,
+    icon=stepper.icons.next,
   }
 
   self:_align()
