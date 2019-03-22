@@ -3,6 +3,7 @@ return function()
   ship.type = "dojeer_command"
   ship.actions = {
     "build_dojeer_scout",
+    "build_dojeer_turret_tiny",
     "build_dojeer_salvager",
     "build_dojeer_habitat",
     "build_dojeer_drydock",

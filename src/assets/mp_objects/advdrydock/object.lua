@@ -16,6 +16,7 @@ return function()
       "build_artillery",
       "build_minelayer",
       "build_tank",
+      "build_turret_tiny",
       "build_turret_small",
       "build_turret_large",
       -- "build_jump",

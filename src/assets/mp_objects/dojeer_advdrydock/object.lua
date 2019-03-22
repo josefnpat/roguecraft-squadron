@@ -7,6 +7,7 @@ return function()
     "build_dojeer_artillery",
     -- "build_minelayer",
     "build_dojeer_tank",
+    "build_dojeer_turret_tiny",
     "build_dojeer_turret_small",
     "build_dojeer_turret_large",
     -- "build_jump",

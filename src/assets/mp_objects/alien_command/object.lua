@@ -3,6 +3,7 @@ return function()
   ship.type = "alien_command"
   ship.actions = {
     "build_alien_scout",
+    "build_alien_turret_tiny",
     "build_alien_salvager",
     "build_alien_habitat",
     "build_alien_drydock",

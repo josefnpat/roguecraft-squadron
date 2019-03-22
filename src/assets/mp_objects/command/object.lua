@@ -16,6 +16,7 @@ return function()
     default_level = 1,
     actions = {
       "build_scout",
+      "build_turret_tiny",
       "build_salvager",
       "build_habitat",
       "build_drydock",
