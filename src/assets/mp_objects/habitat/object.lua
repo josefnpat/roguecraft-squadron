@@ -5,7 +5,7 @@ return function()
     cost = {material=100},
     points = 2,
     fow = 0.5,
-    crew = 5,
+    crew = 100,
     crew_gather = 10,
     crew_generate = 2,
     size = 32,

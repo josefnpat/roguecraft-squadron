@@ -6,7 +6,7 @@ return function()
     points = 25,
     fow = 0.5,
     crew = 100,
-    research = 10,
+    research = 30,
     research_generate = 0.25,
     size = 64,
     speed = 50,
