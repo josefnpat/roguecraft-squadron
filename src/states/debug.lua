@@ -52,6 +52,23 @@ function state:init()
 
   self.menu:add(
     function()
+      return "I am using a "..(GLOBAL_SHADER and "DMG-01" or "computer")
+    end,
+    function()
+      if GLOBAL_SHADER then
+        GLOBAL_SHADER,GLOBAL_SHADER_OBJ = nil,nil
+      else
+        GLOBAL_SHADER = function()
+          GLOBAL_SHADER_OBJ = libs.moonshine(libs.moonshine.effects.dmg)
+        end
+        GLOBAL_SHADER()
+      end
+
+    end
+  )
+
+  self.menu:add(
+    function()
       return "ObjectRenderer Shader [".. (settings:read("object_shaders") and "Enabled" or "Disabled").."]"
     end,
     function()

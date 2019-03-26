@@ -83,6 +83,7 @@ function love.load(arg)
     cursor = require"libs.cursor",
     pcb = require"libs.progresscirclebar",
     system = require"libs.system",
+    moonshine = require"libs.moonshine",
   }
 
   loader:add("lib dependencies",function()
@@ -234,6 +235,9 @@ end
 function love.resize()
   if libs.stars then libs.stars:reload() end
   if states.client then states.client:resize() end
+  if GLOBAL_SHADER then
+    GLOBAL_SHADER()
+  end
 end
 
 function love.keypressed(key)
@@ -275,6 +279,14 @@ function love.update(dt)
 end
 
 function love.draw()
+  if GLOBAL_SHADER_OBJ then
+    GLOBAL_SHADER_OBJ(love.real_draw)
+  else
+    love.real_draw()
+  end
+end
+
+function love.real_draw()
   libs.hump.gamestate.current():draw()
   libs.cursor.draw()
   libs.system:draw()

@@ -229,6 +229,30 @@ options.menu_graphics:add(
     libs.cursor.mode(target_mode)
   end)
 
+options.menu_graphics:add(
+  function()
+    return "Fancy Shaders ["..(GLOBAL_SHADER and "Enabled" or "Disabled").."]"
+  end,
+  function()
+    if GLOBAL_SHADER then
+      GLOBAL_SHADER,GLOBAL_SHADER_OBJ = nil,nil
+    else
+      GLOBAL_SHADER = function()
+        GLOBAL_SHADER_OBJ = libs.moonshine(libs.moonshine.effects.crt)
+          .chain(libs.moonshine.effects.scanlines)
+          -- .chain(libs.moonshine.effects.vignette)
+          .chain(libs.moonshine.effects.glow)
+          .chain(libs.moonshine.effects.chromasep)
+
+        GLOBAL_SHADER_OBJ.scanlines.opacity = 0.25
+        GLOBAL_SHADER_OBJ.chromasep.radius = 3
+        GLOBAL_SHADER_OBJ.crt.distortionFactor = {1.03, 1.0325}
+      end
+      GLOBAL_SHADER()
+    end
+  end
+)
+
 options.menu_graphics:add(libs.i18n('options.back'),function()
   options.menu = options.menu_main
   states.client.menu = options.menu_main
