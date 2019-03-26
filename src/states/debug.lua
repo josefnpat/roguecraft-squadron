@@ -50,6 +50,7 @@ function state:init()
     end
   )
 
+  self.menu.palettes = {"default","dark_yellow","light_yellow","green","greyscale","stark_bw","pocket"}
   self.menu:add(
     function()
       return "I am using a "..(GLOBAL_SHADER and "DMG-01" or "computer")
@@ -58,8 +59,13 @@ function state:init()
       if GLOBAL_SHADER then
         GLOBAL_SHADER,GLOBAL_SHADER_OBJ = nil,nil
       else
+        self.menu.palette_index = (self.menu.palette_index or 0) + 1
+        if self.menu.palette_index > #self.menu.palettes then
+          self.menu.palette_index = 1
+        end
         GLOBAL_SHADER = function()
           GLOBAL_SHADER_OBJ = libs.moonshine(libs.moonshine.effects.dmg)
+          GLOBAL_SHADER_OBJ.dmg.palette = self.menu.palettes[self.menu.palette_index]
         end
         GLOBAL_SHADER()
       end
