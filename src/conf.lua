@@ -16,6 +16,7 @@ settings:define("fow_quality","img_canvas")
 settings:define("remote_server_address","127.0.0.1")
 settings:define("server_port","26000") --quake?
 settings:define("server_public",true)
+settings:define("server_name","")
 settings:define("sensitive",false)
 settings:define("user_name","Player")
 settings:define("mouse_draw_mode","software")

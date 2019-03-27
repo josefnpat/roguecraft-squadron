@@ -147,6 +147,21 @@ function mainmenu:enter()
     }
   end
 
+  local ask_for_servername = function(callback)
+    self.chooser = libs.stringchooser.new{
+      prompt = "Set Server Name:",
+      string = settings:read("user_name") .. "'s Game",
+      callback = function(string)
+        self.chooser = nil
+        settings:write("server_name",string)
+        callback()
+      end,
+      cancelCallback = function()
+        self.chooser = nil
+      end,
+    }
+  end
+
   local ask_for_ip = function(callback)
     self.chooser = libs.stringchooser.new{
       prompt = "Server IP Address:",
@@ -187,9 +202,12 @@ function mainmenu:enter()
 
   local ask_for_host = function(callback)
     ask_for_name(function()
-      ask_for_port(callback)
+      ask_for_servername(function()
+        ask_for_port(callback)
+      end)
     end)
   end
+
   self.menu_mp:addButton(
     libs.i18n('menu.host'),
     function()

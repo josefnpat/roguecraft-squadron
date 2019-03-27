@@ -47,7 +47,7 @@ end
 
 function mpserverlist.sendPublicUpdate(started,players)
   local input = {
-    name=settings:read("user_name"),
+    name=settings:read("server_name"),
     port=settings:read("server_port"),
     owner=game_randomstring,
     started=started or false,
