@@ -224,13 +224,15 @@ function mainmenu:enter()
       end)
     end)
 
-  self.menu_mp:addButton(
-    libs.i18n('menu.serverlist'),
-    function()
-      ask_for_name(function()
-        self.mpserverlist:setActive(true)
+  if isRelease() then
+    self.menu_mp:addButton(
+      libs.i18n('menu.serverlist'),
+      function()
+        ask_for_name(function()
+          self.mpserverlist:setActive(true)
+        end)
       end)
-    end)
+  end
 
   local ask_for_client = function(callback)
     ask_for_name(function()
