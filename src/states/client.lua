@@ -17,6 +17,8 @@ function client:init()
     -- todo: disconnect the user, lolol
     libs.hump.gamestate.switch(states.menu)
     self.menu_enabled = false
+    states.server:leave()
+    self.lovernet:disconnect()
   end)
 
   self.menu = self.main_menu

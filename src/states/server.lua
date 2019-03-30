@@ -829,7 +829,9 @@ function server:init()
 end
 
 function server:leave()
-  self.lovernet:disconnect()
+  if self.lovernet then
+    self.lovernet:disconnect()
+  end
 end
 
 function server:resetGame()

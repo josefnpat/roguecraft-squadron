@@ -215,9 +215,6 @@ function mainmenu:enter()
         states.client._remote_address = nil
         game_singleplayer = false
         states.server:init()
-        if states.server.run_localhost then
-          states.server:leave()
-        end
         states.server.run_localhost = true
         self.music.title:stop()
         libs.hump.gamestate.switch(states.client)
