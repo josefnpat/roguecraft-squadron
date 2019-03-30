@@ -14,7 +14,7 @@ function splash:enter()
   table.insert(self._splashes,lovelogo)
 
   local mss = splashclass.new()
-  mss:setImage(love.graphics.newImage("assets/splash/mss.png"))
+  mss:setObject(libs.msslogo.new{image="assets/splash/mss.png"})
   local mss_sound = love.sound.newSoundData("assets/splash/mss.ogg")
   local mss_audio = love.audio.newSource(mss_sound)
   mss:setSound( mss_audio )

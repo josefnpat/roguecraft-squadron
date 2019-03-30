@@ -10,6 +10,9 @@ function splash.new()
   self.getImage=splash.getImage
   self.setImage=splash.setImage
   self.setImages=splash.setImages
+  self._object=nil --init
+  self.getObject=splash.getObject
+  self.setObject=splash.setObject
   self._sound=nil --init
   self.getSound=splash.getSound
   self.setSound=splash.setSound
@@ -28,15 +31,18 @@ function splash:draw()
   love.graphics.setColor(255,255,255,
     math.max(0,math.min(255,alpha))) --clamp
 
-  local scale = self:getImage():getHeight() > love.graphics.getHeight() and 0.5 or 1
-
-  love.graphics.draw(self:getImage(),
-    love.graphics.getWidth()/2,
-    love.graphics.getHeight()/2,
-    0,scale,scale,
-    self:getImage():getWidth()/2,
-    self:getImage():getHeight()/2
-  )
+  if self:getImage() then
+    local scale = self:getImage():getHeight() > love.graphics.getHeight() and 0.5 or 1
+    love.graphics.draw(self:getImage(),
+      love.graphics.getWidth()/2,
+      love.graphics.getHeight()/2,
+      0,scale,scale,
+      self:getImage():getWidth()/2,
+      self:getImage():getHeight()/2
+    )
+  elseif self:getObject() then
+    self:getObject():draw(x)
+  end
 
 end
 
@@ -64,15 +70,25 @@ end
 
 function splash:getImage()
 	if not self.animated then
-		return self._image 
+		return self._image
 	else
 		return self._images[math.ceil((love.timer.getTime() * self.animationSpeed) % #self._images)]
 	end
 end
 
+function splash:getObject()
+  -- animation not supported for custom objects
+  return self._object
+end
+
 function splash:setImage(val)
   self.animated = false
   self._image=val
+end
+
+function splash:setObject(val)
+  self.animated = false
+  self._object=val
 end
 
 function splash:setImages(val,animationSpeed)
