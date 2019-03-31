@@ -1,0 +1,8 @@
+msgid "mission.object.research_station.name"
+msgstr "Research Station"
+
+msgid "mission.object.research_station.info"
+msgstr "This research station contains [Research] which can be collected by a [Research Facility]."
+
+msgid "mission.object.research_station.build"
+msgstr ""

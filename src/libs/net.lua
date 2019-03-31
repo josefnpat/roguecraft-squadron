@@ -52,6 +52,7 @@ net.mapGenDefaults = {
     value = {
       scrap=100,
       station=16,
+      research_station=8,
       asteroid=50,
       cat=1,
     },
@@ -61,6 +62,7 @@ net.mapGenDefaults = {
     value = {
       scrap=200,
       station=32,
+      research_station=16,
       asteroid=100,
       cat=1,
     },
@@ -70,6 +72,7 @@ net.mapGenDefaults = {
     value = {
       scrap=50,
       station=8,
+      research_station=4,
       asteroid=25,
       cat=1,
     },
