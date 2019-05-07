@@ -214,15 +214,6 @@ msgstr "High (4096×4096)"
 msgid "options.bg_quality.unknown"
 msgstr "Unknown"
 
-msgid "options.tutorial.pre"
-msgstr "Tutorial"
-
-msgid "options.tutorial.enabled"
-msgstr "Enabled"
-
-msgid "options.tutorial.disabled"
-msgstr "Disabled"
-
 msgid "options.mouse_draw_mode.pre"
 msgstr "Mouse Draw Mode"
 
@@ -537,15 +528,6 @@ msgstr "CANCEL"
 
 msgid "score.total"
 msgstr "Total Score: %{score}"
-
-msgid "tutorial.title.complete"
-msgstr "Objective: Complete"
-
-msgid "tutorial.title.in_progress"
-msgstr "Objective: In Progress"
-
-msgid "tutorial.buttons.continue"
-msgstr "CONTINUE"
 
 msgid "mission.object.advdrydock.name"
 msgstr "Advanced Drydock"
@@ -864,105 +846,3 @@ msgstr "We’re only one jump away from home! We’ve got to make it! Everyone i
 
 msgid "vn.tip.8"
 msgstr "Losing is fun! Either way, it keeps you busy."
-
-msgid "tutorial.title.base"
-msgstr "Tutorial"
-
-msgid "tutorial.continue"
-msgstr "CONTINUE"
-
-msgid "tutorial.done"
-msgstr "DONE"
-
-msgid "tutorial.title.complete"
-msgstr "Tutorial Complete"
-
-msgid "tutorial.obj.1"
-msgstr "Greetings commander. I would like to test our basic systems. If you prefer not to, you may jump to the next system right away."
-
-msgid "tutorial.help.1"
-msgstr "If at any time you need help with an objective, you can get help here."
-
-msgid "tutorial.obj.2"
-msgstr "During stasis, many systems have deteriorated. Please confirm that the command ship is still operational."
-
-msgid "tutorial.help.2"
-msgstr "Use the left mouse button to select the command ship"
-
-msgid "tutorial.obj.3"
-msgstr "Our information systems seem to be operational. Please confirm that our command ship is under your control."
-
-msgid "tutorial.help.3"
-msgstr "Use the right mouse button to move the ship anywhere."
-
-msgid "tutorial.obj.4"
-msgstr "Your map can be used to quickly get an overview of the battlefield.\nConfirm camera movement by clicking on the map. Each dot on your map represents entities in the area."
-
-msgid "tutorial.help.4"
-msgstr "You can also move the map with [WASD] or by moving your mouse to the edge of the screen."
-
-msgid "tutorial.obj.5"
-msgstr "Our command ship has been damaged from our long travel. I suggest we tell the crew to repair it."
-
-msgid "tutorial.help.5"
-msgstr "Select the command ship, and toggle the \"Repair\" action."
-
-msgid "tutorial.obj.6"
-msgstr "In order to survive, we will need to collect resources. We should search this system for something to gather."
-
-msgid "tutorial.help.6"
-msgstr "Move around the map with by moving your mouse to the edge of the screen, or using WASD/Arrow Keys. Find scrap."
-
-msgid "tutorial.obj.7"
-msgstr "Excellent. We found some scrap. We should use our command ship to build a salvager to gather it."
-
-msgid "tutorial.help.7"
-msgstr "Select the command ship, and use the \"Build Salvager\" action in the upper right corner."
-
-msgid "tutorial.obj.8"
-msgstr "Now that we have a salvager under our command, have it collect material from the scrap."
-
-msgid "tutorial.help.8"
-msgstr "Select the salvager, and have it target the scrap."
-
-msgid "tutorial.obj.9"
-msgstr "Now that we have materials, we should build some ships to protect our squadron."
-
-msgid "tutorial.help.9"
-msgstr "Select the command ship, and build a Fighter."
-
-msgid "tutorial.obj.10"
-msgstr "When you believe our fleet is ready, inform the Jumpgate Generator to jump to the next system."
-
-msgid "tutorial.help.10"
-msgstr "Select the Jumpgate Generator, and use the Jump action."
-
-msgid "tutorial.obj.11"
-msgstr "We have detected enemy ships. We will need a small squad of Fighters to take them out."
-
-msgid "tutorial.help.11"
-msgstr "Build fighters from your Command ship"
-
-msgid "tutorial.obj.12"
-msgstr "We have detected asteroids in this system. We should use the Drydock to build some Mining Rigs to mine them."
-
-msgid "tutorial.help.12"
-msgstr "Select the command ship, and use the Build Drydock action if you haven't already. Select the Drydock, and use the Build Mining Rig action. Select the Mining Rig, and right mouse click on an Asteroid."
-
-msgid "tutorial.obj.13"
-msgstr "We have some ore now, but we can't refine it without a Refinery. Build one and inform it to to convert Ore to Material."
-
-msgid "tutorial.help.13"
-msgstr "Select the command ship, and use the Build Drydock action if you haven't already. Select the Drydock ship, and use the Build Refinery action. Select the Refinery ship, toggle the \"Refine Ore\" action."
-
-msgid "tutorial.obj.14"
-msgstr "The enemy has set up a Jump Scrambler in this system, which prevents us from jumping to the next system."
-
-msgid "tutorial.help.14"
-msgstr "Find and destroy all of the Jump Scramblers in the system."
-
-msgid "tutorial.obj.15"
-msgstr "This concludes the tutorial. Your goal is to jump past level 8."
-
-msgid "tutorial.help.15"
-msgstr "There is a lot more to RogueCraft Squadron. I guess you'll just have to figure it out yourself! Here are some tips, though:"

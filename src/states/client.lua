@@ -94,8 +94,8 @@ function client:init()
     end
   end
 
-  local ebb_tutorial = function(isHover)
-    if settings:read("tutorial") then
+  local ebb_tips = function(isHover)
+    if settings:read("tips") then
       return {math.sin(self.time*4)*255,255,0}
     else
       return hover(isHover)
@@ -121,12 +121,12 @@ function client:init()
   )
 
   self.buttonbar:addAction(
-    love.graphics.newImage("assets/hud/buttonbar/tutorial.png"),
+    love.graphics.newImage("assets/hud/buttonbar/tips.png"),
     function()
-      self.windows:show("mptutorial")
+      self.windows:show("mptips")
     end,
-    ebb_tutorial,
-    function() return "Tutorial [T]" end
+    ebb_tips,
+    function() return "Tips [T]" end
   )
 
 end
@@ -221,8 +221,8 @@ function client:enter()
   self.windows = libs.windowmanager.new()
   self.mpresearch = libs.mpresearch.new{lovernet=self.lovernet,onChange=client.selectionOnChange,onChangeScope=self}
   self.windows:add(self.mpresearch,"mpresearch")
-  self.mptutorial = libs.mptutorial.new()
-  self.windows:add(self.mptutorial,"mptutorial")
+  self.mptips = libs.mptips.new()
+  self.windows:add(self.mptips,"mptips")
 
   self.mpdisconnect = libs.mpdisconnect.new()
   self.gamestatus = libs.gamestatus.new()
@@ -857,9 +857,9 @@ function client:update(dt)
 
     self.mpresearch:update(dt,self.user,self.resources)
 
-  elseif self.mptutorial:isActive() then
+  elseif self.mptips:isActive() then
 
-    self.mptutorial:update(dt)
+    self.mptips:update(dt)
 
   else
 
@@ -1018,7 +1018,7 @@ function client:mousepressed(x,y,button)
     self.vn:next()
   elseif self.mpresearch:isActive() then
     self.mpresearch:mousepressed(x,y,button)
-  elseif self.mptutorial:isActive() then
+  elseif self.mptips:isActive() then
   elseif button == 1 then
     if self.buttonbar:mouseInside(x,y) then
       -- nop
@@ -1047,7 +1047,7 @@ function client:mousereleased(x,y,button)
     --nop
   elseif self.mpresearch:isActive() then
     self.mpresearch:mousereleased(x,y,button)
-  elseif self.mptutorial:isActive() then
+  elseif self.mptips:isActive() then
     --nop
   elseif button == 1 then
     if self.buttonbar:mouseInside(x,y) and not self.selection:selectionInProgress() then
@@ -1201,7 +1201,7 @@ function client:keypressed(key)
       self.windows:toggle("mpresearch")
     end
     if key == "t" then
-      self.windows:toggle("mptutorial")
+      self.windows:toggle("mptips")
     end
   end
 
@@ -1393,8 +1393,8 @@ function client:draw()
     if self.mpresearch:isActive() then
       self.mpresearch:draw(self.user,self.resources,self.points)
     end
-    if self.mptutorial:isActive() then
-      self.mptutorial:draw()
+    if self.mptips:isActive() then
+      self.mptips:draw()
     end
 
   else

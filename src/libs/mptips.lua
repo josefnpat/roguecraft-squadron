@@ -1,14 +1,14 @@
-local mptutorial = {}
+local mptips = {}
 
-mptutorial.icons = {
+mptips.icons = {
   prev=love.graphics.newImage("assets/hud/arrow_prev.png"),
   next=love.graphics.newImage("assets/hud/arrow_next.png"),
 }
 
 local data = {}
-for _,type in pairs(love.filesystem.getDirectoryItems("assets/tutorial/")) do
+for _,type in pairs(love.filesystem.getDirectoryItems("assets/tips/")) do
   local object = {}
-  local dir = "assets/tutorial/"..type
+  local dir = "assets/tips/"..type
   local po_file = dir.."/en.po"
   local po_raw = love.filesystem.read(po_file)
 
@@ -22,20 +22,20 @@ for _,type in pairs(love.filesystem.getDirectoryItems("assets/tutorial/")) do
   table.insert(data,object)
 end
 
-function mptutorial.new(init)
+function mptips.new(init)
   init = init or {}
   local self = libs.mpwindow.new()
 
-  self.changeCurrent = mptutorial.changeCurrent
-  self.setActive = mptutorial.setActive
-  self.getMaxTextHeight = mptutorial.getMaxTextHeight
-  self.getText = mptutorial.getText
-  self.getTextWidth = mptutorial.getTextWidth
-  self.getTextHeight = mptutorial.getTextHeight
-  self.getWidth = mptutorial.getWidth -- override
-  self.getHeight = mptutorial.getHeight -- override
-  self.draw = mptutorial.draw
-  self.update = mptutorial.update
+  self.changeCurrent = mptips.changeCurrent
+  self.setActive = mptips.setActive
+  self.getMaxTextHeight = mptips.getMaxTextHeight
+  self.getText = mptips.getText
+  self.getTextWidth = mptips.getTextWidth
+  self.getTextHeight = mptips.getTextHeight
+  self.getWidth = mptips.getWidth -- override
+  self.getHeight = mptips.getHeight -- override
+  self.draw = mptips.draw
+  self.update = mptips.update
 
   self._current = 1
   self._active = false
@@ -48,7 +48,7 @@ function mptutorial.new(init)
     onClick = function()
       self:changeCurrent(-1)
     end,
-    icon=mptutorial.icons.prev,
+    icon=mptips.icons.prev,
   }
 
   self.next = libs.button.new{
@@ -57,30 +57,30 @@ function mptutorial.new(init)
     onClick = function()
       self:changeCurrent(1)
     end,
-    icon=mptutorial.icons.next,
+    icon=mptips.icons.next,
   }
 
-  self:setWindowTitle("Tutorial")
+  self:setWindowTitle("Tips")
 
   self:changeCurrent(0)
 
   return self
 end
 
-function mptutorial:changeCurrent(val)
+function mptips:changeCurrent(val)
   self._current = self._current + val
   self.prev:setDisabled(self._current == 1)
   self.next:setDisabled(self._current == #data)
 end
 
-function mptutorial:setActive(val)
+function mptips:setActive(val)
   if val then
-    settings:write("tutorial",false)
+    settings:write("tips",false)
   end
   self._active = val
 end
 
-function mptutorial:getMaxTextHeight()
+function mptips:getMaxTextHeight()
   local cmax = 0
   for cdata_index,cdata in pairs(data) do
     cmax = math.max(cmax,self:getTextHeight(cdata_index))
@@ -88,18 +88,18 @@ function mptutorial:getMaxTextHeight()
   return cmax
 end
 
-function mptutorial:getText(index)
+function mptips:getText(index)
   index = index or self._current
   local cdata = data[index]
   return index..". "..cdata.loc.desc
 end
 
-function mptutorial:getTextWidth(index)
+function mptips:getTextWidth(index)
   index = index or self._current
   return self:getWidth()-self._padding*2
 end
 
-function mptutorial:getTextHeight(index)
+function mptips:getTextHeight(index)
   index = index or self._current
   local text_width = self:getTextWidth(index)
   local cdata = data[index]
@@ -108,12 +108,12 @@ function mptutorial:getTextHeight(index)
   return self._text_font:getHeight()*#text_wrappings
 end
 
-function mptutorial:getWidth()
+function mptips:getWidth()
   local cdata = data[self._current]
   return cdata.image:getWidth()+self._padding*2
 end
 
-function mptutorial:getHeight()
+function mptips:getHeight()
   return
     fonts.window_title:getHeight() +
     data[self._current].image:getHeight() +
@@ -122,7 +122,7 @@ function mptutorial:getHeight()
     self._padding*5
 end
 
-function mptutorial:draw()
+function mptips:draw()
 
   if self:isActive() then
 
@@ -157,7 +157,7 @@ function mptutorial:draw()
 
 end
 
-function mptutorial:update(dt)
+function mptips:update(dt)
   if self:isActive() then
     self:windowupdate(dt)
     self.prev:update(dt)
@@ -165,4 +165,4 @@ function mptutorial:update(dt)
   end
 end
 
-return mptutorial
+return mptips
