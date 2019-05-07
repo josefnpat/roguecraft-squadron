@@ -461,7 +461,11 @@ function server:init()
 
   self.lovernet:addOp(libs.net.op.get_config)
   self.lovernet:addProcessOnServer(libs.net.op.get_config,function(self,peer,arg,storage)
-    return storage.config
+    local user = self:getUser(peer)
+    if user.config_dirty then
+      user.config_dirty = nil
+      return storage.config
+    end
   end)
 
   self.lovernet:addOp(libs.net.op.get_level)
@@ -472,6 +476,9 @@ function server:init()
   self.lovernet:addOp(libs.net.op.set_config)
   self.lovernet:addValidateOnServer(libs.net.op.set_config,{d='table'})
   self.lovernet:addProcessOnServer(libs.net.op.set_config,function(self,peer,arg,storage)
+    for _,user in pairs(self:getUsers()) do
+      user.config_dirty = true
+    end
     for i,v in pairs(arg.d) do
       storage.config[i] = v ~= "nil" and v or nil
     end
@@ -795,6 +802,7 @@ function server:init()
 
   self.lovernet:onAddUser(function(user)
 
+    user.config_dirty = true
     user.resources = {}
     user.cargo = {}
     for _,restype in pairs(libs.net.resourceTypes) do
@@ -957,6 +965,7 @@ function server:newGame(soft)
 
   local user_count = 0
   for peer,user in pairs(self.lovernet:getUsers()) do
+
     local gen = preset.gen
     -- todo: add unique names
     user_count = user_count + 1
@@ -1117,6 +1126,21 @@ function server:repairTarget(config,object,target,dt)
         self:changeResource(user,restype,-amount_to_repair)
       end
       server:addGather(dt,object,amount_to_repair)
+    end
+  end
+end
+
+function server:jumpTarget(config,object,target,dt)
+  if config.jump == nil then
+    local distance = libs.net.distance(object,target,love.timer.getTime())
+    if distance <= server:getFollowRange(object,target) then
+      for _,user in pairs(self.lovernet:getUsers()) do
+        user.config_dirty = true
+      end
+      config.jump = {
+        start = math.floor(love.timer.getTime()),
+        t = 30,
+      }
     end
   end
 end
@@ -1468,6 +1492,9 @@ function server:update(dt)
     end
     if storage.config.game_start then
       storage.config.game_started = true
+      for _,user in pairs(self.lovernet:getUsers()) do
+        user.config_dirty = true
+      end
       server:newGame()
     end
   end
@@ -1558,6 +1585,8 @@ function server:update(dt)
           self:gotoTarget(object,target,server:getFollowRange(object,target))
           if object_type.repair then
             self:repairTarget(storage.config,object,target,dt)
+          elseif target_type.jump then
+            self:jumpTarget(storage.config,object,target,dt)
           end
         elseif self:targetIsEnemy(object,target) then
           if self:targetCanBeShot(target_type) and object_type.shoot then

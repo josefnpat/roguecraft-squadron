@@ -24,6 +24,7 @@ function barlib.new(init)
   self._textInverseColor = init.textInverseColor or {255,255,255}
   self._icon = init.icon
   self._iconPadding = init.iconPadding or 8
+  self._iconWidth = init.iconWidth or 32
   self._barValue = init.barValue or 0.5
   self._barHeight = init.barHeight or 2
   self._barWidth = init.barWidth or 2
@@ -72,8 +73,8 @@ function barlib:draw()
       self._y+self._height-self._icon:getHeight()-self._padding
     )
   end
-  local iconw = self._icon and self._icon:getWidth() or 32
-  local iconh = self._icon and self._icon:getWidth() or 32
+  local iconw = self._icon and self._icon:getWidth() or self._iconWidth
+  local iconh = self._icon and self._icon:getWidth() or self._iconWidth
   love.graphics.setColor(self._color)
   love.graphics.draw(barlib.img.corner,
     self._x+self._width-iconw-barlib.img.corner:getWidth()-self._padding-self._iconPadding,
@@ -85,7 +86,7 @@ function barlib:draw()
     (self._width-iconw-self._padding*2-self._iconPadding)/barlib.img.horizontal:getWidth(),self._barHeight)
   local tx = self._x+self._padding
   local ty = self._y+self._padding
-  local tw = self._width-self._padding*2-barlib.img.corner:getWidth()-self._barWidth-self._iconPadding
+  local tw = self._width-self._padding*2-self._iconWidth-self._barWidth-self._iconPadding
   local th = self._height-self._padding*2
   local thoff = (th-love.graphics.getFont():getHeight())/2
   local _text = type(self._text)=="function" and self._text() or tostring(self._text)

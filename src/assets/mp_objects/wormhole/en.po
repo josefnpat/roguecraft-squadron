@@ -1,0 +1,8 @@
+msgid "mission.object.wormhole.name"
+msgstr "Worm Hole"
+
+msgid "mission.object.wormhole.info"
+msgstr "A region of spacetime exhibiting such strong gravitational effects that could send you anywhere in the universe."
+
+msgid "mission.object.wormhole.build"
+msgstr ""

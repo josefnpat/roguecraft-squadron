@@ -10,5 +10,9 @@ return function()
     jump = 2,--used to be 1
     jump_process = true,
     build_time = 5,
+    default_level = 1,
+    actions = {
+      "build_wormhole",
+    }
   }
 end

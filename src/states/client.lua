@@ -210,6 +210,10 @@ function client:enter()
   self.moveanim = libs.moveanim.new()
   self.controlgroups = libs.controlgroups.new()
   self.chat = libs.chat.new()
+  self.countdown = libs.countdown.new{
+    text="Evacuate Sector",
+    subtext="Get your ships into the wormhole before it collapses.",
+  }
   self.mpgamemodes = libs.mpgamemodes.new()
   self.mpconnect = libs.mpconnect.new{lovernet=self.lovernet,chat=self.chat,mpgamemodes=self.mpgamemodes}
 
@@ -316,6 +320,10 @@ function client:stackSide()
 
   self.chat:setX(love.graphics:getWidth() - self.chat:getWidth() - 32)
   self.chat:setY(love.graphics:getHeight() - self.chat:getHeight() - 32)
+
+  self.countdown:setX( (love.graphics:getWidth()-self.countdown:getWidth())/2 )
+  self.countdown:setY(32)
+
 end
 
 function client:updateSoundtrackIntensity()
@@ -363,10 +371,6 @@ function client:update(dt)
 
   if not self.gamestatus:isStarted() then
 
-    if not self.lovernet:hasData(libs.net.op.get_config) then
-      self.lovernet:pushData(libs.net.op.get_config)
-    end
-
     if not self.lovernet:hasData(libs.net.op.get_players) then
       self.lovernet:pushData(libs.net.op.get_players)
     end
@@ -401,6 +405,11 @@ function client:update(dt)
     if not self.lovernet:hasData(libs.net.op.get_points) then
       self.lovernet:pushData(libs.net.op.get_points)
     end
+
+  end
+
+  if not self.lovernet:hasData(libs.net.op.get_config) then
+    self.lovernet:pushData(libs.net.op.get_config)
   end
 
   if not self.lovernet:hasData(libs.net.op.user_count) then
@@ -447,6 +456,9 @@ function client:update(dt)
 
   if self.lovernet:getCache(libs.net.op.get_config) then
     self.config = self.lovernet:getCache(libs.net.op.get_config)
+    if self.config.jump then
+      self.countdown:setActive(self.config.jump.start,self.config.jump.t)
+    end
     self.mpconnect:validateVersion(self.config.git_hash,self.config.git_count)
     local tr_val = libs.net.transmitRates[self.config.transmitRate].value
     self.lovernet:setClientTransmitRate(tr_val)
@@ -665,6 +677,7 @@ function client:update(dt)
   self.moveanim:update(dt)
   self.notif:update(dt)
   self.chat:update(dt)
+  self.countdown:update(dt)
   self:stackSide()
   self.matchstats:update(dt)
 
@@ -1373,6 +1386,7 @@ function client:draw()
 
   self.notif:draw()
   if self.gamestatus:isStarted() then
+    self.countdown:draw(self.time)
     self.mpdisconnect:draw()
 
     -- can't use self.windows here
