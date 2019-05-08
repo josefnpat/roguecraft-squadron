@@ -174,6 +174,30 @@ function server.maps.random.generate(storage,config)
 
 end
 
+server.maps.training = {}
+function server.maps.training.generate(storage,config)
+
+  local mapsize = libs.net.mapSizes[storage.config.mapsize].value
+  local mapGenDefault = libs.net.mapGenDefaults[storage.config.mapGenDefault].value
+
+  local pockets = {
+    {x=0,y=0},
+    {x=0,y=0}, -- wtf this is probably a bug
+  }
+
+  for object_type,object_count in pairs(mapGenDefault) do
+    for i = 1,object_count do
+      local t = math.pi*2*math.random()
+      local r = mapsize+math.random(-512,512)-512
+      local x = r*math.cos(t)
+      local y = r*math.sin(t)
+      server.createObject(storage,object_type,x,y,nil)
+    end
+  end
+
+  return pockets
+end
+
 function server.generatePlayer(storage,user,pocket,gen)
 
   local mapsize = libs.net.mapSizes[storage.config.mapsize].value
@@ -925,6 +949,16 @@ function server:newGame(soft)
   -- todo: This is a hack - we should actually be checking the server object
   g_pockets = pockets
 
+  if level.players_skel then
+    for _,user in pairs(self.lovernet:getUsers()) do
+      if not user.ai then
+        for i,v in pairs(level.players_skel) do
+          user[i] = v
+        end
+      end
+    end
+  end
+
   if level.players_config_skel then
     for _,user in pairs(self.lovernet:getUsers()) do
       if not user.ai then
@@ -966,7 +1000,7 @@ function server:newGame(soft)
   local user_count = 0
   for peer,user in pairs(self.lovernet:getUsers()) do
 
-    local gen = preset.gen
+    local gen = user.gen or preset.gen
     -- todo: add unique names
     user_count = user_count + 1
     if user.ai then

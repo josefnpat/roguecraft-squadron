@@ -20,7 +20,8 @@ function mpconnectplayer.new(init)
   self.update = mpconnectplayer.update
   self.getWidth = mpconnectplayer.getWidth
   self.getHeight = mpconnectplayer.getHeight
-  self.setConfigurable = mpconnectplayer.setConfigurable
+  self.setConfigurableTeam = mpconnectplayer.setConfigurableTeam
+  self.setConfigurableDiff = mpconnectplayer.setConfigurableDiff
   self._type = init.type or "user"
   self._user_name = init.user_name or "Loading ..."
   self._user_id = init.user_id or 0
@@ -101,14 +102,14 @@ function mpconnectplayer:draw(x,y)
       y+image:getHeight()*scale+32+love.graphics.getFont():getHeight())
   end
 
-  if self._configurable then
+  if self._configurableTeam then
     self._changeTeam:setX(target_x)
     self._changeTeam:setY(target_y + target_height - self._changeTeam:getHeight())
     self._changeTeam:setWidth(self._changeTeam:getHeight())
     self._changeTeam:draw()
   end
 
-  if self._changeDiff then
+  if self._changeDiff and self._configurableDiff then
     self._changeDiff:setX(target_x)
     self._changeDiff:setY(128+target_y + target_height - self._changeDiff:getHeight())
     self._changeDiff:setWidth(target_width)
@@ -118,10 +119,10 @@ function mpconnectplayer:draw(x,y)
 end
 
 function mpconnectplayer:update(dt)
-  if self._configurable then
+  if self._configurableTeam then
     self._changeTeam:update(dt)
   end
-  if self._changeDiff then
+  if self._changeDiff and self._configurableDiff then
     self._changeDiff:update(dt)
   end
 end
@@ -134,8 +135,12 @@ function mpconnectplayer:getHeight()
   return 192+64+self._inner_padding*2
 end
 
-function mpconnectplayer:setConfigurable(val)
-  self._configurable = val
+function mpconnectplayer:setConfigurableTeam(val)
+  self._configurableTeam = val
+end
+
+function mpconnectplayer:setConfigurableDiff(val)
+  self._configurableDiff = val
 end
 
 return mpconnectplayer

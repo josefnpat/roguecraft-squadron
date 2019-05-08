@@ -26,6 +26,7 @@ function barlib.new(init)
   self._iconPadding = init.iconPadding or 8
   self._iconWidth = init.iconWidth or 32
   self._barValue = init.barValue or 0.5
+  self._barValueDrawn = init._barValueDrawn or self._barValue
   self._barHeight = init.barHeight or 2
   self._barWidth = init.barWidth or 2
   self._barEnable = init.barEnable or true
@@ -93,19 +94,19 @@ function barlib:draw()
   local _hoverText = type(self._hoverText)=="function" and self._hoverText() or tostring(self._hoverText)
   local ttext = self._hover and _hoverText or _text
   local bx,by = tx,ty
-  local bw = (tw)*self._barValue
+  local bw = (tw)*self._barValueDrawn
   local bh = self._height-self._padding*2-self._barHeight
 
   love.graphics.setColor(self._textInverseColor)
   love.graphics.printf(ttext,tx,ty+thoff,tw,"center")
-  if self._barValue >= 1 then
+  if self._barValueDrawn >= 1 then
     love.graphics.setColor(self._barColorFull)
   else
     love.graphics.setColor(self._barColor)
   end
   love.graphics.rectangle("fill",bx,by,bw,bh)
   love.graphics.setScissor(bx,by,bw,bh)
-  if self._barValue >= 1 then
+  if self._barValueDrawn >= 1 then
     love.graphics.setColor(self._textColorFull)
   else
     love.graphics.setColor(self._textColor)
@@ -119,6 +120,21 @@ function barlib:draw()
 end
 
 function barlib:update(dt)
+
+  if self._barValueDrawn < self._barValue then
+    if self._barValueDrawn + dt > self._barValue then
+      self._barValueDrawn = self._barValue
+    else
+      self._barValueDrawn = self._barValueDrawn + dt
+    end
+  elseif self._barValueDrawn > self._barValue then
+    if self._barValueDrawn - dt < self._barValue then
+      self._barValueDrawn = self._barValue
+    else
+      self._barValueDrawn = self._barValueDrawn - dt
+    end
+  end
+
   local mx,my = love.mouse.getPosition()
   self._hover = mx >= self._x and my >= self._y and
     mx <= self._x + self._width and my <= self._y + self._height

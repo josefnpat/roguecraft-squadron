@@ -210,6 +210,7 @@ function client:enter()
   self.moveanim = libs.moveanim.new()
   self.controlgroups = libs.controlgroups.new()
   self.chat = libs.chat.new()
+  self.tutorial = libs.tutorial.new()
   self.countdown = libs.countdown.new{
     text="Evacuate Sector",
     subtext="Get your ships into the wormhole before it collapses.",
@@ -320,6 +321,9 @@ function client:stackSide()
 
   self.chat:setX(love.graphics:getWidth() - self.chat:getWidth() - 32)
   self.chat:setY(love.graphics:getHeight() - self.chat:getHeight() - 32)
+
+  self.tutorial:setX(love.graphics:getWidth() - self.tutorial:getWidth() - 32)
+  self.tutorial:setY(32)
 
   self.countdown:setX( (love.graphics:getWidth()-self.countdown:getWidth())/2 )
   self.countdown:setY(32)
@@ -677,6 +681,7 @@ function client:update(dt)
   self.moveanim:update(dt)
   self.notif:update(dt)
   self.chat:update(dt)
+  self.tutorial:update(dt)
   self.countdown:update(dt)
   self:stackSide()
   self.matchstats:update(dt)
@@ -909,7 +914,8 @@ function client:mouseInsideUI()
     self.actionpanel:mouseInside() or
     self.buildqueue:mouseInside() or
     self.selection:mouseInside() or
-    self.chat:mouseInside()
+    self.chat:mouseInside() or
+    self.tutorial:mouseInside()
 end
 
 function client:CartArchSpiral(initRad,turnDistance,angle)
@@ -1031,6 +1037,8 @@ function client:mousepressed(x,y,button)
     elseif self.selection:mouseInside(x,y) then
       -- nop
     elseif self.chat:mouseInside(x,y) then
+      -- nop
+    elseif self.tutorial:mouseInside(x,y) then
       -- nop
     else
       self.selection:start(
@@ -1387,7 +1395,6 @@ function client:draw()
   self.notif:draw()
   if self.gamestatus:isStarted() then
     self.countdown:draw(self.time)
-    self.mpdisconnect:draw()
 
     -- can't use self.windows here
     if self.mpresearch:isActive() then
@@ -1396,6 +1403,8 @@ function client:draw()
     if self.mptips:isActive() then
       self.mptips:draw()
     end
+    self.tutorial:draw(self.camera)
+    self.mpdisconnect:draw()
 
   else
     self.mpconnect:draw(self.config,self.players,self.user_count)

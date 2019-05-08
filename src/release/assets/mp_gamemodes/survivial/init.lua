@@ -9,4 +9,7 @@ gamemode.map_size = 5
 gamemode.every_ship_unlocked = true
 gamemode.guide_text = [[This simulation is the no-win situation, colloquially known as the Kobayashi Maru.]]
 
+gamemode.configurableTeam = false
+gamemode.configurableDiff = true
+
 return gamemode

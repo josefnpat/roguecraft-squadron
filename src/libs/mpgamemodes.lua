@@ -1,7 +1,7 @@
 local mpgamemodes = {}
 
 function mpgamemodes.load(loadAssets)
-  mpgamemodes._gamemodes = {}
+  mpgamemodes._allGamemodes = {}
   mpgamemodes._dir = "assets/mp_gamemodes/"
   for _,filename in pairs(file.getAllDirectoryItems(mpgamemodes._dir)) do
     local gamemode = require(filename)
@@ -9,9 +9,9 @@ function mpgamemodes.load(loadAssets)
       gamemode.image = love.graphics.newImage(filename.."/image.png")
     end
     gamemode.dir = filename
-    table.insert(mpgamemodes._gamemodes,gamemode)
+    table.insert(mpgamemodes._allGamemodes,gamemode)
   end
-  table.sort(mpgamemodes._gamemodes,function(a,b)
+  table.sort(mpgamemodes._allGamemodes,function(a,b)
     return a.weight < b.weight
   end)
 end
@@ -33,15 +33,33 @@ function mpgamemodes.new(init)
   self._currentLevel = nil
   self._currentLevelData = nil
 
+  self._gamemodes = {}
+  for _,gamemode in pairs(mpgamemodes._allGamemodes) do
+
+    local add_to_modes = true
+    if gamemode.single_player_only then
+      add_to_modes = game_singleplayer
+    end
+    if gamemode.multi_player_only then
+      add_to_modes = not game_singleplayer
+    end
+
+    if add_to_modes then
+      table.insert(self._gamemodes,gamemode)
+    end
+
+  end
+
   return self
 end
 
 function mpgamemodes:getGamemodes()
-  return mpgamemodes._gamemodes
+  return self._gamemodes
 end
 
+-- this function can be called without reference to the object as well
 function mpgamemodes:getGamemodeById(id)
-  for _,v in pairs(mpgamemodes._gamemodes) do
+  for _,v in pairs(self._gamemodes or self._allGamemodes) do
     if v.id == id then
       return v
     end

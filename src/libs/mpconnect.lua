@@ -240,7 +240,8 @@ function mpconnect:update(dt)
 
     local gamemode_object = self.mpgamemodes:getGamemodeById(self.gamemode)
     for _,player_data in pairs(self._data) do
-      player_data:setConfigurable(gamemode_object.configurable)
+      player_data:setConfigurableTeam(gamemode_object.configurable_team)
+      player_data:setConfigurableDiff(gamemode_object.configurable_diff)
     end
     self.start:update(dt)
     self.chat:smallHeight()
