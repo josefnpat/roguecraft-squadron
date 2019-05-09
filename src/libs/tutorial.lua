@@ -18,7 +18,8 @@ function tutorial.new(init)
   self._font = init.font or fonts.default
   self._image = init.image or tutorial.image
   self._padding = init.padding or 8
-  self._objectiveHeight = init.objectiveHeight or 32
+  self._objectiveHeight = init.objectiveHeight or 40
+  self._textPercent = 0
 
   self._x = 32
   self.getX = tutorial.getX
@@ -60,11 +61,11 @@ function tutorial:draw(camera)
       local width, wrapped_text = self._font:getWrap(obj_text,text_width)
       local text_height = #wrapped_text*self._font:getHeight()
       local text_offset = (self._image:getHeight()-text_height)/2
-      dropshadowf(obj_text,
+      dropshadowf(string.sub(obj_text,1,string.len(obj_text)*self._textPercent),
         self._x+self._padding,
         self._y+text_offset,
         text_width,
-        "center")
+        "left")
     end
 
     love.graphics.setColor(255,255,255)
@@ -84,7 +85,17 @@ end
 function tutorial:update(dt)
   if self._active then
 
+    self._textPercent = math.min(1,self._textPercent + dt/4)
+
+    local found_current = nil
     for _,objective in pairs(self._objectives) do
+      if objective == self._currentObjective then
+        found_current = true
+        objective._bar:setAlpha(255)
+      else
+        objective._bar:setAlpha(found_current and 63 or 255)
+      end
+
       objective._bar:update(dt)
     end
 
@@ -95,6 +106,9 @@ function tutorial:update(dt)
       local complete, percent = self._currentObjective:getValue()
       if complete then
         self._currentObjective:onComplete()
+        self._currentObjective:update(dt)
+        self._textPercent = 0
+        libs.sfx.play("widget.success")
         local nextObjective = nil
         for objectiveIndex,objective in pairs(self._objectives) do
           if objective == self._currentObjective then

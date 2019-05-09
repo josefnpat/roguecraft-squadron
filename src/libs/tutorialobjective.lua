@@ -31,10 +31,11 @@ function tutorialobjective.new(init)
   self._bar = libs.bar.new{
     width=320,
     padding=0,
-    iconPadding=0,
-    iconWidth=0,
+    -- iconPadding=0,
+    -- iconWidth=0,
     barWidth=0,
     drawbg=false,
+    icon=init.icon,
   }
 
   self:updateUI()

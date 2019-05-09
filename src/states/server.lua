@@ -175,6 +175,7 @@ function server.maps.random.generate(storage,config)
 end
 
 server.maps.training = {}
+
 function server.maps.training.generate(storage,config)
 
   local mapsize = libs.net.mapSizes[storage.config.mapsize].value
@@ -386,6 +387,16 @@ end
 function server:findObject(index)
   if index == nil then return end
   return libs.net.findObject(self.lovernet:getStorage().objects,index)
+end
+
+function server:findObjectsOfType(type)
+  local objects = {}
+  for _,object in pairs(self.lovernet:getStorage().objects) do
+    if object.type == type then
+      table.insert(objects,object)
+    end
+  end
+  return objects
 end
 
 function server:generatePlayers(users,storage)

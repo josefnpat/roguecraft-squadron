@@ -30,6 +30,7 @@ function barlib.new(init)
   self._barHeight = init.barHeight or 2
   self._barWidth = init.barWidth or 2
   self._barEnable = init.barEnable or true
+  self._alpha = init.alpha or 255
   self._hover = false
   self.draw = barlib.draw
   self.update = barlib.update
@@ -53,6 +54,7 @@ function barlib.new(init)
   self.setBarWid7th = barlib.setBarWidth
   self.setBarEnable = barlib.setBarEnable
   self.getBarEnable = barlib.getBarEnable
+  self.setAlpha = barlib.setAlpha
   self.mouseInside = barlib.mouseInside
 
   return self
@@ -69,6 +71,7 @@ function barlib:draw()
     love.graphics.rectangle("line",self._x,self._y,self._width,self._height)
   end
   if self._icon then
+    love.graphics.setColor(255,255,255,self._alpha)
     love.graphics.draw(self._icon,
       self._x+self._width-self._icon:getWidth()-self._padding,
       self._y+self._height-self._icon:getHeight()-self._padding
@@ -76,7 +79,11 @@ function barlib:draw()
   end
   local iconw = self._icon and self._icon:getWidth() or self._iconWidth
   local iconh = self._icon and self._icon:getWidth() or self._iconWidth
-  love.graphics.setColor(self._color)
+  love.graphics.setColor(
+    self._color[1],
+    self._color[2],
+    self._color[3],
+    self._color[4] or self._alpha)
   love.graphics.draw(barlib.img.corner,
     self._x+self._width-iconw-barlib.img.corner:getWidth()-self._padding-self._iconPadding,
     self._y+self._height-barlib.img.corner:getHeight()-self._padding)
@@ -97,19 +104,39 @@ function barlib:draw()
   local bw = (tw)*self._barValueDrawn
   local bh = self._height-self._padding*2-self._barHeight
 
-  love.graphics.setColor(self._textInverseColor)
+  love.graphics.setColor(
+    self._textInverseColor[1],
+    self._textInverseColor[2],
+    self._textInverseColor[3],
+    self._textInverseColor[4] or self._alpha)
   love.graphics.printf(ttext,tx,ty+thoff,tw,"center")
   if self._barValueDrawn >= 1 then
-    love.graphics.setColor(self._barColorFull)
+    love.graphics.setColor(
+      self._barColorFull[1],
+      self._barColorFull[2],
+      self._barColorFull[3],
+      self._barColorFull[4] or self._alpha)
   else
-    love.graphics.setColor(self._barColor)
+    love.graphics.setColor(
+      self._barColor[1],
+      self._barColor[2],
+      self._barColor[3],
+      self._barColor[4] or self._alpha)
   end
   love.graphics.rectangle("fill",bx,by,bw,bh)
   love.graphics.setScissor(bx,by,bw,bh)
   if self._barValueDrawn >= 1 then
-    love.graphics.setColor(self._textColorFull)
+    love.graphics.setColor(
+      self._textColorFull[1],
+      self._textColorFull[2],
+      self._textColorFull[3],
+      self._textColorFull[4] or self._alpha)
   else
-    love.graphics.setColor(self._textColor)
+    love.graphics.setColor(
+      self._textColor[1],
+      self._textColor[2],
+      self._textColor[3],
+      self._textColor[4] or self._alpha)
   end
   love.graphics.printf(ttext,tx,ty+thoff,tw,"center")
   love.graphics.setScissor()
@@ -214,6 +241,10 @@ end
 
 function barlib:getBarEnable(barEnable)
   return self._barEnable
+end
+
+function barlib:setAlpha(val)
+  self._alpha = val
 end
 
 function barlib:mouseInside()

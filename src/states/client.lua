@@ -866,7 +866,7 @@ function client:update(dt)
 
     self.mptips:update(dt)
 
-  else
+  elseif self.gamestatus:isStarted() then
 
     if not self.chat:getActive() and love.keyboard.isDown("space") then
       self:centerCamera()
