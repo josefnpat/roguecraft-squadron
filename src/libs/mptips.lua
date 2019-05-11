@@ -28,6 +28,7 @@ function mptips.new(init)
 
   self.changeCurrent = mptips.changeCurrent
   self.setActive = mptips.setActive
+  self.getActive = mptips.getActive
   self.getMaxTextHeight = mptips.getMaxTextHeight
   self.getText = mptips.getText
   self.getTextWidth = mptips.getTextWidth
@@ -78,6 +79,10 @@ function mptips:setActive(val)
     settings:write("tips",false)
   end
   self._active = val
+end
+
+function mptips:getActive()
+  return self._active
 end
 
 function mptips:getMaxTextHeight()

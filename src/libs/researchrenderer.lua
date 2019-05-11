@@ -85,7 +85,7 @@ function researchrenderer.load(loadAssets,preset_value)
 end
 
 function researchrenderer.isLoaded()
-  return type(data) ~= nil
+  return type(data) == "table"
 end
 
 function researchrenderer.getResearchableObjects(list,startObject)

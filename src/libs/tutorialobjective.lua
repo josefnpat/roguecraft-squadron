@@ -28,6 +28,11 @@ function tutorialobjective.new(init)
   self._onComplete = init.onComplete
   self.onComplete = tutorialobjective.onComplete
 
+  self._fade = 1
+  self.updateFade = tutorialobjective.updateFade
+  self.getFade = tutorialobjective.getFade
+
+
   self._bar = libs.bar.new{
     width=320,
     padding=0,
@@ -94,6 +99,15 @@ function tutorialobjective:onComplete()
   if self._onComplete then
     return self._onComplete(self)
   end
+end
+
+function tutorialobjective:updateFade(dt)
+  self._fade = math.max(0,self._fade - dt/4)
+  self._bar:setAlpha(self._fade*255)
+end
+
+function tutorialobjective:getFade()
+  return self._fade
 end
 
 return tutorialobjective

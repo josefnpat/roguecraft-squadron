@@ -189,7 +189,7 @@ function server.maps.training.generate(storage,config)
   for object_type,object_count in pairs(mapGenDefault) do
     for i = 1,object_count do
       local t = math.pi*2*math.random()
-      local r = mapsize+math.random(-512,512)-512
+      local r = mapsize+math.random(-512,512)-512-256
       local x = r*math.cos(t)
       local y = r*math.sin(t)
       server.createObject(storage,object_type,x,y,nil)

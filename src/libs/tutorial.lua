@@ -30,6 +30,7 @@ function tutorial.new(init)
   self._width = 320
   self.getWidth = tutorial.getWidth
   self.setWidth = tutorial.setWidth
+  self.activeObjectiveCount = tutorial.activeObjectiveCount
   self.getHeight = tutorial.getHeight
 
   return self
@@ -77,6 +78,9 @@ function tutorial:draw(camera)
       objective:draw(
         self._x,self._y+top_height+self._objectiveHeight*(objective_index-1),
         self._width,self._objectiveHeight)
+      if objective == self._currentObjective then
+        break
+      end
     end
 
   end
@@ -88,14 +92,20 @@ function tutorial:update(dt)
     self._textPercent = math.min(1,self._textPercent + dt/4)
 
     local found_current = nil
-    for _,objective in pairs(self._objectives) do
+    for objective_index,objective in pairs(self._objectives) do
       if objective == self._currentObjective then
         found_current = true
         objective._bar:setAlpha(255)
       else
-        objective._bar:setAlpha(found_current and 63 or 255)
+        if found_current then
+          objective._bar:setAlpha(63)
+        else
+          objective:updateFade(dt)
+          if objective:getFade() <= 0 then
+            table.remove(self._objectives,objective_index)
+          end
+        end
       end
-
       objective._bar:update(dt)
     end
 
@@ -171,8 +181,19 @@ function tutorial:setWidth(val)
   self._width = val
 end
 
+function tutorial:activeObjectiveCount()
+  local count = 0
+  for _,objective in pairs(self._objectives) do
+    if objective == self._currentObjective then
+      return count+1
+    end
+    count = count + 1
+  end
+  return count
+end
+
 function tutorial:getHeight()
-  return self._image:getHeight()+self._padding*2+self._objectiveHeight*#self._objectives
+  return self._image:getHeight()+self._padding*2+self._objectiveHeight*self:activeObjectiveCount()
 end
 
 return tutorial

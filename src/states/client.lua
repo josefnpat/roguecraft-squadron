@@ -1394,8 +1394,8 @@ function client:draw()
 
   self.notif:draw()
   if self.gamestatus:isStarted() then
+    self.tutorial:draw(self.camera)
     self.countdown:draw(self.time)
-
     -- can't use self.windows here
     if self.mpresearch:isActive() then
       self.mpresearch:draw(self.user,self.resources,self.points)
@@ -1403,7 +1403,6 @@ function client:draw()
     if self.mptips:isActive() then
       self.mptips:draw()
     end
-    self.tutorial:draw(self.camera)
     self.mpdisconnect:draw()
 
   else
