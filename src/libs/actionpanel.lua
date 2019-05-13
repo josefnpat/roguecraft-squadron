@@ -2,7 +2,7 @@ local actionpanel = {}
 
 function actionpanel.new(init)
   init = init or {}
-  local self = {}
+  local self = libs.drawable.new(init)
 
   self._x = init.x or 32
   self._y = init.y or 32
@@ -18,11 +18,11 @@ function actionpanel.new(init)
   self.setX = actionpanel.setX
   self.setY = actionpanel.setY
   self.showPanel = actionpanel.showPanel
-
+  self._width = 192
   self.panel = libs.matrixpanel.new{
     x=self._x,
     y=self._y,
-    width=192,
+    width=self._width,
     padding=1,
   }
 
@@ -30,6 +30,7 @@ function actionpanel.new(init)
 end
 
 function actionpanel:update(dt)
+  self:updateHint(dt)
   self.panel:update(dt)
 end
 

@@ -4,7 +4,7 @@ tutorial.image = love.graphics.newImage("assets/hud/guide.png")
 
 function tutorial.new(init)
   init = init or {}
-  local self = {}
+  local self = libs.drawable.new(init)
 
   self.draw = tutorial.draw
   self.update = tutorial.update
@@ -21,15 +21,15 @@ function tutorial.new(init)
   self._objectiveHeight = init.objectiveHeight or 40
   self._textPercent = 0
 
-  self._x = 32
-  self.getX = tutorial.getX
-  self.setX = tutorial.setX
-  self._y = 32
-  self.getY = tutorial.getY
-  self.setY = tutorial.setY
+  -- self._x = 32
+  -- self.getX = tutorial.getX
+  -- self.setX = tutorial.setX
+  -- self._y = 32
+  -- self.getY = tutorial.getY
+  -- self.setY = tutorial.setY
   self._width = 320
-  self.getWidth = tutorial.getWidth
-  self.setWidth = tutorial.setWidth
+  -- self.getWidth = tutorial.getWidth
+  -- self.setWidth = tutorial.setWidth
   self.activeObjectiveCount = tutorial.activeObjectiveCount
   self.getHeight = tutorial.getHeight
 
@@ -50,6 +50,10 @@ function tutorial:draw(camera)
         local tx = sx-camera.x+love.graphics.getWidth()/2
         local ty = sy-camera.y+love.graphics.getHeight()/2
         love.graphics.line(self._x,self._y+height,tx,ty)
+      end
+      local hint = self._currentObjective:getHint()
+      if hint then
+        hint:drawHint()
       end
     end
 
@@ -157,29 +161,29 @@ function tutorial:mouseInside()
   return false
 end
 
-function tutorial:getX()
-  return self._x
-end
-
-function tutorial:setX(val)
-  self._x = val
-end
-
-function tutorial:getY()
-  return self._y
-end
-
-function tutorial:setY(val)
-  self._y = val
-end
-
-function tutorial:getWidth()
-  return self._width
-end
-
-function tutorial:setWidth(val)
-  self._width = val
-end
+-- function tutorial:getX()
+--   return self._x
+-- end
+--
+-- function tutorial:setX(val)
+--   self._x = val
+-- end
+--
+-- function tutorial:getY()
+--   return self._y
+-- end
+--
+-- function tutorial:setY(val)
+--   self._y = val
+-- end
+--
+-- function tutorial:getWidth()
+--   return self._width
+-- end
+--
+-- function tutorial:setWidth(val)
+--   self._width = val
+-- end
 
 function tutorial:activeObjectiveCount()
   local count = 0

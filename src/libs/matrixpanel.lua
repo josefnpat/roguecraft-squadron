@@ -4,7 +4,7 @@ matrixpanel.icon_bg = love.graphics.newImage("assets/hud/icon_bg.png")
 
 function matrixpanel.new(init)
   init = init or {}
-  local self = {}
+  local self = libs.drawable.new(init)
 
   self._drawbg = init.drawbg == nil and true or init.drawbg
   self._icon_bg = init.icon_bg or matrixpanel.icon_bg
@@ -20,11 +20,7 @@ function matrixpanel.new(init)
   self.draw = matrixpanel.draw
   self.update = matrixpanel.update
 
-  self.setX = matrixpanel.setX
-  self.setY = matrixpanel.setY
-  self.setWidth = matrixpanel.setWidth
   self.getHeight = matrixpanel.getHeight
-  self.getWidth = matrixpanel.getWidth
   self.setIconPadding = matrixpanel.setIconPadding
   self.clearActions = matrixpanel.clearActions
   self.addAction = matrixpanel.addAction
@@ -76,10 +72,6 @@ function matrixpanel:getHeight()
   return math.ceil(#self._actions/row)*iconsize+ipad*2
 end
 
-function matrixpanel:getWidth()
-  return self._width
-end
-
 function matrixpanel:draw(bg,fg)
   if debug_hide_hud then
     return
@@ -129,6 +121,7 @@ function matrixpanel:draw(bg,fg)
 end
 
 function matrixpanel:update(dt)
+  self:updateHint(dt)
   local found
   local mx,my = love.mouse.getPosition()
   for ai,action in pairs(self._actions) do
@@ -152,14 +145,6 @@ function matrixpanel:update(dt)
   if found then
     found.hover = true
   end
-end
-
-function matrixpanel:setX(val)
-  self._x = val
-end
-
-function matrixpanel:setY(val)
-  self._y = val
 end
 
 function matrixpanel:clearActions()

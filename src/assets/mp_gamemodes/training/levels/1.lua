@@ -49,7 +49,7 @@ function level:init(server)
   server.createObject(self.storage,"station_training",0,0,self.player)
 
   scope.end_mission_ship = server.createObject(self.storage,"dojeer_turret_large",2048,2048,self.badguy)
-  scope.ship = server.createObject(self.storage,"combat",-128,128,self.player)
+  scope.ship = server.createObject(self.storage,"fighter",-128,128,self.player)
 
   states.client.tutorial:clear()
   states.client.tutorial:setActive(true)
@@ -96,7 +96,7 @@ function level:init(server)
     end,
     onComplete=function()
       for i = 1,3 do
-        local ship = server.createObject(self.storage,"combat",0,0,self.player)
+        local ship = server.createObject(self.storage,"fighter",0,0,self.player)
         local t = math.pi*2*math.random()
         local r = 128
         local x = r*math.cos(t)
@@ -118,7 +118,7 @@ function level:init(server)
     onComplete=function()
       for x = -1,1,2 do
         for y = -1,1,2 do
-          local enemy = server.createObject(self.storage,"dojeer_fighter",x*1024,y*1024,self.badguy)
+          local enemy = server.createObject(self.storage,"dojeer_scout",x*1024,y*1024,self.badguy)
           table.insert(scope.enemies,enemy)
         end
       end
@@ -159,8 +159,8 @@ function level:init(server)
   scope.habitat_count = 0
 
   states.client.tutorial:addObjective(libs.tutorialobjective.new{
-    text="I've jumped in a command ship for you. Let's build a habitat.",
-    status="Build a habitat.",
+    text="I've jumped in a Command ship for you. Let's build a Habitat.",
+    status="Build a Habitat.",
     icon=love.graphics.newImage("assets/mp_objects/habitat/icons/1.png"),
     value=function()
       local habitats = server:findObjectsOfType("habitat")
@@ -171,15 +171,20 @@ function level:init(server)
     target=function()
       return scope.command
     end,
+    hint=function()
+      if states.client.actionpanel:showPanel() then
+        return states.client.actionpanel
+      end
+    end,
   })
 
   scope.crew = 0
   scope.crew_target = 25
 
   states.client.tutorial:addObjective(libs.tutorialobjective.new{
-    text="The habitats generate crew over time to make sure we have extra crew compliment. Collect "..scope.crew_target.." crew.",
+    text="The habitats generate crew over time to make sure we have extra crew compliment. Collect "..scope.crew_target.." Crew.",
     status=function()
-      return "Collect crew. ("..scope.crew.."/"..scope.crew_target..")"
+      return "Collect Crew. ("..scope.crew.."/"..scope.crew_target..")"
     end,
     icon=love.graphics.newImage("assets/actions/collect.png"),
     value=function()
@@ -189,6 +194,9 @@ function level:init(server)
     target=function()
       return scope.first_habitat
     end,
+    hint=function()
+      return states.client.resources.resourceBars["crew"]
+    end,
     onComplete=function()
       self.player.resources["material"] = 400
     end,
@@ -197,9 +205,9 @@ function level:init(server)
   scope.scrapper_count = 0
 
   states.client.tutorial:addObjective(libs.tutorialobjective.new{
-    text="We're going to need a strong economy. Let's build some scrappers.",
+    text="We're going to need a strong economy. Let's build some Scrappers.",
     status=function()
-      return "Build four scrappers ("..scope.scrapper_count.."/4)."
+      return "Build four Scrappers ("..scope.scrapper_count.."/4)."
     end,
     icon=love.graphics.newImage("assets/mp_objects/salvager/icons/1.png"),
     value=function()
@@ -211,15 +219,20 @@ function level:init(server)
     target=function()
       return scope.command
     end,
+    hint=function()
+      if states.client.actionpanel:showPanel() then
+        return states.client.actionpanel
+      end
+    end,
   })
 
   scope.material = 0
   scope.material_target = 600
 
   states.client.tutorial:addObjective(libs.tutorialobjective.new{
-    text="Scrappers collect material from scrap that can be found on the map. Gather "..scope.material_target.." material.",
+    text="Scrappers collect Material from Scrap that can be found on the map. Gather "..scope.material_target.." Material.",
     status=function()
-      return "Gather material. ("..scope.material.."/"..scope.material_target..")"
+      return "Gather Material. ("..scope.material.."/"..scope.material_target..")"
     end,
     icon=love.graphics.newImage("assets/actions/collect.png"),
     value=function()
@@ -229,9 +242,13 @@ function level:init(server)
     target=function()
       return scope.first_scrapper
     end,
+    hint=function()
+      return states.client.resources.resourceBars["material"]
+    end,
     onComplete=function()
       for i = 1,2 do
         local ship = server.createObject(self.storage,"research",0,0,self.player)
+        scope.first_research = scope.first_research or ship
         local t = math.pi*2*math.random()
         local r = 128
         local x = r*math.cos(t)
@@ -241,10 +258,31 @@ function level:init(server)
     end,
   })
 
+  scope.research = 0
+  scope.research_target = 20
+
   states.client.tutorial:addObjective(libs.tutorialobjective.new{
-    text="Unlock the civilian drydock. Press R, select the civilian drydock, select Unlock.",
+    text="Research is generated by Research Facilities and Command ships. Gather "..scope.research_target.." Research.",
     status=function()
-      return "Unlock civilian drydock."
+      return "Gather Research. ("..scope.research.."/"..scope.research_target..")"
+    end,
+    icon=love.graphics.newImage("assets/actions/collect.png"),
+    value=function()
+      scope.research = math.floor(self.player.resources["research"])
+      return scope.research >= scope.research_target,math.min(1,scope.research/scope.research_target)
+    end,
+    target=function()
+      return scope.first_research
+    end,
+    hint=function()
+      return states.client.resources.resourceBars["research"]
+    end,
+  })
+
+  states.client.tutorial:addObjective(libs.tutorialobjective.new{
+    text="Unlock the Civilian Drydock. Press R, select the Civilian Drydock, select Unlock.",
+    status=function()
+      return "Unlock Civilian Drydock."
     end,
     icon=love.graphics.newImage("assets/mp_objects/drydock/icons/1.png"),
     value=function()
@@ -252,14 +290,17 @@ function level:init(server)
         return libs.researchrenderer.isUnlocked(self.player,{type="drydock"})
       end
     end,
+    hint=function()
+      return states.client.buttonbar
+    end,
   })
 
   scope.drydock_count = 0
 
   states.client.tutorial:addObjective(libs.tutorialobjective.new{
-    text="Let's expand our civilian building capacity. Build a civilian drydock.",
+    text="Let's expand our civilian building capacity. Build a Civilian Drydock.",
     status=function()
-      return "Build a civilian drydock."
+      return "Build a Civilian Drydock."
     end,
     icon=love.graphics.newImage("assets/mp_objects/drydock/icons/1.png"),
     value=function()
@@ -271,12 +312,17 @@ function level:init(server)
     target=function()
       return scope.command
     end,
+    hint=function()
+      if states.client.actionpanel:showPanel() then
+        return states.client.actionpanel
+      end
+    end,
   })
 
   states.client.tutorial:addObjective(libs.tutorialobjective.new{
-    text="Unlock the military drydock. Press R, select the military drydock, select Unlock.",
+    text="Unlock the Military Drydock. Press R, select the Military Drydock, select Unlock.",
     status=function()
-      return "Unlock military drydock."
+      return "Unlock Military Drydock."
     end,
     icon=love.graphics.newImage("assets/mp_objects/advdrydock/icons/1.png"),
     value=function()
@@ -284,14 +330,17 @@ function level:init(server)
         return libs.researchrenderer.isUnlocked(self.player,{type="advdrydock"})
       end
     end,
+    hint=function()
+      return states.client.buttonbar
+    end,
   })
 
   scope.advdrydock_count = 0
 
   states.client.tutorial:addObjective(libs.tutorialobjective.new{
-    text="Let's expand our military building capacity. Build a military drydock.",
+    text="Let's expand our military building capacity. Build a Military Drydock.",
     status=function()
-      return "Build a military drydock."
+      return "Build a Military Drydock."
     end,
     icon=love.graphics.newImage("assets/mp_objects/advdrydock/icons/1.png"),
     value=function()
@@ -303,12 +352,17 @@ function level:init(server)
     target=function()
       return scope.command
     end,
+    hint=function()
+      if states.client.actionpanel:showPanel() then
+        return states.client.actionpanel
+      end
+    end,
   })
 
   states.client.tutorial:addObjective(libs.tutorialobjective.new{
-    text="Let's build a small fleet of battlestars. Press R, select the battlestar, select Unlock.",
+    text="Let's build a small fleet of Battlestars. Press R, select the Battlestar, select Unlock.",
     status=function()
-      return "Unlock battlestar."
+      return "Unlock Battlestar."
     end,
     icon=love.graphics.newImage("assets/mp_objects/combat/icons/1.png"),
     value=function()
@@ -316,41 +370,50 @@ function level:init(server)
         return libs.researchrenderer.isUnlocked(self.player,{type="combat"})
       end
     end,
+    hint=function()
+      return states.client.buttonbar
+    end,
   })
 
   scope.combat_count = 0
-
+  scope.combat_target = 3
 
   states.client.tutorial:addObjective(libs.tutorialobjective.new{
-    text="Let's expand our squadron. Gather six battlestars.",
+    text="Let's expand our squadron. Build "..scope.combat_target.." Battlestars.",
     status=function()
-      return "Gather six battlestars ("..scope.combat_count.."/6)."
+      return "Build "..scope.combat_target.." Battlestars ("..scope.combat_count.."/"..scope.combat_target..")."
     end,
     icon=love.graphics.newImage("assets/mp_objects/combat/icons/1.png"),
     value=function()
       scope.combat_count = #server:findObjectsOfType("combat")
-      return scope.combat_count >= 6,math.min(1,scope.combat_count/6)
+      return scope.combat_count >= scope.combat_target,math.min(1,scope.combat_count/scope.combat_target)
     end,
     target=function()
       return scope.first_advdrydock
+    end,
+    hint=function()
+      if states.client.actionpanel:showPanel() then
+        return states.client.actionpanel
+      end
     end,
     onComplete=function()
 
       local enemy_fleet = {}
       table.insert(enemy_fleet,"dojeer_command")
-      for i = 1,4 do
+      for i = 1,3 do
         table.insert(enemy_fleet,"dojeer_scout")
       end
-      for i = 1,3 do
+      for i = 1,2 do
         table.insert(enemy_fleet,"dojeer_fighter")
       end
-      for i = 1,2 do
+      for i = 1,1 do
         table.insert(enemy_fleet,"dojeer_combat")
       end
 
       for _,t in pairs(enemy_fleet) do
         local enemy = server.createObject(self.storage,t,2048,2048,self.badguy)
         table.insert(scope.final_enemies,enemy)
+        libs.net.moveToTarget(server,enemy,0,0,true)
       end
     end,
   })

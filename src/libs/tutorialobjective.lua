@@ -25,6 +25,9 @@ function tutorialobjective.new(init)
   self._target = init.target
   self.getTarget = tutorialobjective.getTarget
 
+  self._hint = init.hint
+  self.getHint = tutorialobjective.getHint
+
   self._onComplete = init.onComplete
   self.onComplete = tutorialobjective.onComplete
 
@@ -92,6 +95,14 @@ function tutorialobjective:getTarget()
     return self._target()
   else
     return self._target
+  end
+end
+
+function tutorialobjective:getHint()
+  if type(self._hint) == "function" then
+    return self._hint()
+  else
+    return self._hint
   end
 end
 
