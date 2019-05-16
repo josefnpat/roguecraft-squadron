@@ -48,13 +48,17 @@ function level:init(server)
   self.storage = server.lovernet:getStorage()
   assert(self.storage)
   local users = server.lovernet:getUsers()
+  self.players = {}
   for _,user in pairs(users) do
     if user.ai then
       self.invaders = user
-      break
+    else
+      table.insert(self.players,user)
     end
   end
   assert(self.invaders)
+  assert(#self.players>0)
+
   self.dt = 0
   -- Time before invasion starts
   self._offset = 60
@@ -97,6 +101,15 @@ function level:init(server)
 end
 
 function level:update(dt,server)
+
+  local count = 0
+  for _,player in pairs(self.players) do
+    print(player.count)
+    count = count + player.count
+  end
+  if count == 0 then
+    return
+  end
 
   self.dt = self.dt + dt
   self.invaders.ai:setCurrentPocket(self.invaders.ai:getRandomPocket())
