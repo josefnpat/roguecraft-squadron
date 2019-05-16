@@ -247,9 +247,7 @@ function mpresearch:canAffordAnything(user,resources)
   for _,object_type in pairs(libs.researchrenderer.getUnlockedObjects(user,self._preset)) do
     if not libs.researchrenderer.isUnlocked(user,object_type) and
       libs.researchrenderer.canAffordUnlock(user,object_type,points) then
-
       return true
-
     end
   end
   return false
@@ -297,6 +295,13 @@ function mpresearch:buildData(user,resources)
       end,
       function()
         return object_type.loc.name
+      end,
+      nil,
+      nil,
+      function()
+        if self._currentObject == object_type.type then
+          return {246,197,42}
+        end
       end
     )
   end

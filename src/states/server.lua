@@ -206,8 +206,8 @@ function server.generatePlayer(storage,user,pocket,gen)
   local x,y
   if pocket then
     local t = math.random()*math.pi*2
-    x = pocket.x + math.cos(t)*512
-    y = pocket.y + math.sin(t)*512
+    x = pocket.x + math.cos(t)*mapsize/4
+    y = pocket.y + math.sin(t)*mapsize/4
   else
     x = math.random(-mapsize,mapsize)
     y = math.random(-mapsize,mapsize)

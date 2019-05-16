@@ -1234,6 +1234,7 @@ function client:keypressed(key)
     end
 
     if self.chat:getActive() then
+
       if key == "backspace" then
         local buffer = self.chat:getBuffer()
         local byteoffset = utf8.offset(buffer, -1)
@@ -1242,6 +1243,7 @@ function client:keypressed(key)
         end
         self.chat:setBuffer(buffer)
       end
+
     else
 
       if key == "rshift" then
@@ -1269,6 +1271,32 @@ function client:keypressed(key)
           self.actionpanel:runAction(akey_index)
           break
         end
+      end
+
+      if key == "f1" or key == "f2" then
+
+        local civilian,military = {},{}
+
+        for _,object in pairs(self.objects) do
+          if object.user == self.user.id then
+            local object_type = libs.objectrenderer.getType(object.type)
+            if object_type.speed then
+              if object_type.shoot then
+                table.insert(military,object)
+              else
+                table.insert(civilian,object)
+              end
+            end
+          end
+        end
+
+        if key == "f1" then
+          self.selection:setSelected(civilian)
+        end
+        if key == "f2" then
+          self.selection:setSelected(military)
+        end
+
       end
 
     end

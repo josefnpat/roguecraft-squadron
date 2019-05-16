@@ -102,6 +102,14 @@ function matrixpanel:draw(bg,fg)
       love.graphics.setColor(255,255,255)
       dropshadow(action.iconShortcutKey,ix,iy)
     end
+
+    if action.stroke then
+      local stroke = action.stroke()
+      if stroke then
+        love.graphics.setColor(stroke)
+        love.graphics.rectangle("line",x+0.5,y+0.5,w-1,h-1)
+      end
+    end
   end
   love.graphics.setColor(255,255,255)
   if self._hover then
@@ -151,7 +159,7 @@ function matrixpanel:clearActions()
   self._actions = {}
 end
 
-function matrixpanel:addAction(image,callback,color,text,weight,iconShortcutKey)
+function matrixpanel:addAction(image,callback,color,text,weight,iconShortcutKey,stroke)
   table.insert(self._actions,{
     image = image,
     callback = callback,
@@ -159,6 +167,7 @@ function matrixpanel:addAction(image,callback,color,text,weight,iconShortcutKey)
     text = text,
     weight = weight,
     iconShortcutKey = iconShortcutKey,
+    stroke = stroke,
   })
 end
 

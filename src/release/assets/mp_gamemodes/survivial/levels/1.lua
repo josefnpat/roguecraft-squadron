@@ -104,7 +104,6 @@ function level:update(dt,server)
 
   local count = 0
   for _,player in pairs(self.players) do
-    print(player.count)
     count = count + player.count
   end
   if count == 0 then
