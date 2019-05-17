@@ -8,8 +8,9 @@ fearful hivemind race, hellbent on the end of humanity, come charging for earth.
 It's up to Ruby to end this siege at any cost, even her own humanity.]]
 gamemode.start_level = "1"
 gamemode.disabled = "Coming this summer!"
-gamemode.configurableTeam = false
-gamemode.configurableDiff = false
+gamemode.configurable = false
+gamemode.configurable_team = false
+gamemode.configurable_diff = false
 gamemode.weight = 300
 
 return gamemode
