@@ -937,7 +937,7 @@ end
 
 function server:newGame(soft)
 
-  print('Server starting new game')
+  print('Server starting new game ('..(soft and "soft" or "hard")..')')
 
   local storage = self.lovernet:getStorage()
   if not soft then
