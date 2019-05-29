@@ -232,7 +232,7 @@ function server.generatePlayer(storage,user,pocket,gen)
 end
 
 function server.updateCargo(storage,user)
-  for _,object in pairs(storage.objects) do
+  -- for _,object in pairs(storage.objects) do
 
     for _,restype in pairs(libs.net.resourceTypes) do
       user.cargo[restype] = 0
@@ -255,7 +255,7 @@ function server.updateCargo(storage,user)
       end
     end
 
-  end
+  -- end
 end
 
 function server.objectCanAfford(object_type,user,storage)
