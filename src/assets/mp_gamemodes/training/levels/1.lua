@@ -28,6 +28,9 @@ function level:init(server)
   self.storage = server.lovernet:getStorage()
   assert(self.storage)
   local users = server.lovernet:getUsers()
+  -- level does not reset as an empty object!
+  self.badguy = nil
+  self.player = nil
   for _,user in pairs(users) do
     if user.ai then
       self.badguy = user
