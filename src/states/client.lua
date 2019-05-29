@@ -194,6 +194,7 @@ function client:enter()
   self.menu_enabled = false
   self.focusObject = nil
   self.config = nil
+  self.fade_in = nil
   self.level = {}
 
   self.notif = libs.notif.new()
