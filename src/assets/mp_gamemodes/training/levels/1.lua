@@ -128,6 +128,8 @@ function level:init(server)
     end,
   })
 
+  local command_type = isRelease() and "command_training" or "command_training_demo"
+
   states.client.tutorial:addObjective(libs.tutorialobjective.new{
     text="Let's practice some shooting. Right mouse click on enemies to attack them.",
     status="Destroy nearby enemies.",
@@ -153,7 +155,7 @@ function level:init(server)
       end
     end,
     onComplete=function()
-      scope.command = server.createObject(self.storage,"command_training",0,0,self.player)
+      scope.command = server.createObject(self.storage,command_type,0,0,self.player)
       self.player.resources["material"] = 100
       libs.net.moveToTarget(server,scope.command,128,128,true)
     end,
@@ -282,6 +284,8 @@ function level:init(server)
     end,
   })
 
+  local drydock_type = isRelease() and "drydock" or "drydock_demo"
+
   states.client.tutorial:addObjective(libs.tutorialobjective.new{
     text="Unlock the Civilian Drydock. Press R, select the Civilian Drydock, select Unlock.",
     status=function()
@@ -290,7 +294,7 @@ function level:init(server)
     icon=love.graphics.newImage("assets/mp_objects/drydock/icons/1.png"),
     value=function()
       if libs.researchrenderer.isLoaded() then
-        return libs.researchrenderer.isUnlocked(self.player,{type="drydock"})
+        return libs.researchrenderer.isUnlocked(self.player,{type=drydock_type})
       end
     end,
     hint=function()
@@ -307,7 +311,7 @@ function level:init(server)
     end,
     icon=love.graphics.newImage("assets/mp_objects/drydock/icons/1.png"),
     value=function()
-      local drydocks = server:findObjectsOfType("drydock")
+      local drydocks = server:findObjectsOfType(drydock_type)
       scope.first_drydock = drydocks[1]
       scope.drydock_count = #drydocks
       return scope.drydock_count >= 1,math.min(1,scope.drydock_count)
@@ -322,6 +326,8 @@ function level:init(server)
     end,
   })
 
+  local advdrydock_type = isRelease() and "advdrydock" or "advdrydock_demo"
+
   states.client.tutorial:addObjective(libs.tutorialobjective.new{
     text="Unlock the Military Drydock. Press R, select the Military Drydock, select Unlock.",
     status=function()
@@ -330,7 +336,7 @@ function level:init(server)
     icon=love.graphics.newImage("assets/mp_objects/advdrydock/icons/1.png"),
     value=function()
       if libs.researchrenderer.isLoaded() then
-        return libs.researchrenderer.isUnlocked(self.player,{type="advdrydock"})
+        return libs.researchrenderer.isUnlocked(self.player,{type=advdrydock_type})
       end
     end,
     hint=function()
@@ -347,7 +353,7 @@ function level:init(server)
     end,
     icon=love.graphics.newImage("assets/mp_objects/advdrydock/icons/1.png"),
     value=function()
-      local advdrydock = server:findObjectsOfType("advdrydock")
+      local advdrydock = server:findObjectsOfType(advdrydock_type)
       scope.first_advdrydock = advdrydock[1]
       scope.advdrydock_count = #advdrydock
       return scope.advdrydock_count >= 1,math.min(1,scope.advdrydock_count)
