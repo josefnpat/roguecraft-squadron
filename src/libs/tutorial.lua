@@ -36,7 +36,7 @@ function tutorial.new(init)
   return self
 end
 
-function tutorial:draw(camera)
+function tutorial:draw(camera,showline)
   if self._active then
 
     local height = self:getHeight()
@@ -44,7 +44,7 @@ function tutorial:draw(camera)
 
     if self._currentObjective then
       local target = self._currentObjective:getTarget()
-      if target then
+      if target and showline then
         love.graphics.setColor(0,255,255)
         local sx,sy = libs.net.getCurrentLocation(target)
         local tx = sx-camera.x+love.graphics.getWidth()/2
