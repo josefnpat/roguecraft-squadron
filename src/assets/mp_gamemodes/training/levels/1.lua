@@ -285,6 +285,7 @@ function level:init(server)
   })
 
   local drydock_type = isRelease() and "drydock" or "drydock_demo"
+  local drydock_action
 
   states.client.tutorial:addObjective(libs.tutorialobjective.new{
     text="Unlock the Civilian Drydock. Press R, select the Civilian Drydock, select Unlock.",
@@ -298,7 +299,18 @@ function level:init(server)
       end
     end,
     hint=function()
-      return states.client.buttonbar
+      for _,action in pairs(states.client.buttonbar._actions) do
+        if action._name == "research" then
+          return action._drawable
+        end
+      end
+    end,
+    onStart=function()
+      drydock_action = states.client.mpresearch:getObjectSelectAction(drydock_type)
+      drydock_action._drawable:setHint(true)
+    end,
+    onComplete=function()
+      drydock_action._drawable:setHint(false)
     end,
   })
 
@@ -327,6 +339,7 @@ function level:init(server)
   })
 
   local advdrydock_type = isRelease() and "advdrydock" or "advdrydock_demo"
+  local advdrydock_action
 
   states.client.tutorial:addObjective(libs.tutorialobjective.new{
     text="Unlock the Military Drydock. Press R, select the Military Drydock, select Unlock.",
@@ -340,7 +353,18 @@ function level:init(server)
       end
     end,
     hint=function()
-      return states.client.buttonbar
+      for _,action in pairs(states.client.buttonbar._actions) do
+        if action._name == "research" then
+          return action._drawable
+        end
+      end
+    end,
+    onStart=function()
+      advdrydock_action = states.client.mpresearch:getObjectSelectAction(advdrydock_type)
+      advdrydock_action._drawable:setHint(true)
+    end,
+    onComplete=function()
+      advdrydock_action._drawable:setHint(false)
     end,
   })
 
@@ -368,6 +392,9 @@ function level:init(server)
     end,
   })
 
+  local combat_type = "combat"
+  local combat_action
+
   states.client.tutorial:addObjective(libs.tutorialobjective.new{
     text="Let's build a small fleet of Battlestars. Press R, select the Battlestar, select Unlock.",
     status=function()
@@ -376,11 +403,22 @@ function level:init(server)
     icon=love.graphics.newImage("assets/mp_objects/combat/icons/1.png"),
     value=function()
       if libs.researchrenderer.isLoaded() then
-        return libs.researchrenderer.isUnlocked(self.player,{type="combat"})
+        return libs.researchrenderer.isUnlocked(self.player,{type=combat_type})
       end
     end,
     hint=function()
-      return states.client.buttonbar
+      for _,action in pairs(states.client.buttonbar._actions) do
+        if action._name == "research" then
+          return action._drawable
+        end
+      end
+    end,
+    onStart=function()
+      combat_action = states.client.mpresearch:getObjectSelectAction(combat_type)
+      combat_action._drawable:setHint(true)
+    end,
+    onComplete=function()
+      combat_action._drawable:setHint(false)
     end,
   })
 
@@ -468,6 +506,13 @@ function level:init(server)
         end
       end
       return false
+    end,
+    hint=function()
+      for _,action in pairs(states.client.buttonbar._actions) do
+        if action._name == "tips" then
+          return action._drawable
+        end
+      end
     end,
     onComplete=function()
       server:addUpdate(scope.end_mission_ship,{remove=true},"delete_objects")

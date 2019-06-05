@@ -102,7 +102,7 @@ function client:init()
     end
   end
 
-  self.buttonbar:addAction(
+  local menu_button = self.buttonbar:addAction(
     love.graphics.newImage("assets/hud/buttonbar/menu.png"),
     function()
       self.menu_enabled = true
@@ -110,8 +110,9 @@ function client:init()
     hover,
     function() return "Menu [Escape]" end
   )
+  menu_button._name = "menu"
 
-  self.buttonbar:addAction(
+  local research_button = self.buttonbar:addAction(
     love.graphics.newImage("assets/hud/buttonbar/research.png"),
     function()
       self.windows:show("mpresearch")
@@ -119,8 +120,9 @@ function client:init()
     ebb_research,
     function() return "Research [R]" end
   )
+  research_button._name = "research"
 
-  self.buttonbar:addAction(
+  local tips_button = self.buttonbar:addAction(
     love.graphics.newImage("assets/hud/buttonbar/tips.png"),
     function()
       self.windows:show("mptips")
@@ -128,6 +130,7 @@ function client:init()
     ebb_tips,
     function() return "Tips [T]" end
   )
+  tips_button._name = "tips"
 
 end
 

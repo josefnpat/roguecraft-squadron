@@ -130,6 +130,9 @@ function tutorial:update(dt)
             break
           end
         end
+        if nextObjective then
+          nextObjective:onStart()
+        end
         self._currentObjective = nextObjective
       end
 

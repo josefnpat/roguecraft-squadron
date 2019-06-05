@@ -119,6 +119,13 @@ function matrixpanel:draw(bg,fg)
       tooltipf(self._hover_text,self._hover_x,self._hover_y,320,true)
     end
   end
+
+  for _,action in pairs(self._actions) do
+    if action._drawable._hint then
+      action._drawable:drawHint()
+    end
+  end
+
   if debug_mode then
     debugrect(self._x,self._y,self._width,self:getHeight())
     for ai,action in pairs(self._actions) do
@@ -137,6 +144,11 @@ function matrixpanel:update(dt)
   end
   for ai,action in pairs(self._actions) do
     local x,y,w,h = self:getIconArea(ai)
+    action._drawable:setX(x)
+    action._drawable:setY(y)
+    action._drawable:setWidth(w)
+    action._drawable:setHeight(h)
+    action._drawable:updateHint(dt)
     if mx >= x and mx <= x + w and my >= y and my <= y + h then
       found = action
       self._hover_x = x + self._iconSize+16
@@ -160,7 +172,7 @@ function matrixpanel:clearActions()
 end
 
 function matrixpanel:addAction(image,callback,color,text,weight,iconShortcutKey,stroke)
-  table.insert(self._actions,{
+  local action = {
     image = image,
     callback = callback,
     color = color,
@@ -168,7 +180,10 @@ function matrixpanel:addAction(image,callback,color,text,weight,iconShortcutKey,
     weight = weight,
     iconShortcutKey = iconShortcutKey,
     stroke = stroke,
-  })
+  }
+  action._drawable = libs.drawable.new()
+  table.insert(self._actions,action)
+  return action
 end
 
 function matrixpanel:sort(f)

@@ -28,6 +28,8 @@ function tutorialobjective.new(init)
   self._hint = init.hint
   self.getHint = tutorialobjective.getHint
 
+  self._onStart = init.onStart
+  self.onStart = tutorialobjective.onStart
   self._onComplete = init.onComplete
   self.onComplete = tutorialobjective.onComplete
 
@@ -103,6 +105,12 @@ function tutorialobjective:getHint()
     return self._hint()
   else
     return self._hint
+  end
+end
+
+function tutorialobjective:onStart()
+  if self._onStart then
+    return self._onStart(self)
   end
 end
 

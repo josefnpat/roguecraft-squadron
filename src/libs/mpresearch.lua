@@ -31,6 +31,7 @@ function mpresearch.new(init)
   self.canAffordAnything = mpresearch.canAffordAnything
   self.canUnlockAnything = mpresearch.canUnlockAnything
   self.buildData = mpresearch.buildData
+  self.getObjectSelectAction = mpresearch.getObjectSelectAction
 
   self._drawSize = 256+self._padding*2
   self._objectsSelectWidth = 32*2
@@ -275,7 +276,7 @@ function mpresearch:buildData(user,resources)
     padding=0,
   }
   for _,object_type in pairs(self._object_types) do
-    self._objects_select:addAction(
+    local action = self._objects_select:addAction(
       object_type.icons[1],
       function()
         self._currentObject = object_type.type
@@ -304,6 +305,7 @@ function mpresearch:buildData(user,resources)
         end
       end
     )
+    action._research_type = object_type.type
   end
 
   self._current_research_buttons = {}
@@ -343,6 +345,14 @@ function mpresearch:buildData(user,resources)
 
   self._onChange(self._onChangeScope)
 
+end
+
+function mpresearch:getObjectSelectAction(type)
+  for _,action in pairs(self._objects_select._actions) do
+    if action._research_type == type then
+      return action
+    end
+  end
 end
 
 return mpresearch

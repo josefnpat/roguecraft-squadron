@@ -28,7 +28,9 @@ function drawable.new(init)
   self.getHeight = drawable.getHeight
   self.setHeight = drawable.setHeight
 
+  self._hint = false
   self._hintTime = 0
+  self.setHint = drawable.setHint
   self.updateHint = drawable.updateHint
   self.drawHint = drawable.drawHint
 
@@ -73,6 +75,10 @@ end
 
 function drawable:setHeight(height)
   self._height = height
+end
+
+function drawable:setHint(val)
+  self._hint = val
 end
 
 function drawable:updateHint(dt)

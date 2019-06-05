@@ -2,10 +2,8 @@ local button = {}
 
 function button.new(init)
   init = init or {}
-  local self = {}
+  local self = libs.drawable.new(init)
 
-  self._x = init.x or 32
-  self._y = init.y or 32
   self._width = init.width or 256
   self._height = init.height or 40
   self._draw = init.draw or button._default_draw_rcs
@@ -29,14 +27,6 @@ function button.new(init)
   self.draw = button.draw
   self.getDisabled = button.getDisabled
   self.setDisabled = button.setDisabled
-  self.getX = button.getX
-  self.setX = button.setX
-  self.getY = button.getY
-  self.setY = button.setY
-  self.getWidth = button.getWidth
-  self.setWidth = button.setWidth
-  self.getHeight = button.getHeight
-  self.setHeight = button.setHeight
   self.setText = button.setText
   self.setIcon = button.setIcon
   self.setOnClick = button.setOnClick
@@ -46,6 +36,7 @@ function button.new(init)
 end
 
 function button:update(dt)
+  self:updateHint(dt)
   local new_hover = self:mouseInside()
   if self._hover == false and new_hover == true then
     self._onHoverIn()
@@ -85,6 +76,9 @@ function button:draw()
     self._width,self._height,
     self._hover,self._depress,self._disabled,
     self._font)
+  if self._hint then
+    self:drawHint()
+  end
 end
 
 function button._default_onClick()
@@ -141,38 +135,6 @@ end
 
 function button:setDisabled(val)
   self._disabled = val
-end
-
-function button:getX()
-  return self._x
-end
-
-function button:setX(val)
-  self._x = val
-end
-
-function button:getY()
-  return self._y
-end
-
-function button:setY(val)
-  self._y = val
-end
-
-function button:getWidth()
-  return self._width
-end
-
-function button:setWidth(val)
-  self._width = val
-end
-
-function button:getHeight()
-  return self._height
-end
-
-function button:setHeight(val)
-  self._height = val
 end
 
 function button:setText(val)
