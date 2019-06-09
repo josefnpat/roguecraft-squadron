@@ -22,6 +22,7 @@ function mpconnect.new(init)
   self.guide = libs.guide.new()
 
   self.generateButtons = mpconnect.generateButtons
+  self.getPublicIPString = mpconnect.getPublicIPString
   self.updateData = mpconnect.updateData
   self.update = mpconnect.update
   self.draw = mpconnect.draw
@@ -79,11 +80,32 @@ function mpconnect.new(init)
   return self
 end
 
+function mpconnect:getPublicIPString()
+  local r, e = require("socket.http").request("http://ifconfig.co/ip")
+  return e == 200 and r or "No Internet Connection"
+end
+
 function mpconnect:generateButtons()
 
   self.buttons = {}
 
   if not game_singleplayer then
+
+    local publicIPString
+
+    self.showPublicIPButton = libs.button.new{
+      text=function()
+        return publicIPString or "Click to show IP"
+      end,
+      onClick=function()
+        if publicIPString then
+          publicIPString = nil
+        else
+          publicIPString = self:getPublicIPString()
+        end
+      end,
+    }
+    table.insert(self.buttons,self.showPublicIPButton)
 
     self.transmitRatesButton = libs.stepper.new{
       text="Network",
