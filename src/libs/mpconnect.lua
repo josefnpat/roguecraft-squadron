@@ -82,13 +82,13 @@ end
 
 function mpconnect:getPublicIPString()
   local r, e = require("socket.http").request("http://ifconfig.co/ip")
-  local wlan = e == 200 and r or "No Internet Connection"
+  local wan = e == 200 and r or "No Internet Connection"
 
   local socket = require("socket")
   local mySocket = socket.udp()
   mySocket:setpeername("10.0.0.1","9000")
   local lan, lan_port = mySocket:getsockname()-- returns IP and Port
-  return "LAN: " .. lan .. " / WLAN: " .. wlan
+  return "LAN: " .. lan .. " / WAN: " .. wan
 end
 
 function mpconnect:generateButtons()
