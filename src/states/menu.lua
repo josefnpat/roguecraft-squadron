@@ -264,11 +264,17 @@ function mainmenu:enter()
   end
 
   self.menu_mp:addButton(
+    libs.i18n('menu.help'),
+    function()
+      love.system.openURL( "https://github.com/josefnpat/roguecraft-squadron/wiki/Multiplayer" )
+    end)
+
+  self.menu_mp:addButton(
     libs.i18n('menu.back'),
     function()
-        self.chooser = nil
-        self.menu = self.menu_main
-      end)
+      self.chooser = nil
+      self.menu = self.menu_main
+    end)
 
   self.menu = self.menu_main
 
