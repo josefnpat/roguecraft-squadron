@@ -911,7 +911,8 @@ function client:centerCamera()
 end
 
 function client:mouseInsideUI()
-  return self.buttonbar:mouseInside() or
+  return not self.gamestatus:isStarted() or
+    self.buttonbar:mouseInside() or
     self.minimap:mouseInside() or
     self.points:mouseInside() or
     self.resources:mouseInside() or
@@ -1024,7 +1025,8 @@ end
 
 function client:mousepressed(x,y,button)
   if self.menu_enabled then return end
-  if self.vn and self.vn:active() then
+  if not self.gamestatus:isStarted() then
+  elseif self.vn and self.vn:active() then
     self.vn:next()
   elseif self.mpresearch:isActive() then
     self.mpresearch:mousepressed(x,y,button)
@@ -1055,7 +1057,9 @@ end
 function client:mousereleased(x,y,button)
   if self.menu_enabled then return end
   self.chat:setActive(false)
-  if self.vn and self.vn:active() then
+  if not self.gamestatus:isStarted() then
+    --nop
+  elseif self.vn and self.vn:active() then
     --nop
   elseif self.mpresearch:isActive() then
     self.mpresearch:mousereleased(x,y,button)
