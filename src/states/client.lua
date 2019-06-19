@@ -249,6 +249,9 @@ function client:leave()
 end
 
 function client:selectionOnChange()
+  if self.windows:isActive() then
+    return
+  end
   self.actionpanel:process(self.selection,self.user,self.points,self.resources,self.buildqueue)
   local selection = self.selection:getSelected()
   local selection_is_users = false
