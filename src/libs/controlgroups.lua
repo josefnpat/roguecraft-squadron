@@ -27,7 +27,35 @@ function controlgroups:keypressed(key,selection,notif,user,onDoubleSelect)
     key_number = tonumber(key)
   end
   if key_number ~= nil and key_number >= 0 and key_number <= 9 then
-    if love.keyboard.isDown("lctrl") then
+    if love.keyboard.isDown("lshift") then
+      local valid = true
+      local selected = selection:getSelected()
+      for _,object in pairs(selected) do
+        if object.user ~= user.id then
+          valid = false
+        end
+      end
+      if valid and #selected > 0 then
+        -- add to controlgroup
+        for _,objectToAdd in pairs(selected) do
+
+          local found = false
+          for _,objectSelected in pairs(self._data[key_number] or {}) do
+            if objectSelected == objectToAdd then
+              found = true
+              break
+            end
+          end
+          if not found then
+            self._data[key_number] = self._data[key_number] or {}
+            table.insert(self._data[key_number],objectToAdd)
+          end
+
+        end
+        notif:add(libs.i18n('mission.notification.controlgroup.set',{group=key_number}),nil,nil,nil,1)
+
+      end
+    elseif love.keyboard.isDown("lctrl") then
 
       local valid = true
       local selected = selection:getSelected()
@@ -38,7 +66,7 @@ function controlgroups:keypressed(key,selection,notif,user,onDoubleSelect)
       end
       if valid and #selected > 0 then
         -- set controlgroup
-        self._data[key_number] = selection:getSelected()
+        self._data[key_number] = selected
         notif:add(libs.i18n('mission.notification.controlgroup.set',{group=key_number}),nil,nil,nil,1)
       end
 
