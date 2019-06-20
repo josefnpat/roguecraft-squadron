@@ -18,7 +18,6 @@ function mpconnect.new(init)
   self.transmitRate = init.transmitRate or 1
   self.points = init.points or 1
   self.mpgamemodes = init.mpgamemodes
-  self.target_gamemode = self.mpgamemodes:getGamemodes()[1].id
   self.guide = libs.guide.new()
 
   self.generateButtons = mpconnect.generateButtons
@@ -423,41 +422,53 @@ function mpconnect:draw(config,players,user_count)
       local buttonWidth = 256
       local buttonHeight = 40
 
-      local gamemode_object = self.mpgamemodes:getGamemodeById(self.target_gamemode)
-      local x = (love.graphics.getWidth() - gamemode_object.image:getWidth() - buttonWidth - paddingHorizontal)/2
+      local bx = (love.graphics.getWidth() - buttonWidth)/2
+      local by = (love.graphics.getHeight() - buttonHeight*#self.mpgamemodes:getGamemodes())/2
 
-      local name_height = fonts.title:getHeight()
-      local image_height = gamemode_object.image:getHeight()
-      local desc_height = fonts.default:getHeight() -- w/e i'm lazy
-      local target_y = (love.graphics.getHeight() - name_height - image_height - desc_height)/2
-      love.graphics.draw(gamemode_object.image,x,target_y)
-      love.graphics.setFont(fonts.title)
-      dropshadow(gamemode_object.name,x,target_y+image_height)
-      love.graphics.setFont(fonts.default)
-      dropshadowf(gamemode_object.desc:gsub("\n"," "),x,target_y+image_height+name_height,gamemode_object.image:getWidth())
+      if self.target_gamemode then
+
+        local gamemode_object = self.mpgamemodes:getGamemodeById(self.target_gamemode)
+        local gx = (love.graphics.getWidth() - gamemode_object.image:getWidth() - buttonWidth - paddingHorizontal)/2
+        bx = gx + gamemode_object.image:getWidth() + paddingHorizontal
+
+
+        local name_height = fonts.title:getHeight()
+        local image_height = gamemode_object.image:getHeight()
+        local desc_height = fonts.default:getHeight() -- w/e i'm lazy
+        by = (love.graphics.getHeight() - name_height - image_height - desc_height)/2
+        love.graphics.draw(gamemode_object.image,gx,by)
+        love.graphics.setFont(fonts.title)
+        dropshadow(gamemode_object.name,gx,by+image_height)
+        love.graphics.setFont(fonts.default)
+        dropshadowf(gamemode_object.desc:gsub("\n"," "),gx,by+image_height+name_height,gamemode_object.image:getWidth())
+
+        local targetVerticalOffset = (name_height - buttonHeight)/2
+
+        self.gamemodeTargetButton:setX(gx+gamemode_object.image:getWidth()-buttonWidth)
+        self.gamemodeTargetButton:setY(by+gamemode_object.image:getHeight()+targetVerticalOffset+paddingVertical)
+        self.gamemodeTargetButton:setWidth(buttonWidth)
+        self.gamemodeTargetButton:setHeight(buttonHeight)
+        local disabled = gamemode_object.disabled and true or false
+        if mpconnect.enable_all_modes then
+          disabled = false
+        end
+        self.gamemodeTargetButton:setDisabled(disabled)
+        local text = gamemode_object.disabled and gamemode_object.disabled or "Start"
+        self.gamemodeTargetButton:setText(text)
+        self.gamemodeTargetButton:draw()
+
+      end
+
+
 
       for button_index,button in pairs(self.gamemodes) do
-        button:setX(x+paddingHorizontal+gamemode_object.image:getWidth())
-        button:setY(target_y+(buttonHeight+paddingVertical)*(button_index-1))
+        button:setX(bx)--x+paddingHorizontal+gamemode_object.image:getWidth())
+        button:setY(by+(buttonHeight+paddingVertical)*(button_index-1))--target_y+(buttonHeight+paddingVertical)*(button_index-1))
         button:setWidth(buttonWidth)
         button:setHeight(buttonHeight)
         button:draw()
       end
 
-      local targetVerticalOffset = (name_height - buttonHeight)/2
-
-      self.gamemodeTargetButton:setX(x+gamemode_object.image:getWidth()-buttonWidth)
-      self.gamemodeTargetButton:setY(target_y+gamemode_object.image:getHeight()+targetVerticalOffset+paddingVertical)
-      self.gamemodeTargetButton:setWidth(buttonWidth)
-      self.gamemodeTargetButton:setHeight(buttonHeight)
-      local disabled = gamemode_object.disabled and true or false
-      if mpconnect.enable_all_modes then
-        disabled = false
-      end
-      self.gamemodeTargetButton:setDisabled(disabled)
-      local text = gamemode_object.disabled and gamemode_object.disabled or "Start"
-      self.gamemodeTargetButton:setText(text)
-      self.gamemodeTargetButton:draw()
 
     else
 
