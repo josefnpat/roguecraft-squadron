@@ -1,0 +1,18 @@
+[
+  {
+    "en":{
+      "name":"Adjutant",
+      "text":"Warning: Hostiles detected.",
+      "audio":"adj/audio/warning.ogg"
+    },
+    "image":"adj/default.png"
+  },
+  {
+    "en":{
+      "name":"Commander",
+      "text":"This is not good.",
+      "audio":"com/audio/line12.ogg"
+    },
+    "image":"com/default.png"
+  }
+]

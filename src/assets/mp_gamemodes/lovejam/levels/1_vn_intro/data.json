@@ -1,0 +1,114 @@
+[
+  {
+    "en":{
+      "name":"Adjutant",
+      "text":"Greetings commander. You have been awakened from stasis. The current date is September 21st, 2687.",
+      "audio":"adj/audio/line1.ogg"
+    },
+    "image":"adj/default.png"
+  },
+  {
+    "en":{
+      "name":"Commander",
+      "text":"What? I thought we were only going to be under for a few months. This wasn’t supposed to happen at all.",
+      "audio":"com/audio/line1.ogg"
+    },
+    "image":"com/default.png"
+  },
+  {
+    "en":{
+      "name":"Adjutant",
+      "text":"Invalid query. Please try again.",
+      "audio":"adj/audio/line2.ogg"
+    },
+    "image":"adj/default.png"
+  },
+  {
+    "en":{
+      "name":"Commander",
+      "text":"What happened? Why have I been in stasis for over a hundred years?",
+      "audio":"com/audio/line2.ogg"
+    },
+    "image":"com/default.png"
+  },
+  {
+    "en":{
+      "name":"Adjutant",
+      "text":"Security protocol dictates that persons in stasis should be kept in stasis until either the destination has been reached, or the ship reaches problematic thresholds.",
+      "audio":"adj/audio/line3.ogg"
+    },
+    "image":"adj/default.png"
+  },
+  {
+    "en":{
+      "name":"Adjutant",
+      "text":"Currently the food replimat is out of ice cream, putting the ship above protocol threshold seven. There are 1523 prior protocol issues of which 1512 have been corrected.",
+      "audio":"adj/audio/line4.ogg"
+    },
+    "image":"adj/default.png"
+  },
+  {
+    "en":{
+      "name":"Commander",
+      "text":"Adjutant, why aren’t we at our destination?",
+      "audio":"com/audio/line3.ogg"
+    },
+    "image":"com/default.png"
+  },
+  {
+    "en":{
+      "name":"Adjutant",
+      "text":"Destination no longer exists.",
+      "audio":"adj/audio/line5.ogg"
+    },
+    "image":"adj/default.png"
+  },
+  {
+    "en":{
+      "name":"Commander",
+      "text":"Wasn’t our destination a planet?",
+      "audio":"com/audio/line4.ogg"
+    },
+    "image":"com/default.png"
+  },
+  {
+    "en":{
+      "name":"Adjutant",
+      "text":"Correct.",
+      "audio":"adj/audio/correct.ogg"
+    },
+    "image":"adj/default.png"
+  },
+  {
+    "en":{
+      "name":"Commander",
+      "text":"Well, that’s not good.",
+      "audio":"com/audio/line5.ogg"
+    },
+    "image":"com/default.png"
+  },
+  {
+    "en":{
+      "name":"Adjutant",
+      "text":"Correct.",
+      "audio":"adj/audio/correct.ogg"
+    },
+    "image":"adj/default.png"
+  },
+  {
+    "en":{
+      "name":"Commander",
+      "text":"How many jumps away is earth?",
+      "audio":"com/audio/line6.ogg"
+    },
+    "image":"com/default.png"
+  },
+  {
+    "en":{
+      "name":"Adjutant",
+      "text":"Using our isotope reserve, eight.",
+      "audio":"adj/audio/line6.ogg"
+    },
+    "image":"adj/default.png"
+  }
+]

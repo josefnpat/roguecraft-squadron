@@ -479,12 +479,20 @@ function client:update(dt)
   if self.lovernet:getCache(libs.net.op.get_level) then
     local previous_level = self.level
     self.level = self.lovernet:getCache(libs.net.op.get_level)
-    if self.mpgamemodes:getCurrentGamemode() and self.level.id ~= nil and self.level.id ~= previous_level.id then
+    local gamemode = self.mpgamemodes:getCurrentGamemode()
+    if gamemode and self.level.id ~= nil and self.level.id ~= previous_level.id then
       -- next level
       self.mpgamemodes:setCurrentLevel(self.level.id)
       self.mpgamemodes:loadCurrentLevel()
       local level = self.mpgamemodes:getCurrentLevelData()
-      self.vn = level.intro and level.intro(self.mpgamemodes:getCurrentGamemode()) or nil
+      self.vn = nil
+      local intro_dir = gamemode.dir.."/levels/"..level.id.."_vn_intro"
+      if love.filesystem.exists(intro_dir) then
+        self.vn = libs.vnjson.new{
+          dir=intro_dir,
+          assets=gamemode.dir.."/vn",
+        }
+      end
       self.focusObject = nil
       self.fow:clearMap()
       self.lovernet:pushData(libs.net.op.get_players)
@@ -1202,7 +1210,7 @@ function client:keypressed(key)
 
   if key == "escape" then
     if self.vn and self.vn:active() then
-      self.vn:stop()
+      self.vn:halt()
     elseif self.windows:isActive() then
       self.windows:hide()
     elseif self.chat:getActive() then

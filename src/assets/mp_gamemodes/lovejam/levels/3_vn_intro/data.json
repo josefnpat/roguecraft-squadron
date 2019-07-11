@@ -1,0 +1,10 @@
+[
+  {
+    "en":{
+      "name":"Adjutant",
+      "text":"Warning: Hostiles detected.",
+      "audio":"adj/audio/warning.ogg"
+    },
+    "image":"adj/default.png"
+  }
+]

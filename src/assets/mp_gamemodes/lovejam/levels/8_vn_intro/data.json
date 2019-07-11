@@ -1,0 +1,18 @@
+[
+  {
+    "en":{
+      "name":"Adjutant",
+      "text":"Warning: Hostiles detected.",
+      "audio":"adj/audio/warning.ogg"
+    },
+    "image":"adj/default.png"
+  },
+  {
+    "en":{
+      "name":"Commander",
+      "text":"We’re only one jump away from home! We’ve got to make it! Everyone is counting on us!",
+      "audio":"com/audio/line15.ogg"
+    },
+    "image":"com/default.png"
+  }
+]

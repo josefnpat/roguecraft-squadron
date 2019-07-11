@@ -1,0 +1,26 @@
+[
+  {
+    "en":{
+      "name":"Adjutant",
+      "text":"Warning: Hostiles detected.",
+      "audio":"adj/audio/warning.ogg"
+    },
+    "image":"adj/default.png"
+  },
+  {
+    "en":{
+      "name":"Adjutant",
+      "text":"We will be unable to leave this system until the threat has been neutralized.",
+      "audio":"adj/audio/line9.ogg"
+    },
+    "image":"adj/default.png"
+  },
+  {
+    "en":{
+      "name":"Commander",
+      "text":"Well, that’s just dandy. I guess I better use some of those materials I processed to make a [Battlestar] or two, and get rid of them.",
+      "audio":"com/audio/line8.ogg"
+    },
+    "image":"com/default.png"
+  }
+]

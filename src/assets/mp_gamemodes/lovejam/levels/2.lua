@@ -28,7 +28,7 @@ level.ai_players = {
   },
 }
 
-level.intro = function(self)
+level._disable_intro = function(self)
   local tvn = libs.vn.new()
   local vn_data = require(self.dir.."/assets")
   local vn = vn_data.images

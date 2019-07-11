@@ -1,0 +1,26 @@
+[
+  {
+    "en":{
+      "name":"Commander",
+      "text":"Warning: hostiles detected...",
+      "audio":"com/audio/line13.ogg"
+    },
+    "image":"com/default.png"
+  },
+  {
+    "en":{
+      "name":"Adjutant",
+      "text":"That is incorrect.",
+      "audio":"adj/audio/incorrect.ogg"
+    },
+    "image":"adj/default.png"
+  },
+  {
+    "en":{
+      "name":"Commander",
+      "text":"Woah, no enemies? That’s new ... better stockpile while I can!",
+      "audio":"com/audio/line14.ogg"
+    },
+    "image":"com/default.png"
+  }
+]
