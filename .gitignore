@@ -5,3 +5,4 @@ builds/
 steam_prep/
 *.love
 Makefile.config
+.DS_Store
