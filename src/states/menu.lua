@@ -345,7 +345,9 @@ end
 function mainmenu:keypressed(key)
 
   if key == "escape" then
-    if self.windows:isActive() then
+    if self.feedback then
+      self.feedback = nil
+    elseif self.windows:isActive() then
       self.windows:hide()
     elseif self.chooser then
       self.chooser = nil
