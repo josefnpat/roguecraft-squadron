@@ -2,8 +2,7 @@ msgid "mission.object.cloud.name"
 msgstr "Emission nebula"
 
 msgid "mission.object.cloud.info"
-msgstr "This emission nebulas will force any ship in your fleet to slow down."
+msgstr "This emission nebulas may obscure your ships."
 
 msgid "mission.object.cloud.build"
 msgstr " "
-       

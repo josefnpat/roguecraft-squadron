@@ -1349,9 +1349,18 @@ function client:isOnCamera(ent)
 end
 
 client.drawOrder = {
-  function(object_user,user_id) return object_user == nil end,
-  function(object_user,user_id) return object_user ~= user_id end,
-  function(object_user,user_id) return object_user == user_id end,
+  function(object_type,object_user,user_id)
+    return object_user == nil and object_type.layertop == nil
+  end,
+  function(object_type,object_user,user_id)
+    return object_user ~= user_id and object_type.layertop == nil
+  end,
+  function(object_type,object_user,user_id)
+    return object_user == user_id and object_type.layertop == nil
+  end,
+  function(object_type,object_user,user_id)
+    return object_type.layertop
+  end,
 }
 
 function client:draw()
@@ -1383,7 +1392,8 @@ function client:draw()
   end
   for _,drawLayer in pairs(client.drawOrder) do
     for _,object in pairs(drawable_objects) do
-      if drawLayer(object.user,self.user.id) then
+      local object_type = libs.objectrenderer.getType(object.type)
+      if drawLayer(object_type,object.user,self.user.id) then
         libs.objectrenderer.draw(object,self.objects,self.selection,self.time,self.user.id,self.players)
       end
     end

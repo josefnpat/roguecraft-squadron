@@ -55,6 +55,7 @@ net.mapGenDefaults = {
       research_station=8,
       asteroid=50,
       cat=1,
+      cloud=16,
     },
   },
   {
@@ -65,6 +66,7 @@ net.mapGenDefaults = {
       research_station=16,
       asteroid=100,
       cat=1,
+      cloud=16,
     },
   },
   {
@@ -75,6 +77,7 @@ net.mapGenDefaults = {
       research_station=4,
       asteroid=25,
       cat=1,
+      cloud=16,
     },
   },
 }
