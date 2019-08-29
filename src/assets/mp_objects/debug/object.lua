@@ -9,6 +9,11 @@ return function()
     speed = 300,
     health = {max = 75,},
     material = 1600,
+    crew_generate = 100,
+    material_generate = 100,
+    ore_generate = 100,
+    research_generate = 100,
+    research=100,
     shoot = {
       type = "laser",
       reload = 2.5,
@@ -19,6 +24,8 @@ return function()
     },
     actions = {
       "build_command",
+      "build_alien_command",
+      "build_dojeer_command",
     },
     build_time = 60,
   }
