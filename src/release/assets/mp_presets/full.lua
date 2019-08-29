@@ -1,7 +1,5 @@
 return {
   name="Full Game",
-  gen = libs.levelshared.gen.human,
-  gen_ai = libs.levelshared.gen.dojeer,
   build = {
     priority = {
       construction_command = 5,

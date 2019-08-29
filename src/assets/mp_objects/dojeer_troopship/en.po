@@ -1,0 +1,8 @@
+msgid "mission.object.dojeer_troopship.name"
+msgstr "Tromi"
+
+msgid "mission.object.dojeer_troopship.info"
+msgstr ""
+
+msgid "mission.object.dojeer_troopship.build"
+msgstr ""

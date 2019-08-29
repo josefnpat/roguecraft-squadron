@@ -17,9 +17,9 @@ function mpresearch.new(init)
   self.draw = mpresearch.draw
   self.drawObject = mpresearch.drawObject
 
-  self._preset = init.preset or 1
-  self.setPreset = mpresearch.setPreset
-  self.getPreset = mpresearch.getPreset
+  self._players = init.players
+  self.setPlayers = mpresearch.setPlayers
+  self.getPlayers = mpresearch.getPlayers
 
   self.getWidth = mpresearch.getWidth
   self.getHeight = mpresearch.getHeight
@@ -199,12 +199,12 @@ function mpresearch:drawObject(type,x,y,w,h)
 
 end
 
-function mpresearch:setPreset(val)
-  self._preset = val
+function mpresearch:setPlayers(val)
+  self._players = val
 end
 
-function mpresearch:getPreset(val)
-  return self._preset
+function mpresearch:getPlayers(val)
+  return self._players
 end
 
 function mpresearch:getWidth()
@@ -245,7 +245,7 @@ end
 
 function mpresearch:canAffordAnything(user,resources)
   local points = resources:get("research")
-  for _,object_type in pairs(libs.researchrenderer.getUnlockedObjects(user,self._preset)) do
+  for _,object_type in pairs(libs.researchrenderer.getUnlockedObjects(user,self._players)) do
     if not libs.researchrenderer.isUnlocked(user,object_type) and
       libs.researchrenderer.canAffordUnlock(user,object_type,points) then
       return true
@@ -254,9 +254,10 @@ function mpresearch:canAffordAnything(user,resources)
   return false
 end
 
-function mpresearch:canUnlockAnything(user)
-  local preset = libs.mppresets.getPresets()[self._preset]
-  local gen_render = preset.gen()
+function mpresearch:canUnlockAnything(user,players)
+  assert(user)
+  assert(players)
+  local gen_render = libs.researchrenderer.getGenRender(user,players)
   local objects = libs.researchrenderer.getResearchableObjects(nil,gen_render.first)
   for _,object in pairs(objects) do
     if not libs.researchrenderer.isUnlocked(user,object) then
@@ -266,10 +267,11 @@ function mpresearch:canUnlockAnything(user)
   return false
 end
 
-function mpresearch:buildData(user,resources)
+function mpresearch:buildData(user,resources,players)
   assert(user)
   assert(resources)
-  self._object_types = libs.researchrenderer.getUnlockedObjects(user,self._preset)
+  assert(players)
+  self._object_types = libs.researchrenderer.getUnlockedObjects(user,players)
   self._objects_select = libs.matrixpanel.new{
     width=self._objectsSelectWidth,
     drawbg=false,
@@ -280,7 +282,7 @@ function mpresearch:buildData(user,resources)
       object_type.icons[1],
       function()
         self._currentObject = object_type.type
-        self:buildData(user,resources)
+        self:buildData(user,resources,players)
       end,
       function(hover)
         local points = resources:get("research")

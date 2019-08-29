@@ -510,7 +510,7 @@ function client:update(dt)
   if self.lovernet:getCache(libs.net.op.get_research) then
     self.user.research = self.lovernet:getCache(libs.net.op.get_research)
     if self.gamestatus:isStarted() then
-      self.mpresearch:buildData(self.user,self.resources)
+      self.mpresearch:buildData(self.user,self.resources,self.players)
     end
     self.lovernet:clearCache(libs.net.op.get_research)
   end
@@ -706,12 +706,12 @@ function client:update(dt)
 
     if self.gamestatus:isStartedTrigger() then
       libs.researchrenderer.load(not headless,self.config.preset)
-      self.mpresearch:buildData(self.user,self.resources)
+      self.mpresearch:buildData(self.user,self.resources,self.players)
       self.lovernet:pushData(libs.net.op.get_research)
       self.fade_in = libs.net.next_level_t
     end
     if libs.researchrenderer.isLoaded() then
-      self.resources:showResource("research",self.mpresearch:canUnlockAnything(self.user))
+      self.resources:showResource("research",self.mpresearch:canUnlockAnything(self.user,self.players))
     end
     self.mpdisconnect:update(dt)
     if self.level.id then
@@ -732,7 +732,6 @@ function client:update(dt)
       self.mpconnect:setCreative(self.config.creative)
       self.mpconnect:setEveryShipUnlocked(self.config.everyShipUnlocked)
       self.mpconnect:setPreset(self.config.preset or 1)
-      self.mpresearch:setPreset(self.config.preset or 1)
       self.mpconnect:setPoints(self.config.points or 1)
       self.mpconnect:setMap(self.config.map or 1)
       self.mapedge:setMapSize(self.config.mapsize or 1)
@@ -745,6 +744,7 @@ function client:update(dt)
       self.points:setPoints(self.config.points or 1)
     end
     if self.config and self.players then
+      self.mpresearch:setPlayers(self.players)
       self.mpconnect:updateData(self.config,self.players)
     end
   end

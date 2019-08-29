@@ -7,10 +7,10 @@ return function()
     "build_dojeer_mining",
     "build_dojeer_refinery",
     "build_dojeer_cargo",
-    -- "build_radar",
+    "build_dojeer_radar",
     "build_dojeer_command",
-    -- "build_repair",
-    -- "build_research",
+    "build_dojeer_repair",
+    "build_dojeer_research",
   }
   return ship
 end

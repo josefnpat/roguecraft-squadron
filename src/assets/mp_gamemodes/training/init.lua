@@ -7,6 +7,7 @@ gamemode.start_level = "1"
 --gamemode.disabled = "Coming soon!"
 gamemode.configurable = false
 gamemode.configurable_team = false
+gamemode.configurable_race = false
 gamemode.configurable_diff = false
 gamemode.single_player_only = true
 gamemode.weight = 0

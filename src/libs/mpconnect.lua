@@ -249,6 +249,7 @@ function mpconnect:updateData(config,players)
         ready=player.ready,
         player_index=player_index,
         team=player.team,
+        race=player.race,
         diff=player.diff,
         lovernet = self.lovernet,
       }
@@ -268,6 +269,7 @@ function mpconnect:update(dt)
     local gamemode_object = self.mpgamemodes:getGamemodeById(self.gamemode)
     for _,player_data in pairs(self._data) do
       player_data:setConfigurableTeam(gamemode_object.configurable_team)
+      player_data:setConfigurableRace(gamemode_object.configurable_race)
       player_data:setConfigurableDiff(gamemode_object.configurable_diff)
     end
     self.start:update(dt)

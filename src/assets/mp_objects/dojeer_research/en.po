@@ -1,0 +1,8 @@
+msgid "mission.object.dojeer_research.name"
+msgstr "Reseko"
+
+msgid "mission.object.dojeer_research.info"
+msgstr ""
+
+msgid "mission.object.dojeer_research.build"
+msgstr ""

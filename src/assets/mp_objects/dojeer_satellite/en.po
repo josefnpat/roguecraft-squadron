@@ -1,0 +1,8 @@
+msgid "mission.object.dojeer_satellite.name"
+msgstr "Saten"
+
+msgid "mission.object.dojeer_satellite.info"
+msgstr ""
+
+msgid "mission.object.dojeer_satellite.build"
+msgstr ""

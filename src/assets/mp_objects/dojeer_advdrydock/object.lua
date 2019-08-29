@@ -5,14 +5,14 @@ return function()
     "build_dojeer_fighter",
     "build_dojeer_combat",
     "build_dojeer_artillery",
-    -- "build_minelayer",
+    "build_dojeer_minelayer",
     "build_dojeer_tank",
     "build_dojeer_turret_tiny",
     "build_dojeer_turret_small",
     "build_dojeer_turret_large",
     -- "build_jump",
-    -- "build_troopship",
-    -- "build_capital",
+    "build_dojeer_troopship",
+    "build_dojeer_capital",
   }
   return ship
 end

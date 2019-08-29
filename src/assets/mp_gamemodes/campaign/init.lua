@@ -10,6 +10,7 @@ gamemode.start_level = "1"
 gamemode.disabled = "Coming this summer!"
 gamemode.configurable = false
 gamemode.configurable_team = false
+gamemode.configurable_race = false
 gamemode.configurable_diff = false
 gamemode.weight = 300
 

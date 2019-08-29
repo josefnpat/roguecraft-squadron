@@ -1,0 +1,8 @@
+msgid "mission.object.dojeer_repair.name"
+msgstr "Repoko"
+
+msgid "mission.object.dojeer_repair.info"
+msgstr ""
+
+msgid "mission.object.dojeer_repair.build"
+msgstr ""

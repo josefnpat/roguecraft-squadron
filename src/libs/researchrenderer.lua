@@ -155,10 +155,16 @@ function researchrenderer.canAffordUnlock(user,object_type,points)
   return points >= cost
 end
 
-function researchrenderer.getUnlockedObjects(user,preset_value)
+function researchrenderer.getGenRender(user,players)
+  local pid = libs.net.getPlayerId(players,user)
+  local player = players[pid]
+  return player.race_gen
+end
 
-  local preset = libs.mppresets.getPresets()[preset_value]
-  local gen_render = preset.gen()
+function researchrenderer.getUnlockedObjects(user,players)
+  assert(user)
+  assert(players)
+  local gen_render = researchrenderer.getGenRender(user,players)
   local objects = researchrenderer.getResearchableObjects(nil,gen_render.first)
   local activeObjects = {}
   for _,object in pairs(objects) do

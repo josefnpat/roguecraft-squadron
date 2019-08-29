@@ -120,6 +120,29 @@ net.resourceStrings = {
 net.aiDifficultyBase = 20
 net.aiDifficultyScale = 50
 
+net.race = {
+  {
+    name="Human",
+    tooltip="Humans represent the finest in humanity.",
+    gen="human",
+  },
+  {
+    name="Dojeer",
+    tooltip="A race of hivemind plant based creatures featured in the Campaign. Warning: the Dojeer language has not been translated.",
+    gen="dojeer",
+  },
+  {
+    name="Alien",
+    tooltip="A race of aliens featured in the original love gamejam.",
+    gen="alien",
+  },
+  {
+    name="Random",
+    tooltip="A random race will be selected.",
+    gen="random",
+  },
+}
+
 -- gamemodes depend on this being 6 elements
 net.aiDifficulty = {
   {

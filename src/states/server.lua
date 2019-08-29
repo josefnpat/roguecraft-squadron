@@ -201,6 +201,10 @@ end
 
 function server.generatePlayer(storage,user,pocket,gen)
 
+  if gen == libs.levelshared.gen.none then
+    return
+  end
+
   local mapsize = libs.net.mapSizes[storage.config.mapsize].value
 
   local x,y
@@ -212,7 +216,7 @@ function server.generatePlayer(storage,user,pocket,gen)
     x = math.random(-mapsize,mapsize)
     y = math.random(-mapsize,mapsize)
   end
-  local gen_render = gen()
+  local gen_render = user.config.race_gen
   if gen_render.first then
     server.createObject(storage,gen_render.first,x,y,user)
   end
@@ -404,7 +408,8 @@ function server:generatePlayers(users,storage)
   for index_player,real_player in pairs(users) do
     real_player.config = real_player.config or {
       id=real_player.id,
-      team=#players+1
+      team=#players+1,
+      race=1,
     }
     if string.sub(index_player,1,3) == "ai_" then
       if not storage.ai_are_connected then
@@ -421,6 +426,7 @@ function server:generatePlayers(users,storage)
           ai=ai_index,
           team=#players+1,
           diff=1,
+          race=2,
         }
       }
       table.insert(players,storage.ai_players[ai_index].config)
@@ -1011,11 +1017,15 @@ function server:newGame(soft)
   local user_count = 0
   for peer,user in pairs(self.lovernet:getUsers()) do
 
-    local gen = user.gen or preset.gen
+    local race_gen = nil
+    if user.config.race then
+      user.config.race_gen = libs.levelshared.gen[libs.net.race[user.config.race].gen]()
+    end
+
+    local gen = race_gen or user.gen
     -- todo: add unique names
     user_count = user_count + 1
     if user.ai then
-      gen = preset.gen_ai or gen
       -- todo: balance players on pockets after 8
       user.ai:setCurrentPocket(pockets[user_count])
       user.ai:setPockets(pockets)
@@ -1034,9 +1044,9 @@ function server:newGame(soft)
   end
 
   if not soft and storage.config.everyShipUnlocked then
-    local researchableObjects
     for peer,user in pairs(self.lovernet:getUsers()) do
-      researchableObjects = researchableObjects or libs.researchrenderer.getResearchableObjects(nil,preset.gen().first)
+      local race_gen = user.config.race_gen
+      local researchableObjects = libs.researchrenderer.getResearchableObjects(nil,race_gen.first)
       for _,researchableObject in pairs(researchableObjects) do
         libs.researchrenderer.setUnlocked(user,researchableObject.type)
       end
@@ -1475,6 +1485,14 @@ function server:validatePlayerConfig(player)
   local player_count = self:getPlayerCount()
   if player.team > player_count then
     player.team = 1
+  end
+  if player.race then
+    if player.race > #libs.net.race then
+      player.race = 1
+    end
+    if player.race < 1 then
+      player.race = #libs.net.race
+    end
   end
   if player.diff then
     if player.diff > #libs.net.aiDifficulty then

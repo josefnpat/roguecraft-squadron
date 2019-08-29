@@ -1,7 +1,5 @@
 return {
   name="Demo",
-  gen = libs.levelshared.gen.demo,
-  gen_ai = libs.levelshared.gen.dojeer,
   build = {
     priority = {
       --construction_command = 5,

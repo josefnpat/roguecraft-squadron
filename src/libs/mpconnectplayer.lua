@@ -21,6 +21,7 @@ function mpconnectplayer.new(init)
   self.getWidth = mpconnectplayer.getWidth
   self.getHeight = mpconnectplayer.getHeight
   self.setConfigurableTeam = mpconnectplayer.setConfigurableTeam
+  self.setConfigurableRace = mpconnectplayer.setConfigurableRace
   self.setConfigurableDiff = mpconnectplayer.setConfigurableDiff
   self._type = init.type or "user"
   self._user_name = init.user_name or "Loading ..."
@@ -28,6 +29,7 @@ function mpconnectplayer.new(init)
   self._ready = init.ready
   self._player_index = init.player_index or 0
   self._team = init.team or 1
+  self._race = init.race or 1
   self._diff = init.diff or 1
   self._configurable = init.configurable or false
   self._inner_padding = 8
@@ -46,6 +48,26 @@ function mpconnectplayer.new(init)
     end,
     tooltip=function(data)
       return "This player is on team "..self._team
+    end,
+  }
+
+  self._changeRace = libs.stepper.new{
+    disabled=not isRelease(),
+    height=24,
+    text=function()
+      local race = libs.net.race[self._race]
+      return race.name
+    end,
+    onClick=function(dir)
+      self.lovernet:pushData(libs.net.op.set_players,{
+        d={race=self._race+dir},
+        p=self._user_id,
+        t=self._type=="user" and "u" or "ai"})
+    end,
+    font=fonts.submenu,
+    tooltip=function(data)
+      local race = libs.net.race[self._race]
+      return race.tooltip
     end,
   }
 
@@ -109,6 +131,13 @@ function mpconnectplayer:draw(x,y)
     self._changeTeam:draw()
   end
 
+  if self._configurableRace then
+    self._changeRace:setX(target_x)
+    self._changeRace:setY(128+target_y + target_height - self._changeRace:getHeight()*2)
+    self._changeRace:setWidth(target_width)
+    self._changeRace:draw()
+  end
+
   if self._changeDiff and self._configurableDiff then
     self._changeDiff:setX(target_x)
     self._changeDiff:setY(128+target_y + target_height - self._changeDiff:getHeight())
@@ -122,6 +151,7 @@ function mpconnectplayer:update(dt)
   if self._configurableTeam then
     self._changeTeam:update(dt)
   end
+  self._changeRace:update(dt)
   if self._changeDiff and self._configurableDiff then
     self._changeDiff:update(dt)
   end
@@ -137,6 +167,10 @@ end
 
 function mpconnectplayer:setConfigurableTeam(val)
   self._configurableTeam = val
+end
+
+function mpconnectplayer:setConfigurableRace(val)
+  self._configurableRace = val
 end
 
 function mpconnectplayer:setConfigurableDiff(val)
