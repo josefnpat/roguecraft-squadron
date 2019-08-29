@@ -1,0 +1,8 @@
+msgid "mission.object.mw_scout.name"
+msgstr "Unknown Corvette"
+
+msgid "mission.object.mw_scout.info"
+msgstr "A derelict corvette of unknown design."
+
+msgid "mission.object.mw_scout.build"
+msgstr ""

@@ -1,0 +1,8 @@
+msgid "mission.object.mw_fighter.name"
+msgstr "Unknown Frigate"
+
+msgid "mission.object.mw_fighter.info"
+msgstr "A derelict frigate of unknown design."
+
+msgid "mission.object.mw_fighter.build"
+msgstr ""

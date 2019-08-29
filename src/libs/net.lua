@@ -56,6 +56,9 @@ net.mapGenDefaults = {
       asteroid=50,
       cat=1,
       cloud=16,
+      mw_scout=16,
+      mw_fighter=8,
+      mw_combat=4,
     },
   },
   {
@@ -67,6 +70,9 @@ net.mapGenDefaults = {
       asteroid=100,
       cat=1,
       cloud=16,
+      mw_scout=32,
+      mw_fighter=16,
+      mw_combat=8,
     },
   },
   {
@@ -78,6 +84,9 @@ net.mapGenDefaults = {
       asteroid=25,
       cat=1,
       cloud=16,
+      mw_scout=8,
+      mw_fighter=4,
+      mw_combat=2,
     },
   },
 }
