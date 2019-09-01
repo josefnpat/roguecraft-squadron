@@ -1,0 +1,8 @@
+msgid "mission.object.pirate_turret_small.name"
+msgstr "Pirate Tura"
+
+msgid "mission.object.pirate_turret_small.info"
+msgstr ""
+
+msgid "mission.object.pirate_turret_small.build"
+msgstr ""

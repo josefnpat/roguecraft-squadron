@@ -20,8 +20,9 @@ levelshared.gen.getAllFirst = function()
   return {
     libs.levelshared.gen.demo().first,
     libs.levelshared.gen.human().first,
-    libs.levelshared.gen.alien().first,
     libs.levelshared.gen.dojeer().first,
+    libs.levelshared.gen.pirate().first,
+    libs.levelshared.gen.alien().first,
   }
 end
 
@@ -31,16 +32,6 @@ levelshared.gen.human = function()
     default = {
       habitat=1,
       salvager=1,
-    },
-  }
-end
-
-levelshared.gen.alien = function()
-  return {
-    first = "alien_command",
-    default = {
-      alien_habitat=1,
-      alien_salvager=1,
     },
   }
 end
@@ -55,6 +46,26 @@ levelshared.gen.dojeer = function()
   }
 end
 
+levelshared.gen.pirate = function()
+  return {
+    first = "pirate_command",
+    default = {
+      pirate_habitat=1,
+      pirate_salvager=1,
+    },
+  }
+end
+
+levelshared.gen.alien = function()
+  return {
+    first = "alien_command",
+    default = {
+      alien_habitat=1,
+      alien_salvager=1,
+    },
+  }
+end
+
 levelshared.gen.none = function()
   return {
     default = {},
@@ -62,13 +73,15 @@ levelshared.gen.none = function()
 end
 
 levelshared.gen.random = function()
-  local random = math.random(3)
+  local random = math.random(4)
   if random == 1 then
     return levelshared.gen.human()
   elseif random == 2 then
-    return levelshared.gen.alien()
-  else -- random == 3
     return levelshared.gen.dojeer()
+  elseif random == 3 then
+    return levelshared.gen.pirate()
+  else -- random == 4
+    return levelshared.gen.alien()
   end
 end
 

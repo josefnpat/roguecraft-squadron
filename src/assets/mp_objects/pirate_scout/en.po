@@ -1,0 +1,8 @@
+msgid "mission.object.pirate_scout.name"
+msgstr "Pirate Scoko"
+
+msgid "mission.object.pirate_scout.info"
+msgstr ""
+
+msgid "mission.object.pirate_scout.build"
+msgstr ""

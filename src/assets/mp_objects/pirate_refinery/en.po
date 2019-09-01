@@ -1,0 +1,8 @@
+msgid "mission.object.pirate_refinery.name"
+msgstr "Pirate Refigaka"
+
+msgid "mission.object.pirate_refinery.info"
+msgstr ""
+
+msgid "mission.object.pirate_refinery.build"
+msgstr ""

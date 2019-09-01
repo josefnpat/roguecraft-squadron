@@ -1,0 +1,8 @@
+msgid "mission.object.pirate_repair.name"
+msgstr "Pirate Repoko"
+
+msgid "mission.object.pirate_repair.info"
+msgstr ""
+
+msgid "mission.object.pirate_repair.build"
+msgstr ""

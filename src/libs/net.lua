@@ -141,6 +141,11 @@ net.race = {
     gen="dojeer",
   },
   {
+    name="Pirate",
+    tooltip="Pirates represent the worst in humanity.",
+    gen="pirate",
+  },
+  {
     name="Alien",
     tooltip="A race of aliens featured in the original love gamejam.",
     gen="alien",

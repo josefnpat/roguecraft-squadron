@@ -1,0 +1,8 @@
+msgid "mission.object.pirate_drydock.name"
+msgstr "Pirate Civika"
+
+msgid "mission.object.pirate_drydock.info"
+msgstr ""
+
+msgid "mission.object.pirate_drydock.build"
+msgstr ""

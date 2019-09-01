@@ -1,0 +1,8 @@
+msgid "mission.object.pirate_cargo.name"
+msgstr "Pirate Frei"
+
+msgid "mission.object.pirate_cargo.info"
+msgstr ""
+
+msgid "mission.object.pirate_cargo.build"
+msgstr ""

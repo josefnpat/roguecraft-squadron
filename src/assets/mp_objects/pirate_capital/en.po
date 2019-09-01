@@ -1,0 +1,8 @@
+msgid "mission.object.pirate_capital.name"
+msgstr "Pirate Capa"
+
+msgid "mission.object.pirate_capital.info"
+msgstr ""
+
+msgid "mission.object.pirate_capital.build"
+msgstr ""
