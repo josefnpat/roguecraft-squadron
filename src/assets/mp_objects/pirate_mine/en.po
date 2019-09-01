@@ -1,8 +1,8 @@
 msgid "mission.object.pirate_mine.name"
-msgstr "Pirate Comi"
+msgstr "Pirate Mine"
 
 msgid "mission.object.pirate_mine.info"
-msgstr ""
+msgstr "An immobile bomb that explodes when enemy ships are near."
 
 msgid "mission.object.pirate_mine.build"
-msgstr ""
+msgstr "A Pirate Mine. An immobile bomb that explodes when enemy ships are near. <ADDITIONAL DATA UNAVAILABLE>"

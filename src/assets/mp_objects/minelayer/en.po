@@ -2,7 +2,7 @@ msgid "mission.object.minelayer.name"
 msgstr "Mine Layer"
 
 msgid "mission.object.minelayer.info"
-msgstr "A ship used deploy mines."
+msgstr "A ship to deploy [MINES]. Does not defend itself."
 
 msgid "mission.object.minelayer.build"
-msgstr "A retrofit of the old jump ships, we have added a small material construction bay to be able to create and lay mines."
+msgstr "While not a fast ship, the Mine Layer is excellent for creating surprise attacks and or locking blocking the enemy into a corner."

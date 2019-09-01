@@ -1,8 +1,8 @@
 msgid "mission.object.pirate_salvager.name"
-msgstr "Pirate Sapko"
+msgstr "Pirate Scrapper"
 
 msgid "mission.object.pirate_salvager.info"
 msgstr ""
 
 msgid "mission.object.pirate_salvager.build"
-msgstr ""
+msgstr "A Pirate Scrapper. A resource gathering ship. Collects [SCRAP] and [DEBRIS]. <ADDITIONAL DATA UNAVAILABLE>"

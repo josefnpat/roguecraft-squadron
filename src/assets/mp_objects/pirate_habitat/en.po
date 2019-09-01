@@ -1,8 +1,8 @@
 msgid "mission.object.pirate_habitat.name"
-msgstr "Pirate Habaka"
+msgstr "Pirate Habitat"
 
 msgid "mission.object.pirate_habitat.info"
-msgstr ""
+msgstr "A biome that produces [CREW]. Can dock with [STATIONS] to pick up more [CREW]."
 
 msgid "mission.object.pirate_habitat.build"
-msgstr ""
+msgstr "A Pirate Habitat. A biome that produces [CREW]. Can dock with [STATIONS] to pick up more [CREW]. <ADDITIONAL DATA UNAVAILABLE>"

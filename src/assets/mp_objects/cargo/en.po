@@ -2,9 +2,7 @@ msgid "mission.object.cargo.name"
 msgstr "Freighter"
 
 msgid "mission.object.cargo.info"
-msgstr "A cargo ship that stores ore and material."
+msgstr "A standard cargo ship. Used to store [MATERIAL] and [ORE]."
 
 msgid "mission.object.cargo.build"
-msgstr "After humans began colonizing other planets, cargo vessels became a necessity. If we're running out of room, I guess we could just build a giant hangar, and attach some engines to it. Should provide a good way to stockpile materials, assuming it doesn't get blown up."
-        
-       
+msgstr "These standard cargo ships are a staple for space travel. Ships are complicated to modify for additional once built and resources can be hard to come by in deep space. Building a cargo ship allows for easy expansion and sharing within the squadron. Some say, 'Pack what you need and nothing more.' The ICH says, 'We’ll make room.\\nBe careful, though. These ships aren’t equipped with weapons and have a weak hull."

@@ -2,7 +2,7 @@ msgid "mission.object.dojeer_tank.name"
 msgstr "Tako"
 
 msgid "mission.object.dojeer_tank.info"
-msgstr ""
+msgstr "A Dojeer Armored Frontline Tank. A combat ship. Slow moving. High HP."
 
 msgid "mission.object.dojeer_tank.build"
-msgstr ""
+msgstr "A Dojeer Armored Frontline Tank. A combat ship. Slow moving. High HP. <ADDITIONAL DATA UNAVAILABLE>"

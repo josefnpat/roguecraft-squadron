@@ -2,7 +2,7 @@ msgid "mission.object.dojeer_drydock.name"
 msgstr "Civika"
 
 msgid "mission.object.dojeer_drydock.info"
-msgstr ""
+msgstr "A Dojeer Civilian Drydock. A construction ship. Builds various resource collecting and support ships. Does not defend itself."
 
 msgid "mission.object.dojeer_drydock.build"
-msgstr ""
+msgstr "A Dojeer Civilian Drydock. A construction ship. Builds various resource collecting and support ships. Does not defend itself. <ADDITIONAL DATA UNAVAILABLE>"

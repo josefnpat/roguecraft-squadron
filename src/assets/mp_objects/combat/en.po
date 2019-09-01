@@ -1,9 +1,8 @@
 msgid "mission.object.combat.name"
-msgstr "Battlestar"
+msgstr "Cruiser"
 
 msgid "mission.object.combat.info"
-msgstr "A combat ship to defend your squadron with."
+msgstr "A combat ship of notable speed and power."
 
 msgid "mission.object.combat.build"
-msgstr "One of the largest warship classes is the Galactica class warship. A sturdy design that has lasted the trials of time. We realize that the small fighter doesn't really have staying power in combat, so we made a bigger one. Bigger is better, right?"
-       
+msgstr "A relatively fast warship, the Cruiser was designed to act independently of the fleet. This allowed fleets to design for more strategic battles, such as pincer attacks or for search and destroy missions. The ICH recommends producing small squads for scouting and pre-emptive strikes."

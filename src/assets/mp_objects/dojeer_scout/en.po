@@ -2,7 +2,7 @@ msgid "mission.object.dojeer_scout.name"
 msgstr "Scoko"
 
 msgid "mission.object.dojeer_scout.info"
-msgstr ""
+msgstr "A Dojeer Scout. A small, fast, and weak ship. Used for reconnaissance."
 
 msgid "mission.object.dojeer_scout.build"
-msgstr ""
+msgstr "A Dojeer Scout. A small, fast, and weak ship. Used for reconnaissance. <ADDITIONAL DATA UNAVAILABLE>"

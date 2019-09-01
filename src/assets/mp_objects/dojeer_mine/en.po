@@ -2,7 +2,7 @@ msgid "mission.object.dojeer_mine.name"
 msgstr "Comi"
 
 msgid "mission.object.dojeer_mine.info"
-msgstr ""
+msgstr "A Dojeer Mine. An immobile bomb that explodes when enemy ships are near."
 
 msgid "mission.object.dojeer_mine.build"
-msgstr ""
+msgstr "A Dojeer Mine. An immobile bomb that explodes when enemy ships are near. <ADDITIONAL DATA UNAVAILABLE>"

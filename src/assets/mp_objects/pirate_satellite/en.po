@@ -1,8 +1,8 @@
 msgid "mission.object.pirate_satellite.name"
-msgstr "Pirate Saten"
+msgstr "Pirate Satellite"
 
 msgid "mission.object.pirate_satellite.info"
-msgstr ""
+msgstr "An immobile artificial object that provides vision."
 
 msgid "mission.object.pirate_satellite.build"
-msgstr ""
+msgstr "A Pirate Satellite. An immobile artificial object that provides vision. <ADDITIONAL DATA UNAVAILABLE>"

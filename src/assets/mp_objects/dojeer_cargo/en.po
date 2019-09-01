@@ -2,7 +2,7 @@ msgid "mission.object.dojeer_cargo.name"
 msgstr "Frei"
 
 msgid "mission.object.dojeer_cargo.info"
-msgstr ""
+msgstr "A Dojeer Freighter. A standard cargo ship. Used to store [MATERIAL] and [ORE]."
 
 msgid "mission.object.dojeer_cargo.build"
-msgstr ""
+msgstr "A Dojeer Freighter. A standard cargo ship. Used to store [MATERIAL] and [ORE]. <ADDITIONAL DATA UNAVAILABLE>"

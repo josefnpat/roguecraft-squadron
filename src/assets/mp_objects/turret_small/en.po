@@ -2,7 +2,7 @@ msgid "mission.object.turret_small.name"
 msgstr "Small Turret"
 
 msgid "mission.object.turret_small.info"
-msgstr "A small stationary turret used for defense."
+msgstr "A small stationary tower used for defense."
 
 msgid "mission.object.turret_small.build"
-msgstr "Our research found that we no longer had to go to the enemy. We figured they could just come to us now."
+msgstr "A slight upgrade from the Mini Turret, the Small Turret provides a wider coverage of defense and slightly more firepower. Recommended for holding the line or keeping the enemy at bay."

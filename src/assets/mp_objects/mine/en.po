@@ -2,7 +2,7 @@ msgid "mission.object.mine.name"
 msgstr "Mine"
 
 msgid "mission.object.mine.info"
-msgstr "An immobile bomb that explodes when near enemies."
+msgstr "An immobile bomb that explodes when enemy ships are near."
 
 msgid "mission.object.mine.build"
-msgstr "A very complicated device designed to use an exothermic reaction of an explosive material to do a significant amount of damage. Basically, it's a bomb."
+msgstr "A classic but complicated device designed to use an exothermic reaction of an explosive material to do a significant amount of damage. Based on a naval mine, the mine will explode when an enemy ship is within proximity of the mine."

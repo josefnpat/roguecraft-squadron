@@ -1,8 +1,8 @@
 msgid "mission.object.pirate_capital.name"
-msgstr "Pirate Capa"
+msgstr "Pirate Capital Ship"
 
 msgid "mission.object.pirate_capital.info"
-msgstr ""
+msgstr "A huge combat ship to destroy any enemy stronghold."
 
 msgid "mission.object.pirate_capital.build"
-msgstr ""
+msgstr "A Pirate Capital Ship. A huge combat ship to destroy any enemy stronghold. <ADDITIONAL DATA UNAVAILABLE>"

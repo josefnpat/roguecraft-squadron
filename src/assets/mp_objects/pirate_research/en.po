@@ -1,8 +1,8 @@
 msgid "mission.object.pirate_research.name"
-msgstr "Pirate Reseko"
+msgstr "Pirate Research Facility"
 
 msgid "mission.object.pirate_research.info"
-msgstr ""
+msgstr "A research ship. Increases [RESEARCH] capacity and speed of research gathering. Can dock at [RESEARCH STATIONS]."
 
 msgid "mission.object.pirate_research.build"
-msgstr ""
+msgstr "A Pirate Research Facility. A research ship. Increases [RESEARCH] capacity and speed of research gathering. Can dock at [RESEARCH STATIONS]. <ADDITIONAL DATA UNAVAILABLE>"

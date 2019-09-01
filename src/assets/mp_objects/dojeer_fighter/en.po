@@ -2,7 +2,7 @@ msgid "mission.object.dojeer_fighter.name"
 msgstr "Figi"
 
 msgid "mission.object.dojeer_fighter.info"
-msgstr ""
+msgstr "A Dojeer Fighter. A fast combat ship. Best in larger numbers."
 
 msgid "mission.object.dojeer_fighter.build"
-msgstr ""
+msgstr "A Dojeer Fighter. A fast combat ship. Best in larger numbers. <ADDITIONAL DATA UNAVAILABLE>"

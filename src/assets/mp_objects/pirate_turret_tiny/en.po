@@ -1,8 +1,8 @@
 msgid "mission.object.pirate_turret_tiny.name"
-msgstr "Pirate Turii"
+msgstr "Pirate Mini Turret"
 
 msgid "mission.object.pirate_turret_tiny.info"
-msgstr ""
+msgstr "A tiny stationary tower used for defense."
 
 msgid "mission.object.pirate_turret_tiny.build"
-msgstr ""
+msgstr "A Pirate Mini Turret. A tiny stationary tower used for defense. <ADDITIONAL DATA UNAVAILABLE>"

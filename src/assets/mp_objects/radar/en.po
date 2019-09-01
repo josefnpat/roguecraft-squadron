@@ -2,8 +2,7 @@ msgid "mission.object.radar.name"
 msgstr "Radar Array"
 
 msgid "mission.object.radar.info"
-msgstr "A scanning ship with a large visual range."
+msgstr "A non-combat ship with equipped long range scanners. Drops [SATELLITES]."
 
 msgid "mission.object.radar.build"
-msgstr "The XS-45 was originally commissioned as a low cost civilian reconnaissance ship, but after a few years of crowdsourced development, it became an incredibly popular vessel. The military originally opened up bids for the creation of an advanced reconnaissance ship. The project met the specifications and won the research and development bid with a $0 budget. Hence renamed the XS-45, this vessel is now a staple in fleets and is in practical military use."
-        
+msgstr "Originally designed for scientific research, the Radar Array has been equipped with state-of-the-art long range scanners, perfect for scouting or reconnaissance. It also has the ability to build and drop [SATELLITES], which allows for more covert operations."

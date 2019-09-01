@@ -1,8 +1,8 @@
 msgid "mission.object.pirate_turret_large.name"
-msgstr "Pirate Gatura"
+msgstr "Pirate Large Turret"
 
 msgid "mission.object.pirate_turret_large.info"
-msgstr ""
+msgstr "A large stationary tower used for serious defense."
 
 msgid "mission.object.pirate_turret_large.build"
-msgstr ""
+msgstr "A Pirate Large Turret. A large stationary tower used for serious defense. <ADDITIONAL DATA UNAVAILABLE>"

@@ -2,7 +2,7 @@ msgid "mission.object.dojeer_advdrydock.name"
 msgstr "Dojock"
 
 msgid "mission.object.dojeer_advdrydock.info"
-msgstr ""
+msgstr "A Dojeer Military Drydock. A construction ship. Builds various combat related ships. Does not defend itself."
 
 msgid "mission.object.dojeer_advdrydock.build"
-msgstr ""
+msgstr "A Dojeer Military Drydock. A construction ship. Builds various combat related ships. Does not defend itself. <ADDITIONAL DATA UNAVAILABLE>"

@@ -1,8 +1,8 @@
 msgid "mission.object.pirate_command.name"
-msgstr "Pirate Comka"
+msgstr "Pirate Command Ship"
 
 msgid "mission.object.pirate_command.info"
-msgstr ""
+msgstr "The flagship of the fleet and starter vessel."
 
 msgid "mission.object.pirate_command.build"
-msgstr ""
+msgstr "A Pirate Command Ship. The flagship of the fleet and starter vessel. <ADDITIONAL DATA UNAVAILABLE>"

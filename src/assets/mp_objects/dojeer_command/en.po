@@ -2,7 +2,7 @@ msgid "mission.object.dojeer_command.name"
 msgstr "Comka"
 
 msgid "mission.object.dojeer_command.info"
-msgstr ""
+msgstr "A Dojeer Command Ship. The flagship of the fleet and starter vessel."
 
 msgid "mission.object.dojeer_command.build"
-msgstr ""
+msgstr "A Dojeer Command Ship. The flagship of the fleet and starter vessel. <ADDITIONAL DATA UNAVAILABLE>"

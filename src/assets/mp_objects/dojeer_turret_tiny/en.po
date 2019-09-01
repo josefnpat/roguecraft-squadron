@@ -2,7 +2,7 @@ msgid "mission.object.dojeer_turret_tiny.name"
 msgstr "Turii"
 
 msgid "mission.object.dojeer_turret_tiny.info"
-msgstr ""
+msgstr "A Dojeer Mini Turret. A tiny stationary tower used for defense."
 
 msgid "mission.object.dojeer_turret_tiny.build"
-msgstr ""
+msgstr "A Dojeer Mini Turret. A tiny stationary tower used for defense. <ADDITIONAL DATA UNAVAILABLE>"

@@ -2,7 +2,7 @@ msgid "mission.object.dojeer_repair.name"
 msgstr "Repoko"
 
 msgid "mission.object.dojeer_repair.info"
-msgstr ""
+msgstr "A Dojeer Repair Barge. Select barge(s) and [RIGHT CLICK] on a target ship to restore HP."
 
 msgid "mission.object.dojeer_repair.build"
-msgstr ""
+msgstr "A Dojeer Repair Barge. Select barge(s) and [RIGHT CLICK] on a target ship to restore HP. <ADDITIONAL DATA UNAVAILABLE>"

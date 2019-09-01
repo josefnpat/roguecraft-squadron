@@ -2,7 +2,7 @@ msgid "mission.object.dojeer_refinery.name"
 msgstr "Refigaka"
 
 msgid "mission.object.dojeer_refinery.info"
-msgstr ""
+msgstr "A Dojeer Refinery. A resource ship. Automatically refines [ORE] into [MATERIAL]."
 
 msgid "mission.object.dojeer_refinery.build"
-msgstr ""
+msgstr "A Dojeer Refinery. A resource ship. Automatically refines [ORE] into [MATERIAL]. <ADDITIONAL DATA UNAVAILABLE>"

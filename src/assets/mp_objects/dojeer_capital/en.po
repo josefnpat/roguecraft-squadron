@@ -2,7 +2,7 @@ msgid "mission.object.dojeer_capital.name"
 msgstr "Capa"
 
 msgid "mission.object.dojeer_capital.info"
-msgstr ""
+msgstr "A Dojeer Capital Ship. A huge combat ship to destroy any enemy stronghold."
 
 msgid "mission.object.dojeer_capital.build"
-msgstr ""
+msgstr "A Dojeer Capital Ship. A huge combat ship to destroy any enemy stronghold. <ADDITIONAL DATA UNAVAILABLE>"

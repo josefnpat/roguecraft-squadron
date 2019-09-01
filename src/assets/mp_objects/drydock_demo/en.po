@@ -2,7 +2,7 @@ msgid "mission.object.drydock_demo.name"
 msgstr "Civilian Drydock"
 
 msgid "mission.object.drydock_demo.info"
-msgstr "A construction ship builds ships focused on resources and expansion."
+msgstr "A construction ship. Builds various resource collecting and support ships. Does not defend itself."
 
 msgid "mission.object.drydock_demo.build"
-msgstr "At one point in history, humans created a self-replicating drydock. They ran out of materials rather quickly. Regardless, if you want bigger ships, you're going to have to build bigger drydocks."
+msgstr "In ICH, it’s common for squadrons to be alone without the support of their bases. To solve this, Research and Development came up with the free roaming Civilian Drydock. This untethered space vessel houses a small crew, capable of building a wider variety of resource collecting and support ships than the main Command Ship is capable of."

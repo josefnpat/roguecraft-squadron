@@ -2,7 +2,7 @@ msgid "mission.object.dojeer_minelayer.name"
 msgstr "Lacomi"
 
 msgid "mission.object.dojeer_minelayer.info"
-msgstr ""
+msgstr "A Dojeer Mine Layer. A ship to deploy [MINES]. Does not defend itself."
 
 msgid "mission.object.dojeer_minelayer.build"
-msgstr ""
+msgstr "A Dojeer Mine Layer. A ship to deploy [MINES]. Does not defend itself. <ADDITIONAL DATA UNAVAILABLE>"

@@ -2,7 +2,7 @@ msgid "mission.object.fighter.name"
 msgstr "Fighter"
 
 msgid "mission.object.fighter.info"
-msgstr "A small combat ship to defend your squadron with."
+msgstr "A fast combat ship. Best in larger numbers."
 
 msgid "mission.object.fighter.build"
-msgstr " I think we can make a venerable one man space superior fighter based on the stiletto and viper class fighters. While they may be outdated at this point, in large numbers, they can be effective. In all technicality, we're pretty much strapping our young men and women to a combination of rockets, bathtubs and guns. That's ok, I never liked them anyway."
+msgstr "Larger and more firepower than a Scout, the Fighter has all that you need for quick infiltration of enemy lines. While it doesn’t pack a punch on it’s own, in large numbers they can quickly turn the tide of a battle."

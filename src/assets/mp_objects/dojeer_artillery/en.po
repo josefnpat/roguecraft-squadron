@@ -2,7 +2,7 @@ msgid "mission.object.dojeer_artillery.name"
 msgstr "Artja"
 
 msgid "mission.object.dojeer_artillery.info"
-msgstr ""
+msgstr "A Dojeer Artillery Vessel. A slow moving, high powered, long ranged combat ship."
 
 msgid "mission.object.dojeer_artillery.build"
-msgstr ""
+msgstr "A Dojeer Artillery Vessel. A slow moving, high powered, long ranged combat ship. <ADDITIONAL DATA UNAVAILABLE>"

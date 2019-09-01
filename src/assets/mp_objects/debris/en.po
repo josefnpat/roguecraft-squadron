@@ -2,7 +2,7 @@ msgid "mission.object.debris.name"
 msgstr "Debris"
 
 msgid "mission.object.debris.info"
-msgstr "This debris contains [Material] which can be collected by a [Scrapper]."
+msgstr "Contains [MATERIAL] from destroyed ships. Collected by [SCRAPPER]."
 
 msgid "mission.object.debris.build"
-msgstr ""
+msgstr "Debris come from the battlefields of recently destroyed ships, alien or human. Much like [SCRAP], they contain useful [MATERIAL]."

@@ -2,7 +2,7 @@ msgid "mission.object.dojeer_satellite.name"
 msgstr "Saten"
 
 msgid "mission.object.dojeer_satellite.info"
-msgstr ""
+msgstr "A Dojeer Satellite. Dropped by the Radar Array. Provides more sensory data than the Radar Array and can remain fairly hidden. Can be targeted and destroyed."
 
 msgid "mission.object.dojeer_satellite.build"
-msgstr ""
+msgstr "A Dojeer Satellite. Dropped by the Radar Array. Provides more sensory data than the Radar Array and can remain fairly hidden. Can be targeted and destroyed. <ADDITIONAL DATA UNAVAILABLE>"

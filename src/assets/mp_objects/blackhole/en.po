@@ -2,8 +2,7 @@ msgid "mission.object.blackhole.name"
 msgstr "Black Hole"
 
 msgid "mission.object.blackhole.info"
-msgstr "A region of spacetime exhibiting such strong gravitational effects that nothing can escape from inside it."
+msgstr "A region of spacetime exhibiting strong gravitational effects. Nothing can escape once inside."
 
 msgid "mission.object.blackhole.build"
-msgstr ""
-       
+msgstr "Even in the 22nd century, the inside of black holes remain a mystery. What is known, is that once you get trapped in the gravity well of the black hole, there’s no escape."

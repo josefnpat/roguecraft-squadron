@@ -2,7 +2,7 @@ msgid "mission.object.scrap.name"
 msgstr "Scrap"
 
 msgid "mission.object.scrap.info"
-msgstr "This scrap contains [Material] which can be collected by a [Scrapper]."
+msgstr "Contains [MATERIAL]. Collected by [SCRAPPER]."
 
 msgid "mission.object.scrap.build"
-msgstr ""
+msgstr "Scrap contains processed metals and construction materials from all types of space trash. Broken satellites, derelict space stations, past battles, etc. Common salvaging ships are sent to collect these items, which is stored as [MATERIAL]."

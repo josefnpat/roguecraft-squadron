@@ -2,7 +2,7 @@ msgid "mission.object.turret_tiny.name"
 msgstr "Mini Turret"
 
 msgid "mission.object.turret_tiny.info"
-msgstr "A tiny stationary turret used for defense."
+msgstr "A tiny stationary tower used for defense."
 
 msgid "mission.object.turret_tiny.build"
-msgstr "We found that by simply constructing a gun and installing basic firing subroutines, we could have a simple and effective weapon platform to defend against small ships."
+msgstr "While the Mini Turret doesn’t provide a lot of protection, it provides just enough to start getting building up your squadron. Best to defend the defenseless Command Ship and other resource gathering ships."

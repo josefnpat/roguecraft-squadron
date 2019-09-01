@@ -2,7 +2,7 @@ msgid "mission.object.habitat.name"
 msgstr "Habitat"
 
 msgid "mission.object.habitat.info"
-msgstr "A bio-dome that produces crew and can pick up crew from stations."
+msgstr "A biome that produces [CREW]. Can dock with [STATIONS] to pick up more [CREW]."
 
 msgid "mission.object.habitat.build"
-msgstr "Habitats are essential, not only for moral, but to serve as living quarters for civilians. People have been living in space for so long, they have begun to associate habitats with home. If we optimize the layouts on the habitat, we should be able to sustain a faster growth rate."
+msgstr "Habitats aren’t just essential for military operations but also for the general health for our living crew members. They provide living quarters for humans and generate workers known as [CREW] for operating all functions in a squadron.\\nHabitats are able to dock with [STATIONS] to gather human volunteers and organic material to create more [CREW]. Room is limited on Habitats, however. The ICH advises squadrons to build as many Habitats when possible."

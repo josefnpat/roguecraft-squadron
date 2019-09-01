@@ -2,7 +2,7 @@ msgid "mission.object.dojeer_mining.name"
 msgstr "Ricomi"
 
 msgid "mission.object.dojeer_mining.info"
-msgstr ""
+msgstr "A Dojeer Mining Rig. A resource collecting ship to mine [ORE] from [ASTEROIDS]."
 
 msgid "mission.object.dojeer_mining.build"
-msgstr ""
+msgstr "A Dojeer Mining Rig. A resource collecting ship to mine [ORE] from [ASTEROIDS]. <ADDITIONAL DATA UNAVAILABLE>"

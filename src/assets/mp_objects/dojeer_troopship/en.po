@@ -2,7 +2,7 @@ msgid "mission.object.dojeer_troopship.name"
 msgstr "Tromi"
 
 msgid "mission.object.dojeer_troopship.info"
-msgstr ""
+msgstr "A Dojeer Troopship. A non-combat support ship. Used to take control of enemy or neutral ships."
 
 msgid "mission.object.dojeer_troopship.build"
-msgstr ""
+msgstr "A Dojeer Troopship. A non-combat support ship. Used to take control of enemy or neutral ships. <ADDITIONAL DATA UNAVAILABLE>"

@@ -2,7 +2,7 @@ msgid "mission.object.dojeer_turret_large.name"
 msgstr "Gatura"
 
 msgid "mission.object.dojeer_turret_large.info"
-msgstr ""
+msgstr "A Dojeer Large Turret. A large stationary tower used for serious defense."
 
 msgid "mission.object.dojeer_turret_large.build"
-msgstr ""
+msgstr "A Dojeer Large Turret. A large stationary tower used for serious defense. <ADDITIONAL DATA UNAVAILABLE>"

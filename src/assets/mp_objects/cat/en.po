@@ -2,7 +2,7 @@ msgid "mission.object.cat.name"
 msgstr "cat"
 
 msgid "mission.object.cat.info"
-msgstr "A strange cat"
+msgstr "A strange space cat. Does nothing except look cute."
 
 msgid "mission.object.cat.build"
 msgstr "You can't build a cat."

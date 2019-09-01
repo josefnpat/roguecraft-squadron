@@ -1,8 +1,8 @@
 msgid "mission.object.pirate_advdrydock.name"
-msgstr "Pirate Dojock"
+msgstr "Pirate Military Drydock"
 
 msgid "mission.object.pirate_advdrydock.info"
-msgstr ""
+msgstr "A construction ship. Builds various combat related ships. Does not defend itself."
 
 msgid "mission.object.pirate_advdrydock.build"
-msgstr ""
+msgstr "A Pirate Military Drydock. A construction ship. Builds various combat related ships. Does not defend itself. <ADDITIONAL DATA UNAVAILABLE>"

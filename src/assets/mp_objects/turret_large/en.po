@@ -2,7 +2,7 @@ msgid "mission.object.turret_large.name"
 msgstr "Large Turret"
 
 msgid "mission.object.turret_large.info"
-msgstr "A large stationary turret used for serious defense."
+msgstr "A large stationary tower used for serious defense."
 
 msgid "mission.object.turret_large.build"
-msgstr "When we had the idea to mount guns on stationary platforms, we asked ourselves; why not put even bigger guns on turrets. I mean like, really big ones!"
+msgstr "Best of the turret class, the Large Turret provides the most defensive coverage of from enemy attacks, next to the Artillery Vessel. Recommended for holding the line or keeping the enemy at bay."

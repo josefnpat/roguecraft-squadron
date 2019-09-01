@@ -1,8 +1,8 @@
 msgid "mission.object.pirate_combat.name"
-msgstr "Pirate Budja"
+msgstr "Pirate Cruiser"
 
 msgid "mission.object.pirate_combat.info"
-msgstr ""
+msgstr "A combat ship of notable speed and power."
 
 msgid "mission.object.pirate_combat.build"
-msgstr ""
+msgstr "A Pirate Cruiser. A combat ship of notable speed and power. <ADDITIONAL DATA UNAVAILABLE>"

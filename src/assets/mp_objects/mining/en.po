@@ -2,7 +2,7 @@ msgid "mission.object.mining.name"
 msgstr "Mining Rig"
 
 msgid "mission.object.mining.info"
-msgstr "An ore mining ship with some ore storage."
+msgstr "A resource collecting ship to mine [ORE] from [ASTEROIDS]."
 
 msgid "mission.object.mining.build"
-msgstr "Mining has been a respected occupation for many generations. If you want to collect ore to refine into minerals, you're going to need some kind of ship to mine it. It's pretty basic, but it will get the job done! Keep in mind that this ship will not refine the ore; you'll need a refinery for that."
+msgstr "Equipped to work a variety of low to no atmosphere environments, this basic mining ship is capable of mining in any situation.  Due to its size, the Mining Rig is only able to mine and haul [ORE]. The [ORE] in its current state is unusable by our ships. The [ORE] will need to be converted into [MATERIAL] via a Refinery."

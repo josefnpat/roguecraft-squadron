@@ -1,8 +1,8 @@
 msgid "mission.object.pirate_mining.name"
-msgstr "Pirate Ricomi"
+msgstr "Pirate Mining Rig"
 
 msgid "mission.object.pirate_mining.info"
-msgstr ""
+msgstr "A resource collecting ship to mine [ORE] from [ASTEROIDS]."
 
 msgid "mission.object.pirate_mining.build"
-msgstr ""
+msgstr "A Pirate Mining Rig. A resource collecting ship to mine [ORE] from [ASTEROIDS]. <ADDITIONAL DATA UNAVAILABLE>"

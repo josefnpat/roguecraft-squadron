@@ -2,7 +2,7 @@ msgid "mission.object.salvager.name"
 msgstr "Scrapper"
 
 msgid "mission.object.salvager.info"
-msgstr "A ship used to gather scrap and salvage from destroyed ships."
+msgstr "A resource gathering ship. Collects [SCRAP] and [DEBRIS]."
 
 msgid "mission.object.salvager.build"
-msgstr "Scrappers are quite common nowadays, as space is a dangerous place to venture. This is a basic vulture ship designed to pick up scrap from destroyed enemies. It is a simple design, gets the job done and it's cheap to build. We should probably avoid putting claustrophobic folks in these guys."
+msgstr "These salvage ships, colloquially known as Scrappers, are essential to all space missions. They are equipped to deconstruct all types of space debris, even from destroyed enemy ships. These ships are of a basic design, however, and are unable to defend themselves and have limited storage. The ICH recommends that squadrons to keep them away from battles."

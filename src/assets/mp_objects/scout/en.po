@@ -2,7 +2,7 @@ msgid "mission.object.scout.name"
 msgstr "Scout"
 
 msgid "mission.object.scout.info"
-msgstr "A small ship to scout with."
+msgstr "A small, fast, and weak ship. Used for reconnaissance."
 
 msgid "mission.object.scout.build"
-msgstr ""
+msgstr "Weakest of the combat ships, the scout’s only true purpose is to gather strategic data on the region and the enemy.  These small ships can be formidable in large numbers, however, and can be helpful in a pinch. Only built by the Command Ship."

@@ -2,7 +2,7 @@ msgid "mission.object.station_training.name"
 msgstr "Training Station"
 
 msgid "mission.object.station_training.info"
-msgstr "This station is used as an operations for training."
+msgstr "This station is used as operations for training."
 
 msgid "mission.object.station_training.build"
 msgstr ""

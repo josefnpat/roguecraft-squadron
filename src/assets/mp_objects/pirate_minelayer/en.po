@@ -1,8 +1,8 @@
 msgid "mission.object.pirate_minelayer.name"
-msgstr "Pirate Lacomi"
+msgstr "Pirate Mine Layer"
 
 msgid "mission.object.pirate_minelayer.info"
-msgstr ""
+msgstr "A ship to deploy [MINES]. Does not defend itself."
 
 msgid "mission.object.pirate_minelayer.build"
-msgstr ""
+msgstr "A Pirate Mine Layer. A ship to deploy [MINES]. Does not defend itself. <ADDITIONAL DATA UNAVAILABLE>"

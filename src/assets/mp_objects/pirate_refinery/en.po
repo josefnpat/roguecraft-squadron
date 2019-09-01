@@ -1,8 +1,8 @@
 msgid "mission.object.pirate_refinery.name"
-msgstr "Pirate Refigaka"
+msgstr "Pirate Refinery"
 
 msgid "mission.object.pirate_refinery.info"
-msgstr ""
+msgstr "A resource ship. Automatically refines [ORE] into [MATERIAL]."
 
 msgid "mission.object.pirate_refinery.build"
-msgstr ""
+msgstr "A Pirate Refinery. A resource ship. Automatically refines [ORE] into [MATERIAL]. <ADDITIONAL DATA UNAVAILABLE>"

@@ -1,8 +1,8 @@
 msgid "mission.object.pirate_scout.name"
-msgstr "Pirate Scoko"
+msgstr "Pirate Scout"
 
 msgid "mission.object.pirate_scout.info"
-msgstr ""
+msgstr "A small, fast, and weak ship. Used for reconnaissance."
 
 msgid "mission.object.pirate_scout.build"
-msgstr ""
+msgstr "A Pirate Scout. A small, fast, and weak ship. Used for reconnaissance. <ADDITIONAL  DATA UNAVAILABLE>"

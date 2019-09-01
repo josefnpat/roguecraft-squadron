@@ -2,8 +2,7 @@ msgid "mission.object.asteroid.name"
 msgstr "Asteroid"
 
 msgid "mission.object.asteroid.info"
-msgstr "This asteroid contains [Ore] which can be mined by a [Mining Rig] and then the [Ore] can be refined by a [Refinery]."
+msgstr "Requires [MINING RIG] to be mined. Contains [ORE]."
 
 msgid "mission.object.asteroid.build"
-msgstr ""
-       
+msgstr "Asteroids are rich in metals and other resources. When away from bases, these space rocks are a valuable resource for collecting [ORE]."

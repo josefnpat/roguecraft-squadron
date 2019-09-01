@@ -1,8 +1,8 @@
 msgid "mission.object.pirate_cargo.name"
-msgstr "Pirate Frei"
+msgstr "Pirate Freighter"
 
 msgid "mission.object.pirate_cargo.info"
-msgstr ""
+msgstr "A standard cargo ship. Used to store [MATERIAL] and [ORE]."
 
 msgid "mission.object.pirate_cargo.build"
-msgstr ""
+msgstr "A Pirate Freighter. A standard cargo ship. Used to store [MATERIAL] and [ORE]. <ADDITIONAL DATA UNAVAILABLE>"

@@ -2,7 +2,7 @@ msgid "mission.object.dojeer_habitat.name"
 msgstr "Habaka"
 
 msgid "mission.object.dojeer_habitat.info"
-msgstr ""
+msgstr "A Dojeer Habitat. A biome that produces [CREW]. Can dock with [STATIONS] to pick up more [CREW]."
 
 msgid "mission.object.dojeer_habitat.build"
-msgstr ""
+msgstr "A Dojeer Habitat. A biome that produces [CREW]. Can dock with [STATIONS] to pick up more [CREW]. <DATA UNAVAILABLE>"

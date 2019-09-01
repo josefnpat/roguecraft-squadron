@@ -2,7 +2,7 @@ msgid "mission.object.satellite.name"
 msgstr "Satellite"
 
 msgid "mission.object.satellite.info"
-msgstr "An immobile satellite that provides vision."
+msgstr "An immobile artificial object that provides vision."
 
 msgid "mission.object.satellite.build"
-msgstr "In an effort to provide more information on the battlefield, we have figured out how to make a satellite that compact, but still provide information to the fleet."
+msgstr "Dropped by the Radar Array. Provides more sensory data than the Radar Array and can remain fairly hidden. Can be targeted and destroyed."

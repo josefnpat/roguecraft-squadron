@@ -2,7 +2,7 @@ msgid "mission.object.dojeer_research.name"
 msgstr "Reseko"
 
 msgid "mission.object.dojeer_research.info"
-msgstr ""
+msgstr "A Dojeer Research Facility. A research ship. Increases [RESEARCH] capacity and speed of research gathering. Can dock at [RESEARCH STATIONS]."
 
 msgid "mission.object.dojeer_research.build"
-msgstr ""
+msgstr "A Dojeer Research Facility. A research ship. Increases [RESEARCH] capacity and speed of research gathering. Can dock at [RESEARCH STATIONS]. <ADDITIONAL DATA UNAVAILABLE>"

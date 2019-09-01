@@ -2,7 +2,7 @@ msgid "mission.object.research.name"
 msgstr "Research Facility"
 
 msgid "mission.object.research.info"
-msgstr "A research ship used to advance your fleet."
+msgstr "A research ship. Increases [RESEARCH] capacity and speed of research gathering. Can dock at [RESEARCH STATIONS]."
 
 msgid "mission.object.research.build"
-msgstr "If you are looking to gain the edge against the enemies, you're going to want some advanced upgrades. Of course for complicated science stuff you're going to need complex science ships. Between you and me, I don't want those scientists on board my ship. They keep going on about science collaboration points."
+msgstr "A small ship dedicated to researching blueprints and construction techniques for your fleet. While the Command ship generates research, it’s very basic. The Research Facility allows for complete focus, increasing the speed of research gathered and the total amount. It can also dock with [RESEARCH STATIONS] to gather additional research from them."

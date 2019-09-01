@@ -2,7 +2,7 @@ msgid "mission.object.dojeer_salvager.name"
 msgstr "Sapko"
 
 msgid "mission.object.dojeer_salvager.info"
-msgstr ""
+msgstr "A Dojeer Scrapper. A resource gathering ship. Collects [SCRAP] and [DEBRIS]."
 
 msgid "mission.object.dojeer_salvager.build"
-msgstr ""
+msgstr "A Dojeer Scrapper. A resource gathering ship. Collects [SCRAP] and [DEBRIS]. <ADDITIONAL DATA UNAVAILABLE>"
