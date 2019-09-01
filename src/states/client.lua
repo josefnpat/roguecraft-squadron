@@ -745,6 +745,7 @@ function client:update(dt)
     end
     if self.config and self.players then
       self.mpresearch:setPlayers(self.players)
+      self.mpresearch:setGenFirst(self.user,self.players)
       self.mpconnect:updateData(self.config,self.players)
     end
   end

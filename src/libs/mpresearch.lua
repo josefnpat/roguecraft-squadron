@@ -30,6 +30,7 @@ function mpresearch.new(init)
   self.mousereleased = mpresearch.mousereleased
   self.canAffordAnything = mpresearch.canAffordAnything
   self.canUnlockAnything = mpresearch.canUnlockAnything
+  self.setGenFirst = mpresearch.setGenFirst
   self.buildData = mpresearch.buildData
   self.getObjectSelectAction = mpresearch.getObjectSelectAction
 
@@ -254,15 +255,19 @@ function mpresearch:canAffordAnything(user,resources)
   return false
 end
 
+function mpresearch:setGenFirst(user,players)
+  print(user,players)
+  local gen_render = libs.researchrenderer.getGenRender(user,players)
+  if gen_render then
+    self._startObject = gen_render.first
+    self._currentObject = self._startObject
+  end
+end
+
 function mpresearch:canUnlockAnything(user,players)
   assert(user)
   assert(players)
   local gen_render = libs.researchrenderer.getGenRender(user,players)
-
-  -- this is a hack. Quick people will see command ship instead of the race ship.
-  self._startObject = gen_render.first
-  self._currentObject = self._startObject
-
   local objects = libs.researchrenderer.getResearchableObjects(nil,gen_render.first)
   for _,object in pairs(objects) do
     if not libs.researchrenderer.isUnlocked(user,object) then
