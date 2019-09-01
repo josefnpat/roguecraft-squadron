@@ -59,7 +59,7 @@ function gettext._decode(iterator)
     end
   end
   if msgid and msgstr then
-    table.insert(data,{id=msgid,str=msgstr})
+    table.insert(data,{id=msgid,str=msgstr:gsub("\\n","\n")})
   end
 
   return data
