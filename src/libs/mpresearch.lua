@@ -256,7 +256,6 @@ function mpresearch:canAffordAnything(user,resources)
 end
 
 function mpresearch:setGenFirst(user,players)
-  print(user,players)
   local gen_render = libs.researchrenderer.getGenRender(user,players)
   if gen_render then
     self._startObject = gen_render.first
