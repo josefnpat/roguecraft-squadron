@@ -258,6 +258,11 @@ function mpresearch:canUnlockAnything(user,players)
   assert(user)
   assert(players)
   local gen_render = libs.researchrenderer.getGenRender(user,players)
+
+  -- this is a hack. Quick people will see command ship instead of the race ship.
+  self._startObject = gen_render.first
+  self._currentObject = self._startObject
+
   local objects = libs.researchrenderer.getResearchableObjects(nil,gen_render.first)
   for _,object in pairs(objects) do
     if not libs.researchrenderer.isUnlocked(user,object) then
