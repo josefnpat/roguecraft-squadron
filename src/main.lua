@@ -54,16 +54,16 @@ function love.load(arg)
   loader:add("fonts",function()
     function makeFonts()
       fonts = {
-        default = love.graphics.newFont("assets/fonts/Yantramanav-Regular.ttf",16),
-        small = love.graphics.newFont("assets/fonts/Yantramanav-Regular.ttf",12),
-        large = love.graphics.newFont("assets/fonts/Yantramanav-Regular.ttf",24),
+        default = love.graphics.newFont("assets/fonts/Roboto-Regular.ttf",16),
+        small = love.graphics.newFont("assets/fonts/Roboto-Regular.ttf",12),
+        large = love.graphics.newFont("assets/fonts/Roboto-Regular.ttf",24),
         window_title = love.graphics.newFont("assets/fonts/ExpletusSans-Bold.ttf",20),
         title = love.graphics.newFont("assets/fonts/ExpletusSans-Bold.ttf",64),
-        menu = love.graphics.newFont("assets/fonts/Yantramanav-Regular.ttf",20),
-        submenu = love.graphics.newFont("assets/fonts/Yantramanav-Regular.ttf",16),
-        vn_name = love.graphics.newFont("assets/fonts/Yantramanav-Regular.ttf",48),
-        vn_text = love.graphics.newFont("assets/fonts/Yantramanav-Regular.ttf",24),
-        vn_info = love.graphics.newFont("assets/fonts/Yantramanav-Regular.ttf",16),
+        menu = love.graphics.newFont("assets/fonts/Roboto-Regular.ttf",20),
+        submenu = love.graphics.newFont("assets/fonts/Roboto-Regular.ttf",16),
+        vn_name = love.graphics.newFont("assets/fonts/ExpletusSans-Bold.ttf",48),
+        vn_text = love.graphics.newFont("assets/fonts/Roboto-Regular.ttf",24),
+        vn_info = love.graphics.newFont("assets/fonts/Roboto-Regular.ttf",16),
         fallback = love.graphics.newFont("assets/fonts/NovaMono.ttf",16),
       }
     end
