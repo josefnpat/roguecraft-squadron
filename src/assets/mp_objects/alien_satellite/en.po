@@ -1,0 +1,8 @@
+msgid "mission.object.alien_satellite.name"
+msgstr "Hybrid Satellite"
+
+msgid "mission.object.alien_satellite.info"
+msgstr "An immobile artificial object that provides vision."
+
+msgid "mission.object.alien_satellite.build"
+msgstr ""

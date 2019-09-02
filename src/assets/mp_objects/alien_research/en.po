@@ -1,0 +1,8 @@
+msgid "mission.object.alien_research.name"
+msgstr "Hybrid Research Facility"
+
+msgid "mission.object.alien_research.info"
+msgstr "A research ship. Increases [RESEARCH] capacity and speed of research gathering. Can dock at [RESEARCH STATIONS]."
+
+msgid "mission.object.alien_research.build"
+msgstr ""

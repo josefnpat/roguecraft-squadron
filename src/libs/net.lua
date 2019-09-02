@@ -146,7 +146,7 @@ net.race = {
     gen="pirate",
   },
   {
-    name="Alien",
+    name="Hybrid",
     tooltip="A race of aliens featured in the original love gamejam.",
     gen="alien",
   },

@@ -1,0 +1,8 @@
+msgid "mission.object.alien_repair.name"
+msgstr "Hybrid Repair Barge"
+
+msgid "mission.object.alien_repair.info"
+msgstr "A support ship. Select barge(s) and [RIGHT CLICK] on a target ship to restore HP."
+
+msgid "mission.object.alien_repair.build"
+msgstr ""

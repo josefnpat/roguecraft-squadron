@@ -1,0 +1,8 @@
+msgid "mission.object.alien_minelayer.name"
+msgstr "Hybrid Mine Layer"
+
+msgid "mission.object.alien_minelayer.info"
+msgstr "A ship to deploy [MINES]. Does not defend itself."
+
+msgid "mission.object.alien_minelayer.build"
+msgstr ""

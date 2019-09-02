@@ -1,8 +1,8 @@
 msgid "mission.object.alien_refinery.name"
-msgstr "Refinery"
+msgstr "Hybrid Refinery"
 
 msgid "mission.object.alien_refinery.info"
-msgstr "A material refining ship with some material storage."
+msgstr "A resource ship. Automatically refines [ORE] into [MATERIAL]."
 
 msgid "mission.object.alien_refinery.build"
-msgstr "Subatomic particle reconfiguration may be pretty awesome, as it allows us to process any ore, but it's really dangerous as well. I've reviewed the currently available ships in our fleet, and none of them will be capable of running such a system. We need to design a ship that can process ore, and is safe enough for common use, a member of the research team has a blueprint we can try"
+msgstr ""

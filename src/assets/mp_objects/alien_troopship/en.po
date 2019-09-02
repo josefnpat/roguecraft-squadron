@@ -1,0 +1,8 @@
+msgid "mission.object.alien_troopship.name"
+msgstr "Hybrid Troopship"
+
+msgid "mission.object.alien_troopship.info"
+msgstr "A non-combat support ship. Used to take control of enemy or neutral ships."
+
+msgid "mission.object.alien_troopship.build"
+msgstr ""

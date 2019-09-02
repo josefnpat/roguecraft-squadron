@@ -1,8 +1,8 @@
 msgid "mission.object.alien_scout.name"
-msgstr "Scout"
+msgstr "Hybrid Scout"
 
 msgid "mission.object.alien_scout.info"
-msgstr "A small ship to scout with."
+msgstr "A small, fast, and weak ship. Used for reconnaissance."
 
 msgid "mission.object.alien_scout.build"
 msgstr ""

@@ -1,0 +1,8 @@
+msgid "mission.object.alien_capital.name"
+msgstr "Hybrid Capital Ship"
+
+msgid "mission.object.alien_capital.info"
+msgstr "A huge combat ship to destroy any enemy stronghold."
+
+msgid "mission.object.alien_capital.build"
+msgstr ""

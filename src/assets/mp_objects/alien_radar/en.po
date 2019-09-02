@@ -1,0 +1,8 @@
+msgid "mission.object.alien_radar.name"
+msgstr "Hybrid Radar Array"
+
+msgid "mission.object.alien_radar.info"
+msgstr "A non-combat ship with equipped long range scanners. Drops [SATELLITES]."
+
+msgid "mission.object.alien_radar.build"
+msgstr ""

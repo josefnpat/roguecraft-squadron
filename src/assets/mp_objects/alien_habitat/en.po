@@ -1,8 +1,8 @@
 msgid "mission.object.alien_habitat.name"
-msgstr "Habitat"
+msgstr "Hybrid Habitat"
 
 msgid "mission.object.alien_habitat.info"
-msgstr "A bio-dome that produces crew and can pick up crew from stations."
+msgstr "A biome that produces [CREW]. Can dock with [STATIONS] to pick up more [CREW]."
 
 msgid "mission.object.alien_habitat.build"
-msgstr "Habitats are essential, not only for moral, but to serve as living quarters for civilians. People have been living in space for so long, they have begun to associate habitats with home. If we optimize the layouts on the habitat, we should be able to sustain a faster growth rate."
+msgstr ""
