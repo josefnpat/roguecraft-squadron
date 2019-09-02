@@ -1,8 +1,0 @@
-msgid "mission.object.dojeer_mine.name"
-msgstr "Comi"
-
-msgid "mission.object.dojeer_mine.info"
-msgstr ""
-
-msgid "mission.object.dojeer_mine.build"
-msgstr ""
