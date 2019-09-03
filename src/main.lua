@@ -114,6 +114,10 @@ function love.load(arg)
     end
   end
 
+  loader:add("backgrounds",function()
+    libs.backgroundlib.load()
+  end)
+
   loader:add("renderers",function()
     libs.objectrenderer.load(true)
     libs.bulletrenderer.load(true)
