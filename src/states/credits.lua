@@ -45,7 +45,7 @@ function credits:init()
 
   self.testers = {
     "Peter Oswald",
-    "Ashley Shuster",
+    "Ashley Schuster",
     "ByteDesigning",
     "Vivid",
     "EntranceJew",
@@ -87,9 +87,9 @@ function credits:enter()
     padding = 32,
   })
   table.insert(self.data,{
-    data = [[Josef Patoprsty (@josefnpat) — Code, Design, Art and Voice Talent
-Ashley Hooper (@ByteDesigning) — Art and Code
-Ashley Schuster (SnowSchu) — Marketing and QA
+    data = [[Josef Patoprsty (@josefnpat) — Project Management, Code, Design and Voice Talent
+Ashley Hooper (@ByteDesigning) — Art and Design
+Ashley Schuster (SnowSchu) — Marketing, Design, Quality Assurance and Voice Talent
 Ran Schonewille (audio-interactive.com) — Music Composer, SFX
 Noyemi Karlaite (@NoyemiK) — Character Art
 Laura Vk (Solsforest) — Art and Voice Talent
