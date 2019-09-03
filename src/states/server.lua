@@ -1017,12 +1017,11 @@ function server:newGame(soft)
   local user_count = 0
   for peer,user in pairs(self.lovernet:getUsers()) do
 
-    local race_gen = nil
     if user.config.race then
       user.config.race_gen = libs.levelshared.gen[libs.net.race[user.config.race].gen]()
     end
 
-    local gen = race_gen or user.gen
+    local gen = user.gen
     -- todo: add unique names
     user_count = user_count + 1
     if user.ai then

@@ -14,6 +14,10 @@ levelshared.team_2_and_3_defeated = function(storage,players)
   return true
 end
 
+levelshared.instant_victory = function(storage,players)
+  return true
+end
+
 levelshared.gen = {}
 
 levelshared.gen.getAllFirst = function()

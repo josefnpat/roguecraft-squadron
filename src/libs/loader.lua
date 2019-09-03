@@ -24,9 +24,11 @@ function loader.new(init)
 end
 
 function loader:add(str,f)
+  assert(str)
+  assert(f)
   table.insert(self._data,{
-    f=f,
     str=str,
+    f=f,
   })
 end
 

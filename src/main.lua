@@ -61,8 +61,10 @@ function love.load(arg)
         title = love.graphics.newFont("assets/fonts/ExpletusSans-Bold.ttf",64),
         menu = love.graphics.newFont("assets/fonts/Roboto-Regular.ttf",20),
         submenu = love.graphics.newFont("assets/fonts/Roboto-Regular.ttf",16),
+        vn_title = love.graphics.newFont("assets/fonts/ExpletusSans-Bold.ttf",64),
         vn_name = love.graphics.newFont("assets/fonts/ExpletusSans-Bold.ttf",48),
         vn_text = love.graphics.newFont("assets/fonts/Roboto-Regular.ttf",24),
+        vn_italic = love.graphics.newFont("assets/fonts/Roboto-RegularItalic.ttf",24),
         vn_info = love.graphics.newFont("assets/fonts/Roboto-Regular.ttf",16),
         fallback = love.graphics.newFont("assets/fonts/NovaMono.ttf",16),
       }
@@ -84,7 +86,13 @@ function love.load(arg)
     pcb = require"libs.progresscirclebar",
     system = require"libs.system",
     moonshine = require"libs.moonshine",
+    md2campaign = require"libs.md2campaign",
+    scanlib = require"libs.scanlib",
   }
+
+  loader:add("scanlib",function()
+    libs.scanlib.load()
+  end)
 
   loader:add("lib dependencies",function()
     libs.gettext = require"libs.gettextlib"

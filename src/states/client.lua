@@ -492,6 +492,24 @@ function client:update(dt)
           dir=intro_dir,
           assets=gamemode.dir.."/vn",
         }
+      elseif level.intro then
+
+        local chapters = {}
+        if self.prev_level_outro then
+          table.insert(chapters,self.prev_level_outro)
+        end
+        table.insert(chapters,level.intro())
+        self.prev_level_outro = nil
+        if level.outro then
+          self.prev_level_outro  = level.outro()
+        end
+
+        self.vn = libs.vnjson.new{
+          dir=gamemode.dir,
+          assets=gamemode.dir.."/vn",
+          mdlevel=chapters,
+        }
+
       end
       self.focusObject = nil
       self.fow:clearMap()

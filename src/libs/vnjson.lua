@@ -14,27 +14,64 @@ function vnjson.new(init)
   self.drawImage = init.drawImage or vnjson.drawImage
   self.drawName = init.drawName or vnjson.drawName
   self.drawText = init.drawText or vnjson.drawText
+  self.drawTitle = init.drawTitle or vnjson.drawTitle
   self.draw = vnjson.draw
   self.update = vnjson.update
-
   self._dir = init.dir or ""
   self._assets = init.assets or self._dir
-  if self._dir then
-    local raw = love.filesystem.read(self._dir.."/data.json")
-    self._data = libs.json.decode(raw)
-  else
-    print("warning: Could not read `"..init.json.."`")
-    self._data = {}
-  end
 
+  if init.mdlevel then
+    self._data = {}
+    local md = libs.md2campaign.new{
+      data=love.filesystem.read(self._dir.."/en.md"),
+      assets=self._assets,
+    }
+    for _,mdlevel in pairs(init.mdlevel) do
+      local level = md:getLevel(mdlevel)
+      for _,line in pairs(level.lines) do
+        if line.title then
+          table.insert(self._data,{
+            en = {
+              title=line.title
+            },
+          })
+        else
+          local obj =
+          table.insert(self._data,{
+            en = {
+              name = line.display_name,
+              text = line.text,
+              emote = line.emote,
+              audio = line.audio_location,
+            },
+            image = line.image_location,
+            hologram = line.hologram,
+          })
+        end
+      end
+    end
+  else
+    if self._dir then
+      local raw = love.filesystem.read(self._dir.."/data.json")
+      self._data = libs.json.decode(raw)
+    else
+      print("warning: Could not read `"..init.json.."`")
+      self._data = {}
+    end
+  end
   self._lang_fallback = "en" or init.lang_fallback
   self._lang = init.lang or self._lang_fallback
 
   -- images tend to be reused, so we will cache them
   self._images = {}
   for _,nodes in pairs(self._data) do
-    if not self._images[nodes.image] then
-      self._images[nodes.image] = love.graphics.newImage(self._assets.."/"..nodes.image)
+    if nodes.image and not self._images[nodes.image] then
+      local file = self._assets .. "/" .. nodes.image
+      if love.filesystem.isFile(file) then
+        self._images[nodes.image] = love.graphics.newImage(file)
+      else
+        print('not a file?',file)
+      end
     end
   end
 
@@ -61,10 +98,13 @@ function vnjson:play()
   if node then
     local node_loc = self:getNodeLoc(node)
     if node_loc.audio then
-      self._aux.audio = love.audio.newSource(self._assets.."/"..node_loc.audio,"stream")
+      local file = self._assets.."/"..node_loc.audio
+      if love.filesystem.isFile(file) then
+        self._aux.audio = love.audio.newSource(file,"stream")
+        self._aux.audio:setVolume(settings:read("voiceover_vol",1))
+        self._aux.audio:play()
+      end
     end
-    self._aux.audio:setVolume(settings:read("voiceover_vol",1))
-    self._aux.audio:play()
   end
 end
 
@@ -91,18 +131,20 @@ function vnjson:getNodeLoc(node)
   return node[self._lang] or node[self._lang_fallback] or {}
 end
 
-function vnjson:drawImage(image)
-  love.graphics.draw(
-    image,
-    love.graphics.getWidth()/2,
-    love.graphics.getHeight()-image:getHeight(),
-    0,1,1,
-    image:getWidth()/2)
+function vnjson:drawImage(image,hologram)
+  local x = (love.graphics.getWidth()-self._text_width)/2--love.graphics.getWidth()/2
+  local y = love.graphics.getHeight()-image:getHeight()-self._padding
+  local offset = 0--image:getWidth()/2)
+  if hologram then
+    libs.scanlib.draw(image,x,y,0,1,1,offset)
+  else
+    love.graphics.draw(image,x,y,0,1,1,offset)
+  end
 end
 
 function vnjson:drawName(name)
   love.graphics.setFont(fonts.vn_name)
-  local width = fonts.vn_name:getWidth(name)+self._padding*2
+  local width = self._text_width--fonts.vn_name:getWidth(name)+self._padding*2
   local height = fonts.vn_name:getHeight()
   local x = (love.graphics.getWidth()-self._text_width)/2
   local y = love.graphics.getHeight()-self._text_height-self._padding-height
@@ -110,11 +152,11 @@ function vnjson:drawName(name)
   dropshadowf(name,x,y,width,"center")
 end
 
-function vnjson:drawText(text)
+function vnjson:drawText(text,italic)
   local x = (love.graphics.getWidth()-self._text_width)/2
   local y = love.graphics.getHeight()-self._text_height-self._padding
   tooltipbg(x,y,self._text_width,self._text_height)
-  love.graphics.setFont(fonts.vn_text)
+  love.graphics.setFont(italic and fonts.vn_italic or fonts.vn_text)
   dropshadowf(
     text,
     x+self._padding,
@@ -123,22 +165,36 @@ function vnjson:drawText(text)
     "center")
 end
 
+function vnjson:drawTitle(text)
+  love.graphics.setFont(fonts.vn_title)
+  dropshadowf(
+    text,
+    0,
+    (love.graphics.getHeight()-fonts.vn_title:getHeight())/2,
+    love.graphics.getWidth(),
+    "center")
+end
+
 function vnjson:draw()
   local node = self:getNode()
   if node then
     local orig_font = love.graphics.getFont()
-    love.graphics.setColor(0,0,0,191)
-    love.graphics.rectangle("fill",0,0,love.graphics.getWidth(),love.graphics.getHeight())
     love.graphics.setColor(255,255,255)
-    if node.image then
-      self:drawImage(self._images[node.image])
+    libs.backgroundlib.drawAlt()
+    if node.image and self._images[node.image] then
+      self:drawImage(self._images[node.image],node.hologram)
     end
     local node_loc = self:getNodeLoc(node)
     if node_loc.name then
       self:drawName(node_loc.name)
     end
-    if node_loc.text then
+    if node_loc.emote then
+      self:drawText(node_loc.emote,true)
+    elseif node_loc.text then
       self:drawText(node_loc.text)
+    end
+    if node_loc.title then
+      self:drawTitle(node_loc.title)
     end
     love.graphics.setFont(fonts.vn_info)
     love.graphics.setColor(127,127,127)
@@ -156,6 +212,7 @@ end
 function vnjson:update(dt)
   local node = self:getNode()
   if node then
+    libs.scanlib.update(dt)
     if self._aux.audio then
       if not self._aux.audio:isPlaying() then
         self:next()

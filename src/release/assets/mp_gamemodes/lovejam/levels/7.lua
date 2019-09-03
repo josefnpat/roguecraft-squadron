@@ -18,14 +18,14 @@ level.ai_players = {
     },
     gen = libs.levelshared.gen.alien,
   },
-  {
-    config = {
-      ai = 2, -- ID
-      team = 2,
-      diff = 4, -- difficulty
-    },
-    gen = libs.levelshared.gen.alien,
-  },
+  -- {
+  --   config = {
+  --     ai = 2, -- ID
+  --     team = 2,
+  --     diff = 4, -- difficulty
+  --   },
+  --   gen = libs.levelshared.gen.alien,
+  -- },
 }
 
 level.intro = function(self)

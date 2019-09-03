@@ -4,7 +4,6 @@ gamemode.id = "lovejam"
 gamemode.name = "LoveJam"
 gamemode.desc = "This is a campaign that is inspired by the original game jam version of RogueCraft Squadron."
 gamemode.start_level = "1"
-gamemode.disabled = "Coming this summer!"
 gamemode.configurable = false
 gamemode.configurable_team = false
 gamemode.configurable_race = false
