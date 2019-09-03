@@ -16,6 +16,7 @@ function mpconnect.new(init)
   self.everyShipUnlocked = false
   self.preset = init.preset or #libs.mppresets.getPresets()
   self.transmitRate = init.transmitRate or 1
+  self.levelSelect = init.levelSelect or 1
   self.points = init.points or 1
   self.mpgamemodes = init.mpgamemodes
   self.guide = libs.guide.new()
@@ -36,6 +37,7 @@ function mpconnect.new(init)
   self.setMapPockets = mpconnect.setMapPockets
   self.setGamemode = mpconnect.setGamemode
   self.setTransmitRate = mpconnect.setTransmitRate
+  self.setLevelSelect = mpconnect.setLevelSelect
   self.setUser = mpconnect.setUser
   self.validateVersion = mpconnect.validateVersion
 
@@ -237,6 +239,16 @@ function mpconnect:generateButtons()
 
   end
 
+  self.levelSelectButton = libs.stepper.new{
+    text="Level Select",
+    onClick=function(dir)
+      --todo: fix this
+      self.lovernet:pushData(libs.net.op.set_config,{d={levelSelect=self.levelSelect+dir}})
+    end,
+    tooltip="Change the level you start on.",
+  }
+  table.insert(self.buttons,self.levelSelectButton)
+
   for _,button in pairs(self.buttons) do
     button:setFont(fonts.submenu)
     button:setHeight(32)
@@ -369,6 +381,14 @@ function mpconnect:setTransmitRate(value)
   self.transmitRate = value
   if self.transmitRatesButton then
     self.transmitRatesButton:setText("Network ["..libs.net.transmitRates[value].text.."]")
+  end
+end
+
+function mpconnect:setLevelSelect(value)
+  self.levelSelect = value
+  if self.levelSelectButton then
+    --todo: load level data, and determine level
+    self.levelSelectButton:setText("Select Level ["..(1).."]")
   end
 end
 
