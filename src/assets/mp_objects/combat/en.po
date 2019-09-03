@@ -1,8 +1,8 @@
 msgid "mission.object.combat.name"
-msgstr "Cruiser"
+msgstr "Battlestar"
 
 msgid "mission.object.combat.info"
 msgstr "A combat ship of notable speed and power."
 
 msgid "mission.object.combat.build"
-msgstr "A relatively fast warship, the Cruiser was designed to act independently of the fleet. This allowed fleets to design for more strategic battles, such as pincer attacks or for search and destroy missions. The ICH recommends producing small squads for scouting and pre-emptive strikes."
+msgstr "A relatively fast warship, the Battlestar was designed to act independently of the fleet. This allowed fleets to design for more strategic battles, such as pincer attacks or for search and destroy missions. The ICH recommends producing small squads for scouting and pre-emptive strikes."
