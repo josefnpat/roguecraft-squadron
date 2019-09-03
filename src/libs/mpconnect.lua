@@ -376,8 +376,7 @@ end
 
 function mpconnect:draw(config,players,user_count)
 
-  libs.stars:draw()
-  libs.stars:drawPlanet()
+  libs.backgroundlib.draw()
 
   if debug_mode then
     local s = ""

@@ -99,8 +99,7 @@ end
 
 function state:draw()
 
-  libs.stars:draw()
-  libs.stars:drawPlanet()
+  libs.backgroundlib.draw()
 
   self.da:drawDebug()
 

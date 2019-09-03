@@ -11,8 +11,7 @@ function state:update(dt)
 end
 
 function state:draw()
-  libs.stars:draw()
-  libs.stars:drawPlanet()
+  libs.backgroundlib.draw()
   libs.options.menu:draw()
 end
 
