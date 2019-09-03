@@ -2,7 +2,7 @@ msgid "mission.object.dojeer_combat.name"
 msgstr "Budja"
 
 msgid "mission.object.dojeer_combat.info"
-msgstr "A Dojeer Cruiser. A combat ship of notable speed and power."
+msgstr "A Dojeer Battlestar. A combat ship of notable speed and power."
 
 msgid "mission.object.dojeer_combat.build"
-msgstr "A Dojeer Cruiser. A combat ship of notable speed and power. <ADDITIONAL DATA UNAVAILABLE>"
+msgstr "A Dojeer Battlestar. A combat ship of notable speed and power. <ADDITIONAL DATA UNAVAILABLE>"
