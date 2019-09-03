@@ -42,6 +42,16 @@ function mpconnect.new(init)
   self._players = {}
   self._data = {}
 
+  self.openMenu = libs.button.new{
+    text="Menu",
+    onClick=function()
+      -- LOL, fuck you future seppi.
+      states.client:keypressed("escape")
+    end,
+    tooltip="Open the game menu.",
+    width=128,
+  }
+
   self.start = libs.button.new{
     text="Ready",
     onClick=function()
@@ -259,6 +269,9 @@ function mpconnect:updateData(config,players)
 end
 
 function mpconnect:update(dt)
+
+  self.openMenu:update(dt)
+
   if self.gamemode == nil then
     for _,button in pairs(self.gamemodes) do
       button:update(dt)
@@ -514,6 +527,10 @@ function mpconnect:draw(config,players,user_count)
     end
 
   end
+
+  self.openMenu:setX(32)
+  self.openMenu:setY(love.graphics.getHeight()-self.start:getHeight()-32)
+  self.openMenu:draw()
 
 end
 
