@@ -25,5 +25,6 @@ return function()
     },
     build_time = 10,
     unlock_cost = 10,
+    weight = 5,
   }
 end

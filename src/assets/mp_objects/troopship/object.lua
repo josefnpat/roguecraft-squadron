@@ -12,5 +12,6 @@ return function()
     takeover = true,
     build_time = 10,
     unlock_cost = 15,
+    weight = 9,
   }
 end

@@ -20,5 +20,6 @@ return function()
     },
     default_level = 1,
     build_time = 5,
+    weight = 3,
   }
 end

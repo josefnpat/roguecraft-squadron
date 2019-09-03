@@ -15,5 +15,6 @@ return function()
     build_time = 20,
     collect = true,
     unlock_cost = 15,
+    weight = 8
   }
 end

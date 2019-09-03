@@ -13,5 +13,6 @@ return function()
     ore_convert = {rate=20,output="material"},
     build_time = 5,
     unlock_cost = 15,
+    weight = 4,
   }
 end

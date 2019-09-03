@@ -21,5 +21,6 @@ return function()
     subdangle_speed = 0,
     rotate = 0.5,
     default_level = 1,
+    weight = 4,
   }
 end

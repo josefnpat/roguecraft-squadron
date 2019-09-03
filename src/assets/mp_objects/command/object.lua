@@ -23,5 +23,6 @@ return function()
       "build_advdrydock",
     },
     build_time = 60,
+    weight = 9,
   }
 end

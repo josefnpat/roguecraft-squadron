@@ -20,5 +20,6 @@ return function()
     subdangle_speed = 0,
     rotate = 0.5,
     unlock_cost = 60,
+    weight = 6,
   }
 end

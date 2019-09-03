@@ -14,5 +14,6 @@ return function()
     material = 1200,
     build_time = 10,
     unlock_cost = 15,
+    weight = 5,
   }
 end

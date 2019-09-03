@@ -13,5 +13,6 @@ return function()
     actions = {},
     build_time = 5,
     unlock_cost = 30,
+    weight = 7,
   }
 end

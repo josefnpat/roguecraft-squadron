@@ -20,5 +20,6 @@ return function()
     build_time = 320,
     subdangle_speed = 0.5,
     unlock_cost = 120,
+    weight = 10,
   }
 end
