@@ -19,6 +19,7 @@ function vnjson.new(init)
   self.update = vnjson.update
   self._dir = init.dir or ""
   self._assets = init.assets or self._dir
+  self._progress = 1
 
   if init.mdlevel then
     self._data = {}
@@ -109,9 +110,14 @@ function vnjson:play()
 end
 
 function vnjson:next()
-  self:stop()
-  self._current = self._current + 1
-  self:play()
+  if self._progress < 1 then
+    self._progress = 1
+  else
+    self._progress = 0
+    self:stop()
+    self._current = self._current + 1
+    self:play()
+  end
 end
 
 function vnjson:halt()
@@ -157,12 +163,15 @@ function vnjson:drawText(text,italic)
   local y = love.graphics.getHeight()-self._text_height-self._padding
   tooltipbg(x,y,self._text_width,self._text_height)
   love.graphics.setFont(italic and fonts.vn_italic or fonts.vn_text)
-  dropshadowf(
-    text,
-    x+self._padding,
-    y+self._padding,
-    self._text_width-self._padding*2,
-    "center")
+  libs.reflowprint{
+    progress=self._progress,
+    print=dropshadow,
+    text=text,
+    x=x+self._padding,
+    y=y+self._padding,
+    w=self._text_width-self._padding*2,
+    a="center",
+  }
 end
 
 function vnjson:drawTitle(text)
@@ -212,6 +221,12 @@ end
 function vnjson:update(dt)
   local node = self:getNode()
   if node then
+    local node_loc = self:getNodeLoc(node)
+    if node_loc.text then
+      self._progress = self._progress + dt/#node_loc.text*25
+    else
+      self._progress = 1
+    end
     libs.scanlib.update(dt)
     if self._aux.audio then
       if not self._aux.audio:isPlaying() then

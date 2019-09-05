@@ -1,7 +1,7 @@
 local md2campaign = {}
 
-local open_quote = "“"
-local close_quote = "”"
+local open_quote = "\""
+local close_quote = "\""
 
 function md2campaign.new(init)
   init = init or {}

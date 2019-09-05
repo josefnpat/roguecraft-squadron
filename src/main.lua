@@ -88,6 +88,7 @@ function love.load(arg)
     moonshine = require"libs.moonshine",
     md2campaign = require"libs.md2campaign",
     scanlib = require"libs.scanlib",
+    reflowprint = require"libs.reflowprint",
   }
 
   loader:add("scanlib",function()
