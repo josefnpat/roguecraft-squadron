@@ -349,7 +349,7 @@ function mpresearch:buildData(user,resources,players)
         level = " "..current_level.."/"..research.max_level
       end
     end
-    button:setText(research.loc.name..cost..level)
+    button:setText((current_level ~= research.max_level and "Unlock" or "Unlocked")..cost..level)
     button:setIcon(research.icon)
     table.insert(self._current_research_buttons,button)
   end

@@ -38,9 +38,6 @@ function researchrenderer.load(loadAssets,preset_value)
       if loadAssets then
         object.icon = current_object_type.icons[1]
       end
-      object.loc = {
-        name="Unlock",
-      }
       data[type] = object
     end
 
