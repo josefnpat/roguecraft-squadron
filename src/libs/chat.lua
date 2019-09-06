@@ -42,6 +42,7 @@ end
 
 function chat:draw()
   if debug_hide_hud then return end
+  if game_singleplayer then return end
   love.graphics.setScissor(self._x,self._y,self._width,self._height)
   local font = love.graphics.getFont()
   local offset = font:getHeight()+self._padding*2
@@ -94,6 +95,7 @@ function chat:draw()
 end
 
 function chat:update(dt)
+  if game_singleplayer then return end
   self._dt = self._dt + dt
 end
 
@@ -102,6 +104,7 @@ function chat:setActive(val)
 end
 
 function chat:getActive()
+  if game_singleplayer then return false end
   return self._active
 end
 
@@ -114,6 +117,7 @@ function chat:setBuffer(buffer)
 end
 
 function chat:mouseInside()
+  if game_singleplayer then return false end
   if self._active then return true end
   local mx,my = love.mouse.getPosition()
   local font = love.graphics.getFont()
