@@ -18,6 +18,7 @@ function button.new(init)
   self._dir = init.dir or 1
   self._font = init.font or fonts.menu
   self._icon = init.icon
+  self._stroke = init.stroke
 
   self._hover = false
   self._depress = false
@@ -75,7 +76,8 @@ function button:draw()
     self._x,self._y,
     self._width,self._height,
     self._hover,self._depress,self._disabled,
-    self._font)
+    self._font,
+    self._stroke)
   if self._hint then
     self:drawHint()
   end
@@ -85,7 +87,7 @@ function button._default_onClick()
   print('button pressed')
 end
 
-function button._default_draw_rcs(text,icon,x,y,width,height,hover,depress,disabled,font)
+function button._default_draw_rcs(text,icon,x,y,width,height,hover,depress,disabled,font,stroke)
   local old_color = {love.graphics.getColor()}
   local old_font = love.graphics.getFont()
   local bg,fg
@@ -111,6 +113,15 @@ function button._default_draw_rcs(text,icon,x,y,width,height,hover,depress,disab
   else
     love.graphics.printf(text,x,y+offset,width,"center")
   end
+
+  if stroke then
+    local stroke_color = stroke()
+    if stroke_color then
+      love.graphics.setColor(stroke_color)
+      love.graphics.rectangle("line",x+0.5,y+0.5,width-1,height-1)
+    end
+  end
+
   love.graphics.setColor(old_color)
   love.graphics.setFont(old_font)
 end

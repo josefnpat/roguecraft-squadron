@@ -77,6 +77,11 @@ function mpconnect.new(init)
       onClick=function()
         self.target_gamemode = gamemode.id
       end,
+      stroke=function()
+        if self.target_gamemode == gamemode.id then
+          return {246,197,42}
+        end
+      end,
     }
     table.insert(self.gamemodes,gamemode_button)
   end
