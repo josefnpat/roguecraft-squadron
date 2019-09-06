@@ -99,6 +99,7 @@ function mainmenu:enter()
             text=libs.i18n('menu.survey.yes'),
             callback=function()
               love.system.openURL("http://roguecraftsquadron.com/feedback?git="..git_count.." ["..git_hash.."]")
+              self.feedback = nil
             end,
           },
           {
