@@ -306,7 +306,8 @@ end
 
 function mainmenu:draw()
 
-  libs.backgroundlib.draw()
+  libs.stars:draw()
+  libs.stars:drawPlanet()
 
   if not debug_hide_hud then
     local logox = love.graphics.getWidth()/16
