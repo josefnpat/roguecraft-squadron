@@ -250,9 +250,6 @@ function client:leave()
 end
 
 function client:selectionOnChange()
-  if self.windows:isActive() then
-    return
-  end
   self.actionpanel:process(self.selection,self.user,self.points,self.resources,self.buildqueue)
   local selection = self.selection:getSelected()
   local selection_is_users = false
@@ -262,10 +259,13 @@ function client:selectionOnChange()
     end
     object.anim = 1
   end
+  self.buildqueue:doFullUpdate()
+  if self.windows:isActive() then
+    return
+  end
   if selection_is_users and #selection > 0 then
     libs.sfx.loopGroup("select")
   end
-  self.buildqueue:doFullUpdate()
 end
 
 function client:getCameraOffsetX()
