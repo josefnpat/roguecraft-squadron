@@ -179,18 +179,19 @@ function love.load(arg)
   loader:add("cursors",function()
     libs.cursor.add("default","assets/hud/cursors/default.png")
     libs.cursor.add("player","assets/hud/cursors/player.png")
-    libs.cursor.add("enemy","assets/hud/cursors/enemy.png")
+    -- libs.cursor.add("enemy","assets/hud/cursors/enemy.png")
     libs.cursor.add("neutral","assets/hud/cursors/neutral.png")
 
-    libs.cursor.add("crew","assets/hud/cursors/crew.png")
-    libs.cursor.add("material","assets/hud/cursors/material.png")
-    libs.cursor.add("ore","assets/hud/cursors/ore.png")
-
-    libs.cursor.add("follow","assets/hud/cursors/follow.png")
-    libs.cursor.add("shoot","assets/hud/cursors/shoot.png")
-    libs.cursor.add("takeover","assets/hud/cursors/takeover.png")
+    -- libs.cursor.add("crew","assets/hud/cursors/crew.png")
+    -- libs.cursor.add("material","assets/hud/cursors/material.png")
+    -- libs.cursor.add("ore","assets/hud/cursors/ore.png")
+    --
+    -- libs.cursor.add("follow","assets/hud/cursors/follow.png")
+    -- libs.cursor.add("shoot","assets/hud/cursors/shoot.png")
+    -- libs.cursor.add("takeover","assets/hud/cursors/takeover.png")
 
     libs.cursor.change("default")
+    libs.cursor.isLoaded = true
     libs.cursor.mode(settings:read("mouse_draw_mode"))
   end)
 
@@ -275,6 +276,15 @@ end
 function love.update(dt)
   if libs.net then libs.net.clearCache() end
   if not headless then
+    if libs.cursor.isLoaded then
+      if love.mouse.isDown(1) then
+        libs.cursor.change("player")
+      elseif love.mouse.isDown(2) then
+        libs.cursor.change("neutral")
+      else
+        libs.cursor.change("default")
+      end
+    end
     libs.cursor.update(dt)
     love.mouse.setGrabbed(
       (
