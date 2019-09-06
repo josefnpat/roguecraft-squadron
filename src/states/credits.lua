@@ -2,8 +2,9 @@ credits = {}
 
 function credits:init()
   self.mss = love.graphics.newImage("assets/credits/mss.png")
-  self.ai = love.graphics.newImage("assets/credits/ai.png")
   self.bd = love.graphics.newImage("assets/credits/bd.png")
+  self.ashschu = love.graphics.newImage("assets/credits/ashschu.png")
+  self.ai = love.graphics.newImage("assets/credits/ai.png")
   self.delmun = love.graphics.newImage("assets/credits/delmun.png")
 
   self.vivid = {
@@ -87,14 +88,29 @@ function credits:enter()
     padding = 32,
   })
   table.insert(self.data,{
-    data = [[Josef Patoprsty (@josefnpat) — Project Management, Code, Design and Voice Talent
-Ashley Hooper (@ByteDesigning) — Art and Design
-Ashley Schuster (SnowSchu) — Marketing, Design, Quality Assurance and Voice Talent
-Ran Schonewille (audio-interactive.com) — Music Composer, SFX
-Noyemi Karlaite (@NoyemiK) — Character Art
-Laura Vk (Solsforest) — Art and Voice Talent
-Arjan Vk (Vivid) — Code, SFX and Voice Talent
-Ethan Blackley — Video Marketing]]
+    data = [[Josef Patoprsty (@josefnpat)
+Project Management, Code, Design and Voice Talent
+
+Ashley Hooper (@ByteDesigning)
+Art and Design
+
+Ashley Schuster (SnowSchu)
+Marketing, Design, Quality Assurance and Voice Talent
+
+Ran Schonewille (audio-interactive.com)
+Music Composer, SFX
+
+Noyemi Karlaite (@NoyemiK)
+Character and Background Art
+
+Arjan Vk (Vivid)
+Code, SFX and Voice Talent
+
+Laura Vk (Solsforest)
+Art and Voice Talent
+
+Ethan Blackley
+Video Marketing]]
   })
 
   table.insert(self.data,{
@@ -139,10 +155,11 @@ Ethan Blackley — Video Marketing]]
     data = table.concat(self.twitch," - "),
   })
 
-  table.insert(self.data,{data = self.ai,})
-  table.insert(self.data,{data = self.bd,})
-  table.insert(self.data,{data = self.vivid,})
   table.insert(self.data,{data = self.delmun,})
+  table.insert(self.data,{data = self.ai,})
+  table.insert(self.data,{data = self.vivid,})
+  table.insert(self.data,{data = self.ashschu,})
+  table.insert(self.data,{data = self.bd,})
   table.insert(self.data,{data = self.mss,})
   table.insert(self.data,{data = libs.i18n('credits.thanks'),})
 
