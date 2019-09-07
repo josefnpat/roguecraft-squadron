@@ -179,7 +179,7 @@ function love.load(arg)
   loader:add("cursors",function()
     libs.cursor.add("default","assets/hud/cursors/default.png")
     libs.cursor.add("player","assets/hud/cursors/player.png")
-    -- libs.cursor.add("enemy","assets/hud/cursors/enemy.png")
+    libs.cursor.add("enemy","assets/hud/cursors/enemy.png")
     libs.cursor.add("neutral","assets/hud/cursors/neutral.png")
 
     -- libs.cursor.add("crew","assets/hud/cursors/crew.png")
