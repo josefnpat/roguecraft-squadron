@@ -1254,7 +1254,9 @@ function client:keypressed(key)
   end
 
   if self.vn and self.vn:active() then
-    self.vn:next()
+    if key == "return" or key == "kpenter" or key == "space" then
+      self.vn:next()
+    end
   elseif self.windows:isActive() then
 
   else
