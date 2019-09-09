@@ -178,6 +178,7 @@ function love.load(arg)
 
   loader:add("cursors",function()
     libs.cursor.add("default","assets/hud/cursors/default.png")
+    libs.cursor.add("high","assets/hud/cursors/high.png")
     libs.cursor.add("player","assets/hud/cursors/player.png")
     libs.cursor.add("enemy","assets/hud/cursors/enemy.png")
     libs.cursor.add("neutral","assets/hud/cursors/neutral.png")
@@ -278,9 +279,9 @@ function love.update(dt)
   if not headless then
     if libs.cursor.isLoaded then
       if love.mouse.isDown(1) then
-        libs.cursor.change("player")
+        libs.cursor.change("high")
       elseif love.mouse.isDown(2) then
-        libs.cursor.change("neutral")
+        libs.cursor.change("high")
       else
         libs.cursor.change("default")
       end
