@@ -4,7 +4,7 @@
 
 ### Chapter 1: Goodbye Gracie
 
-**Computer:** Private message 67/67 from Grace Patton. Communication delay of one week and two days.
+**Computer:** Private message 67 out of 67 from Grace Patton. Communication delay of one week and two days.
 
 Playing now.
 
@@ -14,7 +14,7 @@ If I don't come back... Stay safe. I love you.
 
 Tell Mom and Dad I love them.
 
-**Ruby Patton:** *Chokes up*
+**Ruby Patton:** *Ruby chokes up*
 
 Gracie - what did you do? How bad have things been out there?
 
@@ -38,7 +38,7 @@ Intel, what is Miho Takeda's current status?
 
 **Ruby Patton:** Miho, I've received a troubling message from Grace.
 
-*Sighs sadly*
+*Ruby sighs sadly*
 
 **H|Miho Takeda:** Miho ... you've not called me that in a while.
 
@@ -56,7 +56,7 @@ The report is very short and has been heavily redacted,  but ... we don't think 
 
 I'm sorry Ruby.
 
-**Ruby Patton:** *Sniffles*
+**Ruby Patton:** *Ruby sniffles*
 
 **H|Miho Takeda:** We have some new orders.
 
@@ -82,7 +82,7 @@ Takeda out.
 
 -- Screen fade to Black
 
-**Rosa Dietrich:** Squadron Commander, Supply Officer Dietrich reporting in.
+**Rosa Dietrich:** Squadron Commander, First Officer Dietrich reporting in.
 
 **Ruby Patton:** At ease, Officer. What's the situation report?
 
@@ -118,7 +118,7 @@ When I first joined, I was worried, but now I think we have a real shot at winni
 
 **Ruby Patton:** Speaking of enlisting, I heard you were an actress before joining the military.
 
-**Rosa Dietrich:** *Grunts*
+**Rosa Dietrich:** *Rosa grunts*
 
 Ma'am ... yes, I was, but don't think that makes me unqualified.
 
@@ -128,7 +128,7 @@ Ma'am ... yes, I was, but don't think that makes me unqualified.
 
 **Rosa Dietrich:** I have served on many ships and in many conflicts. I earned my rank, Ma'am.
 
-**Ruby Patton:** *Laughs*
+**Ruby Patton:** *Ruby laughs*
 
 I didn't mean to offend, Dietrich. Takeda had nothing but high praise for your skills and I trust in her judgment.
 
@@ -184,7 +184,7 @@ I have heard great things about you.
 
 **Ruby Patton:** I have heard of your unorthodox conquests as well.
 
-**H|Valentina Nikolai:** *Laughs loudly*
+**H|Valentina Nikolai:** *Valentina laughs loudly*
 
 Yes, yes, yes. The time I used troopships to take over enemy vessels.
 
@@ -238,13 +238,13 @@ Why is your sister's name in an alien transmission?
 
 **Ruby Patton:** One of the transmissions said Grace's name.
 
-**H|Miho Takeda:** *Hmmm*
+**H|Miho Takeda:** *Miho grunts*
 
 The ICH had been trying to open up formal communications with the Dojeer, hoping to end this conflict peacefully.
 
 Still, it's disturbing that they know her name.  
 
-*Sighs loudly*
+*Miho sighs loudly*
 
 Patton, have Intel continue recording incoming messages from the Dojeer and send them to central command.
 
@@ -324,7 +324,7 @@ I pray that with Nikolai supporting you you will cripple our enemy and come back
 
 Next time we see each other, drinks are on me.
 
-**Ruby Patton:** *Laughs quietly*
+**Ruby Patton:** *Ruby laughs quietly*
 
 Only if I get to bring the tea cakes.
 
@@ -380,7 +380,7 @@ Communications, open a channel to General Takeda.
 
 **Rosa Dietrich:**  I'm so sorry, Ma'am.
 
-**Ruby Patton:** *Whimpers*
+**Ruby Patton:** *Ruby whimpers*
 
 Oh Miho.
 
@@ -491,7 +491,7 @@ We're getting ... an open communication with the Dojeer?
 
 Your people just killed my sister, you monster!
 
-*Blood curdling yell*
+*Ruby lets out a blood curdling yell*
 
 You are the enemy of all humanity and I will contribute to your extinction.
 
@@ -659,7 +659,7 @@ It's better safe than causing a paradox.
 
 **Rosa Dietrich:**  Ma'am. I ...
 
-**Ruby Patton:** Rosa. You have been a wonderful Officer. It has been a pleasure working with you.
+**Ruby Patton:** Rosa. You have been a wonderful First Officer. It has been a pleasure working with you.
 
 -- She turns to the rest of her staff.
 
@@ -679,7 +679,7 @@ We may or may not survive.
 
 If we survive, we may not be able to return to earth. There isn't exactly a lot of data on time travel after all.
 
-**Rosa Dietrich:** *Muttters*
+**Rosa Dietrich:** *Rosa muttters*
 
 No kidding.
 
@@ -695,7 +695,7 @@ Mati, Can you send ships to escort these people back?
 
 Rosa. If you wish to go, I will be appoint you Squadron Commander for the duration of the journey and recommend you for permanent promotion.
 
-**Rosa Dietrich:** *Laughs meekly*
+**Rosa Dietrich:** *Rosa laughs meekly*
 
 Thank you for the offer, Commander, but ...
 
@@ -795,7 +795,7 @@ To me, she is face of everyone we lose in this war.
 
 -- Possible image, Ruby and Miho over tea, laughing
 
-**H|Valentina Nikolai|Rosa Dietrich:** But, war is not end. Thanks to Miho Takeda, Commander Ruby Patton and Officer Rosa Dietrich, war is over.
+**H|Valentina Nikolai|Rosa Dietrich:** But, war is not end. Thanks to Miho Takeda, Commander Ruby Patton and First Officer Rosa Dietrich, war is over.
 
 We are regrouping, rebuilding and learning.
 
