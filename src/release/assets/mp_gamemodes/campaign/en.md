@@ -18,13 +18,13 @@ Tell Mom and Dad I love them.
 
 Gracie - what did you do? How bad have things been out there?
 
-Intel, what happened to the ICH Bishop?
+Computer, what happened to the ICH Bishop?
 
 **Computer:** ICH Bishop is captained by Grace Patton. Current status is classified.
 
 **Ruby Patton:** She had the best ship in the fleet. What happened?
 
-Intel, what is Miho Takeda's current status?
+Computer, what is Miho Takeda's current status?
 
 **Computer:** Miho Takeda is currently in Sector 14 and within immediate communication range.
 
@@ -70,7 +70,7 @@ We might be following in her footsteps.
 
 -- sympathetic
 
-**H|Miho Takeda:** I've sent your briefing to Intel.
+**H|Miho Takeda:** I've sent your briefing to intel.
 
 Along with your orders, you will be receiving a new Support Commander, Rosa Dietrich.
 
@@ -134,7 +134,7 @@ I didn't mean to offend, Dietrich. Takeda had nothing but high praise for your s
 
 -- looks sheepish
 
-**Rosa Dietrich:** I'm sorry, Commander, sir. I ...
+**Rosa Dietrich:** I'm sorry, Commander, ma'am. I ...
 
 People have a tendency to dismiss me if they know about my past.
 
@@ -168,7 +168,7 @@ I will be moving into an adjacent sector in hopes of engaging in a pincer attack
 
 **Ruby Patton:** Any new intelligence on the Dojeer?
 
-**H|Miho Takeda:** Nothing new according to Intel.
+**H|Miho Takeda:** Nothing new according to intel.
 
 **Ruby Patton:** And what of the ICH Bishop?
 
@@ -202,7 +202,7 @@ Patton out.
 
 **Rosa Dietrich:** Commander, our systems report having intercepted a message from the Dojeer.
 
-Intel, play clip.
+Computer, play clip.
 
 **H|Dojeer|Algos:** [Unintelligible]
 
@@ -246,7 +246,7 @@ Still, it's disturbing that they know her name.
 
 *Miho sighs loudly*
 
-Patton, have Intel continue recording incoming messages from the Dojeer and send them to central command.
+Patton, have intel continue recording incoming messages from the Dojeer and send them to central command.
 
 We're moving to the next sector. Nikolai, you shall move to the adjacent sector, and I will be in the other.
 
@@ -595,7 +595,7 @@ She died protecting me!
 
 **Mati:** No, Grace died here.
 
-**Rosa Dietrich:** Commander, Intel just received telemetry for a ship ... it's the ICH Bishop!
+**Rosa Dietrich:** Commander, intel just received telemetry for a ship ... it's the ICH Bishop!
 
 The ship ... there's no one left.
 
