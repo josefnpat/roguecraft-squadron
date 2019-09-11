@@ -5,4 +5,4 @@ msgid "mission.object.wormhole.info"
 msgstr "A region of spacetime exhibiting strong gravitational effects. Used for space travel."
 
 msgid "mission.object.wormhole.build"
-msgstr "The ICH has been studying wormholes for decades and while its not entirely sure how it works, the ICH has figured out how to open up wormholes. They’re unstable though. Squadrons that go through the wormholes are subject to system glitches and could end up anywhere in the universe."
+msgstr "The IEE has been studying wormholes for decades and while its not entirely sure how it works, the IEE has figured out how to open up wormholes. They’re unstable though. Squadrons that go through the wormholes are subject to system glitches and could end up anywhere in the universe."

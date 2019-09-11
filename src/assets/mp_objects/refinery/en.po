@@ -5,4 +5,4 @@ msgid "mission.object.refinery.info"
 msgstr "A resource ship. Automatically refines [ORE] into [MATERIAL]."
 
 msgid "mission.object.refinery.build"
-msgstr "Part of the ICH self-sufficiency protocol, the Refinery is a necessity for long-term, deep space missions. Required to process [ORE] into a more useful substance, [MATERIAL]."
+msgstr "Part of the IEE self-sufficiency protocol, the Refinery is a necessity for long-term, deep space missions. Required to process [ORE] into a more useful substance, [MATERIAL]."

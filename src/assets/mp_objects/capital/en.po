@@ -5,4 +5,4 @@ msgid "mission.object.capital.info"
 msgstr "A huge combat ship to destroy any enemy stronghold."
 
 msgid "mission.object.capital.build"
-msgstr "The largest ship in the ICH. This capital class warship consists of a large crew, a reinforced hull, and three high powered cannons. This ship is a last resort and requires a large amount of resources to build. So many resources, in fact, that only the best squadrons, in deep space, are able to build it."
+msgstr "The largest ship in the IEE. This capital class warship consists of a large crew, a reinforced hull and three high powered cannons. This ship is a last resort, and requires a large amount of resources to build. So many resources, in fact, that only the best squadrons in deep space are able to build it."

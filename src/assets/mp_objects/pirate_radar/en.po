@@ -2,7 +2,7 @@ msgid "mission.object.pirate_radar.name"
 msgstr "Pirate Radar Array"
 
 msgid "mission.object.pirate_radar.info"
-msgstr "A non-combat ship with equipped long range scanners. Drops [SATELLITES]."
+msgstr "A non-combat ship with equipped long range scanners. Deploys [SATELLITES]."
 
 msgid "mission.object.pirate_radar.build"
-msgstr "A Pirate Radar Array. A non-combat ship with equipped long range scanners. Drops [SATELLITES]. <ADDITIONAL DATA UNAVAILABLE>"
+msgstr "A Pirate Radar Array. A non-combat ship with equipped long range scanners. Deploys [SATELLITES]. <ADDITIONAL DATA UNAVAILABLE>"

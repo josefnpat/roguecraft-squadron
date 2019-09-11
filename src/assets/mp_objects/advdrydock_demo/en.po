@@ -5,5 +5,4 @@ msgid "mission.object.advdrydock_demo.info"
 msgstr "A construction ship. Builds various combat related ships. Does not defend itself."
 
 msgid "mission.object.advdrydock_demo.build"
-msgstr "In ICH, it’s common for squadrons to be alone without the support of their bases. To solve this, Research and Development came up with the free roaming Military Drydock. This untethered space vessel houses a large crew, capable of building a wide variety of combat ships, bigger, faster, and stronger than what the Command Ship is capable building."
-
+msgstr "In IEE, it’s common for squadrons to be alone without the support of their bases. To solve this, Research and Development came up with the free roaming Military Drydock. This untethered space vessel houses a large crew, capable of building a wide variety of combat ships which are bigger, faster and stronger than what the Command Ship is capable building."

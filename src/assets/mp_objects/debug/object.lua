@@ -9,6 +9,7 @@ return function()
     speed = 300,
     health = {max = 75,},
     material = 1600,
+    research_generate = 100,
     shoot = {
       type = "laser",
       reload = 2.5,

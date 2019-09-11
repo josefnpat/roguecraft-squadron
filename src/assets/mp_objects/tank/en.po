@@ -2,7 +2,7 @@ msgid "mission.object.tank.name"
 msgstr "Armored Frontline Tank"
 
 msgid "mission.object.tank.info"
-msgstr "A combat ship. Slow moving. High HP."
+msgstr "A combat ship. High HP."
 
 msgid "mission.object.tank.build"
-msgstr "These tanks are fully armored, perfect for building out a frontline defense or to charge into battle. Due to the energy needed to move the tanks, they are slower and have weaker shooting power and range."
+msgstr "These tanks are fully armored, perfect for building out a frontline defense or to charge into battle. Due to the energy needed to move the tanks, they have weaker shooting power and range."

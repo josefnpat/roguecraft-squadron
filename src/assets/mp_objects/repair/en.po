@@ -5,4 +5,4 @@ msgid "mission.object.repair.info"
 msgstr "A support ship. Select barge(s) and [RIGHT CLICK] on a target ship to restore HP."
 
 msgid "mission.object.repair.build"
-msgstr "Part of the ICH self-sufficiency protocol, Repair Barges were created to assist with ship repairs while in deep space, away from bases. Repair barges are not autonomous, however. They require specific instructions on what ships to repair."
+msgstr "Part of the IEE self-sufficiency protocol, Repair Barges were created to assist with ship repairs while in deep space, away from bases. Repair barges are not autonomous, however. They require specific instructions on what ships to repair."

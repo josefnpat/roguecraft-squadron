@@ -2,7 +2,7 @@ msgid "mission.object.alien_tank.name"
 msgstr "Hybrid Armored Frontline Tank"
 
 msgid "mission.object.alien_tank.info"
-msgstr "A combat ship. Slow moving. High HP."
+msgstr "A combat ship. High HP."
 
 msgid "mission.object.alien_tank.build"
 msgstr ""

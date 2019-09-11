@@ -5,4 +5,4 @@ msgid "mission.object.troopship.info"
 msgstr "A non-combat support ship. Used to take control of enemy or neutral ships."
 
 msgid "mission.object.troopship.build"
-msgstr "New from the minds of ICH’s Research and Development department, the Troopship is kamikaze-style support ship, capable of infiltrating an enemy ship’s intranet, allowing ally ships to take control. They’re not autonomous, however, and require specific instructions on what ships to take-over. The ICH recommends they be sent out in groups, to increase take-over success rate."
+msgstr "New from the minds of IEE's Research and Development department, the Troopship is kamikaze-style support ship, capable of infiltrating an enemy ship’s intranet, allowing ally ships to take control. They’re not autonomous, however, and require specific instructions on what ships to take-over. The IEE recommends they be sent out in groups, to increase take-over success rate."

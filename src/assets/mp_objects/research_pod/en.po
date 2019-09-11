@@ -5,4 +5,4 @@ msgid "mission.object.research_pod.info"
 msgstr "A small space pod. Contains [RESEARCH]."
 
 msgid "mission.object.research_pod.build"
-msgstr "These small capsules were left by previous exploration fleets containing information gathered about the region. Before the war and high-speed communication satellites, research fleets would drop these into space with encrypted beacons. Some months later, another scientific fleet would come up and collect the pod, reading the data and continuing the research. While the scientific aspect is on hold, the ICH is grateful for these windfalls of knowledge."
+msgstr "These small capsules were left by previous exploration fleets containing information gathered about the region. Before the war and high-speed communication satellites, research fleets would drop these into space with encrypted beacons. Some months later, another scientific fleet would come up and collect the pod, reading the data and continuing the research. While the scientific aspect is on hold, the IEE is grateful for these windfalls of knowledge."

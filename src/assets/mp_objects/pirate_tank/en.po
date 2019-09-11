@@ -2,7 +2,7 @@ msgid "mission.object.pirate_tank.name"
 msgstr "Pirate Armored Frontline Tank"
 
 msgid "mission.object.pirate_tank.info"
-msgstr "A combat ship. Slow moving. High HP."
+msgstr "A combat ship. High HP."
 
 msgid "mission.object.pirate_tank.build"
-msgstr "A Pirate Armored Frontline Tank. A combat ship. Slow moving. High HP. <ADDITIONAL DATA UNAVAILABLE>"
+msgstr "A Pirate Armored Frontline Tank. A combat ship. High HP. <ADDITIONAL DATA UNAVAILABLE>"

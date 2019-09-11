@@ -6,4 +6,4 @@ msgid "mission.object.research_station.info"
 msgstr "A small space station. Contains [RESEARCH]. Requires a [RESEARCH FACILITY] to collect."
 
 msgid "mission.object.research_station.build"
-msgstr "These small, low powered stations were left by previous exploration fleets to gather information about the region. Before the war, research fleets would build and drop off stations to gather scientific data passively. Then come back months or years later to pick it up. While the scientific aspect is on hold, the ICH is grateful for these windfalls of knowledge."
+msgstr "These small, low powered stations were left by previous exploration fleets to gather information about the region. Before the war, research fleets would build and drop off stations to gather scientific data passively. Then come back months or years later to pick it up. While the scientific aspect is on hold, the IEE is grateful for these windfalls of knowledge."

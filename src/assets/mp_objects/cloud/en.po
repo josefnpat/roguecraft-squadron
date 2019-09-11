@@ -5,4 +5,4 @@ msgid "mission.object.cloud.info"
 msgstr "A cloud of ionized gases. Can be used to avoid sensor detection."
 
 msgid "mission.object.cloud.build"
-msgstr "Similar to planetary nebulae, these emission nebula clouds are dense areas of ionized gas formed from a dying star. As the star begins to shed its outer layers and its hot core ionizes them, the layers will sometimes cluster, forming a dense area of ionization. The ICH recommends using these to hide from enemy sensors and setting up ambushes."
+msgstr "Similar to planetary nebulae, these emission nebula clouds are dense areas of ionized gas formed from a dying star. As the star begins to shed its outer layers and its hot core ionizes them the layers will sometimes cluster, forming a dense area of ionization. The IEE recommends using these to hide from enemy sensors and setting up ambushes."

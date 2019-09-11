@@ -5,4 +5,4 @@ msgid "mission.object.station.info"
 msgstr "A space station. Contains [CREW]. Requires a [HABITAT] to collect."
 
 msgid "mission.object.station.build"
-msgstr "Filled with active military, volunteers, and [CREW], these space stations provide a necessary outpost for ICH operations. Due to active battle zones, once visited and relieved of resources, the stations become decommissioned."
+msgstr "Filled with active military, volunteers, and [CREW], these space stations provide a necessary outpost for IEE operations. Due to active battle zones, once visited and relieved of resources, the stations become decommissioned."

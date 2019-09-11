@@ -5,4 +5,4 @@ msgid "mission.object.jump.info"
 msgstr "A non-combat ship used to create wormholes to move to a new region."
 
 msgid "mission.object.jump.build"
-msgstr "The jump ship is a very advanced piece of technology, it operates by creating a wormhole that allows mass to move through folded space. Building multiple ships will create the wormhole faster."
+msgstr "The jump ship is a very advanced piece of technology. It operates by creating a wormhole that allows mass to move through folded space. Building multiple ships will create the wormhole faster."

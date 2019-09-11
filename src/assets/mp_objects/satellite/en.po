@@ -5,4 +5,4 @@ msgid "mission.object.satellite.info"
 msgstr "An immobile artificial object that provides vision."
 
 msgid "mission.object.satellite.build"
-msgstr "Dropped by the Radar Array. Provides more sensory data than the Radar Array and can remain fairly hidden. Can be targeted and destroyed."
+msgstr "Deployed by the Radar Array. Provides more sensory data than the Radar Array and can remain fairly hidden. Can be targeted and destroyed."

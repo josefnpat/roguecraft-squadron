@@ -5,4 +5,4 @@ msgid "mission.object.dojeer_radar.info"
 msgstr "A Dojeer Radar Array. A non-combat ship with equipped long range scanners. Drops [SATELLITES]."
 
 msgid "mission.object.dojeer_radar.build"
-msgstr "A Dojeer Radar Array. A non-combat ship with equipped long range scanners. Drops [SATELLITES]. <ADDITIONAL DATA UNAVAILABLE>"
+msgstr "A Dojeer Radar Array. A non-combat ship with equipped long range scanners. Deploys [SATELLITES]. <ADDITIONAL DATA UNAVAILABLE>"
