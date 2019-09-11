@@ -779,11 +779,6 @@ function client:update(dt)
   end
 
   self.interruptable_move = love.keyboard.isDown("lshift")
-  if not self.interruptable_move then
-    libs.cursor.change("default")
-  else
-    libs.cursor.change("enemy")
-  end
 
   local change = false
 

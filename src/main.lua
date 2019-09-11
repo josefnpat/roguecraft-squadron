@@ -278,9 +278,9 @@ function love.update(dt)
   if libs.net then libs.net.clearCache() end
   if not headless then
     if libs.cursor.isLoaded then
-      if love.mouse.isDown(1) then
-        libs.cursor.change("high")
-      elseif love.mouse.isDown(2) then
+      if states.client.interruptable_move then
+        libs.cursor.change("enemy")
+      elseif love.mouse.isDown(1) or love.mouse.isDown(2) then
         libs.cursor.change("high")
       else
         libs.cursor.change("default")
