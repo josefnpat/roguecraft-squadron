@@ -4,13 +4,13 @@
 
 ### Chapter 1: The Long Goodbye
 
-**Computer:** Private message 67 out of 67 from Grace Patton. Communication delay of one week and two days.
+**Computer:** Private message 67 out of 67 from Commander Grace Patton. Communication delay of one week and two days.
 
 Playing now.
 
 **H|Grace Patton:** Ruby, I don't have much time. Keep an eye on the Dojeer. Hopefully this war will end soon.
 
-If I don't come back... tell Mom and Dad I love them.
+If I don't come back ... tell Mom and Dad I love them.
 
 Stay safe. I love you.
 
@@ -26,9 +26,9 @@ Computer, what happened to the IEE Bishop?
 
 Computer, what is Miho Takeda's current status?
 
-**Computer:** Miho Takeda is currently in Sector 14 and within immediate communication range.
+**Computer:** Fleet Commander Miho Takeda is currently in Sector 14 and within immediate communication range.
 
-**Ruby Patton:** Computer, open a private message with Commander Takeda.
+**Ruby Patton:** Computer, open a private message with Fleet Commander Takeda.
 
 -- Adding DIY screen transition
 
@@ -48,7 +48,7 @@ Computer, what is Miho Takeda's current status?
 
 Yes, I heard about your sister. I don't know much more than you; her mission is classified above my clearance.
 
-I can tell you she was on an active mission, but Grace Patton and the crew of the IEE Bishop are considered missing in action now.
+I can tell you she was on an active mission, but Grace and the crew of the IEE Bishop are considered missing in action now.
 
 I'm sorry. I know you two were close.
 
@@ -70,7 +70,7 @@ Looks like we might be following in Grace's footsteps.
 
 -- pulls herself together
 
-**Ruby Patton:** Thank you, Miho. I just... Thank you.
+**Ruby Patton:** Thank you, Miho. I just ... thank you.
 
 -- sympathetic
 
@@ -80,7 +80,7 @@ In addition to your orders, you will also be receiving a new Executive Officer, 
 
 She's green, but she shows a lot of promise.
 
-And Ruby... Again, I'm so sorry for your loss.
+And Ruby ... again, I'm so sorry for your loss.
 
 Takeda out.
 
@@ -142,7 +142,7 @@ I didn't mean to offend you, Dietrich. Takeda had nothing but high praise for yo
 
 People have a tendency to dismiss me if they know about my past.
 
-I shouldn't have assumed your motives.
+I shouldn't have assumed your stance.
 
 -- dismissive gesture
 
@@ -294,13 +294,13 @@ Now to the point. Imperial Earth Empire has built two 1,000 megaton thermonuclea
 
 Teller Mark 42.
 
-These bombs are the largest that humanity has ever built. Ssetting them off could easily destroy a whole planet.
+These bombs are the largest that humanity has ever built. Setting one off could easily destroy a whole planet.
 
-Grace Patton was unable to destroy her target with the payload. It's clear her mission has failed.
+Commander Grace Patton was unable to destroy her target with the payload. It's clear her mission has failed.
 
 We're giving you our last one.
 
-You will be supplied with modified ships that have been equipped with anti-radiation chambers.
+You will be supplied with a modified command ship equipped with anti-radiation chambers.
 
 You and your crew are to take cover in these chambers when you launch the missile.
 
@@ -354,15 +354,15 @@ Only if I get to bring the tea cakes.
 
 -- freaked out
 
-**Ruby Patton:**  Well. That's just ... lovely.
+**Ruby Patton:** Well. That's just ... lovely.
 
 ## Level 5 Prelude
 
 ### Chapter 5: The End of the Beginning
 
-**Rosa Dietrich:** Commander, We seem to have encountered a thinning in the enemy line.
+**Rosa Dietrich:** Commander, we seem to have encountered a thinning in the enemy line.
 
-This is our best chance of getting through the enemy.
+This is our best chance of getting through.
 
 **Ruby Patton:** We're reaching the limit of our live communications signal with the fleet.
 
@@ -382,7 +382,7 @@ Computer, open a channel with Takeda.
 
 **Ruby Patton:** No...
 
-**Rosa Dietrich:**  I'm so sorry, ma'am.
+**Rosa Dietrich:** I'm so sorry, ma'am.
 
 **Ruby Patton:** *Ruby whimpers*
 
@@ -390,7 +390,7 @@ Oh Miho.
 
 ....
 
-Death lies in our beds : in the lazy mattresses, the black blankets, lives a full stretch and then suddenly blows, blows sound unknown filling out the sheets and there are beds sailing into a harbor where death is waiting, dressed as an admiral.
+Death lies in our beds: in the lazy mattresses, the black blankets, lives a full stretch and then suddenly blows, blows sound unknown filling out the sheets and there are beds sailing into a harbor where death is waiting, dressed as an admiral.
 
 ...
 
@@ -469,7 +469,7 @@ Gracie!
 
 -- happy. She may have lost her sister and mentor, but she didn't lose everyone else
 
-**Ruby Patton:**  Valentina ... I thought we had lost you.
+**Ruby Patton:** Valentina ... I thought we had lost you.
 
 -- looks triumphant
 
@@ -485,15 +485,15 @@ We're prepared to meet you in the next sector!
 
 **Rosa Dietrich:** We're detecting a lot of enemies in this sector!
 
-We're receiving a request for communication from... the Dojeer?
+We're receiving a request for communication from ... the Dojeer?
 
-**H|Dojeer|Mati:**  Other. You are entering my territory. Turn back or I will destroy you.
+**H|Dojeer|Mati:** Other. You are entering my territory. Turn back or I will destroy you.
 
 -- outraged
 
 **Ruby Patton:** Really? Not meat comments or telling us that you will take over our home word?
 
-Your people just killed my sister, you monster!
+Your people killed my sister, you monster!
 
 *Ruby lets out a blood curdling yell*
 
@@ -527,7 +527,7 @@ You have the Teller, you must persist.
 
 Effect repairs, join us as soon as you can -  we will make a wide berth for you.
 
-**Ruby Patton:** Good luck Valentina! Patton out.
+**Ruby Patton:** Good luck, Valentina! Patton out.
 
 ## Level 8 Prelude
 
@@ -553,7 +553,7 @@ You will not take my soil! I will grow!
 
 **Computer:** Report received from central command. Communication delay of twenty four hours.
 
-Dojeer ships spotted a few sectors from Earth connected wormhole, behind enemy lines.
+Dojeer ships spotted a few sectors from Earth connected wormhole, behind defensive lines.
 
 IEE defenses have scrambled to cut them off.
 
@@ -577,7 +577,7 @@ Why do you fight me?
 
 -- shocked
 
-**Ruby Patton:**  What? Are you saying there are two races of Dojeer?
+**Ruby Patton:** What? Are you saying there are two races of Dojeer?
 
 **Mati:** There are many race hives of Dojeer.
 
@@ -587,7 +587,7 @@ The one who names you Meat calls itself Algos.
 
 It killed its birthing planet with its greed and gluttony and it seeks a new planet to grow upon.
 
-**Ruby Patton:** You... You haven't been the one attacking us?
+**Ruby Patton:** You ... you haven't been the one attacking us?
 
 **Mati:** I would not waste my resources so.
 
@@ -639,7 +639,7 @@ All that will be left will be its sprout fleets and they will be far fewer in nu
 
 I have sent what I can to cut Algos off from your planet and protect it from any stray fleets that may stumble through it.
 
-**Ruby Patton:** Those ship's were yours?
+**Ruby Patton:** Those ships were yours?
 
 -- Covers her eyes for a moment, grief-stricken. Takes a deep breath and looks up.
 
@@ -659,17 +659,17 @@ Disconnect the video feed from the communications systems.
 
 **Rosa Dietrich:** What?
 
-**Ruby Patton:** Grace gave her life to give us this opportunity and I don't know what kind of laws of relativity we might hit in there.
+**Ruby Patton:** Grace gave her life to give us this opportunity and I don't know what kind of universal laws we might hit in there.
 
 It's better safe than causing a paradox.
 
-**Rosa Dietrich:**  Ma'am. I ...
+**Rosa Dietrich:** Ma'am. I ...
 
 **Ruby Patton:** Rosa, you have been a wonderful Executive Officer. It has been a pleasure working with you.
 
 -- She turns to the rest of her staff.
 
-With all of you. Thank you for giving me the privilege of working with you.
+With all of you. Thank you for giving me the privilege.
 
 **Rosa Dietrich:** Thank you, ma'am. But -
 
@@ -691,7 +691,7 @@ No kidding.
 
 **Ruby Patton:** There is no shame in staying behind.
 
-Those who wish to will be shuttled to the Habitat ship to begin transportation back to IEE territory.
+Those who wish will be shuttled to the habitat ship to begin transportation back to IEE territory.
 
 Mati, can you arrange an escort for my people to get back to safety?
 
@@ -739,9 +739,9 @@ It's good to see you, but we've got incoming!
 
 ## Level 9 Complete
 
-**Rosa Dietrich:** Ruby! The General's ship has been damaged!
+**Rosa Dietrich:** Ruby! The Fleet Commander's ship has been damaged!
 
-**H|Miho Takeda:** Grace ... your sister, Ruby, has been looking for you.
+**H|Miho Takeda:** Grace ... Ruby, has been looking for you.
 
 **Rosa Dietrich:** Ruby, her ship's gone critical ... it's about to blow!
 
@@ -751,7 +751,7 @@ It's good to see you, but we've got incoming!
 
 -- shocked
 
-**Miho Takeda:** Ruby?
+**H|Miho Takeda:** Ruby?
 
 Is that you?
 
@@ -770,6 +770,8 @@ They ... they're dead. All of them.
 **Rosa Dietrich:** We're approaching the target sector. Incoming message!
 
 -- The following text must be exactly the same at the end
+
+**Future Ruby Patton|Ruby Patton:** This is the IEE Bishop. We've detected a massive fleet surrounding this sector!
 
 **H|Past Ruby Patton|Grace Patton:** Gracie, is that you?
 
@@ -809,15 +811,15 @@ To me, she is face of everyone we lose in this war.
 
 -- Possible image, Ruby and Miho over tea, laughing
 
-**H|Valentina Nikolai|Rosa Dietrich:** But, war is not the end. Thank to Miho Takeda, Commander Ruby Patton and Executive Officer Rosa Dietrich, war is over.
+**H|Valentina Nikolai|Rosa Dietrich:** But, war is not the end. Thank to Miho Takeda, Commander Ruby Patton and Executive Officer Rosa Dietrich, the war is over.
 
 We are regrouping, rebuilding and learning.
 
 -- possible image, shot of multiple IEE Command ships building, among them are Dejeer ships
 
-**H|Valentina Nikolai|Mati:** We are learning that we not know very much about Dojeer.
+**H|Valentina Nikolai|Mati:** We are learning that we not know very much about the Dojeer. Some might are friends.
 
-That some might be friends, and the Dojeer are learning about us and how we are not a hivemind.
+The Dojeer are learning about us as well and how we are not a hivemind.
 
 -- possible shot, a Mati Dojeer drone standing in the crowd, looking pensive
 
@@ -837,7 +839,7 @@ We have friends and loved ones to hold that we thought we lost.
 
 -- fade to shot of habitat ship, escorted by Dojeer and IEE ships, arriving at earth
 
-So. We live. We grow. We work to meet next challenge that life throws our way.
+So. We live. We grow. We work to meet the next challenge that life throws our way.
 
 We are humans.
 
