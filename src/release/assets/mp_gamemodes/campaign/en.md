@@ -2,7 +2,7 @@
 
 ## Level 1 Prelude
 
-### Chapter 1: Goodbye Gracie
+### Chapter 1: The Long Goodbye
 
 **Computer:** Private message 67 out of 67 from Grace Patton. Communication delay of one week and two days.
 
@@ -10,17 +10,17 @@ Playing now.
 
 **H|Grace Patton:** Ruby, I don't have much time. Keep an eye on the Dojeer. Hopefully this war will end soon.
 
-If I don't come back... Stay safe. I love you.
+If I don't come back... tell Mom and Dad I love them.
 
-Tell Mom and Dad I love them.
+Stay safe. I love you.
 
 **Ruby Patton:** *Ruby chokes up*
 
 Gracie - what did you do? How bad have things been out there?
 
-Computer, what happened to the ICH Bishop?
+Computer, what happened to the IEE Bishop?
 
-**Computer:** ICH Bishop is captained by Grace Patton. Current status is classified.
+**Computer:** IEE Bishop is captained by Grace Patton. Current status is classified.
 
 **Ruby Patton:** She had the best ship in the fleet. What happened?
 
@@ -28,51 +28,55 @@ Computer, what is Miho Takeda's current status?
 
 **Computer:** Miho Takeda is currently in Sector 14 and within immediate communication range.
 
-**Ruby Patton:** Computer, open a private message with Miho Takeda.
+**Ruby Patton:** Computer, open a private message with Commander Takeda.
+
+-- Adding DIY screen transition
+
+**Computer:** Connection established.
 
 **H|Miho Takeda:** Takeda here. Squadron Commander Patton, what can I do for you?
 
-**Ruby Patton:** General Takeda. Do you have a moment?
+**Ruby Patton:** Fleet Commander Takeda, do you have a moment?
 
-**H|Miho Takeda:** I do. We are going to recommence scouting soon, but I have some time.
+**H|Miho Takeda:** I do. We are going to recommence scouting soon, but I have some time right now.
 
 **Ruby Patton:** Miho, I've received a troubling message from Grace.
 
 *Ruby sighs sadly*
 
-**H|Miho Takeda:** Miho ... you've not called me that in a while.
+**H|Miho Takeda:** Miho ... you've not called me that in a long time.
 
-Yes, I heard about your sister. I don't know much more than you; it's classified above my clearance.
+Yes, I heard about your sister. I don't know much more than you; her mission is classified above my clearance.
 
-I can tell you she was on an active mission, but she's missing in action now.
+I can tell you she was on an active mission, but Grace Patton and the crew of the IEE Bishop are considered missing in action now.
 
-I'm sorry, I know you two were close.
+I'm sorry. I know you two were close.
 
 **Ruby Patton:** Did they find the ship?
 
 **H|Miho Takeda:** She sent a report along with the personal message that you received.
 
-The report is very short and has been heavily redacted,  but ... we don't think she made it.
+The report is very short and has been heavily redacted, but ... we don't think she made it.
 
-I'm sorry Ruby.
+I'm sorry, Ruby.
 
 **Ruby Patton:** *Ruby sniffles*
 
-**H|Miho Takeda:** We have some new orders.
+**H|Miho Takeda:** We have just received new orders.
 
 All of my squadrons, including yours, have been moved to the front line against the Dojeer.
 
-We might be following in her footsteps.
+Looks like we might be following in Grace's footsteps.
 
 -- pulls herself together
 
-**Ruby Patton:** Thank you Miho. I just... Thank you.
+**Ruby Patton:** Thank you, Miho. I just... Thank you.
 
 -- sympathetic
 
-**H|Miho Takeda:** I've sent your briefing to intel.
+**H|Miho Takeda:** I've sent your mission briefing to your crew.
 
-Along with your orders, you will be receiving a new Support Commander, Rosa Dietrich.
+In addition to your orders, you will also be receiving a new Executive Officer, Rosa Dietrich.
 
 She's green, but she shows a lot of promise.
 
@@ -80,21 +84,21 @@ And Ruby... Again, I'm so sorry for your loss.
 
 Takeda out.
 
--- Screen fade to Black
+-- Adding DIY screen transition
 
-**Rosa Dietrich:** Squadron Commander, First Officer Dietrich reporting in.
+**Rosa Dietrich:** Squadron Commander, Executive Officer Rosa Dietrich reporting in.
 
 **Ruby Patton:** At ease, Officer. What's the situation report?
 
 **Rosa Dietrich:** It's been rather hectic, Commander. The Dojeer have entered the forward line.
 
-So far they haven't made any hostile moves, but we're scrambling to set up defenses just in case.
+So far they haven't made any hostile movements, but we're scrambling to set up defenses as a precaution.
 
 The command ship that General Takeda sent has been staffed and prepped.
 
 Support is prepared to gather resources for construction.
 
-**Ruby Patton:** And what has happened to the other squadrons?
+**Ruby Patton:** Have you received reports from the other squadrons yet?
 
 **Rosa Dietrich:** Ma'am, the other squadrons in the fleet are engaged in other sectors.
 
@@ -114,7 +118,7 @@ Past reports have shown that the Dojeer to be tricky opponents with superior tec
 
 **Rosa Dietrich:** Of course, but we are learning more and more with each battle.
 
-When I first joined, I was worried, but now I think we have a real shot at winning this.
+When I first enlisted, I was worried, but now I think we have a real shot at winning this.
 
 **Ruby Patton:** Speaking of enlisting, I heard you were an actress before joining the military.
 
@@ -126,11 +130,11 @@ Ma'am ... yes, I was, but don't think that makes me unqualified.
 
 **Ruby Patton:** I ...
 
-**Rosa Dietrich:** I have served on many ships and in many conflicts. I earned my rank, Ma'am.
+**Rosa Dietrich:** I have served on many ships and in many conflicts. I have earned my rank, ma'am.
 
 **Ruby Patton:** *Ruby laughs*
 
-I didn't mean to offend, Dietrich. Takeda had nothing but high praise for your skills and I trust in her judgment.
+I didn't mean to offend you, Dietrich. Takeda had nothing but high praise for your skills and I trust her judgement.
 
 -- looks sheepish
 
@@ -152,7 +156,7 @@ You are dismissed.
 
 **H|Miho Takeda:** Patton, Report.
 
-**Ruby Patton:** This sector has been secured, Wing Commander.
+**Ruby Patton:** This sector has been secured, fleet commander.
 
 **H|Miho Takeda:** Nikolai, Report.
 
@@ -170,9 +174,9 @@ I will be moving into an adjacent sector in hopes of engaging in a pincer attack
 
 **H|Miho Takeda:** Nothing new according to intel.
 
-**Ruby Patton:** And what of the ICH Bishop?
+**Ruby Patton:** And what of the IEE Bishop?
 
-**H|Miho Takeda:** Unfortunately, no new information there either.
+**H|Miho Takeda:** Unfortunately, no new information.
 
 I will let you know if I hear anything, Patton.
 
@@ -182,13 +186,13 @@ Takeda out.
 
 I have heard great things about you.
 
-**Ruby Patton:** I have heard of your unorthodox conquests as well.
+**Ruby Patton:** And I have heard of your unorthodox conquests as well.
 
 **H|Valentina Nikolai:** *Valentina laughs loudly*
 
 Yes, yes, yes. The time I used troopships to take over enemy vessels.
 
-Good times! I and my team are prepared for this mission! If it is our day to die, then it is our day to die.
+Good times! My team and I are prepared for this mission! If it is our day to die, then it is our day to die!
 
 **Ruby Patton:** I'll see you on the battlefield.
 
@@ -200,9 +204,9 @@ Patton out.
 
 ## Level 2 Complete
 
-**Rosa Dietrich:** Commander, our systems report having intercepted a message from the Dojeer.
+**Rosa Dietrich:** Commander, our sensors have intercepted a message from the Dojeer.
 
-Computer, play clip.
+Computer, play message.
 
 **H|Dojeer|Algos:** [Unintelligible]
 
@@ -230,7 +234,7 @@ Why is your sister's name in an alien transmission?
 
 **Valentina Nikolai:** Mission was great success. The enemy is cunning, but we were victorious!
 
-**Ruby Patton:** Intel has been able to intercept messages from the Dojeer. We have no translations.
+**Ruby Patton:** Our sensors were able to intercept messages from the Dojeer. We have no translations.
 
 **Valentina Nikolai:** The Dojeer say gibberish and we have no way to translate their language. Why bother listening?
 
@@ -240,15 +244,15 @@ Why is your sister's name in an alien transmission?
 
 **H|Miho Takeda:** *Miho grunts*
 
-The ICH had been trying to open up formal communications with the Dojeer, hoping to end this conflict peacefully.
+The IEE had been trying to open up formal communications with the Dojeer, hoping to end this conflict peacefully.
 
 Still, it's disturbing that they know her name.  
 
 *Miho sighs loudly*
 
-Patton, have intel continue recording incoming messages from the Dojeer and send them to central command.
+Patton, have your sensors continue recording incoming messages from the Dojeer and send them to central command.
 
-We're moving to the next sector. Nikolai, you shall move to the adjacent sector, and I will be in the other.
+We're moving to the next sector. Nikolai, you will move to the adjacent sector, and I will be in the other.
 
 Keep moving forward, Patton.
 
@@ -290,9 +294,9 @@ Now to the point. Imperial Earth Empire has built two 1,000 megaton thermonuclea
 
 Teller Mark 42.
 
-These bombs are the biggest we as a species have ever made and setting them off could destroy a planet.
+These bombs are the largest that humanity has ever built. Ssetting them off could easily destroy a whole planet.
 
-Grace Patton was unable to use the one she had, but her mission has failed.
+Grace Patton was unable to destroy her target with the payload. It's clear her mission has failed.
 
 We're giving you our last one.
 
@@ -304,15 +308,15 @@ You and your crew are to take cover in these chambers when you launch the missil
 
 **H|Miho Takeda:** Exactly.
 
-But, even with this infighting, we don't have the manpower or the resources to maintain this conflict and we can't leave our Solar System vulnerable.
+But, even with this infighting, we don't have the manpower or the resources to maintain this level of conflict. We can't leave our territory vulnerable.
 
-The Dojeer have shown that they will not stop fighting, so drastic measure must be taken.
+The Dojeer have shown that they will not stop, so drastic measures must be taken.
 
-Command has informed me that a very heavily defended planet has been spotted inside enemy territory.
+Central command has informed me that there is a planet deep in Dojeer territory with heavy defences.
 
 You are to fight your way through enemy lines to attack and destroy this planet.
 
-I pray that with Nikolai supporting you you will cripple our enemy and come back alive.
+I pray that with Nikolai's support, you will cripple the Dojeer and come back alive.
 
 -- resolute. Salutes Takeda
 
@@ -330,7 +334,7 @@ Only if I get to bring the tea cakes.
 
 **H|Miho Takeda:** Takeda out.
 
--- screen fade to black
+-- FADE
 
 **Ruby Patton:** Alright people. Here are our latest orders ...
 
@@ -344,7 +348,7 @@ Only if I get to bring the tea cakes.
 
 **H|Dojeer|Algos:** [Angry unintelligible speech]
 
-**Computer:** Commander, we've just received a basic translation algorithm from central command. Attempting auto translation now.
+**Computer:** Commander, receiving data from central command containing a basic translation algorithm. Integrating translation matrix now.
 
 **H|Dojeer|Algos:** The meat will water my roots and feed my growth! Your planet will become my soil!
 
@@ -354,31 +358,31 @@ Only if I get to bring the tea cakes.
 
 ## Level 5 Prelude
 
-### Chapter 5: The Long Goodbye
+### Chapter 5: The End of the Beginning
 
 **Rosa Dietrich:** Commander, We seem to have encountered a thinning in the enemy line.
 
 This is our best chance of getting through the enemy.
 
-**Ruby Patton:** We're reaching the limit of our live feed signal.
+**Ruby Patton:** We're reaching the limit of our live communications signal with the fleet.
 
 Let's take them out as quickly as we can and try to slip through.
 
-Communications, open a channel to General Takeda.
+Computer, open a channel with Takeda.
 
-**Computer:** Opening channel to General Takada.
-
-....
+**Computer:** Opening channel to Fleet Commander Miho Takeda.
 
 ....
 
 ....
 
-**Computer:** Commander. General Takada's ship is not responding.
+....
+
+**Computer:** Fleet Commander Miho Takeda's ship is not responding.
 
 **Ruby Patton:** No...
 
-**Rosa Dietrich:**  I'm so sorry, Ma'am.
+**Rosa Dietrich:**  I'm so sorry, ma'am.
 
 **Ruby Patton:** *Ruby whimpers*
 
@@ -403,9 +407,9 @@ Let's go.
 
 ## Level 5 Complete
 
-**Rosa Dietrich:** Ma'am; there's too many of them! We can't hold out much longer!
+**Rosa Dietrich:** Ma'am, there's too many of them! We can't hold out much longer!
 
-**H|Grace Patton:** This is the ICH Bishop. We've detected a massive fleet surrounding this sector!
+**H|Grace Patton:** This is the IEE Bishop. We've detected a massive fleet surrounding this sector!
 
 -- joyful
 
@@ -425,11 +429,11 @@ Let's go.
 
 There's no time - prepare for a radiological explosion.
 
-This has happened before and it will happen again. Remember that.
+Remember this, Ruby - this has happened before and it will happen again.
 
 -- Frantic
 
-**Rosa Dietrich:** She's firing a warhead! Teller Mark 42 class! Everyone to the radiation chambers!
+**Rosa Dietrich:** She's firing a warhead! It's a Teller Mark 42! Everyone to the radiation chambers!
 
 -- heartbroken
 
@@ -481,7 +485,7 @@ We're prepared to meet you in the next sector!
 
 **Rosa Dietrich:** We're detecting a lot of enemies in this sector!
 
-We're getting ... an open communication with the Dojeer?
+We're receiving a request for communication from... the Dojeer?
 
 **H|Dojeer|Mati:**  Other. You are entering my territory. Turn back or I will destroy you.
 
@@ -529,9 +533,11 @@ Effect repairs, join us as soon as you can -  we will make a wide berth for you.
 
 ### Chapter 8: To The Death
 
-**Rosa Dietrich:** There's no sign of Nikolai! Hostiles incoming!
+**Rosa Dietrich:** There's no sign of Commander Nikolai!
 
 **Ruby Patton:** Valentina ... No. Not you too...
+
+**Rosa Dietrich:** Hostiles incoming!
 
 **H|Dojeer|Algos:** I'll kill you meat ships.
 
@@ -545,11 +551,11 @@ You will not take my soil! I will grow!
 
 ## Level 8 Complete
 
-**Computer:** Report received. Communication delay is twenty four hours.
+**Computer:** Report received from central command. Communication delay of twenty four hours.
 
 Dojeer ships spotted a few sectors from Earth connected wormhole, behind enemy lines.
 
-ICH defenses are scrambling to cut off their course.
+IEE defenses have scrambled to cut them off.
 
 -- looking exhausted
 
@@ -571,7 +577,7 @@ Why do you fight me?
 
 -- shocked
 
-**Ruby Patton:**  What? There are two of races of Dojeer?
+**Ruby Patton:**  What? Are you saying there are two races of Dojeer?
 
 **Mati:** There are many race hives of Dojeer.
 
@@ -595,7 +601,7 @@ She died protecting me!
 
 **Mati:** No, Grace died here.
 
-**Rosa Dietrich:** Commander, intel just received telemetry for a ship ... it's the ICH Bishop!
+**Rosa Dietrich:** Commander, our sensors just received telemetry for a ship in the sector... it's the IEE Bishop!
 
 The ship ... there's no one left.
 
@@ -647,7 +653,7 @@ Dietrich.
 
 **Ruby Patton:** Tear off the hull markings.
 
-Change our identifiers to match the ICH Bishop.
+Change our identifiers to match the IEE Bishop.
 
 Disconnect the video feed from the communications systems.
 
@@ -659,17 +665,17 @@ It's better safe than causing a paradox.
 
 **Rosa Dietrich:**  Ma'am. I ...
 
-**Ruby Patton:** Rosa. You have been a wonderful First Officer. It has been a pleasure working with you.
+**Ruby Patton:** Rosa, you have been a wonderful Executive Officer. It has been a pleasure working with you.
 
 -- She turns to the rest of her staff.
 
-With all of you, Thank you all giving me the privilege of working with you.
+With all of you. Thank you for giving me the privilege of working with you.
 
-**Rosa Dietrich:** Thank you, Ma'am. But -
+**Rosa Dietrich:** Thank you, ma'am. But -
 
-**Ruby Patton:** Please. Trust me Rosa.
+**Ruby Patton:** Please. Trust me, Rosa.
 
-**Rosa Dietrich:** ... I can do that, Ma'am.
+**Rosa Dietrich:** ... I can do that, ma'am.
 
 **Ruby Patton:** A general message to all personnel.
 
@@ -685,13 +691,15 @@ No kidding.
 
 **Ruby Patton:** There is no shame in staying behind.
 
-Those who wish to will be shuttled to the Habitat ship to begin transportation back to ICH territory.
+Those who wish to will be shuttled to the Habitat ship to begin transportation back to IEE territory.
 
-Mati, Can you send ships to escort these people back?
+Mati, can you arrange an escort for my people to get back to safety?
 
 **Mati:** I can spare those resources.
 
-**Ruby Patton:** Thank you. For those who wish to remain, when we are finished releasing the shuttles, we are heading in.
+**Ruby Patton:** Thank you, Mati.
+
+For those who wish to remain, assist with preparations. We'll be heading into the wormhole as soon as we're ready.
 
 Rosa. If you wish to go, I will be appoint you Squadron Commander for the duration of the journey and recommend you for permanent promotion.
 
@@ -699,17 +707,21 @@ Rosa. If you wish to go, I will be appoint you Squadron Commander for the durati
 
 Thank you for the offer, Commander, but ...
 
-I won't be leaving this ship.
+I won't be leaving.
 
 My place is with you and our crew.
 
 -- looking teary eyed
 
-**Ruby Patton:** Thank you Rosa. Please, call me Ruby. When we're ready, navigate into the wormhole.
+**Ruby Patton:** Thank you, Rosa. Please ... call me Ruby.
+
+When we're ready, navigate into the wormhole.
 
 ## Level 9 Prelude
 
-### Chapter 9: The Beginning Of The End
+### Chapter 9: The Beginning of the End
+
+**Computer:** Incoming communication from Fleet Commander Miho Takeda.
 
 **H|Miho Takeda:** Grace? Grace Patton? Is that you?
 
@@ -729,9 +741,9 @@ It's good to see you, but we've got incoming!
 
 **Rosa Dietrich:** Ruby! The General's ship has been damaged!
 
-**H|Miho Takeda:** Grace ... your sister, Ruby, is looking for you.
+**H|Miho Takeda:** Grace ... your sister, Ruby, has been looking for you.
 
-**Rosa Dietrich:** It's gone critical and it's about to blow!
+**Rosa Dietrich:** Ruby, her ship's gone critical ... it's about to blow!
 
 -- looks devastated
 
@@ -769,11 +781,11 @@ They ... they're dead. All of them.
 
 There's no time - prepare for a radiological explosion.
 
-This has happened before and it will happen again. Remember that.
+Remember this, Ruby - this has happened before and it will happen again.
 
 -- The previous text must be exactly the same at the end
 
-**Rosa Dietrich:** Communications ended. Algos' core is in sight.
+**Rosa Dietrich:** Communications ended. The Algos core is in sight.
 
 **Ruby Patton:** Detonate the Teller.
 
@@ -785,7 +797,9 @@ This has happened before and it will happen again. Remember that.
 
 -- First picture is is Nikolai in military formal dress, standing at a podium in front of a crowd. Behind her is a tarp covering a large block shape
 
-**Valentina Nikolai:** I serve under General Takeda, Miho as she asks us to call her.
+**Valentina Nikolai:** Thank you for joining me today for the Dojeer War Memorial.
+
+**Valentina Nikolai:** I served under Fleed Commander Miho Takeda. Miho, as she asked us to call her.
 
 **H|Valentina Nikolai|Miho Takeda:** She said that titles were for work, not tea and poetry.
 
@@ -795,11 +809,11 @@ To me, she is face of everyone we lose in this war.
 
 -- Possible image, Ruby and Miho over tea, laughing
 
-**H|Valentina Nikolai|Rosa Dietrich:** But, war is not end. Thanks to Miho Takeda, Commander Ruby Patton and First Officer Rosa Dietrich, war is over.
+**H|Valentina Nikolai|Rosa Dietrich:** But, war is not the end. Thank to Miho Takeda, Commander Ruby Patton and Executive Officer Rosa Dietrich, war is over.
 
 We are regrouping, rebuilding and learning.
 
--- possible image, shot of multiple ICH Command ships building, among them are Dejeer ships
+-- possible image, shot of multiple IEE Command ships building, among them are Dejeer ships
 
 **H|Valentina Nikolai|Mati:** We are learning that we not know very much about Dojeer.
 
@@ -809,7 +823,7 @@ That some might be friends, and the Dojeer are learning about us and how we are 
 
 I wish we could have known this all before.
 
-I can only hope that Miho, Ruby, Valentina and so many others didn't die in vain.
+I can only hope that Miho, Ruby, Rosa and so many others didn't die in vain.
 
 I wish that we had met Mati first and not Algos.
 
@@ -821,7 +835,7 @@ Wishes don't change life and we will all be grieving for very long time.
 
 We have friends and loved ones to hold that we thought we lost.
 
--- fade to shot of habitat ship, escorted by Dojeer and ICH ships, arriving at earth
+-- fade to shot of habitat ship, escorted by Dojeer and IEE ships, arriving at earth
 
 So. We live. We grow. We work to meet next challenge that life throws our way.
 
