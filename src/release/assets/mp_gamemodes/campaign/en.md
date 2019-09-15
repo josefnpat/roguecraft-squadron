@@ -114,7 +114,7 @@ We're on our own.
 
 **Ruby Patton:** Don't get ahead of yourself, Officer. This was just too easy.
 
-Past reports have shown that the Dojeer to be tricky opponents with superior technology.
+Past reports have shown the Dojeer to be tricky opponents with superior technology.
 
 **Rosa Dietrich:** Of course, but we are learning more and more with each battle.
 
@@ -491,7 +491,7 @@ We're receiving a request for communication from ... the Dojeer?
 
 -- outraged
 
-**Ruby Patton:** Really? Not meat comments or telling us that you will take over our home word?
+**Ruby Patton:** Really? No meat comments or telling us that you will take over our home world?
 
 Your people killed my sister, you monster!
 
@@ -701,7 +701,7 @@ Mati, can you arrange an escort for my people to get back to safety?
 
 For those who wish to remain, assist with preparations. We'll be heading into the wormhole as soon as we're ready.
 
-Rosa. If you wish to go, I will be appoint you Squadron Commander for the duration of the journey and recommend you for permanent promotion.
+Rosa. If you wish to go, I will appoint you Squadron Commander for the duration of the journey and recommend you for permanent promotion.
 
 **Rosa Dietrich:** *Rosa laughs meekly*
 
