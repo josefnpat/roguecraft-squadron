@@ -244,7 +244,7 @@ Why is your sister's name in an alien transmission?
 
 **H|Miho Takeda:** *Miho grunts*
 
-The IEE had been trying to open up formal communications with the Dojeer, hoping to end this conflict peacefully.
+The IEE have been trying to open up formal communications with the Dojeer, hoping to end this conflict peacefully.
 
 Still, it's disturbing that they know her name.  
 
@@ -290,7 +290,7 @@ I'm going to be honest with you, the situation looks grim.
 
 Our fleet has been doing well on this front, but the other fleets are getting splattered on the metaphorical windshield.
 
-Now to the point. Imperial Earth Empire has built two 1,000 megaton thermonuclear weapons.
+Now to the point. The Imperial Earth Empire has built two 1,000 megaton thermonuclear weapons.
 
 Teller Mark 42.
 
@@ -741,9 +741,9 @@ It's good to see you, but we've got incoming!
 
 **Rosa Dietrich:** Ruby! The Fleet Commander's ship has been damaged!
 
-**H|Miho Takeda:** Grace ... Ruby, has been looking for you.
+**H|Miho Takeda:** Grace ... Ruby has been looking for you.
 
-**Rosa Dietrich:** Ruby, her ship's gone critical ... it's about to blow!
+**Rosa Dietrich:** Ruby ... her ship's gone critical ... it's about to blow!
 
 -- looks devastated
 
