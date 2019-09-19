@@ -10,7 +10,7 @@
   {
     "en":{
       "name":"Commander",
-      "text":"What? I thought we were only going to be under for a few months. This wasn’t supposed to happen at all.",
+      "text":"What? I thought we were only going to be under for a few months. This wasn't supposed to happen at all.",
       "audio":"com/audio/line1.ogg"
     },
     "image":"com/default.png"
@@ -50,7 +50,7 @@
   {
     "en":{
       "name":"Commander",
-      "text":"Adjutant, why aren’t we at our destination?",
+      "text":"Adjutant, why aren't we at our destination?",
       "audio":"com/audio/line3.ogg"
     },
     "image":"com/default.png"
@@ -66,7 +66,7 @@
   {
     "en":{
       "name":"Commander",
-      "text":"Wasn’t our destination a planet?",
+      "text":"Wasn't our destination a planet?",
       "audio":"com/audio/line4.ogg"
     },
     "image":"com/default.png"
@@ -82,7 +82,7 @@
   {
     "en":{
       "name":"Commander",
-      "text":"Well, that’s not good.",
+      "text":"Well, that's not good.",
       "audio":"com/audio/line5.ogg"
     },
     "image":"com/default.png"
