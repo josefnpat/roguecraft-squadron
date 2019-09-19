@@ -14,20 +14,30 @@ level.ai_players = {
     config = {
       ai = 1, -- ID
       team = 2,
-      diff = 2, -- difficulty
+      diff = 3, -- difficulty
+      race = 4, -- hybrid
+      gen = libs.levelshared.gen.alien,
     },
-    gen = libs.levelshared.gen.alien,
   },
-  -- {
-  --   config = {
-  --     ai = 2, -- ID
-  --     team = 2,
-  --     diff = 3, -- difficulty
-  --   },
-  --   gen = libs.levelshared.gen.alien,
-  -- },
+  {
+    config = {
+      ai = 2, -- ID
+      team = 2,
+      diff = 3, -- difficulty
+      race = 4, -- hybrid
+      gen = libs.levelshared.gen.alien,
+    },
+  },
+  {
+    config = {
+      ai = 3, -- ID
+      team = 2,
+      diff = 1, -- difficulty
+      race = 4, -- hybrid
+      gen = libs.levelshared.gen.none,
+    },
+  },
 }
-
 
 level.intro = function(self)
   local tvn = libs.vn.new()

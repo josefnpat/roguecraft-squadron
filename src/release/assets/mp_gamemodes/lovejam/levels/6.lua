@@ -1,7 +1,7 @@
 local level = {}
 
 level.id = "6"
-level.next_level = "7"
+level.next_level = "8" -- skip level 7
 level.victory = libs.levelshared.team_2_and_3_defeated
 level.map = "random"
 
@@ -14,18 +14,29 @@ level.ai_players = {
     config = {
       ai = 1, -- ID
       team = 2,
-      diff = 3, -- difficulty
+      diff = 4, -- difficulty
+      race = 4, -- hybrid
+      gen = libs.levelshared.gen.alien,
     },
-    gen = libs.levelshared.gen.alien,
   },
-  -- {
-  --   config = {
-  --     ai = 2, -- ID
-  --     team = 2,
-  --     diff = 4, -- difficulty
-  --   },
-  --   gen = libs.levelshared.gen.alien,
-  -- },
+  {
+    config = {
+      ai = 2, -- ID
+      team = 2,
+      diff = 4, -- difficulty
+      race = 4, -- hybrid
+      gen = libs.levelshared.gen.alien,
+    },
+  },
+  {
+    config = {
+      ai = 3, -- ID
+      team = 2,
+      diff = 4, -- difficulty
+      race = 4, -- hybrid
+      gen = libs.levelshared.gen.alien,
+    },
+  },
 }
 
 level.intro = function(self)

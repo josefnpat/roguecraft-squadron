@@ -129,6 +129,7 @@ net.resourceStrings = {
 net.aiDifficultyBase = 20
 net.aiDifficultyScale = 50
 
+-- do not change this order unless you update the gamemodes
 net.race = {
   {
     name="Human",

@@ -1015,16 +1015,33 @@ function server:newGame(soft)
   local preset_value = storage.config.preset
   local preset = libs.mppresets.getPresets()[preset_value]
 
+  if debug_mode then
+    print("User Table:")
+    for peer,user in pairs(self.lovernet:getUsers()) do
+      print("User:")
+      for i,v in pairs(user) do
+        print("",i,v)
+        if i == "config" then
+          for j,w in pairs(v) do
+            print("","",j,w)
+          end
+        end
+      end
+    end
+  end
+
   local user_count = 0
   for peer,user in pairs(self.lovernet:getUsers()) do
-
-    if user.config.race then
-      user.config.race_gen = libs.levelshared.gen[libs.net.race[user.config.race].gen]()
-    end
-
-    local gen = user.gen
     -- todo: add unique names
     user_count = user_count + 1
+    assert(user.config.race)
+    local gen
+    if user.config.gen then -- gen override
+      gen = user.config.gen
+    else
+      gen = libs.levelshared.gen[libs.net.race[user.config.race].gen]
+    end
+    user.config.race_gen = gen()
     if user.ai then
       -- todo: balance players on pockets after 8
       user.ai:setCurrentPocket(pockets[user_count])
@@ -1033,7 +1050,6 @@ function server:newGame(soft)
       if level.ai_players then
         local current_ai_player = storage.ai_players[user.config.ai]
         user.ai:setDiff(current_ai_player.config.diff)
-        gen = current_ai_player.gen or gen
       end
     end
     self.generatePlayer(storage,user,pockets[user_count],gen)
