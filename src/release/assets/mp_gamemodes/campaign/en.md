@@ -106,7 +106,7 @@ We're on our own.
 
 ## Level 1 Mission
 
--- 1 v 1 easy
+-- 1 v 1 easy(d1)
 
 ## Level 1 Complete
 
@@ -200,7 +200,7 @@ Patton out.
 
 ## Level 2 Mission
 
--- 2 v 2 easy
+-- 2 v 2 easy(d2)
 
 ## Level 2 Complete
 
@@ -260,7 +260,7 @@ Takeda out.
 
 ## Level 3 Mission
 
--- 1 v 2 medium (unallied, e.g. 1v1v1)
+-- 1 v 2 medium(d3) (unallied, e.g. 1v1v1)
 
 ## Level 3 Complete
 
@@ -340,7 +340,7 @@ Only if I get to bring the tea cakes.
 
 ## Level 4 Mission
 
---- 2 v 2 medium
+--- 2 v 2 medium(d3)
 
 ## Level 4 Complete
 
@@ -402,7 +402,7 @@ Let's go.
 
 ## Level 5 Mission
 
--- 1 v 1 hard
+-- 1 v 1 hard(d4)
 -- Start survival mode when less than three ships for the enemy. Victory when your command ship takes damage.
 
 ## Level 5 Complete
@@ -461,7 +461,7 @@ Gracie!
 
 ## Level 6 Mission
 
--- 1 v 2 hard
+-- 1 v 2 hard(d4)
 
 ## Level 6 Complete
 
@@ -515,7 +515,7 @@ I will end you all!
 
 ## Level 7 Mission
 
--- 2 v 3 hard
+-- 2 v 3 hard(d4)
 
 ## Level 7 Complete
 
@@ -547,7 +547,7 @@ You will not take my soil! I will grow!
 
 ## Level 8 Mission
 
--- 1 v 2 hard
+-- 1 v 2 hard(d5)
 
 ## Level 8 Complete
 
@@ -735,7 +735,7 @@ It's good to see you, but we've got incoming!
 
 ## Level 9 Mission
 
--- 2 v 3 hard
+-- 2 v 3 hard(d5)
 
 ## Level 9 Complete
 

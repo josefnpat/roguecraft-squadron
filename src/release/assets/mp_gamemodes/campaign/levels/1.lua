@@ -14,33 +14,37 @@ level.ai_players = {
       ai = 1, -- ID
       team = 2,
       diff = 1, -- difficulty
+      race = 2,
+      gen = libs.levelshared.gen.dojeer,
     },
-    gen = libs.levelshared.gen.dojeer,
   },
-  -- {
-  --   config = {
-  --     ai = 1, -- ID
-  --     team = 2,
-  --     diff = 1, -- difficulty
-  --   },
-  --   gen = libs.levelshared.gen.dojeer,
-  -- },
-  -- {
-  --   config = {
-  --     ai = 1, -- ID
-  --     team = 2,
-  --     diff = 1, -- difficulty
-  --   },
-  --   gen = libs.levelshared.gen.dojeer,
-  -- },
-  -- {
-  --   config = {
-  --     ai = 1, -- ID
-  --     team = 2,
-  --     diff = 1, -- difficulty
-  --   },
-  --   gen = libs.levelshared.gen.dojeer,
-  -- },
+  {
+    config = {
+      ai = 2, -- ID
+      team = 2,
+      diff = 1, -- difficulty
+      race = 2,
+      gen = libs.levelshared.gen.none,
+    },
+  },
+  {
+    config = {
+      ai = 3, -- ID
+      team = 2,
+      diff = 1, -- difficulty
+      race = 2,
+      gen = libs.levelshared.gen.none,
+    },
+  },
+  {
+    config = {
+      ai = 4, -- ID
+      team = 2,
+      diff = 1, -- difficulty
+      race = 2,
+      gen = libs.levelshared.gen.none,
+    },
+  },
 }
 
 level.intro = function()--self,dir)

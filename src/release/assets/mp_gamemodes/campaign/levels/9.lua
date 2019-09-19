@@ -12,10 +12,38 @@ level.ai_players = {
   {
     config = {
       ai = 1, -- ID
-      team = 2,
-      diff = 1, -- difficulty
+      team = 1,
+      diff = 5, -- difficulty
+      race = 1,
+      gen = libs.levelshared.gen.human,
     },
-    gen = libs.levelshared.gen.dojeer,
+  },
+  {
+    config = {
+      ai = 2, -- ID
+      team = 2,
+      diff = 5, -- difficulty
+      race = 2,
+      gen = libs.levelshared.gen.dojeer,
+    },
+  },
+  {
+    config = {
+      ai = 3, -- ID
+      team = 2,
+      diff = 5, -- difficulty
+      race = 2,
+      gen = libs.levelshared.gen.dojeer,
+    },
+  },
+  {
+    config = {
+      ai = 4, -- ID
+      team = 2,
+      diff = 5, -- difficulty
+      race = 2,
+      gen = libs.levelshared.gen.dojeer,
+    },
   },
 }
 
