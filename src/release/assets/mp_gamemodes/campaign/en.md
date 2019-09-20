@@ -635,7 +635,7 @@ Destroy Algos core self. It will be a large vessel, heavily guarded.
 
 If you destroy that, you will end it.
 
-All that will be left will be its sprout fleets and they will be far fewer in number than the forces under Algo's direction.
+All that will be left will be its sprout fleets and they will be far fewer in number than the forces under Algos' direction.
 
 I have sent what I can to cut Algos off from your planet and protect it from any stray fleets that may stumble through it.
 
@@ -811,15 +811,13 @@ To me, she is face of everyone we lose in this war.
 
 -- Possible image, Ruby and Miho over tea, laughing
 
-**H|Valentina Nikolai|Rosa Dietrich:** But, war is not the end. Thank to Miho Takeda, Commander Ruby Patton and Executive Officer Rosa Dietrich, the war is over.
+**H|Valentina Nikolai|Rosa Dietrich:** But, war is not the end. Thanks to Miho Takeda, Commander Ruby Patton and Executive Officer Rosa Dietrich, the war is over.
 
 We are regrouping, rebuilding and learning.
 
 -- possible image, shot of multiple IEE Command ships building, among them are Dejeer ships
 
-**H|Valentina Nikolai|Mati:** We are learning that we not know very much about the Dojeer. Some might are friends.
-
-The Dojeer are learning about us as well and how we are not a hivemind.
+**H|Valentina Nikolai|Mati:** We are learning that we do not know very much about the Dojeer. Some might even be friends.
 
 -- possible shot, a Mati Dojeer drone standing in the crowd, looking pensive
 
@@ -833,7 +831,7 @@ Wishes don't change life and we will all be grieving for very long time.
 
 -- Fade to shot of Miho's husband sitting in his home, looking at a picture of Miho. Ruby's parents hugging each other and crying
 
-**H|Valentina Nikolai|Ruby Patton:** And while we grieve, we also sing. We have future to live in.
+**H|Valentina Nikolai|Ruby Patton:** And while we grieve, we also sing. We have a future to live in.
 
 We have friends and loved ones to hold that we thought we lost.
 
