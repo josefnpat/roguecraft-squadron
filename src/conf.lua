@@ -24,7 +24,7 @@ settings:define("object_shaders",true)
 settings:define("action_keys",{"z","x","c","v","b"})
 settings:define("tips",true)
 
-game_tagline = "Call to Arms"
+game_tagline = "Final Reckoning"
 game_name = "RogueCraft Squadron: "..game_tagline
 git_hash,git_count = "missing git.lua",-1
 game_singleplayer = false
