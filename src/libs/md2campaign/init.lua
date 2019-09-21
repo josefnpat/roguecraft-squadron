@@ -129,7 +129,7 @@ function md2campaign.new(init)
   for _,line in pairs(self._campaign.hashes_text) do
     local file = self._assets .. line.audio_location
     if not love.filesystem.isFile(file) then
-      --print("Warning: missing audio for \""..line.text.."\" ["..file.."]")
+      print("Warning: missing audio for \""..line.text.."\" ["..file.."]")
     end
   end
 
