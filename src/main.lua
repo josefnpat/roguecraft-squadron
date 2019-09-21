@@ -102,6 +102,7 @@ function love.load(arg)
     libs.bitser = require"libs.lovernet.bitser"
     libs.ai = require"libs.ai"
     libs.slider = require"libs.slider"
+    libs.sha1 = require"libs.sha1"
   end)
 
   loader:add("localizations",function()
