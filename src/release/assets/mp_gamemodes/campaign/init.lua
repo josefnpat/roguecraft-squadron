@@ -11,6 +11,6 @@ gamemode.configurable = false
 gamemode.configurable_team = false
 gamemode.configurable_race = false
 gamemode.configurable_diff = false
-gamemode.weight = 300
+gamemode.weight = 400
 
 return gamemode
