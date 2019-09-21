@@ -372,11 +372,11 @@ Computer, open a channel with Takeda.
 
 **Computer:** Opening channel to Fleet Commander Miho Takeda.
 
-....
+...
 
-....
+...
 
-....
+...
 
 **Computer:** Fleet Commander Miho Takeda's ship is not responding.
 
@@ -388,7 +388,7 @@ Computer, open a channel with Takeda.
 
 Oh Miho.
 
-....
+...
 
 Death lies in our beds: in the lazy mattresses, the black blankets, lives a full stretch and then suddenly blows, blows sound unknown filling out the sheets and there are beds sailing into a harbor where death is waiting, dressed as an admiral.
 
@@ -417,7 +417,7 @@ Let's go.
 
 -- sounding choked up
 
-**H|Grace Patton:** Yes, it's me.
+**H|Grace Patton:** Yes. It's me.
 
 -- tearing up
 

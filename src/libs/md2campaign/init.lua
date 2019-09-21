@@ -97,14 +97,20 @@ function md2campaign.new(init)
         line.name = name_split[2] or name_split[1]
         line.display_name = name_split[1]
 
-        line.hash_name = libs.md5.tohex(line.name)
+        line.hash_name = libs.sha1(line.name)
         line.image_location = "/image/"..line.hash_name..".png"
         self._campaign.hashes_name[line.hash_name ] = line
       end
 
       if line.text then
-        line.hash_text = libs.md5.tohex(line.text)
+        line.hash_text = libs.sha1(line.text)
         line.audio_location = "/audio/"..line.hash_text..".ogg"
+        if self._campaign.hashes_text[line.hash_text] == nil then
+          -- Use the following print to make data for excel
+          --print(line.hash_text.."\t"..line.text)
+        else
+          assert(self._campaign.hashes_text[line.hash_text].text==line.text)
+        end
         self._campaign.hashes_text[line.hash_text] = line
         line.emote = line.text:match("%*(.+)*")
       end
