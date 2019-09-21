@@ -89,13 +89,16 @@ function credits:enter()
   })
   table.insert(self.data,{
     data = [[Josef Patoprsty (@josefnpat)
-Project Management, Code, Design and Voice Talent
+Project Management, Code, Design, Writing and Voice Talent
 
 Ashley Hooper (@ByteDesigning)
 Art and Design
 
 Ashley Schuster (SnowSchu)
 Marketing, Design, Quality Assurance and Voice Talent
+
+Hannah Bruders (@HBruders)
+Worldbuilding, Editing and Voice Talent
 
 Ran Schonewille (audio-interactive.com)
 Music Composer, SFX
@@ -111,6 +114,20 @@ Art and Voice Talent
 
 Ethan Blackley
 Video Marketing]]
+  })
+
+  table.insert(self.data,{
+    data = "Campaign Voice Actors",
+    font = fonts.window_title,
+    padding = 32,
+  })
+  table.insert(self.data,{
+    data = [[Ruby Patton .. Candice Withrow
+Rosa Dietrich .. Hannah Bruders
+Miho Takeda .. Ashley Schuster
+Valentina Nikolai .. Hannah Bruders
+Grace Patton .. Candice Withrow
+Computer .. Arjan Vk]]
   })
 
   table.insert(self.data,{
