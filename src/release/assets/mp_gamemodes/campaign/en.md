@@ -208,11 +208,11 @@ Patton out.
 
 Computer, play message.
 
-**H|Dojeer|Algos:** [Unintelligible]
+**H|Dojeer|Algos:** Ubj qb xabj fb zhpu nobhg fjnyybjf?
 
 Grace Patton
 
-[Further unintelligible sounds]
+Jryy, lbh unir gb xabj gurfr guvatf jura lbh'er n xvat, lbh xabj.
 
 -- startled
 
@@ -266,11 +266,11 @@ Takeda out.
 
 **Rosa Dietrich:** Commander, more messages from the Dojeer incoming.
 
-**H|Dojeer|Algos:** [Angry screeching]
+**H|Dojeer|Algos:** V qba'g jnag gb gnyx gb lbh ab zber, lbh rzcgl urnqrq navzny sbbq gebhtu jvcre.
 
-**H|Dojeer|Mati:** [firm but angry talking]
+**H|Dojeer|Mati:** V sneg va lbhe trareny qverpgvba.
 
-**H|Dojeer|Algos:** [Angrier screeching]
+**H|Dojeer|Algos:** Lbhe zbgure jnf n unzfgre naq lbhe sngure fzryg bs ryqreoreevrf!
 
 -- the sound of things breaking and shooting starts
 
@@ -346,7 +346,7 @@ Only if I get to bring the tea cakes.
 
 **Rosa Dietrich:** Commander, another incoming message from the Dojeer.
 
-**H|Dojeer|Algos:** [Angry unintelligible speech]
+**H|Dojeer|Algos:** Lbh zhfg phg qbja gur zvtugvrfg gerr va gur sberfg jvgu... n ureevat!
 
 **Computer:** Commander, receiving data from central command containing a basic translation algorithm. Integrating translation matrix now.
 
