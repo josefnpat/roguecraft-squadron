@@ -228,11 +228,14 @@ function vnjson:update(dt)
       self._progress = 1
     end
     libs.scanlib.update(dt)
+    -- Auto progress:
+    --[[
     if self._aux.audio then
       if not self._aux.audio:isPlaying() then
         self:next()
       end
     end
+    --]]
   end
 end
 
