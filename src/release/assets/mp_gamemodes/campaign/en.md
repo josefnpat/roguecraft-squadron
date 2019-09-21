@@ -138,7 +138,7 @@ I didn't mean to offend you, Dietrich. Takeda had nothing but high praise for yo
 
 -- looks sheepish
 
-**Rosa Dietrich:** I'm sorry, Commander, ma'am. I ...
+**Rosa Dietrich:** I'm ... I'm sorry, Commander, ma'am. I ...
 
 People have a tendency to dismiss me if they know about my past.
 
@@ -386,7 +386,7 @@ Computer, open a channel with Takeda.
 
 **Ruby Patton:** *Ruby whimpers*
 
-Oh Miho.
+Oh ... Miho.
 
 ...
 
@@ -675,7 +675,7 @@ With all of you. Thank you for giving me the privilege.
 
 **Ruby Patton:** Please. Trust me, Rosa.
 
-**Rosa Dietrich:** ... I can do that, ma'am.
+**Rosa Dietrich:** I can do that, ma'am.
 
 **Ruby Patton:** A general message to all personnel.
 
@@ -761,7 +761,7 @@ Is that you?
 
 **Rosa Dietrich:** Takeda's command ship has exploded.
 
-They ... they're dead. All of them.
+They ... they are dead. All of them.
 
 -- ruby covers her face
 
