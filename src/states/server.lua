@@ -571,13 +571,22 @@ function server:init()
     end
   end)
 
-  self.lovernet:addOp(libs.net.op.debug_create_object)
-  self.lovernet:addValidateOnServer(libs.net.op.debug_create_object,{x='number',y='number',c='number'})
-  self.lovernet:addProcessOnServer(libs.net.op.debug_create_object,function(self,peer,arg,storage)
+  self.lovernet:addOp(libs.net.op.debug)
+  self.lovernet:addValidateOnServer(libs.net.op.debug,{x='number',y='number',c='number'})
+  self.lovernet:addProcessOnServer(libs.net.op.debug,function(self,peer,arg,storage)
     local user = self:getUser(peer)
     local type_index = "debug"
-    for i = 1,arg.c do
-      server.createObject(storage,type_index,arg.x,arg.y,user)
+    if arg.c == -1 then
+      for _,object in pairs(storage.objects) do
+        if not libs.net.userOwnsObject(user,object) then
+          server:addUpdate(object,{remove=true},"delete_objects")
+          object.remove = true
+        end
+      end
+    else
+      for i = 1,arg.c do
+        server.createObject(storage,type_index,arg.x,arg.y,user)
+      end
     end
   end)
 

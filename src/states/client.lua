@@ -164,7 +164,7 @@ function client:enter()
   self.lovernet:addOp(libs.net.op.get_players)
   self.lovernet:addOp(libs.net.op.set_research)
   self.lovernet:addOp(libs.net.op.get_research)
-  self.lovernet:addOp(libs.net.op.debug_create_object)
+  self.lovernet:addOp(libs.net.op.debug)
   self.lovernet:addOp(libs.net.op.get_new_objects)
   self.lovernet:addOp(libs.net.op.get_new_updates)
   self.lovernet:addOp(libs.net.op.get_new_bullets)
@@ -1202,11 +1202,14 @@ function client:keypressed(key)
   end
   if debug_mode then
     if key == "c" then
-      self.lovernet:sendData(libs.net.op.debug_create_object,{
+      self.lovernet:sendData(libs.net.op.debug,{
         x=love.mouse.getX()+self:getCameraOffsetX(),
         y=love.mouse.getY()+self:getCameraOffsetY(),
         c=love.keyboard.isDown("lshift") and 100 or 1,
       })
+    end
+    if key == "x" then
+      self.lovernet:sendData(libs.net.op.debug,{x=0,y=0,c=-1,})
     end
     if key == "p" then
       if self.lovernetprofiler then
