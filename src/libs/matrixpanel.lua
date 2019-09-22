@@ -93,7 +93,7 @@ function matrixpanel:draw(bg,fg)
       end
     end
     love.graphics.draw(self._icon_bg,ix,iy)
-    if type(action) == "function" then
+    if type(action.image) == "function" then
       love.graphics.draw(action.image(),ix,iy)
     else
       love.graphics.draw(action.image,ix,iy)
