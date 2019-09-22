@@ -5,6 +5,7 @@ level.map = "random"
 
 level.players_config_skel = {
   team = 1,
+  gen = libs.levelshared.gen.none,
 }
 
 level.ai_players = {
@@ -12,8 +13,9 @@ level.ai_players = {
     config = {
       ai = 1, -- ID
       team = 2,
+      race = 3, -- pirates
+      gen = libs.levelshared.gen.none,
     },
-    gen = libs.levelshared.gen.none,
   },
 }
 
@@ -78,18 +80,18 @@ function level:init(server)
   level._spawn_types = {
 
     -- One per
-    {object_type="dojeer_scout",      delay=offset+interval*0 ,t=1 },
-    {object_type="dojeer_fighter",    delay=offset+interval*1 ,t=3 },
-    {object_type="dojeer_combat",     delay=offset+interval*2 ,t=10},
-    {object_type="dojeer_tank",       delay=offset+interval*3 ,t=5 },
-    {object_type="dojeer_artillery",  delay=offset+interval*4 ,t=10},
+    {object_type="pirate_scout",      delay=offset+interval*0 ,t=1 },
+    {object_type="pirate_fighter",    delay=offset+interval*1 ,t=3 },
+    {object_type="pirate_combat",     delay=offset+interval*2 ,t=10},
+    {object_type="pirate_tank",       delay=offset+interval*3 ,t=5 },
+    {object_type="pirate_artillery",  delay=offset+interval*4 ,t=10},
 
     -- Two per
-    {object_type="dojeer_scout",      delay=offset+interval*5 ,t=1 },
-    {object_type="dojeer_fighter",    delay=offset+interval*6 ,t=3 },
-    {object_type="dojeer_combat",     delay=offset+interval*7 ,t=10},
-    {object_type="dojeer_tank",       delay=offset+interval*8 ,t=5 },
-    {object_type="dojeer_artillery",  delay=offset+interval*9 ,t=10},
+    {object_type="pirate_scout",      delay=offset+interval*5 ,t=1 },
+    {object_type="pirate_fighter",    delay=offset+interval*6 ,t=3 },
+    {object_type="pirate_combat",     delay=offset+interval*7 ,t=10},
+    {object_type="pirate_tank",       delay=offset+interval*8 ,t=5 },
+    {object_type="pirate_artillery",  delay=offset+interval*9 ,t=10},
 
   }
 

@@ -1068,13 +1068,23 @@ function server:newGame(soft)
     libs.researchrenderer.load(false,storage.config.preset)
   end
 
-  if not soft and storage.config.everyShipUnlocked then
+  if not soft then
     for peer,user in pairs(self.lovernet:getUsers()) do
+
+      local total_research = 0
+
       local race_gen = user.config.race_gen
       local researchableObjects = libs.researchrenderer.getResearchableObjects(nil,race_gen.first)
+
       for _,researchableObject in pairs(researchableObjects) do
-        libs.researchrenderer.setUnlocked(user,researchableObject.type)
+        if storage.config.everyShipUnlocked then
+          libs.researchrenderer.setUnlocked(user,researchableObject.type)
+        end
+        total_research = total_research + (researchableObject.unlock_cost or 0)
       end
+      local name = libs.net.race[user.config.race or 1].name
+      print("Research Total user "..user.id.." ["..name.."]:"..total_research)
+
     end
   end
 
@@ -1095,6 +1105,14 @@ function server:nextLevel(next_level)
     object.remove_no_drop = true
     object.remove = true
     server:addUpdate(object,{remove=true},"delete_objects")
+  end
+
+  --research_reward
+  local level = storage.gamemode:getCurrentLevelData()
+  if level.research_reward then
+    for _,user in pairs(self.lovernet:getUsers()) do
+      user.resources["research"] = user.resources["research"] + level.research_reward
+    end
   end
 
   -- load new game

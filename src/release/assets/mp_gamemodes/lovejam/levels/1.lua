@@ -7,6 +7,7 @@ level.map = "random"
 
 level.players_config_skel = {
   team = 1,
+  gen = libs.levelshared.gen.lovejam,
 }
 
 level.ai_players = {

@@ -4,9 +4,11 @@ level.id = "3"
 level.next_level = "4"
 level.victory = libs.levelshared.team_2_and_3_defeated
 level.map = "random"
+level.research_reward = 75
 
 level.players_config_skel = {
   team = 1,
+  gen = libs.levelshared.gen.lovejam,
 }
 
 level.ai_players = {

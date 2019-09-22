@@ -31,6 +31,7 @@ levelshared.gen.getAllFirst = function()
     libs.levelshared.gen.campaign_valentina().first,
     libs.levelshared.gen.campaign_miho().first,
     libs.levelshared.gen.campaign_grace().first,
+    libs.levelshared.gen.lovejam().first,
   }
 end
 
@@ -107,6 +108,16 @@ end
 levelshared.gen.campaign_grace = function()
   return {
     first = "campaign_grace",
+    default = {
+      habitat=1,
+      salvager=1,
+    },
+  }
+end
+
+levelshared.gen.lovejam = function()
+  return {
+    first = "command_lovejam",
     default = {
       habitat=1,
       salvager=1,

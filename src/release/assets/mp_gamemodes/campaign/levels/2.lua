@@ -3,6 +3,7 @@ local level = {}
 level.id = "2"
 level.next_level = "3"
 level.victory = libs.levelshared.team_2_and_3_defeated
+level.research_reward = 50
 
 level.players_config_skel = {
   team = 1,
