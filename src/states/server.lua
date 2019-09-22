@@ -961,6 +961,10 @@ function server:newGame(soft)
     storage.gamemode:setCurrentGamemode(gamemode_object)
     if storage.config.levelSelect then
       storage.gamemode:setCurrentLevel(storage.config.levelSelect)
+      local research_cumulative = storage.gamemode:getCumulativeResearchReward()
+      for _,user in pairs(self.lovernet:getUsers()) do
+        user.resources["research"] = research_cumulative
+      end
     end
     storage.gamemode:loadCurrentLevel()
     storage.level = {
@@ -1085,7 +1089,7 @@ function server:newGame(soft)
         total_research = total_research + (researchableObject.unlock_cost or 0)
       end
       local name = libs.net.race[user.config.race or 1].name
-      print("Research Total user "..user.id.." ["..name.."]:"..total_research)
+      --print("Research Total user "..user.id.." ["..name.."]:"..total_research)
 
     end
   end

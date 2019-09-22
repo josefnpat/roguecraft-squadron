@@ -9,7 +9,7 @@ return function()
     "build_drydock_campaign",
     "build_advdrydock",
   }
-  ship.research = 999
+  ship.research = 600
   ship.research_generate = 0
   return ship
 end

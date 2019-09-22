@@ -29,6 +29,7 @@ function mpgamemodes.new(init)
   self.loadCurrentLevel = mpgamemodes.loadCurrentLevel
   self.getAllLevelsLoaded = mpgamemodes.getAllLevelsLoaded
   self.unlockLevel = mpgamemodes.unlockLevel
+  self.getCumulativeResearchReward = mpgamemodes.getCumulativeResearchReward
   self.getCurrentLevelData = mpgamemodes.getCurrentLevelData
 
   self._currentGamemode = nil
@@ -138,6 +139,20 @@ function mpgamemodes:unlockLevel(unlockLevel)
   gamemodes_save[self._currentGamemode.id].unlock = unlockLevel.id
   settings:write(gamemodes_save)
 
+end
+
+function mpgamemodes:getCumulativeResearchReward()
+  local total = 0
+  local current_level = self._startLevel
+  while current_level do
+    local level = require(self._currentGamemode.dir.."/levels/"..current_level)
+    total = total + (level.research_reward or 0)
+    if self._currentLevel == current_level then
+      return total
+    end
+    current_level = level.next_level
+  end
+  return total
 end
 
 function mpgamemodes:getCurrentLevelData()
