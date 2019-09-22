@@ -5,12 +5,9 @@ local game_over = false
 level.id = "1"
 level.map = "training"
 
-level.players_skel = {
-  gen = libs.levelshared.gen.none,
-}
-
 level.players_config_skel = {
   team = 1,
+  gen = libs.levelshared.gen.none,
 }
 
 level.ai_players = {
@@ -18,8 +15,9 @@ level.ai_players = {
     config = {
       ai = 1, -- ID
       team = 2,
+      race = 3, -- pirates
+      gen = libs.levelshared.gen.none,
     },
-    gen = libs.levelshared.gen.none,
   },
 }
 
@@ -51,7 +49,7 @@ function level:init(server)
 
   server.createObject(self.storage,"station_training",0,0,self.player)
 
-  scope.end_mission_ship = server.createObject(self.storage,"dojeer_turret_large",2048,2048,self.badguy)
+  scope.end_mission_ship = server.createObject(self.storage,"pirate_turret_large",2048,2048,self.badguy)
   scope.ship = server.createObject(self.storage,"fighter",-128,128,self.player)
 
   states.client.tutorial:clear()
@@ -121,7 +119,7 @@ function level:init(server)
     onComplete=function()
       for x = -1,1,2 do
         for y = -1,1,2 do
-          local enemy = server.createObject(self.storage,"dojeer_scout",x*1024,y*1024,self.badguy)
+          local enemy = server.createObject(self.storage,"pirate_scout",x*1024,y*1024,self.badguy)
           table.insert(scope.enemies,enemy)
         end
       end
@@ -446,15 +444,15 @@ function level:init(server)
     onComplete=function()
 
       local enemy_fleet = {}
-      table.insert(enemy_fleet,"dojeer_command")
+      table.insert(enemy_fleet,"pirate_command")
       for i = 1,3 do
-        table.insert(enemy_fleet,"dojeer_scout")
+        table.insert(enemy_fleet,"pirate_scout")
       end
       for i = 1,2 do
-        table.insert(enemy_fleet,"dojeer_fighter")
+        table.insert(enemy_fleet,"pirate_fighter")
       end
       for i = 1,1 do
-        table.insert(enemy_fleet,"dojeer_combat")
+        table.insert(enemy_fleet,"pirate_combat")
       end
 
       for _,t in pairs(enemy_fleet) do

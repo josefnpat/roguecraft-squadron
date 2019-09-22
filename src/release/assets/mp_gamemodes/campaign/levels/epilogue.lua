@@ -2,9 +2,11 @@ local level = {}
 
 level.id = "epilogue"
 level.victory = libs.levelshared.instant_victory
+level.instant_victory = true
 
 level.players_config_skel = {
   team = 1,
+  gen = libs.levelshared.gen.campaign_valentina,
 }
 
 level.ai_players = {
@@ -13,8 +15,36 @@ level.ai_players = {
       ai = 1, -- ID
       team = 2,
       diff = 1, -- difficulty
+      race = 1,
+      gen = libs.levelshared.gen.none,
     },
-    gen = libs.levelshared.gen.dojeer,
+  },
+  {
+    config = {
+      ai = 2, -- ID
+      team = 2,
+      diff = 1, -- difficulty
+      race = 1,
+      gen = libs.levelshared.gen.none,
+    },
+  },
+  {
+    config = {
+      ai = 3, -- ID
+      team = 2,
+      diff = 1, -- difficulty
+      race = 1,
+      gen = libs.levelshared.gen.none,
+    },
+  },
+  {
+    config = {
+      ai = 4, -- ID
+      team = 2,
+      diff = 1, -- difficulty
+      race = 1,
+      gen = libs.levelshared.gen.none,
+    },
   },
 }
 

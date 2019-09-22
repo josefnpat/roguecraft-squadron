@@ -494,10 +494,15 @@ function client:update(dt)
           assets=gamemode.dir.."/vn",
         }
       elseif level.intro then
-
         local chapters = {}
         if self.prev_level_outro then
-          table.insert(chapters,self.prev_level_outro)
+          if type(self.prev_level_outro)=="table" then
+            for _,v in pairs(self.prev_level_outro) do
+              table.insert(chapters,v)
+            end
+          else
+            table.insert(chapters,self.prev_level_outro)
+          end
         end
         table.insert(chapters,level.intro())
         self.prev_level_outro = nil
@@ -738,7 +743,7 @@ function client:update(dt)
       if level and not level.next_level then
         if self.gamestatus:isPlayerLose(self.user) then
           self.mpdisconnect:setLose(math.floor(self.time-self.start_time))
-        elseif self.gamestatus:isPlayerWin(self.user) then
+        elseif level.instant_victory or self.gamestatus:isPlayerWin(self.user) then
           self.mpdisconnect:setWin(math.floor(self.time-self.start_time))
         end
       end

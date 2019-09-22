@@ -6,6 +6,7 @@ level.victory = libs.levelshared.team_2_and_3_defeated
 
 level.players_config_skel = {
   team = 1,
+  gen = libs.levelshared.gen.campaign_ruby,
 }
 
 level.ai_players = {
@@ -15,7 +16,7 @@ level.ai_players = {
       team = 1,
       diff = 3, -- difficulty
       race = 1,
-      gen = libs.levelshared.gen.human,
+      gen = libs.levelshared.gen.campaign_valentina,
     },
   },
   {

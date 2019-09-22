@@ -27,6 +27,10 @@ levelshared.gen.getAllFirst = function()
     libs.levelshared.gen.dojeer().first,
     libs.levelshared.gen.pirate().first,
     libs.levelshared.gen.alien().first,
+    libs.levelshared.gen.campaign_ruby().first,
+    libs.levelshared.gen.campaign_valentina().first,
+    libs.levelshared.gen.campaign_miho().first,
+    libs.levelshared.gen.campaign_grace().first,
   }
 end
 
@@ -70,8 +74,49 @@ levelshared.gen.alien = function()
   }
 end
 
+levelshared.gen.campaign_ruby = function()
+  return {
+    first = "campaign_ruby",
+    default = {
+      habitat=1,
+      salvager=1,
+    },
+  }
+end
+
+levelshared.gen.campaign_valentina = function()
+  return {
+    first = "campaign_valentina",
+    default = {
+      habitat=1,
+      salvager=1,
+    },
+  }
+end
+
+levelshared.gen.campaign_miho = function()
+  return {
+    first = "campaign_miho",
+    default = {
+      habitat=1,
+      salvager=1,
+    },
+  }
+end
+
+levelshared.gen.campaign_grace = function()
+  return {
+    first = "campaign_grace",
+    default = {
+      habitat=1,
+      salvager=1,
+    },
+  }
+end
+
 levelshared.gen.none = function()
   return {
+    first = "command",
     default = {},
   }
 end

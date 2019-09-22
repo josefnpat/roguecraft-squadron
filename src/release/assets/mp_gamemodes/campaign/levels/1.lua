@@ -1,11 +1,12 @@
 local level = {}
 
 level.id = "1"
-level.next_level = "2"
+level.next_level = "9"
 level.victory = libs.levelshared.team_2_and_3_defeated
 
 level.players_config_skel = {
   team = 1,
+  gen = libs.levelshared.gen.campaign_ruby,
 }
 
 level.ai_players = {

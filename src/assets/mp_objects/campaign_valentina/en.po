@@ -1,0 +1,8 @@
+msgid "mission.object.campaign_valentina.name"
+msgstr "IEE Kirov"
+
+msgid "mission.object.campaign_valentina.info"
+msgstr "Captained by Valentina Nikolai."
+
+msgid "mission.object.campaign_valentina.build"
+msgstr "The pride and joy of any IEE exploratory fleet, this vessel contains everything one needs to survive in the depths of space. As well as providing basic construction, freight storage and housing facilities, this vessel is self-sustaining with a self-replication feature. With a Civilian Drydock and enough materials, you can build additional command ships for a more robust fleet."

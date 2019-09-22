@@ -1,0 +1,8 @@
+msgid "mission.object.campaign_ruby.name"
+msgstr "IEE Texas"
+
+msgid "mission.object.campaign_ruby.info"
+msgstr "Captained by Ruby Patton."
+
+msgid "mission.object.campaign_ruby.build"
+msgstr "The pride and joy of any IEE exploratory fleet, this vessel contains everything one needs to survive in the depths of space. As well as providing basic construction, freight storage and housing facilities, this vessel is self-sustaining with a self-replication feature. With a Civilian Drydock and enough materials, you can build additional command ships for a more robust fleet."
