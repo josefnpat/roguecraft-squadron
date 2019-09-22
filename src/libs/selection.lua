@@ -206,7 +206,7 @@ function selection:onChange()
   for _,object in pairs(self:getSelected()) do
     local object_type = libs.objectrenderer.getType(object.type)
     self.panel:addAction(
-      object_type.icons[1],
+      object_type.icons[object.render or 1],
       function(cobject)
         self:setSingleSelected(object)
       end,
