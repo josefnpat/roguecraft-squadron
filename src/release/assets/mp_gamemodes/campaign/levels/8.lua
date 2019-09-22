@@ -1,6 +1,7 @@
 local level = {}
 
 level.id = "8"
+level.name = "Chapter 8:\nTo The Death"
 level.next_level = "9"
 level.victory = libs.levelshared.team_2_and_3_defeated
 level.research_reward = 50

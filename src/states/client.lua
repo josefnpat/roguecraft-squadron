@@ -482,6 +482,7 @@ function client:update(dt)
     self.level = self.lovernet:getCache(libs.net.op.get_level)
     local gamemode = self.mpgamemodes:getCurrentGamemode()
     if gamemode and self.level.id ~= nil and self.level.id ~= previous_level.id then
+      self.mpgamemodes:unlockLevel(self.level)
       -- next level
       self.mpgamemodes:setCurrentLevel(self.level.id)
       self.mpgamemodes:loadCurrentLevel()
@@ -764,8 +765,8 @@ function client:update(dt)
       self.mpconnect:setMapPockets(self.config.mapPockets or 8)
       self.minimap:setMapSize(self.config.mapsize or 1)
       self.mpconnect:setGamemode(self.config.gamemode)
+      self.mpconnect:setLevelSelect(self.config.levelSelect)
       self.mpconnect:setTransmitRate(self.config.transmitRate or 1)
-      self.mpconnect:setLevelSelect(self.config.levelSelect or 1)
       self.points:setPoints(self.config.points or 1)
     end
     if self.config and self.players then

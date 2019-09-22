@@ -1,6 +1,7 @@
 local level = {}
 
 level.id = "epilogue"
+level.name = "Epilogue"
 level.victory = libs.levelshared.instant_victory
 level.instant_victory = true
 

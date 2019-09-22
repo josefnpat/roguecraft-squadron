@@ -924,7 +924,6 @@ function server:resetGame()
     mapGenDefault=1,
     mapPockets=8,
     transmitRate=1,
-    levelSelect=1,
     creative=false,
     everyShipUnlocked=false,
     ai=1,
@@ -960,6 +959,9 @@ function server:newGame(soft)
     storage.gamemode = libs.mpgamemodes.new()
     local gamemode_object = storage.gamemode:getGamemodeById(storage.config.gamemode)
     storage.gamemode:setCurrentGamemode(gamemode_object)
+    if storage.config.levelSelect then
+      storage.gamemode:setCurrentLevel(storage.config.levelSelect)
+    end
     storage.gamemode:loadCurrentLevel()
     storage.level = {
       id=storage.gamemode:getCurrentLevelData().id,
@@ -1509,8 +1511,6 @@ function server:validateConfig()
   end
   local tr_val = libs.net.transmitRates[storage.config.transmitRate].value
   self.lovernet:setClientTransmitRate(tr_val)
-
-  -- todo: add levelSelect check
 
   -- gamemode overrides
   if storage.config.gamemode then

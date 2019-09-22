@@ -1,6 +1,7 @@
 local level = {}
 
 level.id = "1"
+level.name = "Chapter 1:\nThe Long Goodbye"
 level.next_level = "2"
 level.victory = libs.levelshared.team_2_and_3_defeated
 

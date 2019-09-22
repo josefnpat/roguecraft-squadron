@@ -23,6 +23,7 @@ settings:define("mouse_draw_mode","software")
 settings:define("object_shaders",true)
 settings:define("action_keys",{"z","x","c","v","b"})
 settings:define("tips",true)
+settings:define("gamemodes",{})
 
 game_tagline = "Final Reckoning"
 game_name = "RogueCraft Squadron: "..game_tagline

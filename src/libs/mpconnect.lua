@@ -3,6 +3,8 @@ local mpconnect = {}
 mpconnect.icons = {
   check = love.graphics.newImage("assets/hud/check.png"),
   check_empty = love.graphics.newImage("assets/hud/check_empty.png"),
+  locked = love.graphics.newImage("assets/hud/locked.png"),
+  unlocked = love.graphics.newImage("assets/hud/unlocked.png"),
 }
 
 function mpconnect.new(init)
@@ -16,7 +18,7 @@ function mpconnect.new(init)
   self.everyShipUnlocked = false
   self.preset = init.preset or #libs.mppresets.getPresets()
   self.transmitRate = init.transmitRate or 1
-  self.levelSelect = init.levelSelect or 1
+  self.levelSelect = nil
   self.points = init.points or 1
   self.mpgamemodes = init.mpgamemodes
   self.guide = libs.guide.new()
@@ -36,8 +38,8 @@ function mpconnect.new(init)
   self.setMapGenDefault = mpconnect.setMapGenDefault
   self.setMapPockets = mpconnect.setMapPockets
   self.setGamemode = mpconnect.setGamemode
-  self.setTransmitRate = mpconnect.setTransmitRate
   self.setLevelSelect = mpconnect.setLevelSelect
+  self.setTransmitRate = mpconnect.setTransmitRate
   self.setUser = mpconnect.setUser
   self.validateVersion = mpconnect.validateVersion
 
@@ -244,16 +246,6 @@ function mpconnect:generateButtons()
 
   end
 
-  self.levelSelectButton = libs.stepper.new{
-    text="Level Select",
-    onClick=function(dir)
-      --todo: fix this
-      self.lovernet:pushData(libs.net.op.set_config,{d={levelSelect=self.levelSelect+dir}})
-    end,
-    tooltip="Change the level you start on.",
-  }
-  table.insert(self.buttons,self.levelSelectButton)
-
   for _,button in pairs(self.buttons) do
     button:setFont(fonts.submenu)
     button:setHeight(32)
@@ -294,6 +286,12 @@ function mpconnect:update(dt)
       button:update(dt)
     end
     self.gamemodeTargetButton:update(dt)
+  elseif self.levelSelect == nil then
+
+    for _,button in pairs(self.levelButtons) do
+      button:update(dt)
+    end
+
   else
 
     local gamemode_object = self.mpgamemodes:getGamemodeById(self.gamemode)
@@ -311,6 +309,7 @@ function mpconnect:update(dt)
       player_data:update(dt)
     end
   end
+
 end
 
 function mpconnect:setAiCount(count)
@@ -376,24 +375,44 @@ function mpconnect:setGamemode(gamemode)
   local previous_gamemode = self.gamemode
   self.gamemode = gamemode
   if self.gamemode ~= previous_gamemode then
+
     self:generateButtons()
     self.mpgamemodes:setCurrentGamemode(gamemode_object)
+
+    self.levels = self.mpgamemodes:getAllLevelsLoaded()
+    self.levelButtons = {}
+    local unlocked_levels = 0
+    for _,level in pairs(self.levels) do
+      if level.unlocked then
+        unlocked_levels = unlocked_levels + 1
+      end
+      table.insert(self.levelButtons,libs.button.new{
+        disabled=not level.unlocked,
+        text=function() return level.name or ("Level "..level.id) end,
+        onClick=function()
+          self.lovernet:pushData(libs.net.op.set_config,{d={levelSelect=level.id}})
+        end,
+        icon=function()
+          return level.unlocked and mpconnect.icons.unlocked or mpconnect.icons.locked
+        end,
+      })
+    end
+    if unlocked_levels == 1 then
+      self:setLevelSelect(self.levels[1].id)
+    end
   end
-  local gamemode_object = self.mpgamemodes:getGamemodeById(gamemode)
+end
+
+function mpconnect:setLevelSelect(level)
+  if level then
+    self.levelSelect = level
+  end
 end
 
 function mpconnect:setTransmitRate(value)
   self.transmitRate = value
   if self.transmitRatesButton then
     self.transmitRatesButton:setText("Network ["..libs.net.transmitRates[value].text.."]")
-  end
-end
-
-function mpconnect:setLevelSelect(value)
-  self.levelSelect = value
-  if self.levelSelectButton then
-    --todo: load level data, and determine level
-    self.levelSelectButton:setText("Select Level ["..(1).."]")
   end
 end
 
@@ -498,8 +517,6 @@ function mpconnect:draw(config,players,user_count)
 
       end
 
-
-
       for button_index,button in pairs(self.gamemodes) do
         button:setX(bx)--x+paddingHorizontal+gamemode_object.image:getWidth())
         button:setY(by+(buttonHeight+paddingVertical)*(button_index-1))--target_y+(buttonHeight+paddingVertical)*(button_index-1))
@@ -508,6 +525,34 @@ function mpconnect:draw(config,players,user_count)
         button:draw()
       end
 
+    elseif self.levelSelect == nil then
+
+      love.graphics.setFont(fonts.window_title)
+      dropshadowf("Level Select",0,32,love.graphics.getWidth(),"center")
+      love.graphics.setFont(fonts.default)
+
+      local width = math.ceil(math.sqrt(#self.levelButtons))
+      local size = 128+16
+      local padding = 8
+      local draw_x = 0
+      local draw_y = 0
+      local offset_x = (love.graphics.getWidth()-(size*width+(padding-1)*width))/2+padding/2
+      local offset_y = 128
+      for button_index,button in pairs(self.levelButtons) do
+
+        button:setX(offset_x+(size+padding)*draw_x)
+        button:setY(offset_y+(size+padding)*draw_y)
+        button:setWidth(size)
+        button:setHeight(size)
+        button:draw()
+
+        draw_x = draw_x + 1
+        if draw_x >= width then
+          draw_x = 0
+          draw_y = draw_y + 1
+        end
+
+      end
 
     else
 

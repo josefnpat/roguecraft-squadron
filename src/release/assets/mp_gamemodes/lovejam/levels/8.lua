@@ -1,6 +1,7 @@
 local level = {}
 
 level.id = "8"
+level.name = "Level 7" -- rename since we skipped 7
 level.victory = libs.levelshared.team_2_and_3_defeated
 level.map = "random"
 level.research_reward = 75

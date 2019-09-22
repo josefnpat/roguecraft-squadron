@@ -27,10 +27,13 @@ function mpgamemodes.new(init)
   self.getCurrentLevel = mpgamemodes.getCurrentLevel
   self.setCurrentLevel = mpgamemodes.setCurrentLevel
   self.loadCurrentLevel = mpgamemodes.loadCurrentLevel
+  self.getAllLevelsLoaded = mpgamemodes.getAllLevelsLoaded
+  self.unlockLevel = mpgamemodes.unlockLevel
   self.getCurrentLevelData = mpgamemodes.getCurrentLevelData
 
   self._currentGamemode = nil
   self._currentLevel = nil
+  self._startLevel = nil
   self._currentLevelData = nil
 
   self._gamemodes = {}
@@ -74,6 +77,7 @@ function mpgamemodes:setCurrentGamemode(mode)
   assert(type(mode)=="table")
   self._currentGamemode = mode
   self._currentLevel = mode.start_level
+  self._startLevel = mode.start_level
 end
 
 function mpgamemodes:getCurrentLevel()
@@ -88,6 +92,52 @@ end
 
 function mpgamemodes:loadCurrentLevel()
   self._currentLevelData = require(self._currentGamemode.dir.."/levels/"..self._currentLevel)
+end
+
+function mpgamemodes:getAllLevelsLoaded()
+
+  local gamemodes_save = settings:read("gamemodes")
+  local gamemode_save = gamemodes_save[self._currentGamemode.id]
+  local unlock_level = gamemode_save and gamemode_save.unlock or self._startLevel
+
+  local levels = {}
+  local current_level = self._startLevel
+  local found_unlock_level = false
+  while current_level do
+    local level = require(self._currentGamemode.dir.."/levels/"..current_level)
+    level.unlocked = not found_unlock_level
+    if unlock_level == current_level then
+      found_unlock_level = true
+    end
+    table.insert(levels,level)
+    current_level = level.next_level
+  end
+  return levels
+end
+
+function mpgamemodes:unlockLevel(unlockLevel)
+
+  local current_level = self._startLevel
+
+  local found_unlock_level = false
+  local found_current_level = false
+
+  while current_level do
+    local level = require(self._currentGamemode.dir.."/levels/"..current_level)
+    if found_unlock_level and level.unlocked then
+      unlockLevel = level
+    end
+    if unlockLevel.id == level.id then
+      found_unlock_level = true
+    end
+    current_level = level.next_level
+  end
+
+  local gamemodes_save = settings:read("gamemodes")
+  gamemodes_save[self._currentGamemode.id] = gamemodes_save[self._currentGamemode.id] or {}
+  gamemodes_save[self._currentGamemode.id].unlock = unlockLevel.id
+  settings:write(gamemodes_save)
+
 end
 
 function mpgamemodes:getCurrentLevelData()
