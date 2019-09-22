@@ -1,7 +1,7 @@
 local level = {}
 
 level.id = "1"
-level.next_level = "9"
+level.next_level = "2"
 level.victory = libs.levelshared.team_2_and_3_defeated
 
 level.players_config_skel = {
