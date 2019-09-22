@@ -66,11 +66,15 @@ function tutorial:draw(camera,showline)
       local width, wrapped_text = self._font:getWrap(obj_text,text_width)
       local text_height = #wrapped_text*self._font:getHeight()
       local text_offset = (self._image:getHeight()-text_height)/2
-      dropshadowf(string.sub(obj_text,1,string.len(obj_text)*self._textPercent),
-        self._x+self._padding,
-        self._y+text_offset,
-        text_width,
-        "left")
+      libs.reflowprint{
+        progress=self._textPercent,
+        print=dropshadow,
+        text=obj_text,
+        x=self._x+self._padding,
+        y=self._y+text_offset,
+        w=text_width,
+        a="center",
+      }
     end
 
     love.graphics.setColor(255,255,255)
