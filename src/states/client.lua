@@ -7,6 +7,10 @@ client._bump_cell_size = 64
 function client:init()
   -- todo: i18n
   self.main_menu = libs.menu.new{title=love.graphics.newImage("assets/hud/overlay.png")}
+  self._timeImages = {
+    pause = love.graphics.newImage("assets/hud/buttonbar/pause.png"),
+    play = love.graphics.newImage("assets/hud/buttonbar/play.png"),
+  }
   self.main_menu:add(libs.i18n('pause.continue'),function()
     self.menu_enabled = false
   end)
@@ -132,6 +136,20 @@ function client:init()
   )
   tips_button._name = "tips"
 
+  local pause_button = self.buttonbar:addAction(
+    function()
+      return self.paused and self._timeImages.play or self._timeImages.pause
+    end,
+    function()
+      self:pause()
+    end,
+    hover,
+    function()
+      return self.paused and "Play [P]" or "Pause [P]"
+    end
+  )
+  pause_button._name = "pause"
+
 end
 
 function client:enter()
@@ -173,6 +191,7 @@ function client:enter()
   self.lovernet:addOp(libs.net.op.get_resources)
   self.lovernet:addOp(libs.net.op.get_points)
   self.lovernet:addOp(libs.net.op.time)
+  self.lovernet:addOp(libs.net.op.pause)
   self.lovernet:addOp(libs.net.op.action)
   self.lovernet:addOp(libs.net.op.delete_objects)
   self.lovernet:addOp(libs.net.op.add_chat)
@@ -200,6 +219,8 @@ function client:enter()
   self.fade_in = nil
   self.prev_level_outro = nil
   self.level = {}
+  self.paused = nil
+  love.timer.setPause(false)
 
   self.notif = libs.notif.new()
   self.camera = libs.hump.camera(0,0)
@@ -493,7 +514,11 @@ function client:update(dt)
         self.vn = libs.vnjson.new{
           dir=intro_dir,
           assets=gamemode.dir.."/vn",
+          onDone=function()
+            self:pause(false)
+          end,
         }
+        self:pause(true)
       elseif level.intro then
         local chapters = {}
         if self.prev_level_outro then
@@ -515,7 +540,11 @@ function client:update(dt)
           dir=gamemode.dir,
           assets=gamemode.dir.."/vn",
           mdlevel=chapters,
+          onDone=function()
+            self:pause(false)
+          end,
         }
+        self:pause(true)
 
       end
       self.focusObject = nil
@@ -541,11 +570,14 @@ function client:update(dt)
   end
 
   if self.lovernet:getCache(libs.net.op.time) then
-    self.time = self.lovernet:getCache(libs.net.op.time)
+    self.time = self.lovernet:getCache(libs.net.op.time).t
+    self.paused = self.lovernet:getCache(libs.net.op.time).p
     self.last_time = self.time
     self.lovernet:clearCache(libs.net.op.time)
   else
-    self.time = self.time + dt
+    if not love.timer.isPaused() then
+      self.time = self.time + dt
+    end
   end
 
   if self.lovernet:getCache(libs.net.op.get_chat) then
@@ -1201,6 +1233,10 @@ function client:mousereleased(x,y,button)
   end
 end
 
+function client:pause(val)
+  self.lovernet:pushData(libs.net.op.pause,{v=val or not self.paused})
+end
+
 function client:keypressed(key)
 
   if not self.chat:getActive() and key == "`" and love.keyboard.isDown("lshift") then
@@ -1254,6 +1290,9 @@ function client:keypressed(key)
     end
     if key == "t" then
       self.windows:toggle("mptips")
+    end
+    if key == "p" then
+      self:pause()
     end
   end
 
@@ -1478,6 +1517,16 @@ function client:draw()
 
   self.notif:draw()
   if self.gamestatus:isStarted() then
+
+    if self.paused then
+      libs.fade(127)
+      love.graphics.setFont(fonts.title)
+      dropshadowf("Game Paused",
+        0,love.graphics.getHeight()/2,
+        love.graphics.getWidth(),"center")
+      love.graphics.setFont(fonts.default)
+    end
+
     self.countdown:draw(self.time)
     -- can't use self.windows here
     if self.mpresearch:isActive() then

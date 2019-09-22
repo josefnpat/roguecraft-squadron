@@ -819,7 +819,14 @@ function server:init()
 
   self.lovernet:addOp(libs.net.op.time)
   self.lovernet:addProcessOnServer(libs.net.op.time,function(self,peer,arg,storage)
-    return love.timer.getTime()
+    return {t=love.timer.getTime(),p=storage.paused}
+  end)
+
+  self.lovernet:addOp(libs.net.op.pause)
+  self.lovernet:addValidateOnServer(libs.net.op.pause,{v='boolean'})
+  self.lovernet:addProcessOnServer(libs.net.op.pause,function(self,peer,arg,storage)
+    storage.paused = arg.v and true or nil
+    love.timer.setPause(storage.paused)
   end)
 
   self.lovernet:addOp(libs.net.op.get_chat)
@@ -1563,6 +1570,10 @@ function server:validatePlayerConfig(player)
 end
 
 function server:update(dt)
+  love.timer.update(dt)
+  if love.timer.isPaused() then
+    dt = 0
+  end
   self.lovernet:update(dt)
   local storage = self.lovernet:getStorage()
 

@@ -8,6 +8,7 @@ function vnjson.new(init)
   self.play = vnjson.play
   self.next = vnjson.next
   self.halt = vnjson.halt
+  self._onDone = init.onDone or function() end
   self.active = vnjson.active
   self.getNode = vnjson.getNode
   self.getNodeLoc = vnjson.getNodeLoc
@@ -106,6 +107,8 @@ function vnjson:play()
         self._aux.audio:play()
       end
     end
+  else
+    self._onDone()
   end
 end
 
@@ -123,6 +126,7 @@ end
 function vnjson:halt()
   self:stop()
   self._current = -1
+  self._onDone()
 end
 
 function vnjson:active()

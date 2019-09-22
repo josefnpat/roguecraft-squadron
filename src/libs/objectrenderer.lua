@@ -455,7 +455,7 @@ function objectrenderer.update(object,objects,dt,time,user)
     object.healthbar:setPercent(object.health/object_type.health.max)
   end
 
-  if object_type.rotate then
+  if not love.timer.isPaused() and object_type.rotate then
     object.angle = object.angle + object_type.rotate*dt
   end
 
@@ -468,8 +468,12 @@ function objectrenderer.update(object,objects,dt,time,user)
     end
   end
 
-  object.dangle = object.dangle + libs.net.shortestAngle(object.dangle,object.angle)*dt*(object_type.dangle_speed or 4)
-  object.subdangle = object.subdangle + libs.net.shortestAngle(object.subdangle,object.angle)*dt*(object_type.subdangle_speed or 4)
+  if not love.timer.isPaused() then
+    object.dangle = object.dangle +
+      libs.net.shortestAngle(object.dangle,object.angle)*dt*(object_type.dangle_speed or 4)
+    object.subdangle = object.subdangle +
+      libs.net.shortestAngle(object.subdangle,object.angle)*dt*(object_type.subdangle_speed or 4)
+  end
 
   if object.anim then
     object.anim = object.anim - dt*4
@@ -478,7 +482,7 @@ function objectrenderer.update(object,objects,dt,time,user)
     end
   end
 
-  if object.build_t then
+  if not love.timer.isPaused() and object.build_t then
     object.build_dt = (object.build_dt or object.build_t) - dt
     if object.build_dt <= 0 then
       if user and user.id == object.user then

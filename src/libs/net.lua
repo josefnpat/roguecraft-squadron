@@ -32,6 +32,7 @@ net.op = {
   get_resources =       'r',
   get_points =          'q',
   time =                't', --20
+  pause =               'v',
   action =              'a',
   add_chat =            'k',
   get_chat =            'l',
