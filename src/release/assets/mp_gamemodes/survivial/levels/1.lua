@@ -5,7 +5,6 @@ level.map = "random"
 
 level.players_config_skel = {
   team = 1,
-  gen = libs.levelshared.gen.none,
 }
 
 level.ai_players = {
