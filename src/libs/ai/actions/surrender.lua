@@ -50,10 +50,11 @@ function action:update(dt,ai)
       end
       if not self._surrendered then
         self._surrendered = true
-        ai:getServer().addChat(
-          ai:getServer().lovernet:getStorage(),
-          user,
-          action._lines[math.random(#action._lines)])
+        -- todo: add back when I figure out what to do with this
+        -- ai:getServer().addChat(
+        --   ai:getServer().lovernet:getStorage(),
+        --   user,
+        --   action._lines[math.random(#action._lines)])
       end
     end
   end
