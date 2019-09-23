@@ -6,9 +6,12 @@ level.victory = libs.levelshared.team_2_and_3_defeated
 level.map = "random"
 level.research_reward = 75
 
+level.players_skel = {
+  gen = libs.levelshared.gen.lovejam,
+}
+
 level.players_config_skel = {
   team = 1,
-  gen = libs.levelshared.gen.lovejam,
 }
 
 level.ai_players = {
@@ -18,8 +21,8 @@ level.ai_players = {
       team = 2,
       diff = 2, -- difficulty
       race = 4, -- hybrid
-      gen = libs.levelshared.gen.alien,
     },
+    gen = libs.levelshared.gen.alien,
   },
   {
     config = {
@@ -27,8 +30,8 @@ level.ai_players = {
       team = 2,
       diff = 1, -- difficulty
       race = 4, -- hybrid
-      gen = libs.levelshared.gen.none,
     },
+    gen = libs.levelshared.gen.none,
   },
   {
     config = {
@@ -36,8 +39,8 @@ level.ai_players = {
       team = 2,
       diff = 1, -- difficulty
       race = 4, -- hybrid
-      gen = libs.levelshared.gen.none,
     },
+    gen = libs.levelshared.gen.none,
   },
 }
 

@@ -13,8 +13,8 @@ level.ai_players = {
       ai = 1, -- ID
       team = 2,
       race = 3, -- pirates
-      gen = libs.levelshared.gen.none,
     },
+    gen = libs.levelshared.gen.none,
   },
 }
 

@@ -5,9 +5,12 @@ local game_over = false
 level.id = "1"
 level.map = "training"
 
+level.players_skel = {
+  gen = libs.levelshared.gen.none,
+}
+
 level.players_config_skel = {
   team = 1,
-  gen = libs.levelshared.gen.none,
 }
 
 level.ai_players = {
@@ -16,8 +19,8 @@ level.ai_players = {
       ai = 1, -- ID
       team = 2,
       race = 3, -- pirates
-      gen = libs.levelshared.gen.none,
     },
+    gen = libs.levelshared.gen.none,
   },
 }
 

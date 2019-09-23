@@ -6,9 +6,12 @@ level.next_level = "6"
 level.victory = libs.levelshared.team_2_and_3_defeated
 level.research_reward = 50
 
+level.players_skel = {
+  gen = libs.levelshared.gen.campaign_ruby,
+}
+
 level.players_config_skel = {
   team = 1,
-  gen = libs.levelshared.gen.campaign_ruby,
 }
 
 level.ai_players = {
@@ -18,8 +21,9 @@ level.ai_players = {
       team = 2,
       diff = 4, -- difficulty
       race = 2,
-      gen = libs.levelshared.gen.dojeer,
+
     },
+    gen = libs.levelshared.gen.dojeer,
   },
   {
     config = {
@@ -27,8 +31,8 @@ level.ai_players = {
       team = 2,
       diff = 1, -- difficulty
       race = 2,
-      gen = libs.levelshared.gen.none,
     },
+    gen = libs.levelshared.gen.none,
   },
   {
     config = {
@@ -36,8 +40,8 @@ level.ai_players = {
       team = 2,
       diff = 1, -- difficulty
       race = 2,
-      gen = libs.levelshared.gen.none,
     },
+    gen = libs.levelshared.gen.none,
   },
   {
     config = {
@@ -45,8 +49,8 @@ level.ai_players = {
       team = 2,
       diff = 1, -- difficulty
       race = 2,
-      gen = libs.levelshared.gen.none,
     },
+    gen = libs.levelshared.gen.none,
   },
 }
 

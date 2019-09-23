@@ -5,9 +5,12 @@ level.name = "Epilogue"
 level.victory = libs.levelshared.instant_victory
 level.instant_victory = true
 
+level.players_skel = {
+  gen = libs.levelshared.gen.campaign_valentina,
+}
+
 level.players_config_skel = {
   team = 1,
-  gen = libs.levelshared.gen.campaign_valentina,
 }
 
 level.ai_players = {
@@ -17,8 +20,8 @@ level.ai_players = {
       team = 2,
       diff = 1, -- difficulty
       race = 1,
-      gen = libs.levelshared.gen.none,
     },
+    gen = libs.levelshared.gen.none,
   },
   {
     config = {
@@ -26,8 +29,8 @@ level.ai_players = {
       team = 2,
       diff = 1, -- difficulty
       race = 1,
-      gen = libs.levelshared.gen.none,
     },
+    gen = libs.levelshared.gen.none,
   },
   {
     config = {
@@ -35,8 +38,8 @@ level.ai_players = {
       team = 2,
       diff = 1, -- difficulty
       race = 1,
-      gen = libs.levelshared.gen.none,
     },
+    gen = libs.levelshared.gen.none,
   },
   {
     config = {
@@ -44,8 +47,8 @@ level.ai_players = {
       team = 2,
       diff = 1, -- difficulty
       race = 1,
-      gen = libs.levelshared.gen.none,
     },
+    gen = libs.levelshared.gen.none,
   },
 }
 

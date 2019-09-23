@@ -1058,8 +1058,10 @@ function server:newGame(soft)
     user_count = user_count + 1
     assert(user.config.race)
     local gen
-    if user.config.gen then -- gen override
-      gen = user.config.gen
+    if user.gen then -- gen override
+      gen = user.gen
+    elseif user.config.ai and storage.ai_players[user.config.ai].gen then
+      gen = storage.ai_players[user.config.ai].gen
     else
       gen = libs.levelshared.gen[libs.net.race[user.config.race].gen]
     end
