@@ -10,6 +10,7 @@ end
 
 function sfx.load()
   sfx._data = {}
+  sfx.parseDir("assets/mp_vn/","vn")
   sfx.parseDir("assets/mp_vo/","vo")
   sfx.parseDir("assets/mp_sfx/")
 end
@@ -75,6 +76,8 @@ function sfx.playVariation(name,variation)
   if not sfx._mute then
     if sfx._data[name].group == "vo" then
       current_source:setVolume(settings:read("voiceover_vol"))
+    elseif sfx._data[name].group == "vn" then
+      current_source:setVolume(settings:read("vn_vol"))
     else
       current_source:setVolume(settings:read("sfx_vol"))
     end

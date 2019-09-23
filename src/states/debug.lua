@@ -105,6 +105,13 @@ function state:init()
     end
   )
 
+  self.menu:add(
+    "Voice Actors Are Silly",
+    function()
+      libs.sfx.play("campaign_silly")
+    end
+  )
+
   self.menu:add("Back",function()
     libs.hump.gamestate.switch(states.menu)
   end)

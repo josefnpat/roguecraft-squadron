@@ -103,7 +103,7 @@ function vnjson:play()
       local file = self._assets.."/"..node_loc.audio
       if love.filesystem.isFile(file) then
         self._aux.audio = love.audio.newSource(file,"stream")
-        self._aux.audio:setVolume(settings:read("voiceover_vol",1))
+        self._aux.audio:setVolume(settings:read("vn_vol"))
         self._aux.audio:play()
       end
     end

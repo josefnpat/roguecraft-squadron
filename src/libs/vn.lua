@@ -61,7 +61,7 @@ function vn:play()
   local cframe = self._frames[self._frame]
   if cframe then
     if cframe.audio then
-      cframe.audio:setVolume(settings:read("voiceover_vol",1))
+      cframe.audio:setVolume(settings:read("vn_vol",1))
       cframe.audio:play()
     end
   end

@@ -196,6 +196,9 @@ msgstr "Music Volume: %{music_vol} percent"
 msgid "options.voiceover_vol"
 msgstr "Voiceover Volume: %{voiceover_vol} percent"
 
+msgid "options.vn_vol"
+msgstr "Visual Novel Volume: %{vn_vol} percent"
+
 msgid "options.fow_quality"
 msgstr "Fog of War Quality: %{fow_quality}"
 

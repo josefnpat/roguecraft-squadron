@@ -299,6 +299,18 @@ options.menu_audio:addSlider(
   end,
   settings:read("voiceover_vol"))
 
+options.menu_audio:addSlider(
+  function()
+    return libs.i18n('options.vn_vol',{vn_vol=math.floor(settings:read("vn_vol")*100)})
+  end,
+  function(value,rangeValue,released)
+    settings:write("vn_vol",value)
+    if released then
+      libs.sfx.play("sample")
+    end
+  end,
+  settings:read("vn_vol"))
+
 options.menu_audio:add(libs.i18n('options.back'),function()
   options.menu = options.menu_main
   states.client.menu = options.menu_main
