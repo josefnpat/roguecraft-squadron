@@ -70,6 +70,7 @@ end
 
 function soundtrack:randomTrack()
   self._currentDynamicAudio = math.random(#self._data)
+  -- self:nextTrack()
 end
 
 function soundtrack:setIntensity(intensity)
