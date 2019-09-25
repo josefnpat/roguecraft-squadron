@@ -127,7 +127,7 @@ end
 
 levelshared.gen.none = function()
   return {
-    first = "command",
+    first = isRelease() and "command" or "command_demo",
     default = {},
   }
 end
