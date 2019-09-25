@@ -60,6 +60,7 @@ function soundtrack:stop()
 end
 
 function soundtrack:nextTrack()
+  self:setIntensity(0)
   for _,data in pairs(self._data) do
     data.instance:setValue(0)
     data.instance:setTargetValue(0)
@@ -70,7 +71,7 @@ end
 
 function soundtrack:randomTrack()
   self._currentDynamicAudio = math.random(#self._data)
-  -- self:nextTrack()
+  self:nextTrack()
 end
 
 function soundtrack:setIntensity(intensity)
