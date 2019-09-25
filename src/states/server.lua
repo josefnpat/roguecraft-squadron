@@ -421,14 +421,6 @@ function server:generatePlayers(users,storage)
   end
   if storage.config.ai then
     for ai_index = 1,storage.config.ai do
-      storage.ai_players[ai_index] = storage.ai_players[ai_index] or {
-        config={
-          ai=ai_index,
-          team=#players+1,
-          diff=1,
-          race=2,
-        }
-      }
       table.insert(players,storage.ai_players[ai_index].config)
     end
   end
@@ -899,6 +891,30 @@ function server:leave()
   end
 end
 
+function server:generateAiPlayersCache()
+  local users = self.lovernet:getUsers()
+  local players_count = #users+1
+  local storage = self.lovernet:getStorage()
+  local new_ai_players = {}
+  for ai_index = 1,storage.config.ai do
+    players_count = players_count + 1
+    local old_ai_player = {config={}}
+    if storage.ai_players and storage.ai_players[ai_index] then
+      old_ai_player = storage.ai_players[ai_index]
+    end
+    new_ai_player = {
+      config={
+        ai=ai_index,
+        team=old_ai_player.config.team or players_count,
+        diff=old_ai_player.config.diff or 1,
+        race=old_ai_player.config.race or 2,
+      }
+    }
+    new_ai_players[ai_index] = new_ai_player
+  end
+  storage.ai_players = new_ai_players
+end
+
 function server:resetGame()
 
   print('Server resetting game')
@@ -913,12 +929,6 @@ function server:resetGame()
     end
     storage.ai_are_connected = nil
   end
-  if storage.ai_players then
-    for _,ai_player in pairs(storage.ai_players) do
-      ai_player.config = nil
-    end
-  end
-  storage.ai_players = {}
 
   storage.config = {
     git_hash = git_hash,
@@ -935,6 +945,8 @@ function server:resetGame()
     everyShipUnlocked=false,
     ai=1,
   }
+
+  self:generateAiPlayersCache()
 
   storage.objects = {}
   storage.objects_index = 0
@@ -1130,6 +1142,7 @@ function server:nextLevel(next_level)
     end
   end
 
+  self:generateAiPlayersCache()
   -- load new game
   self:newGame(true)
 
@@ -1480,6 +1493,7 @@ function server:validateConfig()
   local player_count,user_count = self:getPlayerCount()
   storage.config.ai = math.max(0,storage.config.ai)
   storage.config.ai = math.min(libs.net.max_players-user_count,storage.config.ai)
+  self:generateAiPlayersCache()
   if storage.config.preset > #libs.mppresets.getPresets() then
     storage.config.preset = 1
   end
