@@ -43,6 +43,16 @@ function love.load(arg)
     libs.hump.gamestate.switch(states.splash)
   end}
 
+  loader:add("Checking System Performance",function()
+    local startime = love.timer.getTime()
+    local temp = ""
+    for i = 1,100000 do
+      temp = temp .. "!"
+    end
+    local endtime = love.timer.getTime()
+    stress_score = math.floor((endtime-startime)*100)
+  end)
+
   loader:add("window icon",function()
     love.window.setIcon(love.image.newImageData("assets/icons/rcs_512.png"))
   end)
@@ -198,7 +208,7 @@ function love.load(arg)
   end)
 
   loader:add("args",function()
-  local version_server_check = true
+    local version_server_check = true
     for i,v in pairs(arg) do
       if states[v] then
         target_state = states[v]

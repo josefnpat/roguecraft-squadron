@@ -21,6 +21,26 @@ function mainmenu:init()
   self.mpserverlist = libs.mpserverlist.new()
   self.windows:add(self.mpserverlist,"mpserverlist")
 
+  if stress_score > stress_score_min then
+    self.stress = libs.window.new{
+      x = (love.graphics.getWidth()-320)/2,
+      title = "Performance Warning!",
+      text = "Stress Score: "..stress_score..
+        "\nSuggested Score: "..stress_score_min..
+        "\n\nStress testing has detected that the current machine load may lead to poor performance."..
+        "\n\nUnexpected issues may occur due to poor performance.",
+      buttons = {
+        {
+          text="OK",--libs.i18n('menu.survey.yes'),
+          callback=function()
+            self.stress = nil
+          end,
+        },
+      },
+    }
+    self.stress.y = (love.graphics.getHeight()-self.stress.h)/2
+  end
+
 end
 
 function mainmenu:connectToServer(ip,port)
@@ -292,6 +312,8 @@ function mainmenu:update(dt)
     self.mpserverlist:update(dt)
   elseif self.demosplash then
     self.demosplash:update(dt)
+  elseif self.stress then
+    self.stress:update(dt)
   elseif self.feedback then
     self.feedback:update(dt)
   else
@@ -322,6 +344,7 @@ function mainmenu:draw()
   end
 
   self.menu:draw()
+  if self.stress then self.stress:draw() end
   if self.feedback then self.feedback:draw() end
   if self.demosplash then
     self.demosplash:draw()
@@ -346,7 +369,9 @@ end
 function mainmenu:keypressed(key)
 
   if key == "escape" then
-    if self.feedback then
+    if self.stress then
+      self.stress = nil
+    elseif self.feedback then
       self.feedback = nil
     elseif self.windows:isActive() then
       self.windows:hide()

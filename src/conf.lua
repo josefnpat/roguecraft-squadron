@@ -31,6 +31,8 @@ game_name = "RogueCraft Squadron: "..game_tagline
 git_hash,git_count = "missing git.lua",-1
 game_singleplayer = false
 game_randomstring = require("libs.randomstring")(32)
+stress_score = -1
+stress_score_min = 80
 pcall( function() return require("git") end );
 
 function love.conf(t)

@@ -2,7 +2,6 @@ local state = {}
 
 function state:init()
 
-
   self.menu = libs.menu.new{title="[DEBUG]"}
 
   self.menu:add(
@@ -126,6 +125,7 @@ function state:draw()
   libs.stars:draw()
   libs.stars:drawPlanet()
   self.menu:draw()
+  love.graphics.print("Stress Score: "..stress_score,32,32)
 end
 
 return state
