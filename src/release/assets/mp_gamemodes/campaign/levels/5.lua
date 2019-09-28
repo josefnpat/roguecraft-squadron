@@ -18,21 +18,20 @@ level.ai_players = {
   {
     config = {
       ai = 1, -- ID
-      team = 2,
-      diff = 4, -- difficulty
-      race = 2,
-
+      team = 1,
+      diff = 1, -- difficulty
+      race = 1,
     },
-    gen = libs.levelshared.gen.dojeer,
+    gen = libs.levelshared.gen.none,
   },
   {
     config = {
       ai = 2, -- ID
       team = 2,
-      diff = 1, -- difficulty
+      diff = 4, -- difficulty
       race = 2,
     },
-    gen = libs.levelshared.gen.none,
+    gen = libs.levelshared.gen.dojeer,
   },
   {
     config = {
