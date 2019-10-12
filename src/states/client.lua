@@ -136,6 +136,16 @@ function client:init()
   )
   tips_button._name = "tips"
 
+  local objectives_button = self.buttonbar:addAction(
+    love.graphics.newImage("assets/hud/buttonbar/objectives.png"),
+    function()
+      self.windows:show("mpobjectives")
+    end,
+    hover,
+    function() return "Objectives [O]" end
+  )
+  objectives_button._name = "tips"
+
   local pause_button = self.buttonbar:addAction(
     function()
       return self.paused and self._timeImages.play or self._timeImages.pause
@@ -250,6 +260,8 @@ function client:enter()
   self.windows:add(self.mpresearch,"mpresearch")
   self.mptips = libs.mptips.new()
   self.windows:add(self.mptips,"mptips")
+  self.mpobjectives = libs.mpobjectives.new()
+  self.windows:add(self.mpobjectives,"mpobjectives")
 
   self.mpdisconnect = libs.mpdisconnect.new()
   self.gamestatus = libs.gamestatus.new()
@@ -935,6 +947,10 @@ function client:update(dt)
 
     self.mptips:update(dt)
 
+  elseif self.mpobjectives:isActive() then
+
+    self.mpobjectives:update(dt)
+
   elseif self.gamestatus:isStarted() then
 
     if not self.chat:getActive() and love.keyboard.isDown("space") then
@@ -1096,6 +1112,7 @@ function client:mousepressed(x,y,button)
   elseif self.mpresearch:isActive() then
     self.mpresearch:mousepressed(x,y,button)
   elseif self.mptips:isActive() then
+  elseif self.mpobjectives:isActive() then
   elseif button == 1 then
     if self.buttonbar:mouseInside(x,y) then
       -- nop
@@ -1129,6 +1146,8 @@ function client:mousereleased(x,y,button)
   elseif self.mpresearch:isActive() then
     self.mpresearch:mousereleased(x,y,button)
   elseif self.mptips:isActive() then
+    --nop
+  elseif self.mpobjectives:isActive() then
     --nop
   elseif button == 1 then
     if self.buttonbar:mouseInside(x,y) and not self.selection:selectionInProgress() then
@@ -1290,6 +1309,9 @@ function client:keypressed(key)
     end
     if key == "t" then
       self.windows:toggle("mptips")
+    end
+    if key == "o" then
+      self.windows:toggle("mpobjectives")
     end
     if key == "p" then
       self:pause()
@@ -1534,6 +1556,9 @@ function client:draw()
     end
     if self.mptips:isActive() then
       self.mptips:draw()
+    end
+    if self.mpobjectives:isActive() then
+      self.mpobjectives:draw()
     end
     self.tutorial:draw(self.camera,not self.windows:isActive())
     self.mpdisconnect:draw()
